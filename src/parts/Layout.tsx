@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import * as React from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 
 export const Spacer: React.FC<{ size: number }> = (p) => <SpacerBody {...p} />;
 
@@ -8,9 +9,16 @@ const SpacerBody = styled.View<{ size: number }>`
 	width: ${({ size }) => size}px;
 `;
 
-export const Row: React.FC = ({ children }) => <RowBody>{children}</RowBody>;
+interface RowStyleType {
+	style?: StyleProp<ViewStyle>;
+}
+export const Row: React.FC<RowStyleType> = ({ children, style }) => <RowBody style={style}>{children}</RowBody>;
 
 const RowBody = styled.View`
-	flex: 1;
 	flex-direction: row;
+`;
+
+export const Fill = styled.View`
+	flex: 1;
+	flex-grow: 1;
 `;
