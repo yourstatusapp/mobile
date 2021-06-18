@@ -22,3 +22,12 @@ export const Fill = styled.View`
 	flex: 1;
 	flex-grow: 1;
 `;
+
+export const TabbarContentContainer: React.FC = ({ children }) => {
+	return <TabbarContentBody>{children}</TabbarContentBody>;
+};
+
+const TabbarContentBody = styled.View`
+	padding: 20px;
+	padding-top: 50px;
+`;

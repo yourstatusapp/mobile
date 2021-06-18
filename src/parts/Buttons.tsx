@@ -40,5 +40,4 @@ const IconButtonBody = styled(TouchableOpacity)<IconButtonProps>`
 	width: ${({ size }) => size || 1 * 4}px;
 	/* align-self: center; */
 	border-radius: 12px;
-	background-color: ${({ backgroundColor }) => backgroundColor || 'white'};
 `;

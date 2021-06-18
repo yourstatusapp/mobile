@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Text } from 'react-native';
-import styled from 'styled-components/native';
+import { TabbarContentContainer, Text } from '../../parts';
 
 interface AccountProps {}
 
@@ -8,12 +7,8 @@ export const Account: React.FC<AccountProps> = (props) => {
 	const {} = props;
 
 	return (
-		<AccountBody>
-			<Text>account</Text>
-		</AccountBody>
+		<TabbarContentContainer>
+			<Text size={20}>Account</Text>
+		</TabbarContentContainer>
 	);
 };
-
-const AccountBody = styled.View`
-	flex: 1;
-`;

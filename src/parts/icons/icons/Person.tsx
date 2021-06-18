@@ -1,0 +1,5 @@
+import * as React from 'react';import { Path, Svg, G } from 'react-native-svg';interface IconPersonProps {color?: any;style?: any;}export const Person: React.FC<IconPersonProps> = (p) => {return (<Svg style={p.style} width="22" height="26" viewBox="0 0 22 26" fill={p.color}
+  xmlns="http://www.w3.org/2000/svg">
+  <Path d="M11 12.9014C14.4719 12.9014 17.2857 10.1146 17.2857 6.67604C17.2857 3.2375 14.4719 0.450684 11 0.450684C7.52812 0.450684 4.71429 3.2375 4.71429 6.67604C4.71429 10.1146 7.52812 12.9014 11 12.9014ZM15.4 14.4577H14.5799C13.4897 14.9538 12.2768 15.2359 11 15.2359C9.72321 15.2359 8.51518 14.9538 7.42009 14.4577H6.6C2.95625 14.4577 0 17.3856 0 20.9943V23.0176C0 24.3064 1.0558 25.3521 2.35714 25.3521H19.6429C20.9442 25.3521 22 24.3064 22 23.0176V20.9943C22 17.3856 19.0437 14.4577 15.4 14.4577Z" fill={p.color}/>
+</Svg>
+);};
