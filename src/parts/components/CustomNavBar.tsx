@@ -33,9 +33,9 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 			<TabContainer>
 				{tabs.map((v, i) => (
 					<TabButton key={i} onPress={() => nav.navigate(v.path)} activeOpacity={0.5}>
-						<Icon name={v.icon} size={20} color={Current === i ? '#C74141' : '#1F1E1E'} />
+						<Icon name={v.icon} size={20} color={Current === i ? '#6ada82' : '#2e2e2e'} />
 						<Spacer size={5} />
-						<Text style={{ color: Current === i ? '#969696' : '#262626' }}>{v.name}</Text>
+						<Text style={{ color: Current === i ? '#969696' : '#2e2e2e' }}>{v.name}</Text>
 					</TabButton>
 				))}
 			</TabContainer>
@@ -44,7 +44,7 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 };
 
 const CustomTabBarBody = styled.View<{ isIphoneX: boolean }>`
-	height: ${(p) => (p.isIphoneX ? 90 : 60)}px;
+	height: ${(p) => (p.isIphoneX ? 80 : 60)}px;
 	padding: 0px 20px;
 	background-color: #0b0b0b;
 	padding-bottom: 25px;
