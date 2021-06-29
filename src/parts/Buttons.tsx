@@ -20,7 +20,6 @@ interface IconButtonProps {
 	size?: number;
 	color?: string;
 
-	backgroundColor?: string;
 	style?: StyleProp<ViewStyle>;
 }
 

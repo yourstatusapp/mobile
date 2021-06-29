@@ -1,1 +1,2 @@
-export * as accounts from './accounts';
+export { account } from './accounts';
+export { ui } from './ui';

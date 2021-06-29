@@ -1,15 +1,22 @@
 import { state } from '@pulsejs/core';
 
 interface Account {
-	email: string;
+	id?: string;
+	email?: string;
+	verified?: string;
 }
+
 const AccountState = {
-	ACCOUNT: state<Partial<Account | null>>(null).persist(),
+	ACCOUNT: state<Account>({}).persist(),
 };
 
 const ComputedState = {
 	LOGGED_IN: state<boolean>(() => {
-		return false;
+		if (AccountState.ACCOUNT.value.email) {
+			return true;
+		} else {
+			return false;
+		}
 	}),
 };
 
