@@ -4,7 +4,7 @@ const SVG_FOLDER = './svg';
 const BUILD_FOLDER = './icons';
 
 const ICON_BASE =
-	"import * as React from 'react';import { Path, Svg, G } from 'react-native-svg';interface IconSVG_NAMEProps {color?: any;style?: any;}export const SVG_NAME: React.FC<IconSVG_NAMEProps> = (p) => {return (%%_SVG_CONTENT_%%);};";
+	"import * as React from 'react';import { Path, Svg, G } from 'react-native-svg';interface IconSVG_NAMEProps {color?: any;style?: any;size: number;}export const SVG_NAME: React.FC<IconSVG_NAMEProps> = (p) => {return (%%_SVG_CONTENT_%%);};";
 
 const MASTER_BASE = `import * as React from 'react';
 import styled from 'styled-components/native';
@@ -46,6 +46,7 @@ const IconBody = styled.View${'``'};
 		let svgContent = fs.readFileSync(`${SVG_FOLDER}/${svg}`, { encoding: 'utf8' }).replace('<svg', '<svg style={p.style}');
 		svgContent = parsePropertiesNames(svgContent);
 		svgContent = parseColorNames(svgContent);
+		svgContent = sizeProperties(svgContent);
 
 		// Remove unused properties
 		svgContent = removeProperties(svgContent);
@@ -67,7 +68,7 @@ const IconBody = styled.View${'``'};
 		// Build the imports and the content for the component
 		_imports = _imports + `import{${svgTitleName}}from'./icons/${svgTitleName}';`;
 		_render =
-			_render + `{ p.name === '${svg.split('.')[0].charAt(0) + svg.split('.')[0].slice(1)}' && <${svgTitleName} color={p.color} style={{ width: p.size, height: p.size }} /> }`;
+			_render + `{ p.name === '${svg.split('.')[0].charAt(0) + svg.split('.')[0].slice(1)}' && <${svgTitleName} size={p.size} color={p.color} style={{ width: p.size, height: p.size }} /> }`;
 		count++;
 	}
 
@@ -100,24 +101,27 @@ const parseColorNames = (text) => {
 	return text;
 };
 
+const sizeProperties = (text) => {
+	if (text?.includes('width=')) text.split('width=').map(() => (text = text.replace(/(width=)\"(.+?)\"/, 'width={p.size}')));
+	if (text?.includes('height=')) text.split('height=').map(() => (text = text.replace(/(height=)\"(.+?)\"/, 'height={p.size}')));
+	return text;
+};
+
 const removeProperties = (text) => {
 	if (text?.includes('class=')) text.split('class=').map(() => (text = text.replace(/(class=)\"(.+?)\"/, '')));
 	return text;
 };
 
+// Fix all tags
 const fixTags = (text) => {
 	text = fixTag(text, 'svg');
 	text = fixTag(text, 'path');
 	text = fixTag(text, 'g');
-	// text.split('<svg').map(() => (text = text?.replace(/(<svg)/, '<Svg')));
-	// text.split('svg>').map(() => (text = text?.replace('</svg>', '</Svg>')));
-	// text.split('<path').map(() => (text = text?.replace(/(<path)/, '<Path')));
-	// text.split('path>').map(() => (text = text?.replace('</path>', '</Path>')));
-	// text.split('path>').map(() => (text = text?.replace('</path>', '</Path>')));
 
 	return text;
 };
 
+// Transform normal tag names to upper case for react native since they don't support lower case starting tags
 const fixTag = (text, tagName) => {
 	text.split(`<${tagName}`).map(() => {
 		text = text?.replace(`<${tagName}`, `<${tagName?.length > 0 ? tagName.charAt(0).toUpperCase() + tagName?.slice(1, tagName.length) : tagName.toUpperCase()}`);

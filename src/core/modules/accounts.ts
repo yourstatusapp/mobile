@@ -7,16 +7,12 @@ interface Account {
 }
 
 const AccountState = {
-	ACCOUNT: state<Account>({}).persist(),
+	ACCOUNT: state<Account>({}).persist('account'),
 };
 
 const ComputedState = {
 	LOGGED_IN: state<boolean>(() => {
-		if (AccountState.ACCOUNT.value.email) {
-			return true;
-		} else {
-			return false;
-		}
+		return !!AccountState.ACCOUNT.value.email;
 	}),
 };
 

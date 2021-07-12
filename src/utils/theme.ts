@@ -2,6 +2,7 @@ export interface InternalTheme extends InteralThemeOther {
 	background?: string;
 	darker?: string;
 	navBar?: string;
+	navBarFade?: string;
 	text?: string;
 }
 
@@ -18,12 +19,16 @@ const Other = {
 export const InternalThemes: { [k in Themes]: InternalTheme } = {
 	light: {
 		...Other,
-		background: '#171717',
-		navBar: '#1E1E1E',
+		background: 'white',
+		navBar: '#F8F8F8',
+		navBarFade: '#D7D7D7',
+		text: 'black',
 	},
 	dark: {
 		...Other,
 		background: '#171717',
 		navBar: '#1E1E1E',
+		navBarFade: '#333333',
+		text: 'white',
 	},
 };

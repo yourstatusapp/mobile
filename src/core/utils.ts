@@ -9,8 +9,9 @@ export const request = async (method: 'post' | 'get', path: string, data?: any):
 				'Content-Type': 'application/json',
 			},
 			url: 'http://localhost:8080/' + path,
+			withCredentials: true,
 		});
-		return a.data;
+		return a.data.data;
 	} catch (error) {
 		console.log(error);
 		return {};

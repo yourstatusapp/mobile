@@ -4,10 +4,12 @@ import styled from 'styled-components/native';
 
 interface TextProps {
 	style?: TextStyle;
+	weight?: 'medium' | 'semi-bold' | 'bold';
 
 	size?: number;
 	center?: boolean;
 }
+
 export const Text: React.FC<TextProps> = (p) => {
 	const { style, children } = p;
 
@@ -20,9 +22,9 @@ export const Text: React.FC<TextProps> = (p) => {
 
 const TextBody = styled.Text<TextProps>`
 	font-family: 'SF Pro';
-	font-weight: 500;
+	font-weight: 400;
 	font-size: ${({ size }) => size || 16}px;
 	${({ center }) => center && 'text-align: center;'}
 
-	color: white;
+	color: ${({ theme }) => theme.text};
 `;

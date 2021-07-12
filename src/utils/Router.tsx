@@ -15,7 +15,7 @@ export const Router: React.FC = () => {
 	// const theme = useTheme();
 	const loggedIn = usePulse(core.account.state.LOGGED_IN);
 	const ThemeMode = usePulse(core.ui.state.Theme);
-	const barStyle = (ThemeMode + '-content') as StatusBarStyle;
+	const barStyle = ((ThemeMode === 'light' ? 'dark' : 'light') + '-content') as StatusBarStyle;
 
 	return (
 		<RouterContainer>
