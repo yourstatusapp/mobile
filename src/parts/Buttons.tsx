@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { Icon } from './icons/Icon';
+import { Text, TextProps } from './Text';
 
 interface ButtonProps {}
 
@@ -40,3 +41,17 @@ const IconButtonBody = styled(TouchableOpacity)<IconButtonProps>`
 	/* align-self: center; */
 	border-radius: 12px;
 `;
+
+interface TextButtonProps extends Partial<TextProps> {
+	text: string;
+	onPress: () => void;
+}
+
+export const TextButton: React.FC<TextButtonProps> = (p) => {
+	const { onPress, text } = p;
+	return (
+		<TouchableOpacity onPress={onPress}>
+			<Text {...p}>{text}</Text>
+		</TouchableOpacity>
+	);
+};

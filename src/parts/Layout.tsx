@@ -16,6 +16,7 @@ export const Row: React.FC<RowStyleType> = ({ children, style }) => <RowBody sty
 
 const RowBody = styled.View`
 	flex-direction: row;
+	align-items: center;
 `;
 
 export const Fill = styled.View`
