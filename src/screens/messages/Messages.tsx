@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components/native';
 import { request } from '../../core/utils';
-import { TabbarContentContainer, Text } from '../../parts';
+import { Header, TabbarContentContainer, Text } from '../../parts';
 
 interface MessagesProps {}
 
@@ -13,8 +13,7 @@ export const Messages: React.FC<MessagesProps> = (props) => {
 	// };
 	return (
 		<TabbarContentContainer>
-			<Text>messages</Text>
+			<Header title="Messages" />
 		</TabbarContentContainer>
 	);
 };
-

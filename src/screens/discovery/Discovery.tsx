@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TabbarContentContainer, Text } from '../../parts';
+import { Header, TabbarContentContainer, Text } from '../../parts';
 
 interface DiscoveryProps {}
 
@@ -8,7 +8,7 @@ export const Discovery: React.FC<DiscoveryProps> = (props) => {
 
 	return (
 		<TabbarContentContainer>
-			<Text size={20}>Discovery</Text>
+			<Header title="Discovery" />
 		</TabbarContentContainer>
 	);
 };

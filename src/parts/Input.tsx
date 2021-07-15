@@ -13,9 +13,9 @@ interface InputProps extends TextInputProps {
 }
 
 export const Input: React.FC<InputProps> = (p) => {
-	const { placeholderTextColor, placeholder, selectionColor, style } = p;
+	const { style } = p;
 
-	return <InputBody {...p} style={style} placeholderTextColor={placeholderTextColor} placeholder={placeholder} selectionColor={selectionColor} />;
+	return <InputBody {...p} style={style} />;
 };
 
 const InputBody = styled.TextInput<InputProps>`

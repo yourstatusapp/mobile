@@ -5,7 +5,6 @@ import styled, { useTheme } from 'styled-components/native';
 import DeviceInfo from 'react-native-device-info';
 import { useNavigation } from '@react-navigation/core';
 import { TouchableOpacity } from 'react-native';
-import { IconButton } from '../Buttons';
 import { Spacer, Text } from '..';
 import { Icon } from '../icons/Icon';
 
@@ -26,6 +25,7 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	const tabs = [
 		{ name: 'Messages', path: 'messages', icon: 'conversation' },
 		{ name: 'Friends', path: 'friends', icon: 'friends' },
+		// { name: 'other', path: 'other', icon: 'info' },
 		{ name: 'Global', path: 'discovery', icon: 'global' },
 		{ name: 'Account', path: 'account', icon: 'person' },
 	];
@@ -70,5 +70,4 @@ const TabButton = styled(TouchableOpacity)`
 	justify-content: center;
 	align-items: center;
 	width: 60px;
-	/* background-color: red; */
 `;

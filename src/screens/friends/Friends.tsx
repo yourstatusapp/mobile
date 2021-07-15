@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { request } from '../../core/utils';
-import { Fill, Input, Row, Spacer, TabbarContentContainer, Text } from '../../parts';
+import { Fill, Header, Input, Row, Spacer, TabbarContentContainer, Text } from '../../parts';
 import { Avatar } from '../../parts/Avatar';
 import { IconButton } from '../../parts/Buttons';
 
@@ -21,13 +21,13 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 
 	return (
 		<TabbarContentContainer>
-			<Row>
+			<Header title="Friends" />
+			{/* <Row>
 				<Text size={20}>Friends</Text>
 				<Fill />
 				<IconButton name="settings" size={24} color="black" onPress={() => nav.navigate('Settings')} />
-			</Row>
+			</Row> */}
 			<Input placeholder="Search" autoCompleteType="off" autoCorrect={false} />
-			{/* <Text>{JSON.stringify(List)}</Text> */}
 			{List &&
 				List.map((v, i) => (
 					<TouchableOpacity key={i} onPress={() => nav.navigate('Profile', v)}>

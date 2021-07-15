@@ -6,6 +6,7 @@ import styled, { useTheme } from 'styled-components/native';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { TextButton } from '../../parts/Buttons';
 import { SettingsAccount } from './screens/SettingsAccount';
+import { SettingsApp } from './screens/SettingsApp';
 import { SettingsAppearance } from './screens/SettingsAppearance';
 
 const SettingsStack = createStackNavigator();
@@ -13,8 +14,6 @@ const SettingsStack = createStackNavigator();
 interface SettingsProps {}
 
 export const Settings: React.FC<SettingsProps> = (props) => {
-	const {} = props;
-	const nav = useNavigation();
 	const theme = useTheme();
 	const cardStyle = { backgroundColor: theme.background };
 	return (
@@ -22,6 +21,7 @@ export const Settings: React.FC<SettingsProps> = (props) => {
 			<SettingsStack.Screen name="SettingsMain" component={SettingsMain} />
 			<SettingsStack.Screen name="SettingsAccount" component={SettingsAccount} />
 			<SettingsStack.Screen name="SettingsAppearance" component={SettingsAppearance} />
+			<SettingsStack.Screen name="SettingsInfo" component={SettingsApp} />
 		</SettingsStack.Navigator>
 	);
 };
@@ -40,6 +40,7 @@ const SettingsMain: React.FC = () => {
 			<Spacer size={30} />
 			<SettingsButton text="Account" routeName="Account" icon="person" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
+			<SettingsButton text="App Info" routeName="Info" icon="info" />
 		</SettingsBody>
 	);
 };
@@ -60,9 +61,9 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ icon, text, routeName }
 
 	return (
 		<SettingsButtonBody onPress={() => nav.navigate('Settings' + routeName)}>
-			<Text weight="semi-bold">{text}</Text>
+			<Text weight="semi-bold" color="#363636" >{text}</Text>
 			<Fill />
-			<Icon name={icon} size={26} color="black" />
+			<Icon name={icon} size={26} color="#626e72" />
 		</SettingsButtonBody>
 	);
 };

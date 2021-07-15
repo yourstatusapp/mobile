@@ -29,6 +29,7 @@ export const TabbarContentContainer: React.FC = ({ children }) => {
 };
 
 const TabbarContentBody = styled.View`
-	padding: 20px;
+	flex: 1;
+	padding: 0px 20px;
 	padding-top: 50px;
 `;

@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 export interface TextProps {
 	style?: TextStyle;
 	weight?: 'medium' | 'semi-bold' | 'bold';
+	color?: string;
 
 	size?: number;
 	center?: boolean;
@@ -26,5 +27,5 @@ const TextBody = styled.Text<TextProps>`
 	font-size: ${({ size }) => size || 16}px;
 	${({ center }) => center && 'text-align: center;'}
 
-	color: ${({ theme }) => theme.text};
+	color: ${({ theme, color }) => color || theme.text};
 `;
