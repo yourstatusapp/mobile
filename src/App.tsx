@@ -16,8 +16,8 @@ instance.setStorage({
 });
 
 if (__DEV__) {
-	globalThis['AsyncStorage'] = AsyncStorage;
-	globalThis['core'] = core;
+	globalThis.AsyncStorage = AsyncStorage;
+	globalThis.core = core;
 }
 
 export const App: React.FC = () => {

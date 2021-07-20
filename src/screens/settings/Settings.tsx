@@ -1,10 +1,13 @@
+import core from '@core';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
+import { account } from '../../core/modules';
+import { request } from '../../core/utils';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
-import { TextButton } from '../../parts/Buttons';
+import { IconButton, TextButton } from '../../parts/Buttons';
 import { SettingsAccount } from './screens/SettingsAccount';
 import { SettingsApp } from './screens/SettingsApp';
 import { SettingsAppearance } from './screens/SettingsAppearance';
@@ -27,7 +30,15 @@ export const Settings: React.FC<SettingsProps> = (props) => {
 };
 
 const SettingsMain: React.FC = () => {
+	const theme = useTheme();
 	const nav = useNavigation();
+
+	const logout = async () => {
+		// await request('delete', '/auth/revoke/');
+		// nav.navigate('Auth');
+		account.state.ACCOUNT.reset();
+	};
+
 	return (
 		<SettingsBody>
 			<Row>
@@ -35,12 +46,14 @@ const SettingsMain: React.FC = () => {
 					Settings
 				</Text>
 				<Fill />
-				<TextButton size={18} weight="medium" text="close" onPress={() => nav.goBack()} />
+				<TextButton size={18} weight="bold" text="close" onPress={() => nav.goBack()} />
 			</Row>
 			<Spacer size={30} />
 			<SettingsButton text="Account" routeName="Account" icon="person" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
 			<SettingsButton text="App Info" routeName="Info" icon="info" />
+			{/* <IconButton /> */}
+			<TextButton onPress={() => logout()} weight="semi-bold" text="logout" color="#FF4B4B" />
 		</SettingsBody>
 	);
 };
@@ -61,7 +74,9 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ icon, text, routeName }
 
 	return (
 		<SettingsButtonBody onPress={() => nav.navigate('Settings' + routeName)}>
-			<Text weight="semi-bold" color="#363636" >{text}</Text>
+			<Text weight="semi-bold" color="#363636">
+				{text}
+			</Text>
 			<Fill />
 			<Icon name={icon} size={26} color="#626e72" />
 		</SettingsButtonBody>
@@ -71,7 +86,6 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ icon, text, routeName }
 const SettingsButtonBody = styled(TouchableOpacity)`
 	background-color: #f5f5f5;
 	border-radius: 8px;
-	/* padding: 10px; */
 	height: 50px;
 	padding: 0px 10px;
 	align-items: center;

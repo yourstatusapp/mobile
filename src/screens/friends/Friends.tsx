@@ -3,9 +3,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { request } from '../../core/utils';
-import { Fill, Header, Input, Row, Spacer, TabbarContentContainer, Text } from '../../parts';
-import { Avatar } from '../../parts/Avatar';
-import { IconButton } from '../../parts/Buttons';
+import { Avatar, Header, Input, Row, Spacer, TabbarContentContainer, Text, TextButton } from '@parts';
 
 interface FriendsProps {}
 
@@ -14,9 +12,13 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 	const nav = useNavigation();
 
 	const [List, setList] = useState<any>(null);
+	const [PendingList, setPendingList] = useState<any[]>();
 
 	React.useEffect(() => {
-		request('get', 'friends').then((c) => setList(c));
+		request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends').then((c) => {
+			setList(c.data.friends);
+			setPendingList(c.data.incoming_pending);
+		});
 	}, []);
 
 	return (
@@ -28,6 +30,7 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 				<IconButton name="settings" size={24} color="black" onPress={() => nav.navigate('Settings')} />
 			</Row> */}
 			<Input placeholder="Search" autoCompleteType="off" autoCorrect={false} />
+			<TextButton text="Incoming friend requests" onPress={() => nav.navigate('Friendrequests', PendingList)} />
 			{List &&
 				List.map((v, i) => (
 					<TouchableOpacity key={i} onPress={() => nav.navigate('Profile', v)}>

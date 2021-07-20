@@ -4,14 +4,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { Auth } from '../screens/auth/Auth';
 import { Tabs } from './Tabs';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import core from '../core';
 import { StatusBar, StatusBarStyle } from 'react-native';
 import { Profile } from '../screens/profile/Profile';
 import { Settings } from '../screens/settings/Settings';
-import { Text } from '../parts';
 import { Preloader } from './Preloader';
+import { Friendrequests } from '../screens/friendrequests/Friendrequests';
 
 const Stack = createStackNavigator();
 
@@ -38,7 +38,7 @@ export const Router: React.FC = () => {
 			<StatusBar barStyle={barStyle} />
 			<NavigationContainer>
 				<Stack.Navigator
-					initialRouteName={loggedIn ? 'App' : 'auth'}
+					initialRouteName={loggedIn ? 'App' : 'Auth'}
 					screenOptions={{
 						...TransitionPresets.ModalPresentationIOS,
 						headerShown: false,
@@ -50,9 +50,10 @@ export const Router: React.FC = () => {
 					mode="modal"
 					headerMode="float"
 				>
-					{!loggedIn ? <Stack.Screen name="auth" component={Auth} /> : <Stack.Screen name="App" component={Tabs} />}
+					{!loggedIn ? <Stack.Screen name="Auth" component={Auth} /> : <Stack.Screen name="App" component={Tabs} />}
 					<Stack.Screen name="Profile" component={Profile} />
 					<Stack.Screen name="Settings" component={Settings} />
+					<Stack.Screen name="Friendrequests" component={Friendrequests} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</RouterContainer>

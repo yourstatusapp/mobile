@@ -10,7 +10,7 @@ const SpacerBody = styled.View<{ size: number }>`
 `;
 
 interface RowStyleType {
-	style?: StyleProp<ViewStyle>;
+	style?: ViewStyle;
 }
 export const Row: React.FC<RowStyleType> = ({ children, style }) => <RowBody style={style}>{children}</RowBody>;
 

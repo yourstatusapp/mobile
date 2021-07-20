@@ -1,11 +1,9 @@
-import { RouteConfig, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import styled from 'styled-components/native';
-import { Row, Spacer, Text } from '../../parts';
-import { Avatar } from '../../parts/Avatar';
+import { Avatar, Row, Spacer, Text } from '@parts';
 
 interface ProfileProps {
-	// route: ;
+	route: any;
 }
 
 export const Profile: React.FC<ProfileProps> = (props) => {
@@ -15,8 +13,8 @@ export const Profile: React.FC<ProfileProps> = (props) => {
 	return (
 		<ProfileBody>
 			<Row>
-				<Avatar src={profile.avatar} size={80} />
-				<Spacer size={10} />
+				<Avatar src={profile.avatar} size={100} />
+				<Spacer size={20} />
 				<Text weight="bold" size={24}>
 					{profile.username}
 				</Text>

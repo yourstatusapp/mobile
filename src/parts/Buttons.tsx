@@ -44,7 +44,7 @@ const IconButtonBody = styled(TouchableOpacity)<IconButtonProps>`
 
 interface TextButtonProps extends Partial<TextProps> {
 	text: string;
-	onPress: () => void;
+	onPress?: () => void;
 }
 
 export const TextButton: React.FC<TextButtonProps> = (p) => {
@@ -55,3 +55,26 @@ export const TextButton: React.FC<TextButtonProps> = (p) => {
 		</TouchableOpacity>
 	);
 };
+
+interface WideButtonProps {
+	onPress?: () => void;
+	text?: string;
+}
+
+export const WideButton: React.FC<WideButtonProps> = (p) => {
+	return (
+		<WideButtonBody onPress={p.onPress}>
+			<Text weight="semi-bold">{p.text}</Text>
+		</WideButtonBody>
+	);
+};
+
+const WideButtonBody = styled(TouchableOpacity)`
+	width: 100%;
+	background-color: #e5e5e5;
+	border-radius: 12px;
+	justify-content: center;
+	align-items: center;
+
+	height: 55px;
+`;

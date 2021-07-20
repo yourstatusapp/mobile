@@ -1,56 +1,87 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { StyleProp, TextInputProps, TouchableOpacity, View, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import core from '../../core';
+import { Account } from '../../core/types';
 import { request } from '../../core/utils';
 import { Fill, Row, Spacer, Text } from '../../parts';
-import { IconButton } from '../../parts/Buttons';
+import { WideButton } from '../../parts/Buttons';
 import { Input } from '../../parts/Input';
 
 export const Auth: React.FC = () => {
-	const [Email, setEmail] = useState('admin@twanluttik.com');
+	const [Email, setEmail] = useState('twanluttik@gmail.com');
 	const [Password, setPassword] = useState('thebestof2021');
-	const nav = useNavigation();
 
 	const theme = useTheme();
 	const inputStyle = {
-		placeholder: 'password',
-		placeholderTextColor: '#6B6B6B',
-		selectionColor: theme.primary,
-		backgroundColor: theme.navBar,
+		// selectionColor: theme.primary,
+		backgroundColor: '#E6E5E5',
 		color: theme.text,
-		flex: 1,
+		height: 55,
+		width: '100%',
+		paddingHorizontal: 20,
+		borderRadius: 14,
 	};
 
 	const inputOptions: any = {
+		placeholder: 'Password',
 		autoCapitalize: 'none',
 		autoCorrect: false,
 		autoCompleteType: 'off',
 	};
 
-	const Login = async () => {
-		const a = await request('post', 'auth', {
-			email: 'admin@twanluttik.com',
+	const login = async () => {
+		const a = await request<{ account: any; profile: any }>('post', '/auth', {
+			email: 'twanluttik@gmail.com',
 			password: 'thebestof2021',
 		});
-		// @ts-ignore
+
 		core.account.state.ACCOUNT.set(a.data.account);
 		// nav.navigate('messages');
 	};
+
+	const loginWithEmail = async () => {
+		await request('post', '/auth/magic', {
+			email: Email,
+		});
+	};
+
+	const TermsAndServiceStyle: ViewStyle = { flexWrap: 'wrap', justifyContent: 'center' };
 
 	return (
 		<AuthBody>
 			<Spacer size={50 * 2} />
 			<LogoPlaceholder />
-			<Spacer size={50 * 6} />
+			<Spacer size={30 * 6} />
 			<Input {...inputOptions} style={inputStyle} value={Email} onChangeText={(v) => setEmail(v)} placeholder="Email" />
 			<Spacer size={10} />
 			<Row>
 				<Input {...inputOptions} style={inputStyle} value={Password} onChangeText={(v) => setPassword(v)} placeholder="Password" />
 				<Spacer size={10} />
-				<IconButton onPress={() => Login()} name="arrow-big" size={58} color={theme.background} style={{ backgroundColor: theme.primary }} />
+				{/* <IconButton onPress={() => Login()} name="arrow-big" size={58} color={theme.background} style={{ backgroundColor: theme.primary }} /> */}
+			</Row>
+			<Spacer size={20} />
+			<WideButton text="Login" onPress={() => login()} />
+			<Spacer size={10} />
+			<WideButton text="Login with email" onPress={() => loginWithEmail()} />
+			<Spacer size={10} />
+			<Row style={TermsAndServiceStyle}>
+				<Text center color="#9B9B9B" weight="medium">
+					When signing into the app, You agree with the
+				</Text>
+				<Text color={theme.primary} weight="semi-bold">
+					Terms & Service
+				</Text>
+				<Spacer size={4} />
+				<Text color="#9B9B9B" weight="medium">
+					and
+				</Text>
+				<Spacer size={4} />
+				<Text color={theme.primary} weight="semi-bold">
+					Privacy Policy
+				</Text>
 			</Row>
 			<Fill />
 		</AuthBody>
@@ -69,13 +100,23 @@ const LogoPlaceholder = () => {
 	const theme = useTheme();
 	return (
 		<View>
-			<Row>
-				<Text style={{ color: theme.primary }}>Your</Text>
-				<Text>Status</Text>
+			<Row style={{ justifyContent: 'center' }}>
+				<Text size={45} weight="bold" color={theme.primary}>
+					Your
+				</Text>
+				<Spacer size={3} />
+				<Text size={45} weight="bold">
+					Status
+				</Text>
 			</Row>
-			<Row>
-				<Text>Connect with your</Text>
-				<Text style={{ color: theme.primary }}>Friends</Text>
+			<Row style={{ justifyContent: 'center' }}>
+				<Text size={20} weight="medium" color="#8F8F8F">
+					Connect with your
+				</Text>
+				<Spacer size={3} />
+				<Text size={20} weight="bold" color={theme.primary}>
+					Friends
+				</Text>
 			</Row>
 		</View>
 	);
