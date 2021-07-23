@@ -1,26 +1,28 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react';
-import { StyleProp, TextInputProps, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import core from '../../core';
 import { Account } from '../../core/types';
 import { request } from '../../core/utils';
 import { Fill, Row, Spacer, Text } from '../../parts';
-import { WideButton } from '../../parts/Buttons';
+import { IconButton, WideButton } from '../../parts/Buttons';
 import { Input } from '../../parts/Input';
 
 export const Auth: React.FC = () => {
 	const [Email, setEmail] = useState('twanluttik@gmail.com');
 	const [Password, setPassword] = useState('thebestof2021');
-
+	const nav = useNavigation();
 	const theme = useTheme();
 	const inputStyle = {
 		// selectionColor: theme.primary,
 		backgroundColor: '#E6E5E5',
 		color: theme.text,
 		height: 55,
-		width: '100%',
+		maxHeight: 55,
+		flex: 1,
+		// width: '100%',
 		paddingHorizontal: 20,
 		borderRadius: 14,
 	};
@@ -38,8 +40,8 @@ export const Auth: React.FC = () => {
 			password: 'thebestof2021',
 		});
 
-		core.account.state.ACCOUNT.set(a.data.account);
-		// nav.navigate('messages');
+		core.account.state.ACCOUNT.set(a.account);
+		nav.navigate('App');
 	};
 
 	const loginWithEmail = async () => {
@@ -58,14 +60,12 @@ export const Auth: React.FC = () => {
 			<Input {...inputOptions} style={inputStyle} value={Email} onChangeText={(v) => setEmail(v)} placeholder="Email" />
 			<Spacer size={10} />
 			<Row>
-				<Input {...inputOptions} style={inputStyle} value={Password} onChangeText={(v) => setPassword(v)} placeholder="Password" />
+				<Input secureTextEntry {...inputOptions} style={inputStyle} value={Password} onChangeText={(v) => setPassword(v)} placeholder="Password" />
 				<Spacer size={10} />
-				{/* <IconButton onPress={() => Login()} name="arrow-big" size={58} color={theme.background} style={{ backgroundColor: theme.primary }} /> */}
+				<IconButton onPress={() => login()} name="arrow-big" size={26} color={theme.background} style={{ backgroundColor: theme.primary, height: 55, width: 55 }} />
 			</Row>
-			<Spacer size={20} />
-			<WideButton text="Login" onPress={() => login()} />
-			<Spacer size={10} />
-			<WideButton text="Login with email" onPress={() => loginWithEmail()} />
+			<Spacer size={30} />
+			<WideButton text="Magic Link" onPress={() => loginWithEmail()} />
 			<Spacer size={10} />
 			<Row style={TermsAndServiceStyle}>
 				<Text center color="#9B9B9B" weight="medium">
@@ -100,7 +100,7 @@ const LogoPlaceholder = () => {
 	const theme = useTheme();
 	return (
 		<View>
-			<Row style={{ justifyContent: 'center' }}>
+			<Row center>
 				<Text size={45} weight="bold" color={theme.primary}>
 					Your
 				</Text>
@@ -109,7 +109,7 @@ const LogoPlaceholder = () => {
 					Status
 				</Text>
 			</Row>
-			<Row style={{ justifyContent: 'center' }}>
+			<Row center>
 				<Text size={20} weight="medium" color="#8F8F8F">
 					Connect with your
 				</Text>

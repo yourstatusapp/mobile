@@ -13,7 +13,7 @@ const AccountState = {
 const ComputedState = {
 	LOGGED_IN: state<boolean>(() => {
 		return !!AccountState.ACCOUNT.value.email;
-	}).persist('logged_in'),
+	}),
 };
 
 export const account = {

@@ -54,7 +54,7 @@ const CustomTabBarBody = styled.View<{ isIphoneX: boolean }>`
 	padding-bottom: 25px;
 	align-items: center;
 	border-top-width: 1px;
-	border-top-color: #EEEEEE;
+	border-top-color: #eeeeee;
 `;
 
 const TabContainer = styled.View`

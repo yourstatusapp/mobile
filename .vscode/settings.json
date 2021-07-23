@@ -1,0 +1,9 @@
+{
+  "LineCount.excludes": [
+    "**/.vscode/**",
+    "**/node_modules/**",
+    "**/ios/**",
+    "**/android/**",
+    "**yarn.lock**"
+  ]
+}

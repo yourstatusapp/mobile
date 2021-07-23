@@ -16,8 +16,8 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 
 	React.useEffect(() => {
 		request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends').then((c) => {
-			setList(c.data.friends);
-			setPendingList(c.data.incoming_pending);
+			setList(c.friends);
+			setPendingList(c.incoming_pending);
 		});
 	}, []);
 

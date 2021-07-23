@@ -1,13 +1,12 @@
 import core from '@core';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationAction, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { account } from '../../core/modules';
-import { request } from '../../core/utils';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
-import { IconButton, TextButton } from '../../parts/Buttons';
+import { TextButton } from '../../parts/Buttons';
 import { SettingsAccount } from './screens/SettingsAccount';
 import { SettingsApp } from './screens/SettingsApp';
 import { SettingsAppearance } from './screens/SettingsAppearance';
@@ -35,8 +34,10 @@ const SettingsMain: React.FC = () => {
 
 	const logout = async () => {
 		// await request('delete', '/auth/revoke/');
-		// nav.navigate('Auth');
+		// nav.reset({ routes: [{ name: 'Auth' }] });
+		nav.goBack();
 		account.state.ACCOUNT.reset();
+		nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
 	};
 
 	return (

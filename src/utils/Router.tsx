@@ -1,17 +1,14 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Auth } from '../screens/auth/Auth';
-import { Tabs } from './Tabs';
+import { AppStacks } from './Tabs';
 import styled from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import core from '../core';
 import { StatusBar, StatusBarStyle } from 'react-native';
-import { Profile } from '../screens/profile/Profile';
-import { Settings } from '../screens/settings/Settings';
 import { Preloader } from './Preloader';
-import { Friendrequests } from '../screens/friendrequests/Friendrequests';
 
 const Stack = createStackNavigator();
 
@@ -40,20 +37,11 @@ export const Router: React.FC = () => {
 				<Stack.Navigator
 					initialRouteName={loggedIn ? 'App' : 'Auth'}
 					screenOptions={{
-						...TransitionPresets.ModalPresentationIOS,
 						headerShown: false,
-						gestureEnabled: true,
-						gestureResponseDistance: { vertical: 150 },
-						cardOverlayEnabled: true,
 						cardStyle: { backgroundColor: 'white' },
 					}}
-					mode="modal"
-					headerMode="float"
 				>
-					{!loggedIn ? <Stack.Screen name="Auth" component={Auth} /> : <Stack.Screen name="App" component={Tabs} />}
-					<Stack.Screen name="Profile" component={Profile} />
-					<Stack.Screen name="Settings" component={Settings} />
-					<Stack.Screen name="Friendrequests" component={Friendrequests} />
+					{!loggedIn ? <Stack.Screen name="Auth" component={Auth} /> : <Stack.Screen name="App" component={AppStacks} />}
 				</Stack.Navigator>
 			</NavigationContainer>
 		</RouterContainer>
@@ -62,5 +50,4 @@ export const Router: React.FC = () => {
 
 const RouterContainer = styled.View`
 	flex: 1;
-	/* background-color: ${({ theme }) => theme.background}; */
 `;
