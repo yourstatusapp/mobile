@@ -53,8 +53,8 @@ const CustomTabBarBody = styled.View<{ isIphoneX: boolean }>`
 	background-color: ${({ theme }) => theme.navBar};
 	padding-bottom: 25px;
 	align-items: center;
-	border-top-width: 1px;
-	border-top-color: #eeeeee;
+	/* border-top-width: 1px; */
+	/* border-top-color: #eeeeee; */
 `;
 
 const TabContainer = styled.View`

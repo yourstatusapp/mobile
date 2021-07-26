@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { request } from '../../core/utils';
-import { Avatar, Fill, Header, Icon, IconButton, Spacer, TabbarContentContainer, Text } from '../../parts';
+import { Avatar, Fill, Header, IconButton, Spacer, TabbarContentContainer, Text } from '@parts';
 
 interface MessagesProps {}
 
@@ -22,6 +22,7 @@ export const Messages: React.FC<MessagesProps> = () => {
 	return (
 		<TabbarContentContainer>
 			<Header title="Messages" />
+			<Spacer size={20} />
 			{Conversations?.map((v, i) => (
 				<ConversationEntry key={i} {...v} />
 			))}
@@ -31,6 +32,7 @@ export const Messages: React.FC<MessagesProps> = () => {
 
 const ConversationEntry: React.FC = (p: any) => {
 	const nav = useNavigation();
+	const theme = useTheme();
 
 	return (
 		<ConversationEntryBody onPress={() => nav.navigate('conversation', { ...p })}>
@@ -40,7 +42,7 @@ const ConversationEntry: React.FC = (p: any) => {
 				{p.username}
 			</Text>
 			<Fill />
-			<IconButton name="eclipse" color="lightgray" size={20} />
+			<IconButton name="eclipse" color={theme.step3} size={20} />
 		</ConversationEntryBody>
 	);
 };
@@ -48,6 +50,6 @@ const ConversationEntry: React.FC = (p: any) => {
 const ConversationEntryBody = styled(TouchableOpacity)`
 	flex-direction: row;
 	align-items: center;
-	padding: 10px 0px;
+	padding: 6px 0px;
 	width: 100%;
 `;

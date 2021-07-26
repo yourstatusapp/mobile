@@ -24,6 +24,7 @@ export const Profile: React.FC<ProfileProps> = (props) => {
 };
 
 const ProfileBody = styled.View`
+	background-color: ${({ theme }) => theme.background};
 	padding: 20px;
 	flex: 1;
 `;

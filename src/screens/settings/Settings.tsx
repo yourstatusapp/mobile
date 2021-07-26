@@ -1,12 +1,12 @@
-import core from '@core';
-import { NavigationAction, useNavigation } from '@react-navigation/native';
+import { usePulse } from '@pulsejs/react';
+import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
-import { account } from '../../core/modules';
+import { account, ui } from '../../core/modules';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
-import { TextButton } from '../../parts/Buttons';
+import { IconButton, TextButton } from '../../parts/Buttons';
 import { SettingsAccount } from './screens/SettingsAccount';
 import { SettingsApp } from './screens/SettingsApp';
 import { SettingsAppearance } from './screens/SettingsAppearance';
@@ -40,6 +40,12 @@ const SettingsMain: React.FC = () => {
 		nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
 	};
 
+	const currentTheme = usePulse(ui.state.Theme);
+
+	const toggleTheme = () => {
+		ui.state.Theme.set(currentTheme === 'light' ? 'dark' : 'light');
+	};
+
 	return (
 		<SettingsBody>
 			<Row>
@@ -47,14 +53,16 @@ const SettingsMain: React.FC = () => {
 					Settings
 				</Text>
 				<Fill />
+				<IconButton onPress={() => toggleTheme()} name="moon" size={24} color={theme.text} />
+				<Spacer size={10}  />
 				<TextButton size={18} weight="bold" text="close" onPress={() => nav.goBack()} />
 			</Row>
 			<Spacer size={30} />
 			<SettingsButton text="Account" routeName="Account" icon="person" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
 			<SettingsButton text="App Info" routeName="Info" icon="info" />
-			{/* <IconButton /> */}
-			<TextButton onPress={() => logout()} weight="semi-bold" text="logout" color="#FF4B4B" />
+			<Spacer size={50} />
+			<TextButton onPress={() => logout()} weight="bold" size={22} text="Logout" color="#FF4B4B" />
 		</SettingsBody>
 	);
 };
@@ -72,20 +80,22 @@ interface SettingsButtonProps {
 
 const SettingsButton: React.FC<SettingsButtonProps> = ({ icon, text, routeName }) => {
 	const nav = useNavigation();
+	const theme = useTheme();
 
 	return (
 		<SettingsButtonBody onPress={() => nav.navigate('Settings' + routeName)}>
-			<Text weight="semi-bold" color="#363636">
+			<Text weight="semi-bold" color={theme.text}>
 				{text}
 			</Text>
 			<Fill />
-			<Icon name={icon} size={26} color="#626e72" />
+			<Icon name={icon} size={26} color={theme.step3} />
 		</SettingsButtonBody>
 	);
 };
 
 const SettingsButtonBody = styled(TouchableOpacity)`
-	background-color: #f5f5f5;
+	/* background-color: #f5f5f5; */
+	background-color: ${({ theme }) => theme.step1};
 	border-radius: 8px;
 	height: 50px;
 	padding: 0px 10px;

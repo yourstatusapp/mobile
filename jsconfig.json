@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@parts": ["src/parts/index.ts"],
+      "@core": ["src/core/index.ts"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

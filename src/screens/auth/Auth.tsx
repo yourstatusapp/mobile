@@ -4,15 +4,14 @@ import { useState } from 'react';
 import { View, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import core from '../../core';
-import { Account } from '../../core/types';
 import { request } from '../../core/utils';
 import { Fill, Row, Spacer, Text } from '../../parts';
 import { IconButton, WideButton } from '../../parts/Buttons';
 import { Input } from '../../parts/Input';
 
 export const Auth: React.FC = () => {
-	const [Email, setEmail] = useState('twanluttik@gmail.com');
-	const [Password, setPassword] = useState('thebestof2021');
+	const [Email, setEmail] = useState('');
+	const [Password, setPassword] = useState('');
 	const nav = useNavigation();
 	const theme = useTheme();
 	const inputStyle = {
@@ -54,6 +53,9 @@ export const Auth: React.FC = () => {
 
 	return (
 		<AuthBody>
+			<Text center size={12} color="lightgray">
+				version: beta.1
+			</Text>
 			<Spacer size={50 * 2} />
 			<LogoPlaceholder />
 			<Spacer size={30 * 6} />
@@ -65,21 +67,21 @@ export const Auth: React.FC = () => {
 				<IconButton onPress={() => login()} name="arrow-big" size={26} color={theme.background} style={{ backgroundColor: theme.primary, height: 55, width: 55 }} />
 			</Row>
 			<Spacer size={30} />
-			<WideButton text="Magic Link" onPress={() => loginWithEmail()} />
+			<WideButton text="Magic Link" textColor="#606060" onPress={() => loginWithEmail()} />
 			<Spacer size={10} />
 			<Row style={TermsAndServiceStyle}>
-				<Text center color="#9B9B9B" weight="medium">
+				<Text center color="#9B9B9B" weight="medium" size={14}>
 					When signing into the app, You agree with the
 				</Text>
-				<Text color={theme.primary} weight="semi-bold">
+				<Text color={theme.primary} weight="semi-bold" size={14}>
 					Terms & Service
 				</Text>
 				<Spacer size={4} />
-				<Text color="#9B9B9B" weight="medium">
+				<Text color="#9B9B9B" weight="medium" size={14}>
 					and
 				</Text>
 				<Spacer size={4} />
-				<Text color={theme.primary} weight="semi-bold">
+				<Text color={theme.primary} weight="semi-bold" size={14}>
 					Privacy Policy
 				</Text>
 			</Row>

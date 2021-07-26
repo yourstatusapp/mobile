@@ -59,12 +59,15 @@ export const TextButton: React.FC<TextButtonProps> = (p) => {
 interface WideButtonProps {
 	onPress?: () => void;
 	text?: string;
+	textColor?: string;
 }
 
 export const WideButton: React.FC<WideButtonProps> = (p) => {
 	return (
 		<WideButtonBody onPress={p.onPress}>
-			<Text weight="semi-bold">{p.text}</Text>
+			<Text weight="semi-bold" color={p.textColor}>
+				{p.text}
+			</Text>
 		</WideButtonBody>
 	);
 };

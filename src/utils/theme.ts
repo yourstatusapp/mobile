@@ -1,6 +1,8 @@
 export interface InternalTheme extends InteralThemeOther {
 	background?: string;
-	darker?: string;
+	step1?: string;
+	step2?: string;
+	step3?: string;
 	navBar?: string;
 	navBarFade?: string;
 	text?: string;
@@ -19,7 +21,10 @@ const Other = {
 export const InternalThemes: { [k in Themes]: InternalTheme } = {
 	light: {
 		...Other,
-		background: 'white',
+		background: '#ffffff',
+		step1: '#E9E9E9',
+		step2: '#E1E1E1',
+		step3: '#D4D4D4',
 		navBar: '#F8F8F8',
 		navBarFade: '#D7D7D7',
 		text: 'black',
@@ -27,6 +32,9 @@ export const InternalThemes: { [k in Themes]: InternalTheme } = {
 	dark: {
 		...Other,
 		background: '#171717',
+		step1: '#1F1F1F',
+		step2: '#2A2A2A',
+		step3: '#333333',
 		navBar: '#1E1E1E',
 		navBarFade: '#333333',
 		text: 'white',
