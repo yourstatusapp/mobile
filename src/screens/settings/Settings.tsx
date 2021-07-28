@@ -5,7 +5,8 @@ import * as React from 'react';
 import { TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { account, ui } from '../../core/modules';
-import { Fill, Icon, Row, Spacer, Text } from '../../parts';
+import { request } from '../../core/utils';
+import { Fill, Row, Spacer, Text } from '../../parts';
 import { IconButton, TextButton } from '../../parts/Buttons';
 import { SettingsAccount } from './screens/SettingsAccount';
 import { SettingsApp } from './screens/SettingsApp';
@@ -13,9 +14,7 @@ import { SettingsAppearance } from './screens/SettingsAppearance';
 
 const SettingsStack = createStackNavigator();
 
-interface SettingsProps {}
-
-export const Settings: React.FC<SettingsProps> = (props) => {
+export const Settings: React.FC = () => {
 	const theme = useTheme();
 	const cardStyle = { backgroundColor: theme.background };
 	return (
@@ -33,7 +32,7 @@ const SettingsMain: React.FC = () => {
 	const nav = useNavigation();
 
 	const logout = async () => {
-		// await request('delete', '/auth/revoke/');
+		await request('delete', '/auth/revoke/');
 		// nav.reset({ routes: [{ name: 'Auth' }] });
 		nav.goBack();
 		account.state.ACCOUNT.reset();
@@ -54,7 +53,7 @@ const SettingsMain: React.FC = () => {
 				</Text>
 				<Fill />
 				<IconButton onPress={() => toggleTheme()} name="moon" size={24} color={theme.text} />
-				<Spacer size={10}  />
+				<Spacer size={10} />
 				<TextButton size={18} weight="bold" text="close" onPress={() => nav.goBack()} />
 			</Row>
 			<Spacer size={30} />
@@ -62,7 +61,7 @@ const SettingsMain: React.FC = () => {
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
 			<SettingsButton text="App Info" routeName="Info" icon="info" />
 			<Spacer size={50} />
-			<TextButton onPress={() => logout()} weight="bold" size={22} text="Logout" color="#FF4B4B" />
+			<TextButton onPress={() => logout()} weight="semi-bold" size={18} text="Logout" color="#FF4B4B" />
 		</SettingsBody>
 	);
 };
@@ -78,27 +77,26 @@ interface SettingsButtonProps {
 	routeName: string;
 }
 
-const SettingsButton: React.FC<SettingsButtonProps> = ({ icon, text, routeName }) => {
+const SettingsButton: React.FC<SettingsButtonProps> = ({ text, routeName }) => {
 	const nav = useNavigation();
 	const theme = useTheme();
 
 	return (
 		<SettingsButtonBody onPress={() => nav.navigate('Settings' + routeName)}>
-			<Text weight="semi-bold" color={theme.text}>
+			<Text weight="medium" color={theme.text}>
 				{text}
 			</Text>
-			<Fill />
-			<Icon name={icon} size={26} color={theme.step3} />
+			{/* <Fill /> */}
+			{/* <Icon name={icon} size={26} color={theme.step4} /> */}
 		</SettingsButtonBody>
 	);
 };
 
 const SettingsButtonBody = styled(TouchableOpacity)`
-	/* background-color: #f5f5f5; */
 	background-color: ${({ theme }) => theme.step1};
 	border-radius: 8px;
 	height: 50px;
-	padding: 0px 10px;
+	padding: 0px 15px;
 	align-items: center;
 	margin-bottom: 10px;
 	flex-direction: row;

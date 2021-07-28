@@ -5,7 +5,7 @@ import { View, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import core from '../../core';
 import { request } from '../../core/utils';
-import { Fill, Row, Spacer, Text } from '../../parts';
+import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, WideButton } from '../../parts/Buttons';
 import { Input } from '../../parts/Input';
 
@@ -69,10 +69,20 @@ export const Auth: React.FC = () => {
 			<Row>
 				<Input secureTextEntry {...inputOptions} style={inputStyle} value={Password} onChangeText={(v) => setPassword(v)} placeholder="Password" />
 				<Spacer size={10} />
-				<IconButton onPress={() => login()} name="arrow-big" size={26} color={theme.background} style={{ backgroundColor: theme.primary, height: 55, width: 55 }} />
+				<IconButton
+					onPress={() => login()}
+					name="arrow-big"
+					size={26}
+					color={theme.background}
+					style={{ backgroundColor: theme.primary, height: 55, width: 55, borderRadius: 12 }}
+				/>
 			</Row>
-			<Spacer size={30} />
+			<Spacer size={20} />
+			<Divider />
+			<Spacer size={20} />
 			<WideButton text="Magic Link" textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
+			<Spacer size={10} />
+			<WideButton text="Register" textColor={theme.text} backgroundColor={theme.step2} onPress={() => nav.navigate('Register')} />
 			<Spacer size={10} />
 			<Row style={TermsAndServiceStyle}>
 				<Text center color="#9B9B9B" weight="medium" size={14}>
@@ -101,6 +111,14 @@ const AuthBody = styled.View`
 	padding-top: 50px;
 	background-color: ${({ theme }) => theme.background};
 	color: ${({ theme }) => theme.text};
+`;
+
+const Divider = styled.View`
+	width: 80%;
+	height: 7px;
+	border-radius: 10px;
+	margin: 0 auto;
+	background-color: ${({ theme }) => theme.step1};
 `;
 
 const LogoPlaceholder = () => {

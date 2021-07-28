@@ -4,15 +4,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Auth } from '../screens/auth/Auth';
 import { AppStacks } from './Tabs';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import core from '../core';
 import { StatusBar, StatusBarStyle } from 'react-native';
 import { Preloader } from './Preloader';
+import { Register } from '../screens/register/Register';
 
 const Stack = createStackNavigator();
 
 export const Router: React.FC = () => {
+	const theme = useTheme();
 	const loggedIn = usePulse(core.account.state.LOGGED_IN);
 	const ThemeMode = usePulse(core.ui.state.Theme);
 	const barStyle = ((ThemeMode === 'light' ? 'dark' : 'light') + '-content') as StatusBarStyle;
@@ -22,8 +24,9 @@ export const Router: React.FC = () => {
 	const [PreloaderReady, setPreloaderReady] = React.useState(false);
 
 	// Checking for logged_in
-	core.account.state.LOGGED_IN.onNext(() => {
-		console.log('account is loaded');
+	core.account.state.LOGGED_IN.onNext((v) => {
+		if (v) console.log('account is loaded');
+
 		setLoaded(true);
 	});
 
@@ -38,23 +41,39 @@ export const Router: React.FC = () => {
 	}
 
 	return (
-		<RouterContainer>
+		<>
 			<StatusBar barStyle={barStyle} />
-			<NavigationContainer>
+			<NavigationContainer
+				theme={{
+					dark: false,
+					colors: {
+						background: theme.background,
+						primary: theme.background,
+						card: theme.background,
+						text: theme.background,
+						border: theme.background,
+						notification: theme.background,
+					},
+				}}
+			>
 				<Stack.Navigator
 					initialRouteName={loggedIn ? 'App' : 'Auth'}
 					screenOptions={{
 						headerShown: false,
-						cardStyle: { backgroundColor: 'white' },
+						headerTitleStyle: { backgroundColor: theme.background },
+						cardStyle: { backgroundColor: theme.background },
 					}}
 				>
-					{!loggedIn ? <Stack.Screen name="Auth" component={Auth} /> : <Stack.Screen name="App" component={AppStacks} />}
+					{!loggedIn ? (
+						<>
+							<Stack.Screen name="Auth" component={Auth} />
+							<Stack.Screen name="Register" component={Register} />
+						</>
+					) : (
+						<Stack.Screen name="App" component={AppStacks} />
+					)}
 				</Stack.Navigator>
 			</NavigationContainer>
-		</RouterContainer>
+		</>
 	);
 };
-
-const RouterContainer = styled.View`
-	flex: 1;
-`;

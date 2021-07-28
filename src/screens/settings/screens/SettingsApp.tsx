@@ -5,6 +5,8 @@ import { baseURL } from '../../../core/utils';
 import { Text } from '../../../parts';
 import { TextButton } from '../../../parts/Buttons';
 
+import RNPickerSelect from 'react-native-picker-select';
+
 interface SettingsAppProps {}
 
 export const SettingsApp: React.FC<SettingsAppProps> = (props) => {
@@ -18,8 +20,15 @@ export const SettingsApp: React.FC<SettingsAppProps> = (props) => {
 	return (
 		<SettingsAppBody>
 			<Text>API Connection : {api}</Text>
-			<TextButton text="production" onPress={() => selectApi('https://api.yourstatus.app/')} />
-			<TextButton text="development" onPress={() => selectApi('http://localhost:8080/')} />
+
+			<RNPickerSelect
+				pickerProps={{ dropdownIconColor: 'red' }}
+				onValueChange={(value) => selectApi(value)}
+				items={[
+					{ label: 'Production', value: 'https://api.yourstatus.app', color: '#58a355' },
+					{ label: 'Development', value: 'http://localhost:8080', color: '#FF8282' },
+				]}
+			/>
 		</SettingsAppBody>
 	);
 };
