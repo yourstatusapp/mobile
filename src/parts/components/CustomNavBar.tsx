@@ -1,18 +1,16 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import DeviceInfo from 'react-native-device-info';
-import { useNavigation } from '@react-navigation/core';
+import { hasNotch } from 'react-native-device-info';
+import { Text, Icon, Spacer } from '../../parts';
 import { TouchableOpacity } from 'react-native';
-import { Spacer, Text } from '..';
-import { Icon } from '../icons/Icon';
 
 interface CustomTabBarProps extends BottomTabBarProps {}
 
 export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	const { state } = props;
-	const isIphoneX = DeviceInfo.hasNotch();
+	const isIphoneX = hasNotch();
 	const theme = useTheme();
 	const nav = useNavigation();
 

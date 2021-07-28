@@ -1,6 +1,8 @@
+import { Spacer, Text } from '@parts';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import * as React from 'react';
+import { View } from 'react-native';
 import { useTheme } from 'styled-components';
 import { CustomNavBar } from '../parts/components/CustomNavBar';
 import { Account } from '../screens/account/Account';
@@ -16,6 +18,12 @@ const Tab = createBottomTabNavigator();
 const AppStack = createStackNavigator();
 
 export const AppStacks: React.FC = () => {
+	// return (
+	// 	<View style={{ flex: 1 }}>
+	// 		<Spacer size={43} />
+	// 		<Text color="black">dsadsa</Text>
+	// 	</View>
+	// );
 	return (
 		<AppStack.Navigator
 			initialRouteName="AppTabs"

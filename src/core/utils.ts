@@ -1,15 +1,21 @@
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
-export const baseURL = state('http://localhost:8080').persist('baseURL');
+export const baseURL = state(process.env.NODE_ENV === 'production' ? 'https://api.yourstatus.app' : 'http://localhost:8080').persist('baseURL');
 
-export const request = async <T extends any>(method: 'post' | 'get' | 'delete', path: string, data?: any): Promise<T> => {
+interface RequestOptions {
+	headers?: any;
+	data?: any;
+}
+
+export const request = async <T extends any>(method: 'post' | 'get' | 'delete' | 'patch', path: string, x?: RequestOptions): Promise<T> => {
 	try {
 		const a: AxiosResponse<{ data: T }> = await axios({
 			method,
-			data,
+			data: x?.data,
 			headers: {
 				'Content-Type': 'application/json',
+				...x?.headers,
 			},
 			url: baseURL.value + path,
 			withCredentials: true,

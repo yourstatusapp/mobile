@@ -36,10 +36,10 @@ const IconButtonBody = styled(TouchableOpacity)<IconButtonProps>`
 	padding: 5px;
 	justify-content: center;
 	align-items: center;
-	height: ${({ size }) => size || 1 * 4}px;
-	width: ${({ size }) => size || 1 * 4}px;
+	height: ${({ size }) => (size || 1) * 2}px;
+	width: ${({ size }) => (size || 1) * 2}px;
 	/* align-self: center; */
-	border-radius: 12px;
+	border-radius: ${({ size }) => (size || 1) * 2}px;
 `;
 
 interface TextButtonProps extends Partial<TextProps> {
@@ -60,11 +60,12 @@ interface WideButtonProps {
 	onPress?: () => void;
 	text?: string;
 	textColor?: string;
+	backgroundColor?: string;
 }
 
 export const WideButton: React.FC<WideButtonProps> = (p) => {
 	return (
-		<WideButtonBody onPress={p.onPress}>
+		<WideButtonBody {...p} onPress={p.onPress}>
 			<Text weight="semi-bold" color={p.textColor}>
 				{p.text}
 			</Text>
@@ -72,9 +73,9 @@ export const WideButton: React.FC<WideButtonProps> = (p) => {
 	);
 };
 
-const WideButtonBody = styled(TouchableOpacity)`
+const WideButtonBody = styled(TouchableOpacity)<WideButtonProps>`
 	width: 100%;
-	background-color: #e5e5e5;
+	background-color: ${({ theme, backgroundColor }) => backgroundColor || theme.step2};
 	border-radius: 12px;
 	justify-content: center;
 	align-items: center;

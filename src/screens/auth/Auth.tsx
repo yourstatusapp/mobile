@@ -15,13 +15,11 @@ export const Auth: React.FC = () => {
 	const nav = useNavigation();
 	const theme = useTheme();
 	const inputStyle = {
-		// selectionColor: theme.primary,
-		backgroundColor: '#E6E5E5',
+		backgroundColor: theme.step1,
 		color: theme.text,
 		height: 55,
 		maxHeight: 55,
 		flex: 1,
-		// width: '100%',
 		paddingHorizontal: 20,
 		borderRadius: 14,
 	};
@@ -29,23 +27,30 @@ export const Auth: React.FC = () => {
 	const inputOptions: any = {
 		placeholder: 'Password',
 		autoCapitalize: 'none',
+		placeholderTextColor: theme.step4,
 		autoCorrect: false,
 		autoCompleteType: 'off',
 	};
 
 	const login = async () => {
 		const a = await request<{ account: any; profile: any }>('post', '/auth', {
-			email: 'twanluttik@gmail.com',
-			password: 'thebestof2021',
+			data: {
+				email: Email,
+				password: Password,
+			},
 		});
 
 		core.account.state.ACCOUNT.set(a.account);
+		core.profile.state.PROFILE.set(a.profile);
+		// core.profile.collection.collect([a.profile], 'mine');
 		nav.navigate('App');
 	};
 
 	const loginWithEmail = async () => {
 		await request('post', '/auth/magic', {
-			email: Email,
+			data: {
+				email: Email,
+			},
 		});
 	};
 
@@ -67,7 +72,7 @@ export const Auth: React.FC = () => {
 				<IconButton onPress={() => login()} name="arrow-big" size={26} color={theme.background} style={{ backgroundColor: theme.primary, height: 55, width: 55 }} />
 			</Row>
 			<Spacer size={30} />
-			<WideButton text="Magic Link" textColor="#606060" onPress={() => loginWithEmail()} />
+			<WideButton text="Magic Link" textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
 			<Spacer size={10} />
 			<Row style={TermsAndServiceStyle}>
 				<Text center color="#9B9B9B" weight="medium" size={14}>

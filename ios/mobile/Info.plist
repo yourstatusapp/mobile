@@ -56,6 +56,12 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>using your godam pictures</string>
+	<key>NSCameraUsageDescription</key>
+	<string>usign your godam pcitures 2</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>usign your godam pcitures 4</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SF-Pro.ttf</string>

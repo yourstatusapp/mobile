@@ -10,14 +10,28 @@ interface AvatarProps {
 
 export const Avatar: React.FC<AvatarProps> = (props) => {
 	const { src } = props;
+	
+	if (!src) {
+		return <Circle {...props} />;
+	}
 
-	return <Image source={{ uri: src || '' }} {...props} />;
+	return <Image source={{ uri: src }} {...props} />;
 };
 
 const Image = styled(FastImage)<AvatarProps>`
 	${({ size }) => `
 	height: ${size || 50}px;
 	width: ${size || 50}px;
+	border-radius: ${size || 50}px;
 	`}
 	border-radius: 100px;
+`;
+
+const Circle = styled.View<AvatarProps>`
+	${({ size }) => `
+	height: ${size || 50}px;
+	width: ${size || 50}px;
+	border-radius: ${size || 50}px;
+	`}
+	background-color: ${({ theme }) => theme.step2};
 `;
