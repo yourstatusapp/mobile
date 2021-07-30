@@ -8,6 +8,10 @@ export const useInitialURL = () => {
 	const [processing, setProcessing] = useState(true);
 
 	useMount(() => {
+		Linking.addEventListener('url', ({ url }) => {
+			setUrl(url);
+		});
+
 		const getUrlAsync = async () => {
 			// Get the deep link used to open the app
 			const initialUrl = await Linking.getInitialURL();
