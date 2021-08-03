@@ -19,6 +19,7 @@ interface IconButtonProps {
 
 	name?: string;
 	size?: number;
+	padding?: number;
 	color?: string;
 
 	style?: StyleProp<ViewStyle>;
@@ -33,13 +34,12 @@ export const IconButton: React.FC<IconButtonProps> = (p) => {
 };
 
 const IconButtonBody = styled(TouchableOpacity)<IconButtonProps>`
-	padding: 5px;
 	justify-content: center;
 	align-items: center;
-	height: ${({ size }) => (size || 1) * 2}px;
-	width: ${({ size }) => (size || 1) * 2}px;
-	/* align-self: center; */
-	border-radius: ${({ size }) => (size || 1) * 2}px;
+	${({ padding }) => (padding ? 'padding: ' + padding + 'px;' : '')};
+	height: ${({ size }) => size || 20}px;
+	width: ${({ size }) => size || 20}px;
+	border-radius: ${({ size }) => size || 20}px;
 `;
 
 interface TextButtonProps extends Partial<TextProps> {

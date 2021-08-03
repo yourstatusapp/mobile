@@ -1,8 +1,6 @@
-import { Spacer, Text } from '@parts';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import * as React from 'react';
-import { View } from 'react-native';
 import { useTheme } from 'styled-components';
 import { CustomNavBar } from '../parts/components/CustomNavBar';
 import { Account } from '../screens/account/Account';
@@ -13,11 +11,13 @@ import { Friends } from '../screens/friends/Friends';
 import { Messages } from '../screens/messages/Messages';
 import { Profile } from '../screens/profile/Profile';
 import { Settings } from '../screens/settings/Settings';
+import { useLinking } from './Linking';
 
 const Tab = createBottomTabNavigator();
-const AppStack = createStackNavigator();
+export const AppStack = createStackNavigator();
 
 export const AppStacks: React.FC = () => {
+	useLinking;
 	// return (
 	// 	<View style={{ flex: 1 }}>
 	// 		<Spacer size={43} />
@@ -50,14 +50,9 @@ export const Tabs: React.FC = () => {
 	const theme = useTheme();
 	const sceneContainerStyle = { backgroundColor: theme.background };
 
+
 	return (
-		<Tab.Navigator
-			initialRouteName="friends"
-			sceneContainerStyle={sceneContainerStyle}
-			tabBar={(props) => <CustomNavBar {...props} />}
-			backBehavior={'history'}
-			detachInactiveScreens
-		>
+		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} detachInactiveScreens>
 			<Tab.Screen name="messages" component={Messages} />
 			<Tab.Screen name="friends" component={Friends} />
 			<Tab.Screen name="discovery" component={Discovery} />

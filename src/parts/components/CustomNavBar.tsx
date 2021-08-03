@@ -20,6 +20,11 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 		setCurrent(state.index);
 	}, [state]);
 
+	useEffect(() => {
+		// if
+		console.log(props.state);
+	}, [props]);
+
 	const tabs = [
 		{ name: 'Messages', path: 'messages', icon: 'conversation' },
 		{ name: 'Friends', path: 'friends', icon: 'friends' },
@@ -29,7 +34,7 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	];
 
 	return (
-		<CustomTabBarBody isIphoneX={isIphoneX}>
+		<CustomTabBarBody isIphoneX={isIphoneX} tabIndex={props.state.index}>
 			<TabContainer>
 				{tabs.map((v, i) => (
 					<TabButton key={i} onPress={() => nav.navigate(v.path)} activeOpacity={0.5}>
@@ -45,10 +50,12 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	);
 };
 
-const CustomTabBarBody = styled.View<{ isIphoneX: boolean }>`
+const CustomTabBarBody = styled.View<{ isIphoneX: boolean; tabIndex: boolean }>`
 	height: ${(p) => (p.isIphoneX ? 80 : 60)}px;
 	padding: 0px 20px;
 	background-color: ${({ theme }) => theme.navBar};
+	display: ${({ tabIndex }) => (tabIndex === 4 ? 'none' : 'flex')};
+
 	padding-bottom: 25px;
 	align-items: center;
 	/* border-top-width: 1px; */

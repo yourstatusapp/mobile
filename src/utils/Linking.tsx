@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Linking } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Linking } from 'react-native';
+import { request } from '../core/utils';
 
 const useMount = (func: () => void) => useEffect(() => func());
 
@@ -27,4 +29,29 @@ export const useInitialURL = () => {
 	});
 
 	return { url, processing };
+};
+
+export const useLinking = () => {
+	// TODO: Cannot use this here
+	const { processing, url } = useInitialURL();
+	const nav = useNavigation();
+
+	const magicAuth = async (code: string) => {
+		const a = await request('post', '/auth/magic/verify?code=' + code);
+	};
+
+	React.useEffect(() => {
+		if (url) {
+			Alert.alert(url);
+		}
+
+		if (url?.includes('/verify')) {
+			nav.navigate('Verify');
+		}
+
+		if (url?.includes('/magic')) {
+			magicAuth(url.split('magic?code=')[1]);
+		}
+		// console.log(url, processing);
+	}, [url, processing, nav]);
 };

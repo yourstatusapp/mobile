@@ -19,7 +19,6 @@ export const Router: React.FC = () => {
 	const theme = useTheme();
 	const loggedIn = usePulse(core.account.state.LOGGED_IN);
 	const ThemeMode = usePulse(core.ui.state.Theme);
-	const nav = useNavigation();
 
 	const barStyle = ((ThemeMode === 'light' ? 'dark' : 'light') + '-content') as StatusBarStyle;
 
@@ -39,16 +38,18 @@ export const Router: React.FC = () => {
 		setRouterLoaded(true);
 	}, []);
 
-	const { processing, url } = useInitialURL();
+	// TODO: Cannot use this here
+	// const { processing, url } = useInitialURL();
+	// const nav = useNavigation();
 
-	React.useEffect(() => {
-		if (url) Alert.alert(url);
+	// React.useEffect(() => {
+	// 	if (url) Alert.alert(url);
 
-		if (url?.includes('/verify')) {
-			nav.navigate('Verify');
-		}
-		// console.log(url, processing);
-	}, [url, processing, nav]);
+	// 	if (url?.includes('/verify')) {
+	// 		nav.navigate('Verify');
+	// 	}
+	// 	// console.log(url, processing);
+	// }, [url, processing, nav]);
 
 	// Wait for the preloader and logged_in compute state
 	if (RouterLoaded === false ?? PreloaderReady === false ?? Loaded === false) {
@@ -65,6 +66,7 @@ export const Router: React.FC = () => {
 						headerShown: false,
 						headerTitleStyle: { backgroundColor: theme.background },
 						cardStyle: { backgroundColor: theme.background },
+						cardOverlayEnabled: true,
 					}}
 				>
 					{!loggedIn ? (

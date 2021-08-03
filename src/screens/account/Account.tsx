@@ -46,7 +46,7 @@ export const Account: React.FC<AccountProps> = (props) => {
 
 			<ImageSec>
 				<Avatar src={`https://cdn.yourstatus.app/profile/${acc.id}/${profile.avatar}` || ''} size={120} />
-				<ImageIconBtn name="pencil" size={18} color={theme.text} onPress={() => selectImage()} />
+				<ImageIconBtn name="pencil" size={17} color={theme.text} onPress={() => selectImage()} />
 			</ImageSec>
 		</TabbarContentContainer>
 	);

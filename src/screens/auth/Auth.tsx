@@ -8,6 +8,7 @@ import { request } from '../../core/utils';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, WideButton } from '../../parts/Buttons';
 import { Input } from '../../parts/Input';
+import { useLinking } from '../../utils/Linking';
 
 export const Auth: React.FC = () => {
 	const [Email, setEmail] = useState('');
@@ -55,6 +56,8 @@ export const Auth: React.FC = () => {
 	};
 
 	const TermsAndServiceStyle: ViewStyle = { flexWrap: 'wrap', justifyContent: 'center' };
+
+	useLinking();
 
 	return (
 		<AuthBody>

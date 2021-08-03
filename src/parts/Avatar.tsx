@@ -10,7 +10,7 @@ interface AvatarProps {
 
 export const Avatar: React.FC<AvatarProps> = (props) => {
 	const { src } = props;
-	
+
 	if (!src) {
 		return <Circle {...props} />;
 	}
@@ -25,6 +25,7 @@ const Image = styled(FastImage)<AvatarProps>`
 	border-radius: ${size || 50}px;
 	`}
 	border-radius: 100px;
+	background-color: ${({ theme }) => theme.step2};
 `;
 
 const Circle = styled.View<AvatarProps>`
