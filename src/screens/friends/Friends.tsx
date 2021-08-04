@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { request } from '../../core/utils';
-import { Avatar, Header, Input, Row, Spacer, TabbarContentContainer, Text, TextButton } from '@parts';
+import { Avatar, Header, Row, Spacer, TabbarContentContainer, Text } from '@parts';
 
 interface FriendsProps {}
 
@@ -29,13 +29,13 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 				<Fill />
 				<IconButton name="settings" size={24} color="black" onPress={() => nav.navigate('Settings')} />
 			</Row> */}
-			<Input placeholder="Search" autoCompleteType="off" autoCorrect={false} />
-			<TextButton text="Incoming friend requests" onPress={() => nav.navigate('Friendrequests', PendingList)} />
+			{/* <Input placeholder="Search" autoCompleteType="off" autoCorrect={false} /> */}
+			{/* <TextButton text="Incoming friend requests" onPress={() => nav.navigate('Friendrequests', PendingList)} /> */}
 			{List &&
 				List.map((v, i) => (
 					<TouchableOpacity key={i} onPress={() => nav.navigate('Profile', v)}>
 						<Row style={{ paddingBottom: 15 }}>
-							<Avatar src={v.avatar} />
+							<Avatar src={`https://cdn.yourstatus.app/profile/${v.owner}/${v.avatar}`} />
 							<Spacer size={10} />
 							<Text weight="bold">{v.username}</Text>
 						</Row>

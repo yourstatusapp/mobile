@@ -13,7 +13,7 @@ export const Profile: React.FC<ProfileProps> = (props) => {
 	return (
 		<ProfileBody>
 			<Row>
-				<Avatar src={profile.avatar} size={100} />
+				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.owner}/${route.params.avatar}`} size={100} />
 				<Spacer size={20} />
 				<Text weight="bold" size={24}>
 					{profile.username}

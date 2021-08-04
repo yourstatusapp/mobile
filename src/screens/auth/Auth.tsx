@@ -57,6 +57,7 @@ export const Auth: React.FC = () => {
 
 	const TermsAndServiceStyle: ViewStyle = { flexWrap: 'wrap', justifyContent: 'center' };
 
+	// initial call for linking
 	useLinking();
 
 	return (

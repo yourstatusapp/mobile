@@ -34,13 +34,19 @@ export const Fill = styled.View`
 	flex-grow: 1;
 `;
 
-export const TabbarContentContainer: React.FC = ({ children }) => {
-	return <TabbarContentBody>{children}</TabbarContentBody>;
+interface TabbarContentContainerConfig {
+	noSidePadding?: boolean;
+}
+
+export const TabbarContentContainer: React.FC<TabbarContentContainerConfig> = (p) => {
+	const { children } = p;
+
+	return <TabbarContentBody {...p}>{children}</TabbarContentBody>;
 };
 
-const TabbarContentBody = styled.View`
+const TabbarContentBody = styled.View<TabbarContentContainerConfig>`
 	background-color: ${({ theme }) => theme.background};
 	flex: 1;
-	padding: 0px 20px;
-	padding-top: 50px;
+	padding: 0px ${({ noSidePadding }) => (noSidePadding ? 0 : 20)}px;
+	padding-top: 45px;
 `;

@@ -52,7 +52,7 @@ const SettingsMain: React.FC = () => {
 					Settings
 				</Text>
 				<Fill />
-				<IconButton onPress={() => toggleTheme()} name="moon" size={20} color={theme.textFade} />
+				<IconButton onPress={() => toggleTheme()} name="moon" size={33} iconSize={18} color={theme.textFade} />
 				<Spacer size={15} />
 				<TextButton size={18} weight="bold" text="close" onPress={() => nav.goBack()} />
 			</Row>

@@ -1,17 +1,17 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Auth } from '../screens/auth/Auth';
 import { AppStacks } from './Tabs';
-import styled, { useTheme } from 'styled-components/native';
+import { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import core from '../core';
-import { Alert, StatusBar, StatusBarStyle } from 'react-native';
+import { StatusBar, StatusBarStyle } from 'react-native';
 import { Preloader } from './Preloader';
 import { Register } from '../screens/register/Register';
 import { Verify } from '../screens/verify/Verify';
-import { useInitialURL } from './Linking';
+import { Magic } from '../screens/magic/Magic';
 
 const Stack = createStackNavigator();
 
@@ -38,19 +38,6 @@ export const Router: React.FC = () => {
 		setRouterLoaded(true);
 	}, []);
 
-	// TODO: Cannot use this here
-	// const { processing, url } = useInitialURL();
-	// const nav = useNavigation();
-
-	// React.useEffect(() => {
-	// 	if (url) Alert.alert(url);
-
-	// 	if (url?.includes('/verify')) {
-	// 		nav.navigate('Verify');
-	// 	}
-	// 	// console.log(url, processing);
-	// }, [url, processing, nav]);
-
 	// Wait for the preloader and logged_in compute state
 	if (RouterLoaded === false ?? PreloaderReady === false ?? Loaded === false) {
 		return <Preloader loaded={() => setPreloaderReady(true)} />;
@@ -74,6 +61,7 @@ export const Router: React.FC = () => {
 							<Stack.Screen name="Auth" component={Auth} />
 							<Stack.Screen name="Register" component={Register} />
 							<Stack.Screen name="Verify" component={Verify} />
+							<Stack.Screen name="Magic" component={Magic} />
 						</>
 					) : (
 						<Stack.Screen name="App" component={AppStacks} />

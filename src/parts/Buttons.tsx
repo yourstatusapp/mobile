@@ -19,8 +19,11 @@ interface IconButtonProps {
 
 	name?: string;
 	size?: number;
-	padding?: number;
+	iconSize?: number;
 	color?: string;
+	backgroundColor?: string;
+	noPadding?: boolean;
+	noBackground?: boolean;
 
 	style?: StyleProp<ViewStyle>;
 }
@@ -28,7 +31,7 @@ interface IconButtonProps {
 export const IconButton: React.FC<IconButtonProps> = (p) => {
 	return (
 		<IconButtonBody {...p} onPress={p.onPress}>
-			<Icon name={p.name || ''} color={p.color} size={p.size || 20} />
+			<Icon name={p.name || ''} color={p.color} size={p.iconSize || 20} />
 		</IconButtonBody>
 	);
 };
@@ -36,10 +39,13 @@ export const IconButton: React.FC<IconButtonProps> = (p) => {
 const IconButtonBody = styled(TouchableOpacity)<IconButtonProps>`
 	justify-content: center;
 	align-items: center;
-	${({ padding }) => (padding ? 'padding: ' + padding + 'px;' : '')};
-	height: ${({ size }) => size || 20}px;
-	width: ${({ size }) => size || 20}px;
-	border-radius: ${({ size }) => size || 20}px;
+
+	${({ backgroundColor, theme, size, noPadding, iconSize, noBackground }) => `
+		background-color: ${noBackground ? 'transparent' : backgroundColor || theme.step1};
+		height: ${noPadding ? iconSize : size || 20}px;
+		width: ${noPadding ? iconSize : size || 20}px;
+		border-radius: ${size || 30};
+	`}
 `;
 
 interface TextButtonProps extends Partial<TextProps> {

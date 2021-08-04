@@ -24,10 +24,10 @@ export const InternalThemes: { [k in Themes]: InternalTheme } = {
 	light: {
 		...Other,
 		background: '#ffffff',
-		step1: '#E9E9E9',
+		step1: '#ECECEC',
 		step2: '#E1E1E1',
 		step3: '#D4D4D4',
-		step4: '#D4D4D4',
+		step4: '#CECECE',
 		navBar: '#F8F8F8',
 		navBarFade: '#D7D7D7',
 		text: 'black',

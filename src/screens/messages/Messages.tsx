@@ -36,13 +36,13 @@ const ConversationEntry: React.FC = (p: any) => {
 
 	return (
 		<ConversationEntryBody onPress={() => nav.navigate('conversation', { ...p })}>
-			<Avatar src={p.avatar} />
+			<Avatar src={`https://cdn.yourstatus.app/profile/${p.owner}/${p.avatar}`} />
 			<Spacer size={10} />
 			<Text size={20} weight="semi-bold">
 				{p.username}
 			</Text>
 			<Fill />
-			<IconButton name="eclipse" color={theme.step3} size={20} />
+			<IconButton name="eclipse" color={theme.step4} iconSize={20} size={25} noBackground />
 		</ConversationEntryBody>
 	);
 };

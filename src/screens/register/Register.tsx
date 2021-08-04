@@ -1,9 +1,13 @@
 import { Fill, Input, Spacer, TabbarContentContainer, Text, WideButton } from '@parts';
 import * as React from 'react';
+import { useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
+import { request } from '../../core/utils';
 
 export const Register: React.FC = () => {
 	const theme = useTheme();
+	const [Email, setEmail] = useState('');
+	const [Password, setPassword] = useState('');
 
 	const inputStyle = {
 		backgroundColor: theme.step1,
@@ -22,6 +26,11 @@ export const Register: React.FC = () => {
 		autoCompleteType: 'off',
 	};
 
+	const register = async () => {
+		const a = await request('post', '/account/create', { data: { email: Email, password: Password } });
+		console.log(a);
+	};
+
 	return (
 		<TabbarContentContainer>
 			<Text center size={12} color="lightgray">
@@ -32,14 +41,14 @@ export const Register: React.FC = () => {
 			</Text>
 			<Spacer size={30 * 2} />
 			<HeadingText>Email</HeadingText>
-			<Input {...inputOptions} style={inputStyle} />
+			<Input {...inputOptions} style={inputStyle} onChangeText={setEmail} />
 			<Spacer size={30} />
 			<HeadingText>Password</HeadingText>
-			<Input {...inputOptions} style={inputStyle} />
+			<Input {...inputOptions} style={inputStyle} onChangeText={setPassword} />
 			<Spacer size={10} />
 			<WideButton text="Magic Link" backgroundColor={theme.step1} textColor={theme.textFade} />
 			<Fill />
-			<WideButton text="Create Account" />
+			<WideButton text="Create Account" onPress={() => register()} />
 			<Spacer size={30} />
 		</TabbarContentContainer>
 	);

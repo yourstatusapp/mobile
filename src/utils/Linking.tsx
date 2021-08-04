@@ -36,21 +36,22 @@ export const useLinking = () => {
 	const { processing, url } = useInitialURL();
 	const nav = useNavigation();
 
-	const magicAuth = async (code: string) => {
-		const a = await request('post', '/auth/magic/verify?code=' + code);
-	};
+	// const verifyAccount = async (code: string) => {
+	// 	const a = await request('post', '/account/verify', { data: { code } });
+	// };
 
 	React.useEffect(() => {
-		if (url) {
-			Alert.alert(url);
-		}
+		// if (url) {
+		// 	Alert.alert(url);
+		// }
 
 		if (url?.includes('/verify')) {
-			nav.navigate('Verify');
+			// nav.navigate('Verify');
+			// verifyAccount(url.split('/verify?code=')[1]);
 		}
 
 		if (url?.includes('/magic')) {
-			magicAuth(url.split('magic?code=')[1]);
+			nav.navigate('Magic', { code: url.split('magic?code=')[1] });
 		}
 		// console.log(url, processing);
 	}, [url, processing, nav]);

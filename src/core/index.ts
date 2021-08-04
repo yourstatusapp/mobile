@@ -1,6 +1,6 @@
 import { instance } from '@pulsejs/core';
 import * as core from './modules';
-import { baseURL } from './utils';
+import { baseURL, request } from './utils';
 
 // init core, tells pulse to initialize all computed values
 export function initCore() {
@@ -9,4 +9,5 @@ export function initCore() {
 
 console.log({ core });
 
+export { request };
 export default { ...core, baseURL };
