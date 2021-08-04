@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import * as React from 'react';
+import { Animated } from 'react-native';
 import { useTheme } from 'styled-components';
 import { CustomNavBar } from '../parts/components/CustomNavBar';
 import { Account } from '../screens/account/Account';
@@ -46,14 +47,15 @@ export const AppStacks: React.FC = () => {
 	);
 };
 
+
+
 export const Tabs: React.FC = () => {
 	const theme = useTheme();
 	const sceneContainerStyle = { backgroundColor: theme.background };
 
-
 	return (
-		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} detachInactiveScreens>
-			<Tab.Screen name="messages" component={Messages} />
+		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} tabBarOptions={{ style: { opacity: 0 } }}>
+			<Tab.Screen name="messages" component={Messages} options={{}} />
 			<Tab.Screen name="friends" component={Friends} />
 			<Tab.Screen name="discovery" component={Discovery} />
 			<Tab.Screen name="account" component={Account} />

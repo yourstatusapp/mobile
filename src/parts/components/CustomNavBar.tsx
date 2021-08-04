@@ -20,10 +20,10 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 		setCurrent(state.index);
 	}, [state]);
 
-	useEffect(() => {
-		// if
-		console.log(props.state);
-	}, [props]);
+	// useEffect(() => {
+	// 	// if
+	// 	console.log(props.state);
+	// }, [props]);
 
 	const tabs = [
 		{ name: 'Messages', path: 'messages', icon: 'conversation' },

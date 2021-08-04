@@ -1,6 +1,6 @@
-import { request } from '@core';
+import core, { request } from '@core';
 import { Avatar, Fill, Icon, IconButton, Row, Spacer, TabbarContentContainer, Text } from '@parts';
-import { usePulse } from '@pulsejs/react';
+import { collection, usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -27,7 +27,7 @@ interface ConversationProps {
 
 export const Conversation: React.FC<ConversationProps> = (props) => {
 	const { route } = props;
-	const [Messages, setMessages] = useState<any[]>([]);
+	const messages = usePulse(core.message.collection.getGroup(route.params.conversation_id));
 	const [newMessage, setnewMessage] = useState('');
 	const acc = usePulse(account.state.ACCOUNT);
 	const prof = usePulse(profile.state.PROFILE);
@@ -35,14 +35,16 @@ export const Conversation: React.FC<ConversationProps> = (props) => {
 	const theme = useTheme();
 
 	const sendMessage = async (message: string) => {
+		const m = {};
 		await request('post', `/conversation/${route.params.conversation_id}/send`, { data: { message } });
-		// setMessages((v) => [...v, ]);
+		core.message.collection.collect();
 	};
 
 	const getMessage = React.useCallback(async () => {
-		const a = await request<any[]>('get', '/conversation/' + route.params.conversation_id);
-		setMessages(a);
-		// console.log(a);
+		const a = await request<any[]>('get', '/conversation/' + route.params.conversation_id + '/messages');
+		console.log('messags', a);
+
+		core.message.collection.collect(a, route.params.conversation_id);
 	}, [route.params.conversation_id]);
 
 	useEffect(() => {
@@ -69,7 +71,7 @@ export const Conversation: React.FC<ConversationProps> = (props) => {
 					<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.owner}/${route.params.avatar}`} size={40} />
 				</ConversationHeader>
 				{/* <Spacer size={20} /> */}
-				<FlatList data={Messages} renderItem={renderItem} contentContainerStyle={{ paddingTop: 10 }} />
+				<FlatList data={messages} renderItem={renderItem} contentContainerStyle={{ paddingTop: 10 }} />
 				<BottomPart>
 					<SendMessageInput placeholder="Write a message..." onChangeText={setnewMessage} />
 					<Spacer size={10} />

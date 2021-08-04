@@ -1,29 +1,36 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Animated, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { request } from '../../core/utils';
 import { Avatar, Fill, Header, IconButton, Spacer, TabbarContentContainer, Text } from '@parts';
+import { conversations } from '../../core/modules';
+import core from '@core';
+import { usePulse } from '@pulsejs/react';
+import { Conversation } from '../../core/types';
 
-interface MessagesProps {}
+interface MessagesProps {
+	route: any;
+}
 
-export const Messages: React.FC<MessagesProps> = () => {
-	const [Conversations, setConversations] = React.useState<any>([]);
+export const Messages: React.FC<MessagesProps> = (a) => {
+	const Convs = usePulse(core.conversations.collection.groups.all);
 
 	const getMessages = async () => {
-		const a = await request('get', '/conversation');
-		setConversations(a);
+		const a = await request<Conversation[]>('get', '/conversation');
+		core.conversations.collection.collect(a, 'all');
 	};
 
 	React.useEffect(() => {
 		getMessages();
+		console.log(a);
 	}, []);
 
 	return (
 		<TabbarContentContainer>
 			<Header title="Messages" />
 			<Spacer size={20} />
-			{Conversations?.map((v, i) => (
+			{Convs?.map((v, i) => (
 				<ConversationEntry key={i} {...v} />
 			))}
 		</TabbarContentContainer>

@@ -27,3 +27,7 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 		throw false;
 	}
 };
+
+export const snow2time = (snow: string) => {
+	return new Date(Number(snow) / 8388608 + 1627845526000);
+};
