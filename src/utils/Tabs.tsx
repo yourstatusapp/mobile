@@ -7,11 +7,14 @@ import { CustomNavBar } from '../parts/components/CustomNavBar';
 import { Account } from '../screens/account/Account';
 import { Conversation } from '../screens/conversation/Conversation';
 import { Discovery } from '../screens/discovery/Discovery';
+import { EditProfile } from '../screens/edit_profile/EditProfile';
 import { Friendrequests } from '../screens/friendrequests/Friendrequests';
 import { Friends } from '../screens/friends/Friends';
 import { Messages } from '../screens/messages/Messages';
 import { Profile } from '../screens/profile/Profile';
+import { Search } from '../screens/search/Search';
 import { Settings } from '../screens/settings/Settings';
+import { Status } from '../screens/status/Status';
 import { useLinking } from './Linking';
 
 const Tab = createBottomTabNavigator();
@@ -40,14 +43,15 @@ export const AppStacks: React.FC = () => {
 			headerMode="float"
 		>
 			<AppStack.Screen name="AppTabs" component={Tabs} />
+			<AppStack.Screen name="CreateStatus" component={Status} />
 			<AppStack.Screen name="Profile" component={Profile} />
 			<AppStack.Screen name="Settings" component={Settings} />
 			<AppStack.Screen name="Friendrequests" component={Friendrequests} />
+			<AppStack.Screen name="SearchPeople" component={Search} />
+			<AppStack.Screen name="EditProfile" component={EditProfile} />
 		</AppStack.Navigator>
 	);
 };
-
-
 
 export const Tabs: React.FC = () => {
 	const theme = useTheme();

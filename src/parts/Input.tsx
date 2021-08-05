@@ -25,3 +25,18 @@ const InputBody = styled.TextInput<InputProps>`
 	border-radius: 18px;
 	flex-shrink: ${({ shrink }) => (shrink ? 1 : 0)};
 `;
+
+export const SmallInput: React.FC<InputProps> = (p) => {
+	return <SmallInputbody {...p}></SmallInputbody>;
+};
+
+const SmallInputbody = styled(Input)`
+	background-color: ${({ theme }) => theme.step1};
+	align-self: center;
+	width: 100%;
+
+	height: 31px;
+	justify-content: center;
+	padding: 0px 10px;
+	border-radius: 10px;
+`;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { Icon } from './icons/Icon';
 import { Text, TextProps } from './Text';
 
@@ -87,4 +87,32 @@ const WideButtonBody = styled(TouchableOpacity)<WideButtonProps>`
 	align-items: center;
 
 	height: 55px;
+`;
+
+interface SmallButtonProps {
+	text: string;
+	onPress?: () => void;
+	disabled?: boolean;
+
+	backgroundColor?: string;
+}
+
+export const SmallButton: React.FC<SmallButtonProps> = (p) => {
+	const theme = useTheme();
+	return (
+		<SmallButtonBody {...p} onPress={p.onPress} activeOpacity={0.5} disabled={p.disabled} style={{ opacity: p.disabled ? 0.5 : 1 }}>
+			<Text style={{ alignSelf: 'center' }} color={theme.text}>
+				{p.text}
+			</Text>
+		</SmallButtonBody>
+	);
+};
+
+const SmallButtonBody = styled(TouchableOpacity)<SmallButtonProps>`
+	background-color: ${({ theme, backgroundColor }) => backgroundColor || theme.step1};
+	align-self: center;
+	height: 31px;
+	justify-content: center;
+	padding: 0px 10px;
+	border-radius: 10px;
 `;

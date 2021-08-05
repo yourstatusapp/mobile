@@ -25,3 +25,17 @@ export interface Message {
 	sender: string;
 	deleted_at: string;
 }
+
+export interface Device {
+	id: string;
+	deleted_at: string;
+	user_agent: string;
+	ip: string;
+}
+
+export interface ActivityLocation {
+	id: string;
+	lang: number;
+	long: number;
+	title: string;
+}

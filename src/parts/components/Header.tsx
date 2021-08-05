@@ -5,10 +5,11 @@ import { Text, Fill, IconButton } from '../';
 
 interface HeaderProps {
 	title?: string;
+	rightArea?: any;
 }
 
 export const Header: React.FC<HeaderProps> = (props) => {
-	const { title } = props;
+	const { title, rightArea } = props;
 	const nav = useNavigation();
 	const theme = useTheme();
 
@@ -18,6 +19,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 				{title}
 			</Text>
 			<Fill />
+			{rightArea}
 			<IconButton name="settings" size={35} iconSize={22} color={theme.textFade} onPress={() => nav.navigate('Settings')} />
 		</HeaderBody>
 	);

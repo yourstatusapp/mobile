@@ -1,10 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { Animated, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { request } from '../../core/utils';
 import { Avatar, Fill, Header, IconButton, Spacer, TabbarContentContainer, Text } from '@parts';
-import { conversations } from '../../core/modules';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { Conversation } from '../../core/types';

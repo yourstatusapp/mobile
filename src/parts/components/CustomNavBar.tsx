@@ -5,6 +5,7 @@ import styled, { useTheme } from 'styled-components/native';
 import { hasNotch } from 'react-native-device-info';
 import { Text, Icon, Spacer } from '../../parts';
 import { TouchableOpacity } from 'react-native';
+import { IconButton } from '../Buttons';
 
 interface CustomTabBarProps extends BottomTabBarProps {}
 
@@ -34,7 +35,9 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	];
 
 	return (
-		<CustomTabBarBody isIphoneX={isIphoneX} tabIndex={props.state.index}>
+		<CustomTabBarBody isIphoneX={isIphoneX} tabIndex={state.index}>
+			<HoverButton name="plus" color={theme.primary} size={45} iconSize={25} onPress={() => nav.navigate('CreateStatus')} />
+			{/* {state.index === 3 && <HoverButton name="send" color="black" size={45} iconSize={25} />} */}
 			<TabContainer>
 				{tabs.map((v, i) => (
 					<TabButton key={i} onPress={() => nav.navigate(v.path)} activeOpacity={0.5}>
@@ -50,7 +53,13 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	);
 };
 
-const CustomTabBarBody = styled.View<{ isIphoneX: boolean; tabIndex: boolean }>`
+const HoverButton = styled(IconButton)`
+	position: absolute;
+	right: 20;
+	top: -60;
+`;
+
+const CustomTabBarBody = styled.View<{ isIphoneX: boolean; tabIndex: number }>`
 	height: ${(p) => (p.isIphoneX ? 80 : 60)}px;
 	padding: 0px 20px;
 	background-color: ${({ theme }) => theme.navBar};

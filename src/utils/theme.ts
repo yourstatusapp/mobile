@@ -31,7 +31,7 @@ export const InternalThemes: { [k in Themes]: InternalTheme } = {
 		navBar: '#F8F8F8',
 		navBarFade: '#D7D7D7',
 		text: 'black',
-		textFade: '#323232',
+		textFade: '#7F7F7F',
 	},
 	dark: {
 		...Other,
@@ -43,6 +43,6 @@ export const InternalThemes: { [k in Themes]: InternalTheme } = {
 		navBar: '#1E1E1E',
 		navBarFade: '#333333',
 		text: 'white',
-		textFade: '#CDCDCD',
+		textFade: '#7F7F7F',
 	},
 };

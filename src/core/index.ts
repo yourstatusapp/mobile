@@ -9,5 +9,6 @@ export function initCore() {
 
 console.log({ core });
 
+export * from './types';
 export { request };
 export default { ...core, baseURL };

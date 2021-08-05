@@ -7,7 +7,7 @@ import { AppStacks } from './Tabs';
 import { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import core from '../core';
-import { Animated, StatusBar, StatusBarStyle } from 'react-native';
+import {  StatusBar, StatusBarStyle } from 'react-native';
 import { Preloader } from './Preloader';
 import { Register } from '../screens/register/Register';
 import { Verify } from '../screens/verify/Verify';

@@ -1,6 +1,9 @@
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import * as React from 'react';
 import { ViewStyle } from 'react-native';
+import { TextButton } from './Buttons';
+import { useNavigation } from '@react-navigation/native';
+import { Text } from './Text';
 
 export const Spacer: React.FC<{ size: number }> = (p) => <SpacerBody {...p} />;
 
@@ -49,4 +52,37 @@ const TabbarContentBody = styled.View<TabbarContentContainerConfig>`
 	flex: 1;
 	padding: 0px ${({ noSidePadding }) => (noSidePadding ? 0 : 20)}px;
 	padding-top: 45px;
+`;
+
+interface TopHeadingProps {
+	text?: string;
+}
+
+export const TopHeading: React.FC<TopHeadingProps> = (p) => {
+	const theme = useTheme();
+	const nav = useNavigation();
+
+	return (
+		<TopHeadingBody>
+			<TextButton text="Back" size={18} weight="semi-bold" color={theme.primary} onPress={() => nav.goBack()} />
+			<Fill />
+			<Text size={19} weight="semi-bold">
+				{p.text}
+			</Text>
+			<Spacer size={40} />
+			<Fill />
+		</TopHeadingBody>
+	);
+};
+
+const TopHeadingBody = styled(Row)`
+	padding: 0px 20px;
+	margin-bottom: 10px;
+	height: 50px;
+	background-color: ${({ theme }) => theme.step1};
+`;
+
+export const SidePadding = styled.View`
+	padding: 0px 20px;
+	flex: 1;
 `;

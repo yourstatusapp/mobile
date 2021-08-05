@@ -52,7 +52,7 @@ const SettingsMain: React.FC = () => {
 					Settings
 				</Text>
 				<Fill />
-				<IconButton onPress={() => toggleTheme()} name="moon" size={33} iconSize={18} color={theme.textFade} />
+				<IconButton onPress={() => toggleTheme()} name="moon" size={33} iconSize={18} color={theme.text} />
 				<Spacer size={15} />
 				<TextButton size={18} weight="bold" text="close" onPress={() => nav.goBack()} />
 			</Row>
@@ -86,7 +86,7 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ text, routeName, icon, 
 
 	return (
 		<SettingsButtonBody onPress={() => (action ? action() : nav.navigate('Settings' + routeName))}>
-			<Text weight="medium" color={textColor || theme.textFade}>
+			<Text weight="semi-bold" size={14} color={textColor || theme.text}>
 				{text}
 			</Text>
 			<Fill />

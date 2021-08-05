@@ -46,8 +46,7 @@ export const useLinking = () => {
 		// }
 
 		if (url?.includes('/verify')) {
-			// nav.navigate('Verify');
-			// verifyAccount(url.split('/verify?code=')[1]);
+			nav.navigate('Verify', { code: url.split('/verify?code=')[1] });
 		}
 
 		if (url?.includes('/magic')) {

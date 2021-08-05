@@ -35,15 +35,19 @@ export const Conversation: React.FC<ConversationProps> = (props) => {
 	const theme = useTheme();
 
 	const sendMessage = async (message: string) => {
-		const m = {};
+		// const m = {};
 		await request('post', `/conversation/${route.params.conversation_id}/send`, { data: { message } });
-		core.message.collection.collect();
+		// core.message.collection.collect();
 	};
 
+	// const getMessage = async () => {
+	// 	const a = await request<any[]>('get', '/conversation/' + route.params.conversation_id + '/messages');
+	// 	console.log('messags', a);
+
+	// 	core.message.collection.collect(a, route.params.conversation_id);
+	// };
 	const getMessage = React.useCallback(async () => {
 		const a = await request<any[]>('get', '/conversation/' + route.params.conversation_id + '/messages');
-		console.log('messags', a);
-
 		core.message.collection.collect(a, route.params.conversation_id);
 	}, [route.params.conversation_id]);
 
@@ -52,6 +56,16 @@ export const Conversation: React.FC<ConversationProps> = (props) => {
 	}, [getMessage]);
 
 	const renderItem = ({ item, index }) => <MessageEntry {...item} accountId={acc.id} key={index} />;
+	const ListEmptyComponent = () => (
+		<>
+			<Spacer size={10} />
+			<Row center>
+				<Text size={16} color={theme.step4} weight="semi-bold">
+					Send your first message!
+				</Text>
+			</Row>
+		</>
+	);
 
 	return (
 		<ConversationBody>
@@ -70,8 +84,7 @@ export const Conversation: React.FC<ConversationProps> = (props) => {
 					<Fill />
 					<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.owner}/${route.params.avatar}`} size={40} />
 				</ConversationHeader>
-				{/* <Spacer size={20} /> */}
-				<FlatList data={messages} renderItem={renderItem} contentContainerStyle={{ paddingTop: 10 }} />
+				<FlatList data={messages} renderItem={renderItem} ListEmptyComponent={ListEmptyComponent} contentContainerStyle={{ paddingTop: 10 }} />
 				<BottomPart>
 					<SendMessageInput placeholder="Write a message..." onChangeText={setnewMessage} />
 					<Spacer size={10} />
