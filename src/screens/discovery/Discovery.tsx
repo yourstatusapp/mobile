@@ -7,8 +7,8 @@ export const Discovery: React.FC<DiscoveryProps> = (props) => {
 	const {} = props;
 
 	return (
-		<TabbarContentContainer>
-			<Header title="Discovery" />
+		<TabbarContentContainer noSidePadding>
+			<Header title="Discovery" padding />
 		</TabbarContentContainer>
 	);
 };

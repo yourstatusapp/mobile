@@ -4,6 +4,7 @@ export interface Account {
 }
 
 export interface Profile {
+	id: string;
 	username: string;
 	location: string;
 	gender: string;

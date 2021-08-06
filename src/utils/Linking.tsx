@@ -50,7 +50,7 @@ export const useLinking = () => {
 		}
 
 		if (url?.includes('/magic')) {
-			nav.navigate('Magic', { code: url.split('magic?code=')[1] });
+			nav.navigate('Magic', { code: url.split('magic?code=')[1]?.split('&')[0], new_account: url.split('magic?code=')[1]?.split('&')[1] });
 		}
 		// console.log(url, processing);
 	}, [url, processing, nav]);

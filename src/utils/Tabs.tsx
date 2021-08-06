@@ -10,6 +10,7 @@ import { Discovery } from '../screens/discovery/Discovery';
 import { EditProfile } from '../screens/edit_profile/EditProfile';
 import { Friendrequests } from '../screens/friendrequests/Friendrequests';
 import { Friends } from '../screens/friends/Friends';
+import { Newuser } from '../screens/newuser/Newuser';
 import { Messages } from '../screens/messages/Messages';
 import { Profile } from '../screens/profile/Profile';
 import { Search } from '../screens/search/Search';
@@ -21,6 +22,7 @@ const Tab = createBottomTabNavigator();
 export const AppStack = createStackNavigator();
 
 export const AppStacks: React.FC = () => {
+	const theme = useTheme();
 	useLinking;
 	// return (
 	// 	<View style={{ flex: 1 }}>
@@ -37,7 +39,7 @@ export const AppStacks: React.FC = () => {
 				gestureEnabled: true,
 				gestureResponseDistance: { vertical: 150 },
 				cardOverlayEnabled: true,
-				cardStyle: { backgroundColor: 'white' },
+				cardStyle: { backgroundColor: 'red' },
 			}}
 			mode="modal"
 			headerMode="float"
@@ -49,13 +51,15 @@ export const AppStacks: React.FC = () => {
 			<AppStack.Screen name="Friendrequests" component={Friendrequests} />
 			<AppStack.Screen name="SearchPeople" component={Search} />
 			<AppStack.Screen name="EditProfile" component={EditProfile} />
+			<AppStack.Screen name="NewUser" component={Newuser} />
+
 		</AppStack.Navigator>
 	);
 };
 
 export const Tabs: React.FC = () => {
 	const theme = useTheme();
-	const sceneContainerStyle = { backgroundColor: theme.background };
+	const sceneContainerStyle = { backgroundColor: 'red' };
 
 	return (
 		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} tabBarOptions={{ style: { opacity: 0 } }}>

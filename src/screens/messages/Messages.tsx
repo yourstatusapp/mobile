@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { request } from '../../core/utils';
 import { Avatar, Fill, Header, IconButton, Spacer, TabbarContentContainer, Text } from '@parts';
@@ -14,7 +14,8 @@ interface MessagesProps {
 
 export const Messages: React.FC<MessagesProps> = (a) => {
 	const Convs = usePulse(core.conversations.collection.groups.all);
-
+	const nav = useNavigation();
+	const theme = useTheme();
 	const getMessages = async () => {
 		const a = await request<Conversation[]>('get', '/conversation');
 		core.conversations.collection.collect(a, 'all');
@@ -22,40 +23,42 @@ export const Messages: React.FC<MessagesProps> = (a) => {
 
 	React.useEffect(() => {
 		getMessages();
-		console.log(a);
 	}, []);
 
-	return (
-		<TabbarContentContainer>
-			<Header title="Messages" />
-			<Spacer size={20} />
-			{Convs?.map((v, i) => (
-				<ConversationEntry key={i} {...v} />
-			))}
-		</TabbarContentContainer>
-	);
-};
-
-const ConversationEntry: React.FC = (p: any) => {
-	const nav = useNavigation();
-	const theme = useTheme();
-
-	return (
-		<ConversationEntryBody onPress={() => nav.navigate('conversation', { ...p })}>
-			<Avatar src={`https://cdn.yourstatus.app/profile/${p.owner}/${p.avatar}`} />
+	const renderItem = ({ item, index }) => (
+		<ConversationEntryBody key={index} onPress={() => nav.navigate('conversation', { ...item })} style={{ backgroundColor: !(index % 2) ? theme.background : theme.step0 }}>
+			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={50} />
 			<Spacer size={10} />
-			<Text size={20} weight="semi-bold">
-				{p.username}
-			</Text>
+			<View>
+				<Text size={18} weight="semi-bold">
+					{item.username}
+				</Text>
+				<Text size={14} color={theme.textFade}>
+					no status...
+				</Text>
+			</View>
 			<Fill />
 			<IconButton name="eclipse" color={theme.step4} iconSize={20} size={25} noBackground />
 		</ConversationEntryBody>
+	);
+
+	return (
+		<TabbarContentContainer noSidePadding>
+			<Header title="Messages" padding />
+			{/* <Spacer size={20} /> */}
+			<FlatList data={Convs} renderItem={renderItem} />
+		</TabbarContentContainer>
 	);
 };
 
 const ConversationEntryBody = styled(TouchableOpacity)`
 	flex-direction: row;
 	align-items: center;
-	padding: 6px 0px;
+	padding: 6px 10px;
 	width: 100%;
+	/* background-color: ${({ theme }) => theme.step1}; */
+	/* margin-bottom: 5px; */
+	border-bottom-color: ${({ theme }) => theme.step1};
+	/* border-bottom-style: solid; */
+	border-bottom-width: 1px;
 `;

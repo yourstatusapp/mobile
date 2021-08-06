@@ -23,4 +23,5 @@ export const EditProfile: React.FC<EditProfileProps> = (props) => {
 
 const EditProfileBody = styled.View`
 	flex: 1;
+	background-color: ${({ theme }) => theme.background};
 `;

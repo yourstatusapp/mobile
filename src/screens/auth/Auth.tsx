@@ -70,7 +70,7 @@ export const Auth: React.FC = () => {
 			<Spacer size={30 * 6} />
 			<Input {...inputOptions} style={inputStyle} value={Email} onChangeText={(v) => setEmail(v)} placeholder="Email" />
 			<Spacer size={10} />
-			<Row>
+			{/* <Row>
 				<Input secureTextEntry {...inputOptions} style={inputStyle} value={Password} onChangeText={(v) => setPassword(v)} placeholder="Password" />
 				<Spacer size={10} />
 				<IconButton
@@ -80,13 +80,13 @@ export const Auth: React.FC = () => {
 					color={theme.background}
 					style={{ backgroundColor: theme.primary, height: 55, width: 55, borderRadius: 12 }}
 				/>
-			</Row>
+			</Row> */}
 			<Spacer size={20} />
 			<Divider />
 			<Spacer size={20} />
-			<WideButton text="Magic Link" textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
+			<WideButton text="Magic Link me" textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
 			<Spacer size={10} />
-			<WideButton text="Register" textColor={theme.text} backgroundColor={theme.step2} onPress={() => nav.navigate('Register')} />
+			{/* <WideButton text="Register" textColor={theme.text} backgroundColor={theme.step2} onPress={() => nav.navigate('Register')} /> */}
 			<Spacer size={10} />
 			<Row style={TermsAndServiceStyle}>
 				<Text center color="#9B9B9B" weight="medium" size={14}>

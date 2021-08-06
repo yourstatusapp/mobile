@@ -1,5 +1,6 @@
 export interface InternalTheme extends InteralThemeOther {
 	background: string;
+	step0: string;
 	step1: string;
 	step2: string;
 	step3: string;
@@ -24,6 +25,7 @@ export const InternalThemes: { [k in Themes]: InternalTheme } = {
 	light: {
 		...Other,
 		background: '#ffffff',
+		step0: '#F6F6F6',
 		step1: '#ECECEC',
 		step2: '#E1E1E1',
 		step3: '#D4D4D4',
@@ -36,6 +38,7 @@ export const InternalThemes: { [k in Themes]: InternalTheme } = {
 	dark: {
 		...Other,
 		background: '#171717',
+		step0: '#141414',
 		step1: '#1F1F1F',
 		step2: '#2A2A2A',
 		step3: '#333333',

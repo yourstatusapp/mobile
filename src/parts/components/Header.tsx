@@ -6,6 +6,7 @@ import { Text, Fill, IconButton } from '../';
 interface HeaderProps {
 	title?: string;
 	rightArea?: any;
+	padding?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = (props) => {
@@ -14,18 +15,21 @@ export const Header: React.FC<HeaderProps> = (props) => {
 	const theme = useTheme();
 
 	return (
-		<HeaderBody>
+		<HeaderBody {...props}>
 			<Text color={theme.primary} size={26} weight="semi-bold">
 				{title}
 			</Text>
 			<Fill />
 			{rightArea}
-			<IconButton name="settings" size={35} iconSize={22} color={theme.textFade} onPress={() => nav.navigate('Settings')} />
+			<IconButton name="settings" size={35} iconSize={22} color={theme.text} onPress={() => nav.navigate('Settings')} />
 		</HeaderBody>
 	);
 };
 
-const HeaderBody = styled.View`
+const HeaderBody = styled.View<HeaderProps>`
 	flex-direction: row;
 	align-items: center;
+	padding: 5px 0px;
+	background-color: ${({ theme }) => theme.navBar};
+	${({ padding }) => padding && 'padding: 5px 20px;'};
 `;

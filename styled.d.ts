@@ -4,6 +4,7 @@ import 'styled-components';
 declare module 'styled-components' {
 	export interface DefaultTheme {
 		background: string;
+		step0: string;
 		step1: string;
 		step2: string;
 		step3: string;

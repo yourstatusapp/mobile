@@ -74,6 +74,10 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 		Linking.openURL(url || '');
 	};
 
+	// const setStatus = async () => {
+	// 	await request('post', '/act')
+	// }
+
 	const removeLocation = async (id: string) => {
 		await request('delete', `/activity/location/${id}/remove`);
 		let newArr = Locations.slice(Locations.indexOf(Locations.filter((v) => v.id === id)[0]), 1);
@@ -90,6 +94,8 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 			<Spacer size={10} />
 			<Row>
 				<SmallButton text="Delete" backgroundColor={theme.step3} onPress={() => removeLocation(item.id)} />
+			<Spacer size={10} />
+				<SmallButton text="Set status" backgroundColor={theme.step3} onPress={() => removeLocation(item.id)} />
 			</Row>
 		</Locationcard>
 	);

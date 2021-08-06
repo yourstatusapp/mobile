@@ -1,10 +1,11 @@
-import { Device, request } from '@core';
+import core, { Device, request } from '@core';
 import * as React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { Fill, IconButton, Row, Spacer, Text, TopHeading } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import { snow2time } from '../../../core/utils';
+import { usePulse } from '@pulsejs/react';
 
 interface SettingsAccountProps {}
 
@@ -12,6 +13,7 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 	const [Devices, setDevices] = React.useState<Device[]>([]);
+	const acc = usePulse(core.account.state.ACCOUNT);
 
 	const getDevices = async () => {
 		const a = await request<Device[]>('get', '/account/devices');
@@ -57,6 +59,8 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 		<SettingsAccountBody>
 			<TopHeading text="Account" />
 			<SidePadding>
+				<Text>{acc.email}</Text>
+				<Spacer size={50} />
 				<Text weight="semi-bold" size={22}>
 					Devices
 				</Text>

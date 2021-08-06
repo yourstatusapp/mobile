@@ -67,4 +67,5 @@ const UserSearchEnty = styled(Row)`
 const SearchBody = styled.View`
 	flex: 1;
 	padding: 0px 20px;
+	background-color: ${({ theme }) => theme.background};
 `;

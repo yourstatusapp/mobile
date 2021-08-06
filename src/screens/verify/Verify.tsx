@@ -48,7 +48,7 @@ export const Verify: React.FC<VerifyProps> = ({ route }) => {
 					</Text>
 					<Spacer size={10} />
 					<Row center>
-						<TextButton size={18} weight="semi-bold" text="Go back" onPress={() => nav.goBack() }/>
+						<TextButton size={18} weight="semi-bold" text="Go back" onPress={() => nav.goBack()} />
 					</Row>
 				</>
 			)}

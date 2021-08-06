@@ -21,7 +21,8 @@ export const Input: React.FC<InputProps> = (p) => {
 const InputBody = styled.TextInput<InputProps>`
 	height: 60px;
 	color: black;
-	font-weight: 600;
+	font-weight: 500;
+	font-size: 16px;
 	border-radius: 18px;
 	flex-shrink: ${({ shrink }) => (shrink ? 1 : 0)};
 `;
@@ -35,8 +36,25 @@ const SmallInputbody = styled(Input)`
 	align-self: center;
 	width: 100%;
 
-	height: 31px;
+	height: 35px;
 	justify-content: center;
-	padding: 0px 10px;
+	padding: 3px 10px;
 	border-radius: 10px;
+`;
+
+export const RegularInput: React.FC<InputProps> = (p) => {
+	const {} = p;
+
+	return <RegularInputbody {...p} />;
+};
+
+const RegularInputbody = styled(Input)`
+	background-color: ${({ theme }) => theme.step1};
+	align-self: center;
+	width: 100%;
+
+	height: 50px;
+	justify-content: center;
+	padding: 3px 10px;
+	border-radius: 13px;
 `;

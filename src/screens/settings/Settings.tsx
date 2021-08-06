@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
-import { account, ui } from '../../core/modules';
+import { account, profile, ui } from '../../core/modules';
 import { request } from '../../core/utils';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, TextButton } from '../../parts/Buttons';
@@ -27,16 +27,35 @@ export const Settings: React.FC = () => {
 	);
 };
 
-const SettingsMain: React.FC = () => {
+interface SettingsMainProps {
+	navigation: {
+		popToTop: Function;
+	};
+	route: {
+		key: string;
+		name: string;
+		params: any;
+	};
+}
+const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 
+	React.useEffect(() => {
+		console.log(props);
+	}, [props]);
+
 	const logout = async () => {
-	 	request('delete', '/auth/revoke/');
+		await request('delete', '/account/devices/current/revoke');
 		// nav.reset({ routes: [{ name: 'Auth' }] });
-		nav.goBack();
-		account.state.ACCOUNT.reset();
-		nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
+		// nav.goBack();
+
+		props.navigation.popToTop();
+		// nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
+		setTimeout(() => {
+			account.state.ACCOUNT.reset();
+			profile.state.PROFILE.reset();
+		}, 500);
 	};
 
 	const currentTheme = usePulse(ui.state.Theme);
@@ -54,7 +73,7 @@ const SettingsMain: React.FC = () => {
 				<Fill />
 				<IconButton onPress={() => toggleTheme()} name="moon" size={33} iconSize={18} color={theme.text} />
 				<Spacer size={15} />
-				<TextButton size={18} weight="bold" text="close" onPress={() => nav.goBack()} />
+				<TextButton size={18} weight="semi-bold" text="close" onPress={() => nav.goBack()} />
 			</Row>
 			<Spacer size={30} />
 			<SettingsButton text="Account" routeName="Account" icon="person" />

@@ -24,7 +24,7 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 		return a.data.data;
 	} catch (error) {
 		console.log(error);
-		throw false;
+		return false;
 	}
 };
 

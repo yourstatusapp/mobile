@@ -1,9 +1,10 @@
-import { Row, Text, TextButton } from '@parts';
+import { Row, Spacer, Text, TextButton } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
+import { AvailabilitySel } from './selections/AvailabilitySel';
 import { CustomSel } from './selections/CustomSel';
 import { EventSel } from './selections/EventSel';
 import { LocationSel } from './selections/LocationSel';
@@ -29,6 +30,7 @@ export const Status: React.FC<StatusProps> = (props) => {
 				<SelectionStack.Screen name="customSel" component={CustomSel} />
 				<SelectionStack.Screen name="locationSel" component={LocationSel} />
 				<SelectionStack.Screen name="eventSel" component={EventSel} />
+				<SelectionStack.Screen name="availabilitySel" component={AvailabilitySel} />
 			</SelectionStack.Navigator>
 		</StatusBody>
 	);
@@ -41,7 +43,7 @@ const StatusBody = styled.View`
 
 const TopHeading = styled(Row)`
 	padding: 0px 20px;
-	margin-bottom: 10px;
+	/* margin-bottom: 10px; */
 `;
 
 const SidePadding = styled.View`
@@ -69,12 +71,18 @@ const SelectionScreen: React.FC = () => {
 			route: 'locationSel',
 			color: '#29C067',
 		},
-		// {
-		// 	icon: '',
-		// 	text: 'Custom',
-		// 	route: 'customSel',
-		// 	color: '#FFB55C',
-		// },
+		{
+			icon: '',
+			text: 'Availability',
+			route: 'availabilitySel',
+			color: '#FFB246',
+		},
+		{
+			icon: '',
+			text: 'Event',
+			route: 'eventSel',
+			color: '#71cae0',
+		},
 		// {
 		// 	icon: '',
 		// 	text: 'Event',
@@ -98,9 +106,14 @@ const SelectionScreen: React.FC = () => {
 
 	return (
 		<SidePadding style={{ flex: 1 }}>
+			<Spacer size={10} />
 			<Text weight="bold" size={28} color={theme.text} center>
 				Choose your status
 			</Text>
+			<Text center color={theme.textFade}>
+				You can choose a status how you want to share your friends what you're doing or you want to do.
+			</Text>
+			<Spacer size={20} />
 
 			<FlatList
 				data={buttons}
