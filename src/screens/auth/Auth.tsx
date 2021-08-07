@@ -75,7 +75,7 @@ export const Auth: React.FC = () => {
 				<Spacer size={20} />
 				<Divider />
 				<Spacer size={20} />
-				<WideButton text="Magic Link me" textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
+				<WideButton text="Send me login link" textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
 				<Spacer size={10} />
 
 				<Spacer size={10} />

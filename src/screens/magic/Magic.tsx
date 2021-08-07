@@ -17,7 +17,7 @@ interface MagicProps {
 }
 
 export const Magic: React.FC<MagicProps> = (props) => {
-	const { route } = props;
+	const { route, navigation } = props;
 	const nav = useNavigation();
 
 	const magicAuth = async (code: string, new_account: boolean) => {
@@ -29,9 +29,15 @@ export const Magic: React.FC<MagicProps> = (props) => {
 
 		core.account.state.ACCOUNT.set(a.account);
 		core.profile.state.PROFILE.set(a.profile);
+	
 
-		if (!new_account) nav.navigate('App');
-		else setTimeout(() => nav.navigate('NewUser'), 1000);
+		if (new_account === false) {
+			nav.navigate('App');
+		} else {
+			setTimeout(() => {
+				nav.reset({ index: 0, routes: [{ name: 'App' }] });
+			}, 1000);
+		}
 	};
 
 	useEffect(() => {

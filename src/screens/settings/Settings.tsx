@@ -47,15 +47,15 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 	}, [props]);
 
 	const logout = async () => {
-		await request('delete', '/account/devices/current/revoke');
-		// nav.reset({ routes: [{ name: 'Auth' }] });
-		// nav.goBack();
 
-		// props.navigation.popToTop();
+		await request('delete', '/account/devices/current/revoke');
 		nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
+
 		setTimeout(() => {
 			account.state.ACCOUNT.reset();
 			profile.state.PROFILE.reset();
+			core.conversations.collection.reset();
+			core.message.collection.reset();
 		}, 500);
 	};
 

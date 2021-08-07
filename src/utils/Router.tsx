@@ -32,20 +32,11 @@ export const Router: React.FC = () => {
 
 	// Checking for logged_in
 	core.account.state.logged_in.onNext((v) => {
-		console.log('logged_in', v);
+		// console.log('logged_in', v);
 
-		if (v) console.log('account is loaded');
+		// if (v) console.log('account is loaded');
 		setLoaded(true);
 	});
-
-	// React.useEffect(() => {
-	// 	console.log('Router');
-	// 	setRouterLoaded(true);
-	// }, []);
-
-	// React.useEffect(() => {
-	// 	console.log('-->', Loaded);
-	// }, [Loaded]);
 
 	// Wait for the preloader and logged_in compute state
 	if (Loaded === false || PreloaderReady === false) {
@@ -71,16 +62,6 @@ export const Router: React.FC = () => {
 					<Stack.Screen name="Verify" component={Verify} />
 					<Stack.Screen name="Magic" component={Magic} />
 					<Stack.Screen name="App" component={AppStacks} />
-					{/* {!loggedIn ? (
-						<>
-							<Stack.Screen name="Auth" component={Auth} />
-							<Stack.Screen name="Register" component={Register} />
-							<Stack.Screen name="Verify" component={Verify} />
-							<Stack.Screen name="Magic" component={Magic} />
-						</>
-					) : (
-						<Stack.Screen name="App" component={AppStacks} />
-					)} */}
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>

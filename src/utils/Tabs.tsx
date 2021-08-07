@@ -16,6 +16,7 @@ import { Profile } from '../screens/profile/Profile';
 import { Search } from '../screens/search/Search';
 import { Settings } from '../screens/settings/Settings';
 import { Status } from '../screens/status/Status';
+import { Newfriends } from '../screens/newfriends/Newfriends';
 import { useLinking } from './Linking';
 
 const Tab = createBottomTabNavigator();
@@ -67,6 +68,7 @@ export const Tabs: React.FC = () => {
 			<Tab.Screen name="discovery" component={Discovery} />
 			<Tab.Screen name="account" component={Account} />
 			<Tab.Screen name="conversation" component={Conversation} />
+			<Tab.Screen name="newfriends" component={Newfriends} />
 		</Tab.Navigator>
 	);
 };

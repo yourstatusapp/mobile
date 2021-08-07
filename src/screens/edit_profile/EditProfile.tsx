@@ -23,7 +23,7 @@ export const EditProfile: React.FC<EditProfileProps> = (props) => {
 	const [Birthday, setBirthday] = useState<Date>();
 
 	const usernameCheck = async (username: string) => {
-		if (valueChanged(profile.username, Username)) {
+		if (!valueChanged(profile.username, Username)) {
 			setLoaded(true);
 			setAvailable(false);
 			return;
