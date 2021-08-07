@@ -33,12 +33,12 @@ export const Messages: React.FC<MessagesProps> = (a) => {
 				<Text size={18} weight="semi-bold">
 					{item.username}
 				</Text>
-				<Text size={14} color={theme.textFade}>
-					no status...
+				<Text size={14} color={theme.step4}>
+					no messages...
 				</Text>
 			</View>
 			<Fill />
-			<IconButton name="eclipse" color={theme.step4} iconSize={20} size={25} noBackground />
+			<IconButton name="eclipse" color={theme.step4} iconSize={35}  noBackground />
 		</ConversationEntryBody>
 	);
 
@@ -54,7 +54,7 @@ export const Messages: React.FC<MessagesProps> = (a) => {
 const ConversationEntryBody = styled(TouchableOpacity)`
 	flex-direction: row;
 	align-items: center;
-	padding: 6px 10px;
+	padding: 10px 15px;
 	width: 100%;
 	/* background-color: ${({ theme }) => theme.step1}; */
 	/* margin-bottom: 5px; */

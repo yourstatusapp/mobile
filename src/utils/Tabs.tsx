@@ -23,7 +23,7 @@ export const AppStack = createStackNavigator();
 
 export const AppStacks: React.FC = () => {
 	const theme = useTheme();
-	useLinking;
+	// useLinking;
 	// return (
 	// 	<View style={{ flex: 1 }}>
 	// 		<Spacer size={43} />
@@ -39,7 +39,7 @@ export const AppStacks: React.FC = () => {
 				gestureEnabled: true,
 				gestureResponseDistance: { vertical: 150 },
 				cardOverlayEnabled: true,
-				cardStyle: { backgroundColor: 'red' },
+				cardStyle: { backgroundColor: theme.background },
 			}}
 			mode="modal"
 			headerMode="float"
@@ -52,7 +52,6 @@ export const AppStacks: React.FC = () => {
 			<AppStack.Screen name="SearchPeople" component={Search} />
 			<AppStack.Screen name="EditProfile" component={EditProfile} />
 			<AppStack.Screen name="NewUser" component={Newuser} />
-
 		</AppStack.Navigator>
 	);
 };

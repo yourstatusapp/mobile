@@ -990,15 +990,15 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@pulsejs/core@4.0.0-beta.3":
-  version "4.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@pulsejs/core/-/core-4.0.0-beta.3.tgz#a19c983093dbc516ee3dcda4dee92917c77fd4cc"
-  integrity sha512-nYSckFFTPt8/8wZpEaFqKsSc1xd+eT7t3TSB3acy6yEQjbkQ1T2CL5tyNGL4tzT3Bher6LHkipDy0tMi5PsPUg==
+"@pulsejs/core@4.0.0-beta.4":
+  version "4.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@pulsejs/core/-/core-4.0.0-beta.4.tgz#f031d48b6f96a6b2f4aa8105344d652eebfac251"
+  integrity sha512-qf+X+JUHjiOJm/xmeDYGGPTX1yZyND+jF0+Be054p/iqtXuGMZO/pFwrr6AncfNc6nspFTxrYeBLxpt0ZSYl5g==
 
-"@pulsejs/react@4.0.0-beta.3":
-  version "4.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@pulsejs/react/-/react-4.0.0-beta.3.tgz#d25bf1e969b8749d0f098f6e2ac066364f8c1fe1"
-  integrity sha512-QuO/UoBTL+5ObCTje3nvrMqrifPujWtbHpVMJMnWnZGrL88hiSivaWGvqzaU0BsIE3R6WQHZTJNDvBR8sXFIEQ==
+"@pulsejs/react@4.0.0-beta.4":
+  version "4.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@pulsejs/react/-/react-4.0.0-beta.4.tgz#3b78db5248727b27516c00ec1a282b61ec829afc"
+  integrity sha512-7u3p3mctnR/VVIEaO6elG2r3Xep3BnfC3JrjHSJi8DV8AV90K+rrs3qZBDCIZhADgU64OzO9B0KrBHx6XN2pPg==
 
 "@react-native-async-storage/async-storage@^1.15.5":
   version "1.15.5"
@@ -1166,6 +1166,13 @@
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
+
+"@react-native-cookies/cookies@^6.0.8":
+  version "6.0.8"
+  resolved "https://registry.yarnpkg.com/@react-native-cookies/cookies/-/cookies-6.0.8.tgz#efa1b7b3e10e5e6ca7a4b55963f9fde7e60b1894"
+  integrity sha512-srQ9XM/IgvakwiZ7Ck9AOAyPYkcFsAVBEfz5Ct3iHWapoA9fYU25hCWrJWl4dd5993cEMm10XDx7sn7b6pzVxw==
+  dependencies:
+    invariant "^2.2.4"
 
 "@react-native-picker/picker@^1.16.3", "@react-native-picker/picker@^1.8.3":
   version "1.16.3"

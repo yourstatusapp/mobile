@@ -21,40 +21,39 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 
-	const layout = useWindowDimensions();
+	// const layout = useWindowDimensions();
 
-	const [index, setIndex] = React.useState(0);
-	const [routes] = React.useState([
-		{ key: 'first', title: 'Friends' },
-		{ key: 'second', title: 'Events' },
-	]);
+	// const [index, setIndex] = React.useState(0);
+	// const [routes] = React.useState([
+	// 	{ key: 'first', title: 'Friends' },
+	// 	{ key: 'second', title: 'Events' },
+	// ]);
 
-	// const [List, setList] = useState<any>(null);
+	const [List, setList] = useState<any>(null);
 	// const [Events, setEvents] = useState([]);
-	// const [PendingList, setPendingList] = useState<any[]>();
+	const [PendingList, setPendingList] = useState<any[]>();
 
 	// const getEvents = async () => {
 	// 	const a = await request('get', '/events');
 	// 	setEvents(a);
 	// };
 
-	// React.useEffect(() => {
-	// 	request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends').then((c) => {
-	// 		setList(c.friends);
-	// 		setPendingList(c.incoming_pending);
-	// 	});
-	// 	getEvents();
-	// }, []);
+	React.useEffect(() => {
+		request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends').then((c) => {
+			setList(c.friends);
+			setPendingList(c.incoming_pending);
+		});
+		// getEvents();
+	}, []);
 
-	// const renderItem = ({ item, index }) => (
-	// 	<TouchableOpacity key={index} onPress={() => nav.navigate('Profile', item)}>
-	// 		<Row style={{ paddingBottom: 15 }}>
-	// 			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} />
-	// 			<Spacer size={10} />
-	// 			<Text weight="bold">{item.username}</Text>
-	// 		</Row>
-	// 	</TouchableOpacity>
-	// );
+	const renderItem = ({ item, index }) => (
+		<ProfileRenderItem key={index} onPress={() => nav.navigate('Profile', item)}>
+			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} />
+			<Spacer size={10} />
+			<Text weight="bold">{item.username}</Text>
+			<Text weight="bold"></Text>
+		</ProfileRenderItem>
+	);
 
 	// const renderItemEvent = ({ item, index }) => (
 	// 	<EventItem key={index}>
@@ -77,19 +76,20 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 				title="Friends"
 				rightArea={
 					<Row>
-						<IconButton name="search" size={35} iconSize={18} color={theme.text} onPress={() => nav.navigate('SearchPeople')} />
+						<IconButton name="search" size={35}  color={theme.text} onPress={() => nav.navigate('SearchPeople')} />
 						<Spacer size={10} />
 					</Row>
 				}
 			/>
-			<Spacer size={20} />
-			<TabView
+			{/* <Spacer size={20} /> */}
+			<FlatList data={List} renderItem={renderItem} />
+			{/* <TabView
 				navigationState={{ index, routes }}
 				renderScene={renderScene}
 				onIndexChange={setIndex}
 				initialLayout={{ width: layout.width }}
 				renderTabBar={(p) => <TabBar {...p} jumpTo={(v) => setIndex(v)} />}
-			/>
+			/> */}
 
 			{/* <Row>
 				<Text size={20}>Friends</Text>
@@ -142,4 +142,12 @@ export const TabBar: React.FC<TabbarProps> = (props) => {
 
 const TabbarBody = styled(Row)`
 	padding: 0px 20px;
+`;
+
+const ProfileRenderItem = styled(TouchableOpacity)`
+	flex-direction: row;
+	align-items: center;
+	padding: 10px 15px;
+	border-bottom-color: ${({ theme }) => theme.step1};
+	border-bottom-width: 1px;
 `;

@@ -19,7 +19,7 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
 	// }
 
 	if (!dot_status) {
-		return <IMG {...props} style={{ margin: 5 }} source={{ uri: src }} />;
+		return <IMG {...props} source={{ uri: src }} />;
 	}
 
 	return (

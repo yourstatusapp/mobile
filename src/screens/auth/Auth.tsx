@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { KeyboardAvoidingView, View, ViewStyle } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 import core from '../../core';
 import { request } from '../../core/utils';
@@ -19,6 +20,7 @@ export const Auth: React.FC = () => {
 		backgroundColor: theme.step1,
 		color: theme.text,
 		height: 55,
+		minHeight: 55,
 		maxHeight: 55,
 		flex: 1,
 		paddingHorizontal: 20,
@@ -62,49 +64,39 @@ export const Auth: React.FC = () => {
 
 	return (
 		<AuthBody>
-			<Text center size={12} color="lightgray">
-				version: beta.1
-			</Text>
-			<Spacer size={50 * 2} />
-			<LogoPlaceholder />
-			<Spacer size={30 * 6} />
-			<Input {...inputOptions} style={inputStyle} value={Email} onChangeText={(v) => setEmail(v)} placeholder="Email" />
-			<Spacer size={10} />
-			{/* <Row>
-				<Input secureTextEntry {...inputOptions} style={inputStyle} value={Password} onChangeText={(v) => setPassword(v)} placeholder="Password" />
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior="position" keyboardVerticalOffset={-230}>
+				<Text center size={12} color="lightgray">
+					version: beta.1
+				</Text>
+				<Spacer size={50 * 2} />
+				<LogoPlaceholder />
+				<Spacer size={30 * 6} />
+				<Input {...inputOptions} style={inputStyle} value={Email} onChangeText={(v) => setEmail(v)} placeholder="Email" />
+				<Spacer size={20} />
+				<Divider />
+				<Spacer size={20} />
+				<WideButton text="Magic Link me" textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
 				<Spacer size={10} />
-				<IconButton
-					onPress={() => login()}
-					name="arrow-big"
-					size={26}
-					color={theme.background}
-					style={{ backgroundColor: theme.primary, height: 55, width: 55, borderRadius: 12 }}
-				/>
-			</Row> */}
-			<Spacer size={20} />
-			<Divider />
-			<Spacer size={20} />
-			<WideButton text="Magic Link me" textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
-			<Spacer size={10} />
-			{/* <WideButton text="Register" textColor={theme.text} backgroundColor={theme.step2} onPress={() => nav.navigate('Register')} /> */}
-			<Spacer size={10} />
-			<Row style={TermsAndServiceStyle}>
-				<Text center color="#9B9B9B" weight="medium" size={14}>
-					When signing into the app, You agree with the
-				</Text>
-				<Text color={theme.primary} weight="semi-bold" size={14}>
-					Terms & Service
-				</Text>
-				<Spacer size={4} />
-				<Text color="#9B9B9B" weight="medium" size={14}>
-					and
-				</Text>
-				<Spacer size={4} />
-				<Text color={theme.primary} weight="semi-bold" size={14}>
-					Privacy Policy
-				</Text>
-			</Row>
-			<Fill />
+
+				<Spacer size={10} />
+				<Row style={TermsAndServiceStyle}>
+					<Text center color="#9B9B9B" weight="medium" size={14}>
+						When signing into the app, You agree with the
+					</Text>
+					<Text color={theme.primary} weight="semi-bold" size={14}>
+						Terms & Service
+					</Text>
+					<Spacer size={4} />
+					<Text color="#9B9B9B" weight="medium" size={14}>
+						and
+					</Text>
+					<Spacer size={4} />
+					<Text color={theme.primary} weight="semi-bold" size={14}>
+						Privacy Policy
+					</Text>
+				</Row>
+				<Fill />
+			</KeyboardAvoidingView>
 		</AuthBody>
 	);
 };

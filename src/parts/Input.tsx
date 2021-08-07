@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ViewStyle, TextInputProps } from 'react-native';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 
 interface InputProps extends TextInputProps {
 	placeholder?: string;
@@ -28,7 +28,8 @@ const InputBody = styled.TextInput<InputProps>`
 `;
 
 export const SmallInput: React.FC<InputProps> = (p) => {
-	return <SmallInputbody {...p}></SmallInputbody>;
+	const theme = useTheme();
+	return <SmallInputbody {...p} placeholderTextColor={theme.textFade}></SmallInputbody>;
 };
 
 const SmallInputbody = styled(Input)`
@@ -51,6 +52,7 @@ export const RegularInput: React.FC<InputProps> = (p) => {
 const RegularInputbody = styled(Input)`
 	background-color: ${({ theme }) => theme.step1};
 	align-self: center;
+	color: ${({ theme }) => theme.text};
 	width: 100%;
 
 	height: 50px;

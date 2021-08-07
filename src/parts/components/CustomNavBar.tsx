@@ -36,12 +36,12 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 
 	return (
 		<CustomTabBarBody isIphoneX={isIphoneX} tabIndex={state.index}>
-			<HoverButton name="plus" color={theme.primary} size={45} iconSize={25} onPress={() => nav.navigate('CreateStatus')} />
+			<HoverButton name="plus" color={theme.primary} size={40} backgroundColor={theme.step1} onPress={() => nav.navigate('CreateStatus')} />
 			{/* {state.index === 3 && <HoverButton name="send" color="black" size={45} iconSize={25} />} */}
 			<TabContainer>
 				{tabs.map((v, i) => (
 					<TabButton key={i} onPress={() => nav.navigate(v.path)} activeOpacity={0.5}>
-						<Icon name={v.icon} size={25} color={Current === i ? theme.primary : theme.navBarFade} />
+						<Icon name={v.icon} size={23} color={Current === i ? theme.primary : theme.navBarFade} />
 						<Spacer size={5} />
 						<Text size={12} style={{ color: Current === i ? theme.primary : theme.navBarFade }}>
 							{v.name}

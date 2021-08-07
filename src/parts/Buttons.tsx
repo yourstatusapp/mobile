@@ -31,7 +31,7 @@ interface IconButtonProps {
 export const IconButton: React.FC<IconButtonProps> = (p) => {
 	return (
 		<IconButtonBody {...p} onPress={p.onPress}>
-			<Icon name={p.name || ''} color={p.color} size={p.iconSize || 20} />
+			<Icon name={p.name || ''} color={p.color} size={p.iconSize ? p.iconSize - 15 : p.size ? p.size - 15 : 20} />
 		</IconButtonBody>
 	);
 };
@@ -40,10 +40,10 @@ const IconButtonBody = styled(TouchableOpacity)<IconButtonProps>`
 	justify-content: center;
 	align-items: center;
 
-	${({ backgroundColor, theme, size, noPadding, iconSize, noBackground }) => `
+	${({ backgroundColor, theme, size, iconSize, noBackground }) => `
 		background-color: ${noBackground ? 'transparent' : backgroundColor || theme.step1};
-		height: ${noPadding ? iconSize : size || 20}px;
-		width: ${noPadding ? iconSize : size || 20}px;
+		height: ${iconSize ? iconSize : size ? size : 20}px;
+		width: ${iconSize ? iconSize : size ? size : 20}px;
 		border-radius: ${size || 30};
 	`}
 `;

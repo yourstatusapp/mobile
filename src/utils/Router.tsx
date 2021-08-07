@@ -12,13 +12,17 @@ import { Preloader } from './Preloader';
 import { Register } from '../screens/register/Register';
 import { Verify } from '../screens/verify/Verify';
 import { Magic } from '../screens/magic/Magic';
+import { useLinking } from './Linking';
+import { DebugView } from '../screens/debug/DebugView';
 
 const Stack = createStackNavigator();
 
 export const Router: React.FC = () => {
+	useLinking;
 	const theme = useTheme();
-	const loggedIn = usePulse(core.account.state.LOGGED_IN);
+	const loggedIn = usePulse(core.account.state.logged_in);
 	const ThemeMode = usePulse(core.ui.state.Theme);
+	const debug_enabled = usePulse(core.app.state.debug_enabled);
 
 	const barStyle = ((ThemeMode === 'light' ? 'dark' : 'light') + '-content') as StatusBarStyle;
 
@@ -27,25 +31,31 @@ export const Router: React.FC = () => {
 	const [PreloaderReady, setPreloaderReady] = React.useState(false);
 
 	// Checking for logged_in
-	core.account.state.LOGGED_IN.onNext((v) => {
-		if (v) console.log('account is loaded');
+	core.account.state.logged_in.onNext((v) => {
+		console.log('logged_in', v);
 
+		if (v) console.log('account is loaded');
 		setLoaded(true);
 	});
 
-	React.useEffect(() => {
-		console.log('Router');
-		setRouterLoaded(true);
-	}, []);
+	// React.useEffect(() => {
+	// 	console.log('Router');
+	// 	setRouterLoaded(true);
+	// }, []);
+
+	// React.useEffect(() => {
+	// 	console.log('-->', Loaded);
+	// }, [Loaded]);
 
 	// Wait for the preloader and logged_in compute state
-	if (RouterLoaded === false ?? PreloaderReady === false ?? Loaded === false) {
+	if (Loaded === false || PreloaderReady === false) {
 		return <Preloader loaded={() => setPreloaderReady(true)} />;
 	}
 
 	return (
 		<>
 			<StatusBar barStyle={barStyle} />
+			{debug_enabled && <DebugView />}
 			<NavigationContainer>
 				<Stack.Navigator
 					initialRouteName={loggedIn ? 'App' : 'Auth'}
@@ -56,7 +66,12 @@ export const Router: React.FC = () => {
 						cardOverlayEnabled: false,
 					}}
 				>
-					{!loggedIn ? (
+					<Stack.Screen name="Auth" component={Auth} />
+					<Stack.Screen name="Register" component={Register} />
+					<Stack.Screen name="Verify" component={Verify} />
+					<Stack.Screen name="Magic" component={Magic} />
+					<Stack.Screen name="App" component={AppStacks} />
+					{/* {!loggedIn ? (
 						<>
 							<Stack.Screen name="Auth" component={Auth} />
 							<Stack.Screen name="Register" component={Register} />
@@ -65,7 +80,7 @@ export const Router: React.FC = () => {
 						</>
 					) : (
 						<Stack.Screen name="App" component={AppStacks} />
-					)}
+					)} */}
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>

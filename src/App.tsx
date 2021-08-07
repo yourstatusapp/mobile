@@ -7,9 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider } from 'styled-components/native';
 import core from './core';
 import { usePulse } from '@pulsejs/react';
-import { View } from 'react-native';
-import { Text } from '@parts';
-import { NavigationContainer } from '@react-navigation/native';
 
 instance.setStorage({
 	async: true,
@@ -17,6 +14,9 @@ instance.setStorage({
 	set: AsyncStorage.setItem,
 	remove: AsyncStorage.removeItem,
 });
+
+// AsyncStorage.setItem('@storage_Key', 'false');
+console.log('localstorage logged in', AsyncStorage.getItem('_pulse_logged_in'));
 
 if (__DEV__) {
 	globalThis.AsyncStorage = AsyncStorage;

@@ -47,7 +47,7 @@ export const Account: React.FC<AccountProps> = (props) => {
 				<Row>
 					<ImageSec>
 						<Avatar src={`https://cdn.yourstatus.app/profile/${acc.id}/${profile.avatar}` || ''} size={120} />
-						<ImageIconBtn name="pencil" size={32} iconSize={18} color={theme.text} onPress={() => selectImage()} />
+						<ImageIconBtn name="pencil" size={32} color={theme.text} onPress={() => selectImage()} />
 					</ImageSec>
 					<Spacer size={25} />
 					<View>
@@ -60,6 +60,7 @@ export const Account: React.FC<AccountProps> = (props) => {
 								No username
 							</Text>
 						)}
+						<Text>{profile.location}</Text>
 						<Spacer size={20} />
 						<Row>
 							<SmallButton text="Edit" onPress={() => nav.navigate('EditProfile')} />

@@ -21,7 +21,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 			</Text>
 			<Fill />
 			{rightArea}
-			<IconButton name="settings" size={35} iconSize={22} color={theme.text} onPress={() => nav.navigate('Settings')} />
+			<IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('Settings')} />
 		</HeaderBody>
 	);
 };

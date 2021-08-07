@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components/native';
-import { Avatar, Row, Spacer, Text } from '@parts';
+import { Avatar, Fill, Row, SmallButton, Spacer, Text } from '@parts';
+import { View } from 'react-native';
 
 interface ProfileProps {
 	route: any;
@@ -18,6 +19,11 @@ export const Profile: React.FC<ProfileProps> = (props) => {
 				<Text weight="bold" size={24}>
 					{profile.username}
 				</Text>
+			</Row>
+			<Spacer size={20} />
+			<Row>
+				<SmallButton text="Add friend" />
+				<Fill />
 			</Row>
 		</ProfileBody>
 	);

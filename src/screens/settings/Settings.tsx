@@ -1,3 +1,4 @@
+import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -50,8 +51,8 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 		// nav.reset({ routes: [{ name: 'Auth' }] });
 		// nav.goBack();
 
-		props.navigation.popToTop();
-		// nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
+		// props.navigation.popToTop();
+		nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
 		setTimeout(() => {
 			account.state.ACCOUNT.reset();
 			profile.state.PROFILE.reset();
@@ -64,6 +65,8 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 		ui.state.Theme.set(currentTheme === 'light' ? 'dark' : 'light');
 	};
 
+	const toggleDebug = () => core.app.state.debug_enabled.set(!core.app.state.debug_enabled.value);
+
 	return (
 		<SettingsBody>
 			<Row>
@@ -71,7 +74,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 					Settings
 				</Text>
 				<Fill />
-				<IconButton onPress={() => toggleTheme()} name="moon" size={33} iconSize={18} color={theme.text} />
+				<IconButton onPress={() => toggleTheme()} name="moon" size={33} color={theme.text} />
 				<Spacer size={15} />
 				<TextButton size={18} weight="semi-bold" text="close" onPress={() => nav.goBack()} />
 			</Row>
@@ -79,6 +82,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			<SettingsButton text="Account" routeName="Account" icon="person" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
 			<SettingsButton text="App Info" routeName="Info" icon="info" />
+			<SettingsButton text="Toggle Debug" action={() => toggleDebug()} textColor="#4b9fff" />
 			<Spacer size={10} />
 			<SettingsButton text="Logout" action={() => logout()} textColor="#FF4B4B" />
 			<Spacer size={50} />
@@ -105,11 +109,11 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ text, routeName, icon, 
 
 	return (
 		<SettingsButtonBody onPress={() => (action ? action() : nav.navigate('Settings' + routeName))}>
-			<Text weight="semi-bold" size={14} color={textColor || theme.text}>
+			<Text weight="semi-bold" size={16} color={textColor || theme.text}>
 				{text}
 			</Text>
 			<Fill />
-			{icon && <Icon name={icon} size={20} color={theme.step4} />}
+			{icon && <Icon name={icon} size={20} color={theme.textFade} />}
 		</SettingsButtonBody>
 	);
 };
