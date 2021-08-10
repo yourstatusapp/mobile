@@ -39,9 +39,9 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsLocalNetworking</key>
-    <true/>
 		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
@@ -59,7 +59,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>usign your godam pcitures 2</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>true</string>
+	<string>We want to use your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location will be used when setting your status location</string>
 	<key>NSMicrophoneUsageDescription</key>

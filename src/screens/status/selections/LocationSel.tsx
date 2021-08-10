@@ -6,15 +6,17 @@ import { usePulse } from '@pulsejs/react';
 import core, { ActivityLocation, request } from '@core';
 import { FlatList } from 'react-native-gesture-handler';
 import { Linking, Platform, View } from 'react-native';
+import { useState } from 'react';
 
 interface LocationSelProps {}
 
 export const LocationSel: React.FC<LocationSelProps> = (props) => {
 	const {} = props;
 	const phonePerms = usePulse(core.app.state.permissions_list);
-	const [LocationName, setLocationName] = React.useState('');
-	const [Locations, setLocations] = React.useState<ActivityLocation[]>([]);
-	const [CurrentCoords, setCurrentCoords] = React.useState<number[]>([]);
+	const [LocationName, setLocationName] = useState('');
+	const [Locations, setLocations] = useState<ActivityLocation[]>([]);
+	const [CurrentCoords, setCurrentCoords] = useState<number[]>([]);
+	const [LocError, setLocError] = useState<boolean>(false);
 	const theme = useTheme();
 
 	const getLocations = async () => {
@@ -38,16 +40,17 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 		getLocations();
 
 		// Check if has permissions, otherwise request it
-		if (!phonePerms.geolocation_access) {
-			Geolocation.requestAuthorization('whenInUse').then(() => core.app.state.permissions_list.patch({ geolocation_access: true }));
-		}
-		Geolocation.watchPosition(
-			(succ) => {
-				console.log('tracking location', succ);
-			},
-			(err) => {},
-			{ enableHighAccuracy: true, interval: 5 * 1000 }
-		);
+		// if (!phonePerms.geolocation_access) {
+		Geolocation.requestAuthorization('whenInUse').then(() => core.app.state.permissions_list.patch({ geolocation_access: true }));
+		// }
+
+		// Geolocation.watchPosition(
+		// 	(succ) => {
+		// 		console.log('tracking location', succ);
+		// 	},
+		// 	(err) => {},
+		// 	{ enableHighAccuracy: true, interval: 5 * 1000 }
+		// );
 
 		Geolocation.getCurrentPosition(
 			(pos) => {
@@ -55,6 +58,7 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 				setCurrentCoords([pos.coords.latitude, pos.coords.longitude]);
 			},
 			(error) => {
+				setLocError(true);
 				// See error code charts below.
 				console.log(error.code, error.message);
 			},
@@ -62,10 +66,10 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 		);
 	}, []);
 
-	const openLocWithMaps = (lat, lng) => {
+	const openLocWithMaps = (lat: number, lng: number, name?: string) => {
 		const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
 		const latLng = `${lat},${lng}`;
-		const label = 'Your location';
+		const label = name || 'Your location';
 		const url = Platform.select({
 			ios: `${scheme}${label}@${latLng}`,
 			android: `${scheme}${latLng}(${label})`,
@@ -74,9 +78,9 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 		Linking.openURL(url || '');
 	};
 
-	// const setStatus = async () => {
-	// 	await request('post', '/act')
-	// }
+	const setStatus = async () => {
+		await request('post', '/act');
+	};
 
 	const removeLocation = async (id: string) => {
 		await request('delete', `/activity/location/${id}/remove`);
@@ -86,22 +90,28 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 
 	const renderItem = ({ item, index }) => (
 		<Locationcard key={index}>
-			<Text weight="semi-bold" size={18}>
+			<Text color={theme.text} size={16}>
 				{item.title}
 			</Text>
 			<Spacer size={5} />
-			<Text>{item.lang + ' | ' + item.long}</Text>
+
 			<Spacer size={10} />
 			<Row>
-				<SmallButton text="Delete" backgroundColor={theme.step3} onPress={() => removeLocation(item.id)} />
-			<Spacer size={10} />
-				<SmallButton text="Set status" backgroundColor={theme.step3} onPress={() => removeLocation(item.id)} />
+				<SmallButton text="Open maps" onPress={() => openLocWithMaps(item.lang, item.long, item.title)} backgroundColor={theme.step2} />
+				<Spacer size={10} />
+				<SmallButton text="Set status" backgroundColor={theme.step2} onPress={() => removeLocation(item.id)} />
+				<Spacer size={10} />
+				<SmallButton text="Delete" backgroundColor="#f87c7c" onPress={() => removeLocation(item.id)} textColor={theme.background} />
 			</Row>
 		</Locationcard>
 	);
 
+	const PreferenceButtons = [`none`, `city`, `realtime`];
+
 	return (
 		<SidePadding>
+			<Spacer size={10} />
+
 			<Text weight="bold" size={28}>
 				Locations
 			</Text>
@@ -109,13 +119,27 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 				You can set locations and when your phone detects its nearby, it will ping us.
 			</Text>
 			<Spacer size={50} />
-			<Text>Your coords: {JSON.stringify(CurrentCoords)}</Text>
-			<SmallButton text="Open maps" onPress={() => openLocWithMaps(CurrentCoords[0], CurrentCoords[1])} />
-			<Spacer size={10} />
+
+			<Row>
+				{PreferenceButtons.map((v, i) => (
+					<SmallButton text={v} key={i} style={{ marginRight: 10, borderColor: 'red', borderWidth: 2 }} />
+				))}
+			</Row>
+
+			{LocError && (
+				<Text weight="medium" color="#FF6767">
+					Cannot get location
+				</Text>
+			)}
+			{/* <Text>Your coords: {JSON.stringify(CurrentCoords)}</Text> */}
+			{/* <SmallButton text="Open maps" onPress={() => openLocWithMaps(CurrentCoords[0], CurrentCoords[1])} /> */}
+			<Spacer size={20} />
 			<SmallInput placeholder="location name" onChangeText={setLocationName} />
 			<Spacer size={10} />
 			<Row>
-				<SmallButton text="save your current location" onPress={() => createLocation()} />
+				<SmallButton text="Add location" onPress={() => createLocation()} disabled={LocError} />
+				<Spacer size={10} />
+				<SmallButton text="Set status" onPress={() => setStatus()} disabled={LocError} />
 			</Row>
 			<Spacer size={80} />
 			<Text size={20} weight="semi-bold">
@@ -127,7 +151,7 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 };
 
 const Locationcard = styled.View`
-	background-color: ${({ theme }) => theme.step1};
+	background-color: ${({ theme }) => theme.step0};
 	padding: 10px;
 	border-radius: 12px;
 	margin-bottom: 15px;

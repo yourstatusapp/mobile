@@ -64,41 +64,35 @@ const SelectionBtn = styled(TouchableOpacity)`
 const SelectionScreen: React.FC = () => {
 	const theme = useTheme();
 	const nav = useNavigation();
-	const buttons: { icon: string; text: string; route: string; color: string }[] = [
+	const buttons: { icon?: string; text: string; route: string; color: string }[] = [
 		{
-			icon: '',
-			text: 'Location',
-			route: 'locationSel',
-			color: '#29C067',
-		},
-		{
-			icon: '',
-			text: 'Availability',
-			route: 'availabilitySel',
-			color: '#FFB246',
-		},
-		{
-			icon: '',
-			text: 'Event',
-			route: 'eventSel',
-			color: '#71cae0',
+			text: `Set your custom status`,
+			route: 'customSel',
+			color: '#57d973',
 		},
 		// {
 		// 	icon: '',
-		// 	text: 'Event',
+		// 	text: 'Location Preference',
+		// 	route: 'locationSel',
+		// 	color: '#f6a265',
+		// },
+		// {
+		// 	text: 'Create a Event',
 		// 	route: 'eventSel',
-		// 	color: '#C68EFF',
+		// 	color: '#498cbc',
 		// },
 		// {
 		// 	icon: '',
-		// 	text: '',
-		// 	route: 'eventSel'
-		// }
+		// 	text: 'Availability',
+		// 	route: 'availabilitySel',
+		// 	color: '#FFB246',
+		// },
+		// {
 	];
 
 	const renderItem = ({ item, index }) => (
 		<SelectionBtn key={index} activeOpacity={0.5} onPress={() => nav.navigate(item.route)} style={{ backgroundColor: item.color }}>
-			<Text center weight="semi-bold" size={18} color="white">
+			<Text center weight="semi-bold" size={18} color={theme.background}>
 				{item.text}
 			</Text>
 		</SelectionBtn>
@@ -106,7 +100,7 @@ const SelectionScreen: React.FC = () => {
 
 	return (
 		<SidePadding style={{ flex: 1 }}>
-			<Spacer size={10} />
+			<Spacer size={20} />
 			<Text weight="bold" size={28} color={theme.text} center>
 				Choose your status
 			</Text>

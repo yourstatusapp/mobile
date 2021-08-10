@@ -91,18 +91,19 @@ const WideButtonBody = styled(TouchableOpacity)<WideButtonProps>`
 
 interface SmallButtonProps {
 	text: string;
+	textColor?: string;
 	onPress?: () => void;
 	disabled?: boolean;
 
 	backgroundColor?: string;
-	style?: React.CSSProperties;
+	style?: any;
 }
 
 export const SmallButton: React.FC<SmallButtonProps> = (p) => {
 	const theme = useTheme();
 	return (
 		<SmallButtonBody {...p} onPress={p.onPress} activeOpacity={0.5} disabled={p.disabled} style={{ ...p.style, opacity: p.disabled ? 0.5 : 1 }}>
-			<Text style={{ alignSelf: 'center' }} color={theme.text}>
+			<Text style={{ alignSelf: 'center' }} color={p.textColor || theme.text}>
 				{p.text}
 			</Text>
 		</SmallButtonBody>

@@ -4,3 +4,4 @@ export { profile } from './profile';
 export { conversations } from './conversation';
 export { message } from './message';
 export { app } from './app';
+export { notifications } from './notifications';

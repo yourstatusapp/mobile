@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
-import { request, snow2time } from '../../core/utils';
+import { FlatList, TouchableOpacity, View } from 'react-native';
+import { request } from '../../core/utils';
 import { Avatar, Fill, Header, IconButton, Row, SmallButton, Spacer, TabbarContentContainer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
+import core, { Notification } from '@core';
 
 interface FriendsProps {}
 
@@ -16,19 +17,40 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 	const [List, setList] = useState<any>(null);
 	const [PendingList, setPendingList] = useState<any[]>();
 
-	React.useEffect(() => {
-		request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends').then((c) => {
-			setList(c.friends);
-			setPendingList(c.incoming_pending);
-		});
-	}, []);
+	const replyFriendRequest = async (accept: boolean, id: string) => {
+		await request('post', '/friends/request/' + id, { data: { accept } });
+		// TODO: do logic
+		if (accept) {
+		} else {
+		}
+	};
+
+	const getNotifications = async () => {
+		const a = await request<Notification[]>('get', '/notifications');
+		core.notifications.collection.collect(a, 'default');
+		core.notifications.state.new_notification.set(!!a.filter((v) => !v.read_at).length);
+	};
 
 	const renderItem = ({ item, index }) => (
 		<ProfileRenderItem key={index} onPress={() => nav.navigate('Profile', item)}>
 			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} />
-			<Spacer size={10} />
-			<Text weight="bold">{item.username}</Text>
-			<Text weight="bold"></Text>
+			<Spacer size={15} />
+			<View style={{ flex: 1 }}>
+				<Text weight="medium" size={18}>
+					{item.username}
+				</Text>
+				{item?.status && (
+					<StatusBox>
+						<Spacer size={5} />
+						<View style={{ backgroundColor: theme.textFade, borderRadius: 4, padding: 5 }}>
+							<Text size={13} color={theme.background} style={{}}>
+								{item.status.data.title}
+							</Text>
+						</View>
+					</StatusBox>
+				)}
+			</View>
+			{/* <Text weight="bold"></Text> */}
 		</ProfileRenderItem>
 	);
 
@@ -45,13 +67,13 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 		</Row>
 	);
 
-	const replyFriendRequest = async (accept: boolean, id: string) => {
-		await request('post', '/friends/request/' + id, { data: { accept } });
-		// TODO: do logic
-		if (accept) {
-		} else {
-		}
-	};
+	React.useEffect(() => {
+		request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends').then((c) => {
+			setList(c.friends);
+			setPendingList(c.incoming_pending);
+		});
+		getNotifications();
+	}, []);
 
 	return (
 		<TabbarContentContainer noSidePadding>
@@ -83,7 +105,12 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 const ProfileRenderItem = styled(TouchableOpacity)`
 	flex-direction: row;
 	align-items: center;
+	/* justify-content: center; */
 	padding: 10px 15px;
 	border-bottom-color: ${({ theme }) => theme.step1};
 	border-bottom-width: 1px;
+`;
+
+const StatusBox = styled.View`
+	align-items: flex-start;
 `;

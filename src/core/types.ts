@@ -40,3 +40,25 @@ export interface ActivityLocation {
 	long: number;
 	title: string;
 }
+
+export interface Notification {
+	id: string;
+	type: string;
+	owner: string;
+	content: any;
+	deleted_at: string;
+	read_at: string;
+}
+
+export interface Friend {
+	account_id: string;
+	username: string;
+	avatar: string;
+	status?: {
+		id: string;
+		type: number;
+		event_type: number;
+		account_id: string;
+		data: any;
+	}
+}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components/native';
 import { Fill, Row, Spacer, Text, TopHeading } from '@parts';
-import { Switch, View } from 'react-native';
+import { Switch, View, Appearance } from 'react-native';
 import { usePulse } from '@pulsejs/react';
 import core from '@core';
 
@@ -18,7 +18,7 @@ export const SettingsAppearance: React.FC<SettingsAppearanceProps> = (props) => 
 		core.ui.state.Theme.set(t === 'dark' ? 'light' : 'dark');
 	};
 	const systemThemeToggle = () => {
-		core.app.state.use_system_theme.set(!useSystemTheme)
+		core.app.state.use_system_theme.set(!useSystemTheme);
 	};
 
 	return (

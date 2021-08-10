@@ -22,7 +22,7 @@ export const Messages: React.FC<MessagesProps> = (a) => {
 	};
 
 	React.useEffect(() => {
-		getMessages();
+		// getMessages();
 	}, []);
 
 	const renderItem = ({ item, index }) => (
@@ -38,15 +38,18 @@ export const Messages: React.FC<MessagesProps> = (a) => {
 				</Text>
 			</View>
 			<Fill />
-			<IconButton name="eclipse" color={theme.step4} iconSize={35}  noBackground />
+			<IconButton name="eclipse" color={theme.step4} iconSize={35} noBackground />
 		</ConversationEntryBody>
 	);
 
 	return (
 		<TabbarContentContainer noSidePadding>
 			<Header title="Messages" padding />
-			{/* <Spacer size={20} /> */}
-			<FlatList data={Convs} renderItem={renderItem} />
+			<Spacer size={50} />
+			<Text center weight="semi-bold" size={20} color={theme.text}>
+				Sending messages coming soon...
+			</Text>
+			{/* <FlatList data={Convs} renderItem={renderItem} /> */}
 		</TabbarContentContainer>
 	);
 };

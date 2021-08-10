@@ -1,7 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Text, Fill, IconButton } from '../';
+import { Text, Fill, IconButton, Spacer } from '@parts';
+import { usePulse } from '@pulsejs/react';
+import core from '@core';
 
 interface HeaderProps {
 	title?: string;
@@ -13,6 +15,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 	const { title, rightArea } = props;
 	const nav = useNavigation();
 	const theme = useTheme();
+	const new_notification = usePulse(core.notifications.state.new_notification);
 
 	return (
 		<HeaderBody {...props}>
@@ -21,6 +24,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
 			</Text>
 			<Fill />
 			{rightArea}
+			<IconButton name="bell" size={35} color={new_notification ? theme.primary : theme.textFade} onPress={() => nav.navigate('notifications')} />
+			<Spacer size={10} />
 			<IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('Settings')} />
 		</HeaderBody>
 	);

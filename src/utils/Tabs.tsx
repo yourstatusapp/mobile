@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import * as React from 'react';
-import { Animated } from 'react-native';
 import { useTheme } from 'styled-components';
+
 import { CustomNavBar } from '../parts/components/CustomNavBar';
 import { Account } from '../screens/account/Account';
 import { Conversation } from '../screens/conversation/Conversation';
@@ -17,20 +17,14 @@ import { Search } from '../screens/search/Search';
 import { Settings } from '../screens/settings/Settings';
 import { Status } from '../screens/status/Status';
 import { Newfriends } from '../screens/newfriends/Newfriends';
-import { useLinking } from './Linking';
+import { Notifications } from '../screens/notifications/Notifications';
 
 const Tab = createBottomTabNavigator();
 export const AppStack = createStackNavigator();
 
 export const AppStacks: React.FC = () => {
 	const theme = useTheme();
-	// useLinking;
-	// return (
-	// 	<View style={{ flex: 1 }}>
-	// 		<Spacer size={43} />
-	// 		<Text color="black">dsadsa</Text>
-	// 	</View>
-	// );
+
 	return (
 		<AppStack.Navigator
 			initialRouteName="AppTabs"
@@ -59,16 +53,17 @@ export const AppStacks: React.FC = () => {
 
 export const Tabs: React.FC = () => {
 	const theme = useTheme();
-	const sceneContainerStyle = { backgroundColor: 'red' };
+	const sceneContainerStyle = { backgroundColor: theme.background };
 
 	return (
 		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} tabBarOptions={{ style: { opacity: 0 } }}>
-			<Tab.Screen name="messages" component={Messages} options={{}} />
+			<Tab.Screen name="messages" component={Messages} />
 			<Tab.Screen name="friends" component={Friends} />
 			<Tab.Screen name="discovery" component={Discovery} />
 			<Tab.Screen name="account" component={Account} />
 			<Tab.Screen name="conversation" component={Conversation} />
 			<Tab.Screen name="newfriends" component={Newfriends} />
+			<AppStack.Screen name="notifications" component={Notifications} />
 		</Tab.Navigator>
 	);
 };

@@ -8,15 +8,15 @@ import { ThemeProvider } from 'styled-components/native';
 import core from './core';
 import { usePulse } from '@pulsejs/react';
 
+// import * as Notifications from './utils/Notifications';
+// Notifications;
+
 instance.setStorage({
 	async: true,
 	get: AsyncStorage.getItem,
 	set: AsyncStorage.setItem,
 	remove: AsyncStorage.removeItem,
 });
-
-// AsyncStorage.setItem('@storage_Key', 'false');
-console.log('localstorage logged in', AsyncStorage.getItem('_pulse_logged_in'));
 
 if (__DEV__) {
 	globalThis.AsyncStorage = AsyncStorage;
