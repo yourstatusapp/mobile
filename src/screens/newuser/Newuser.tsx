@@ -1,10 +1,10 @@
 import core, { request } from '@core';
-import { Fill, RegularInput, Row, SidePadding, Spacer, Text, WideButton } from '@parts';
+import { Fill, IconButton, RegularInput, Row, SidePadding, Spacer, Text, WideButton } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
 import { useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Linking, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 
 interface NewuserProps {}
@@ -79,8 +79,19 @@ export const Newuser: React.FC<NewuserProps> = (props) => {
 						{!Loaded && <ActivityIndicator style={{ position: 'absolute', right: 20 }} />}
 					</InputCont>
 
+					<Spacer size={70} />
+					<FloatingBox>
+						<Text color="#FF6767" weight="bold" size={14}>
+							THIS VERSION OF THIS APP IS NOT A FINAL VERSION AND IS EARLY STAGE
+						</Text>
+						<Spacer size={10} />
+						<Text color={theme.text}>For future updates follow @yourstatusapp on Twitter</Text>
+						<Spacer size={30} />
+						<IconButton name="twitter" color="#64bdf1" backgroundColor="#ffc9c9" size={45} onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
+					</FloatingBox>
+
 					<Fill />
-					<WideButton text="Save" onPress={() => saveInformation()} />
+					<WideButton text="Updates and continue" disabled={!Username} onPress={() => saveInformation()} />
 					<Spacer size={30} />
 				</SidePadding>
 			</KeyboardAvoidingView>
@@ -99,4 +110,12 @@ const InputCont = styled(Row)`
 
 const UsernameField = styled(RegularInput)<{ error: boolean; loaded: boolean; usernameValue: string }>`
 	border: solid 2px ${({ theme, error, loaded, usernameValue }) => (usernameValue ? (loaded ? (error ? '#FF4141' : '#8acd68') : theme.step1) : theme.step1)};
+`;
+
+const FloatingBox = styled.View`
+	/* background-color: ${({ theme }) => theme.step0}; */
+	padding: 15px;
+	border-radius: 15px;
+	border: solid 1px #ffa4a4;
+	background-color: #ffe6e6;
 `;

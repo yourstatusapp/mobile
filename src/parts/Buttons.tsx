@@ -67,11 +67,12 @@ interface WideButtonProps {
 	text?: string;
 	textColor?: string;
 	backgroundColor?: string;
+	disabled?: boolean;
 }
 
 export const WideButton: React.FC<WideButtonProps> = (p) => {
 	return (
-		<WideButtonBody {...p} onPress={p.onPress}>
+		<WideButtonBody {...p} onPress={p.onPress} disabled={p.disabled} style={{ opacity: p.disabled ? 0.5 : 1 }}>
 			<Text weight="semi-bold" color={p.textColor}>
 				{p.text}
 			</Text>

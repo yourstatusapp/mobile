@@ -1,3 +1,4 @@
+import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react';
@@ -5,11 +6,12 @@ import { KeyboardAvoidingView, View, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 import core from '../../core';
-import { request } from '../../core/utils';
+import { baseURL, request } from '../../core/utils';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, WideButton } from '../../parts/Buttons';
 import { Input } from '../../parts/Input';
 import { useLinking } from '../../utils/Linking';
+import RNPickerSelect from 'react-native-picker-select';
 
 export const Auth: React.FC = () => {
 	const [Email, setEmail] = useState('');
@@ -33,6 +35,11 @@ export const Auth: React.FC = () => {
 		placeholderTextColor: theme.step4,
 		autoCorrect: false,
 		autoCompleteType: 'off',
+	};
+
+	const api = usePulse(baseURL);
+	const selectApi = (s: string) => {
+		baseURL.set(s);
 	};
 
 	const login = async () => {
@@ -96,6 +103,14 @@ export const Auth: React.FC = () => {
 					</Text>
 				</Row>
 				<Fill />
+				<RNPickerSelect
+					pickerProps={{ dropdownIconColor: 'red' }}
+					onValueChange={(value) => selectApi(value)}
+					items={[
+						{ label: 'Production', value: 'https://api.yourstatus.app', color: '#58a355' },
+						{ label: 'Development', value: 'http://localhost:8080', color: '#FF8282' },
+					]}
+				/>
 			</KeyboardAvoidingView>
 		</AuthBody>
 	);

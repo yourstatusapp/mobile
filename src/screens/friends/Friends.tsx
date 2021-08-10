@@ -96,7 +96,6 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 					<FlatList data={PendingList} renderItem={renderItem1} style={{ paddingTop: 20, flexGrow: 0 }} scrollEnabled={false} />
 				</>
 			)}
-			<Spacer size={20} />
 			<FlatList data={List} renderItem={renderItem} />
 		</TabbarContentContainer>
 	);

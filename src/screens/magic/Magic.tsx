@@ -29,13 +29,13 @@ export const Magic: React.FC<MagicProps> = (props) => {
 
 		core.account.state.ACCOUNT.set(a.account);
 		core.profile.state.PROFILE.set(a.profile);
-	
 
 		if (new_account === false) {
 			nav.navigate('App');
 		} else {
+			nav.reset({ index: 0, routes: [{ name: 'App' }] });
 			setTimeout(() => {
-				nav.reset({ index: 0, routes: [{ name: 'App' }] });
+				nav.navigate('NewUser');
 			}, 1000);
 		}
 	};
