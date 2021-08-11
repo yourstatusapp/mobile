@@ -54,11 +54,28 @@ export interface Friend {
 	account_id: string;
 	username: string;
 	avatar: string;
-	status?: {
-		id: string;
-		type: number;
-		event_type: number;
-		account_id: string;
-		data: any;
-	}
+	status?: Status;
+}
+
+export interface Status {
+	id: string;
+	type: number;
+	event_type: number;
+	account_id: string;
+	data: any;
+}
+
+export interface Collection {
+	id: string;
+	title: string;
+	private: boolean;
+	account_id: string;
+	description: string;
+	data: CollectionData[];
+}
+export interface CollectionData {
+	id: string;
+	collection: string;
+	type: number;
+	content: string;
 }

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { request } from '../../core/utils';
-import { Avatar, Fill, Header, IconButton, Row, SmallButton, Spacer, TabbarContentContainer, Text } from '@parts';
+import { Avatar, Fill, Header, IconButton, Row, SmallButton, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
 import core, { Notification } from '@core';
 
@@ -39,7 +39,7 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 				<Text weight="medium" size={18}>
 					{item.username}
 				</Text>
-				{item?.status && (
+				{/* {item?.status && (
 					<StatusBox>
 						<Spacer size={5} />
 						<View style={{ backgroundColor: theme.textFade, borderRadius: 4, padding: 5 }}>
@@ -48,7 +48,8 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 							</Text>
 						</View>
 					</StatusBox>
-				)}
+				)} */}
+				{item?.status && <StatusBox {...item.status} />}
 			</View>
 			{/* <Text weight="bold"></Text> */}
 		</ProfileRenderItem>
@@ -110,6 +111,6 @@ const ProfileRenderItem = styled(TouchableOpacity)`
 	border-bottom-width: 1px;
 `;
 
-const StatusBox = styled.View`
-	align-items: flex-start;
-`;
+// const StatusBox = styled.View`
+// 	align-items: flex-start;
+// `;

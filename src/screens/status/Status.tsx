@@ -1,9 +1,12 @@
-import { Row, Spacer, Text, TextButton } from '@parts';
+import core from '@core';
+import { Fill, Row, SmallButton, Spacer, StatusBox, Text, TextButton } from '@parts';
+import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
+import { request, snow2time } from '../../core/utils';
 import { AvailabilitySel } from './selections/AvailabilitySel';
 import { CustomSel } from './selections/CustomSel';
 import { EventSel } from './selections/EventSel';
@@ -64,6 +67,8 @@ const SelectionBtn = styled(TouchableOpacity)`
 const SelectionScreen: React.FC = () => {
 	const theme = useTheme();
 	const nav = useNavigation();
+	const myStatus = usePulse(core.status.state.my_status);
+
 	const buttons: { icon?: string; text: string; route: string; color: string }[] = [
 		{
 			text: `Set your custom status`,
@@ -90,6 +95,11 @@ const SelectionScreen: React.FC = () => {
 		// {
 	];
 
+	const endStatus = async (id: string) => {
+		await request('delete', `/status/${id}/end`);
+		core.status.state.my_status.reset();
+	};
+
 	const renderItem = ({ item, index }) => (
 		<SelectionBtn key={index} activeOpacity={0.5} onPress={() => nav.navigate(item.route)} style={{ backgroundColor: item.color }}>
 			<Text center weight="semi-bold" size={18} color={theme.background}>
@@ -108,6 +118,27 @@ const SelectionScreen: React.FC = () => {
 				You can choose a status how you want to share your friends what you're doing or you want to do.
 			</Text>
 			<Spacer size={20} />
+			{myStatus.id && (
+				<CurrentStatus>
+					<Row>
+						<Text weight="semi-bold" size={18}>
+							Current status:
+						</Text>
+						{/* <Spacer size={5} /> */}
+						<Fill />
+
+						{myStatus?.data && <StatusBox {...myStatus} />}
+					</Row>
+					<Spacer size={15} />
+					<Row>
+						<Text size={14} color={theme.textFade}>
+							{snow2time(myStatus?.id || '').toLocaleString()}
+						</Text>
+						<Fill />
+						<SmallButton text="End status" onPress={() => endStatus(myStatus.id)} textColor="#FF7878" />
+					</Row>
+				</CurrentStatus>
+			)}
 
 			<FlatList
 				data={buttons}
@@ -120,3 +151,9 @@ const SelectionScreen: React.FC = () => {
 		</SidePadding>
 	);
 };
+
+const CurrentStatus = styled.View`
+	background-color: ${({ theme }) => theme.step0};
+	padding: 15px;
+	border-radius: 12px;
+`;

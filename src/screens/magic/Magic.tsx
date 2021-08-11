@@ -21,7 +21,7 @@ export const Magic: React.FC<MagicProps> = (props) => {
 	const nav = useNavigation();
 
 	const magicAuth = async (code: string, new_account: boolean) => {
-		const a = await request<{ account: any; profile: any }>('post', '/auth/magic/verify', { data: { code } });
+		const a = await request<{ account: any; profile: any; status: any }>('post', '/auth/magic/verify', { data: { code } });
 		if (!a) {
 			setTimeout(() => nav.goBack(), 1000);
 			return;
@@ -29,8 +29,9 @@ export const Magic: React.FC<MagicProps> = (props) => {
 
 		core.account.state.ACCOUNT.set(a.account);
 		core.profile.state.PROFILE.set(a.profile);
+		core.status.state.my_status.set(a.status);
 
-		if (new_account === false) {
+		if (!new_account) {
 			nav.navigate('App');
 		} else {
 			nav.reset({ index: 0, routes: [{ name: 'App' }] });

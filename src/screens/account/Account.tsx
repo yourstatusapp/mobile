@@ -38,6 +38,13 @@ export const Account: React.FC<AccountProps> = (props) => {
 		});
 	};
 
+	const reloadData = async () => {
+		const a = await request<{ account: any; profile: any; status: any }>('get', '/account');
+		core.account.state.ACCOUNT.set(a.account);
+		core.profile.state.PROFILE.set(a.profile);
+		core.status.state.my_status.set(a.status);
+	};
+
 	return (
 		<TabbarContentContainer noSidePadding>
 			<Header title="Account" padding />
@@ -67,6 +74,17 @@ export const Account: React.FC<AccountProps> = (props) => {
 						</Row>
 					</View>
 				</Row>
+				<Spacer size={50} />
+				<Row>
+					<SmallButton text="Reload account" onPress={() => reloadData()} />
+				</Row>
+				<Spacer size={50} />
+				<SmallButton text="Open Camera" onPress={() => nav.navigate('Camera')} />
+				<Spacer size={15} />
+				<SmallButton text="Open Profile" onPress={() => nav.navigate('Profile', profile)} />
+				<Spacer size={15} />
+				{/* <ImagePicker /> */}
+				{/* <SmallButton text="Add photo to collection" onPress={() => nav.navigate('')} /> */}
 			</SidePadding>
 		</TabbarContentContainer>
 	);

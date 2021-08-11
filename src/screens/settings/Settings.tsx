@@ -109,7 +109,7 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ text, routeName, icon, 
 
 	return (
 		<SettingsButtonBody onPress={() => (action ? action() : nav.navigate('Settings' + routeName))}>
-			<Text weight="semi-bold" size={16} color={textColor || theme.text}>
+			<Text weight="medium" size={16} color={textColor || theme.text}>
 				{text}
 			</Text>
 			<Fill />
@@ -121,7 +121,7 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ text, routeName, icon, 
 const SettingsButtonBody = styled(TouchableOpacity)`
 	background-color: ${({ theme }) => theme.step1};
 	border-radius: 8px;
-	height: 45px;
+	height: 50px;
 	padding: 0px 15px;
 	align-items: center;
 	margin-bottom: 10px;

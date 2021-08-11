@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider } from 'styled-components/native';
 import core from './core';
 import { usePulse } from '@pulsejs/react';
+import { CustomAlert } from './parts/alert/CustomAlert';
 
 // import * as Notifications from './utils/Notifications';
 // Notifications;
@@ -28,7 +29,9 @@ export const App: React.FC = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Router />
+			<CustomAlert>
+				<Router />
+			</CustomAlert>
 		</ThemeProvider>
 	);
 };

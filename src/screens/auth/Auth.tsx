@@ -40,6 +40,7 @@ export const Auth: React.FC = () => {
 	const api = usePulse(baseURL);
 	const selectApi = (s: string) => {
 		baseURL.set(s);
+		console.log('base url change to => ', s);
 	};
 
 	const login = async () => {
@@ -108,7 +109,8 @@ export const Auth: React.FC = () => {
 					onValueChange={(value) => selectApi(value)}
 					items={[
 						{ label: 'Production', value: 'https://api.yourstatus.app', color: '#58a355' },
-						{ label: 'Development', value: 'http://localhost:8080', color: '#FF8282' },
+						{ label: 'Development', value: 'http://localhost:8080', color: '#c7cd6d' },
+						{ label: 'Local', value: 'https://88b2ae9fc63a.ngrok.io', color: '#FF8282' },
 					]}
 				/>
 			</KeyboardAvoidingView>

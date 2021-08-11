@@ -24,11 +24,13 @@ export const Preloader: React.FC<PreloaderProps> = (props) => {
 			return;
 		}
 
-		const res = await request<{ account: any; profile: any }>('get', '/account');
+		const res = await request<{ account: any; profile: any; status: any }>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved');
 
 		core.account.state.ACCOUNT.set(res.account);
 		core.profile.state.PROFILE.set(res.profile);
+		core.status.state.my_status.set(res.status);
+		
 		// } catch (error) {
 		// 	// core.account.state.logged_in.set(false)
 		// }

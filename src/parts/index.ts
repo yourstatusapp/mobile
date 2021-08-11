@@ -6,3 +6,4 @@ export * from './Buttons';
 export * from './icons/Icon';
 
 export * from './components/Header';
+export * from './components/Status';

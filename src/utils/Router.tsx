@@ -14,6 +14,8 @@ import { Verify } from '../screens/verify/Verify';
 import { Magic } from '../screens/magic/Magic';
 import { useLinking } from './Linking';
 import { DebugView } from '../screens/debug/DebugView';
+import { Camera } from '../screens/camera/Camera';
+import { Newpost } from '../screens/newpost/Newpost';
 
 const Stack = createStackNavigator();
 
@@ -62,6 +64,8 @@ export const Router: React.FC = () => {
 					<Stack.Screen name="Verify" component={Verify} />
 					<Stack.Screen name="Magic" component={Magic} />
 					<Stack.Screen name="App" component={AppStacks} />
+					<Stack.Screen name="Camera" component={Camera} />
+					<Stack.Screen name="Newpost" component={Newpost} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>
