@@ -16,6 +16,7 @@ import { useLinking } from './Linking';
 import { DebugView } from '../screens/debug/DebugView';
 import { Camera } from '../screens/camera/Camera';
 import { Newpost } from '../screens/newpost/Newpost';
+import { useEffect } from 'react';
 
 const Stack = createStackNavigator();
 
@@ -37,11 +38,22 @@ export const Router: React.FC = () => {
 		// console.log('logged_in', v);
 
 		// if (v) console.log('account is loaded');
+		console.log('next');
+
 		setLoaded(true);
 	});
 
+	// React.useEffect(() => {
+	// 	console.log('loggedIn => ', loggedIn);
+	// 	setLoaded(true);
+	// }, [loggedIn]);
+
+	useEffect(() => {
+		setTimeout(() => setLoaded(true), 2000);
+	}, []);
+
 	// Wait for the preloader and logged_in compute state
-	if (Loaded === false || PreloaderReady === false) {
+	if (Loaded === false ?? PreloaderReady === false) {
 		return <Preloader loaded={() => setPreloaderReady(true)} />;
 	}
 

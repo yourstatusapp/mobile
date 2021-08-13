@@ -3,13 +3,15 @@ export interface Account {
 	email: string;
 }
 
-export interface Profile {
+export interface ProfileType {
 	id: string;
 	username: string;
 	location: string;
 	gender: string;
 	avatar: string;
 	date_of_birth: string;
+	collections?: Collection[];
+	status?: Status;
 }
 
 export interface Conversation {
@@ -73,6 +75,7 @@ export interface Collection {
 	description: string;
 	data: CollectionData[];
 }
+
 export interface CollectionData {
 	id: string;
 	collection: string;

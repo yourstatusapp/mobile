@@ -30,7 +30,9 @@ export const Preloader: React.FC<PreloaderProps> = (props) => {
 		core.account.state.ACCOUNT.set(res.account);
 		core.profile.state.PROFILE.set(res.profile);
 		core.status.state.my_status.set(res.status);
-		
+
+		props.loaded();
+
 		// } catch (error) {
 		// 	// core.account.state.logged_in.set(false)
 		// }

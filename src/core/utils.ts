@@ -14,8 +14,8 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 			method,
 			data: x?.data,
 			headers: {
-				'Content-Type': 'application/json',
 				...x?.headers,
+				'Content-Type': 'application/json',
 			},
 			url: baseURL.value + path,
 			withCredentials: true,

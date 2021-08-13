@@ -1,10 +1,11 @@
 import { Collection, request } from '@core';
-import { Fill, SidePadding, SmallButton, Spacer, TextButton, WideButton } from '@parts';
+import { Fill, SidePadding, SmallButton, Spacer, Text, TextButton, WideButton } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
 import { useState } from 'react';
 import { Platform } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { FlatList } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 
 interface NewpostProps {
@@ -41,7 +42,7 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 		});
 		fd.append('type', 0);
 
-		await request('post', `/collection/${SelectColl?.id}/add`, { data: fd });
+		await request('post', `/collection/${SelectColl?.id}/add`, { headers: { 'Content-Type': 'multipart/form-data;' }, data: fd });
 
 		nav.goBack();
 	};
@@ -55,11 +56,24 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 	return (
 		<NewpostBody>
 			<FastImage source={{ uri: Image || '' }} style={{ height: 400, width: '100%' }} resizeMode="stretch" />
-
 			<SidePadding>
-				{Coll.map((item, index) => (
-					<SmallButton text={item.title} key={index} onPress={() => setSelectColl(item)} textColor={item.id === SelectColl?.id ? theme.primary : theme.text} />
-				))}
+				<Spacer size={20} />
+				<Text>Select collection</Text>
+				<Spacer size={10} />
+				<FlatList
+					data={Coll}
+					horizontal
+					style={{ flexGrow: 0 }}
+					renderItem={({ item, index }) => (
+						<SmallButton
+							text={item.title}
+							key={index}
+							onPress={() => setSelectColl(item)}
+							textColor={item.id === SelectColl?.id ? theme.primary : theme.text}
+							style={{ marginRight: 10 }}
+						/>
+					)}
+				/>
 				<Fill />
 				<WideButton text="Upload" onPress={() => createPost()} />
 				<Spacer size={30} />
