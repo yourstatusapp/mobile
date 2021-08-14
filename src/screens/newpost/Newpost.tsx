@@ -1,5 +1,5 @@
 import { Collection, request } from '@core';
-import { Fill, SidePadding, SmallButton, Spacer, Text, TextButton, WideButton } from '@parts';
+import { Fill, IconButton, SidePadding, SmallButton, Spacer, Text, TextButton, WideButton } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
 import { useState } from 'react';
@@ -21,12 +21,11 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 	const [Image, setImage] = useState('');
-	const [Coll, setColl] = useState<Collection[]>([]);
+	const [Coll, setColl] = useState<Collection[]>();
 	const [SelectColl, setSelectColl] = useState<Collection>();
 
 	const getMyCollections = async () => {
 		const c = await request<Collection[]>('get', '/collection');
-
 		setColl(c);
 	};
 
@@ -55,27 +54,36 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 
 	return (
 		<NewpostBody>
-			<FastImage source={{ uri: Image || '' }} style={{ height: 400, width: '100%' }} resizeMode="stretch" />
+			<Spacer size={40} />
+			<IconButton
+				name="arrow-big"
+				size={40}
+				backgroundColor={theme.textFade}
+				color="black"
+				style={{ transform: [{ rotate: '180deg' }], position: 'absolute', top: 55, zIndex: 15, left: 10 }}
+				onPress={() => nav.goBack()}
+			/>
+			<FastImage source={{ uri: Image || '' }} style={{ height: 400, width: '100%' }} resizeMode="contain" />
 			<SidePadding>
 				<Spacer size={20} />
-				<Text>Select collection</Text>
+				<Text weight="semi-bold" size={20}>
+					Select collection
+				</Text>
 				<Spacer size={10} />
-				<FlatList
-					data={Coll}
-					horizontal
-					style={{ flexGrow: 0 }}
-					renderItem={({ item, index }) => (
-						<SmallButton
-							text={item.title}
-							key={index}
-							onPress={() => setSelectColl(item)}
-							textColor={item.id === SelectColl?.id ? theme.primary : theme.text}
-							style={{ marginRight: 10 }}
-						/>
-					)}
-				/>
+				<CollsContainer>
+					{!!Coll?.length &&
+						Coll.map((item, index) => (
+							<SmallButton
+								text={item.title}
+								key={index}
+								onPress={() => setSelectColl(item)}
+								textColor={item.id === SelectColl?.id ? theme.primary : theme.text}
+								style={{ marginRight: 10, marginBottom: 10 }}
+							/>
+						))}
+				</CollsContainer>
 				<Fill />
-				<WideButton text="Upload" onPress={() => createPost()} />
+				<WideButton text="Upload" onPress={() => createPost()} disabled={!SelectColl} />
 				<Spacer size={30} />
 			</SidePadding>
 		</NewpostBody>
@@ -84,4 +92,8 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 
 const NewpostBody = styled.View`
 	flex: 1;
+`;
+const CollsContainer = styled.View`
+	flex-direction: row;
+	flex-wrap: wrap;
 `;

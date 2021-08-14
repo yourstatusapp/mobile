@@ -13,10 +13,9 @@ export const Camera: React.FC<CameraProp> = (props) => {
 	const {} = props;
 	const nav = useNavigation();
 	const cameraRef = React.useRef<any>();
-	const [Flash, setFlash] = useState<'off' | 'on' | 'auto'>('off');
+	const [Flash, setFlash] = useState<'off' | 'on' | 'auto' | 'torch'>('off');
 	const [SelectedCam, setSelectedCam] = useState<'front' | 'back'>('back');
 	const [LastTaken, setLastTaken] = useState();
-	const [FullScreenPreview, setFullScreenPreview] = useState(false);
 
 	const takePicture = async (camera: any) => {
 		console.log(camera);
@@ -34,7 +33,7 @@ export const Camera: React.FC<CameraProp> = (props) => {
 
 	return (
 		<CameraBody>
-			<RNCamera style={{ flex: 1 }} type={SelectedCam} ref={cameraRef} flashMode={Flash}>
+			<RNCamera style={{ flex: 1 }} type={SelectedCam} ref={cameraRef} flashMode={Flash} useNativeZoom={true} maxZoom={1}>
 				{({ camera }) => {
 					return (
 						<OverLay>
@@ -52,7 +51,7 @@ export const Camera: React.FC<CameraProp> = (props) => {
 								<ActionBtn onPress={() => takePicture(camera)} />
 
 								<Spacer size={40} />
-								<IconButton name="flashlight" size={40} color={Flash === 'off' ? 'gray' : 'white'} noBackground onPress={() => setFlash(Flash === 'off' ? 'auto' : 'off')} />
+								<IconButton name="flashlight" size={40} color={Flash === 'off' ? 'gray' : 'white'} noBackground onPress={() => setFlash(Flash === 'off' ? 'torch' : 'off')} />
 							</ControlBox>
 						</OverLay>
 					);

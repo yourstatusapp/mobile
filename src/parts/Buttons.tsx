@@ -26,12 +26,13 @@ interface IconButtonProps {
 	noBackground?: boolean;
 
 	style?: StyleProp<ViewStyle>;
+	disabled?: boolean;
 }
 
 export const IconButton: React.FC<IconButtonProps> = (p) => {
 	return (
-		<IconButtonBody {...p} onPress={p.onPress}>
-			<Icon name={p.name || ''} color={p.color} size={p.iconSize ? p.iconSize - 15 : p.size ? p.size - 15 : 20} />
+		<IconButtonBody style={{ opacity: p.disabled ? 0.4 : 1 }}  onPress={p.onPress} disabled={p.disabled} {...p}>
+			<Icon name={p.name || ''} color={p.color} size={p.iconSize ? p.iconSize - 17 : p.size ? p.size - 17 : 17} />
 		</IconButtonBody>
 	);
 };
@@ -104,7 +105,7 @@ export const SmallButton: React.FC<SmallButtonProps> = (p) => {
 	const theme = useTheme();
 	return (
 		<SmallButtonBody {...p} onPress={p.onPress} activeOpacity={0.5} disabled={p.disabled} style={{ ...p.style, opacity: p.disabled ? 0.5 : 1 }}>
-			<Text style={{ alignSelf: 'center' }} color={p.textColor || theme.text}>
+			<Text style={{ alignSelf: 'center' }} color={p.textColor || theme.text} weight="medium">
 				{p.text}
 			</Text>
 		</SmallButtonBody>

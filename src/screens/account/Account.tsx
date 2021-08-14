@@ -1,11 +1,12 @@
 import { usePulse } from '@pulsejs/react';
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Header, Spacer, TabbarContentContainer, Avatar, IconButton, SmallButton, Row, SidePadding, Text } from '@parts';
+import { Header, Spacer, TabbarContentContainer, Avatar, IconButton, SmallButton, Row, SidePadding, Text, Fill, Icon } from '@parts';
 import ImagePicker from 'react-native-image-crop-picker';
 import core, { request } from '@core';
 import { Platform, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface AccountProps {}
 
@@ -71,18 +72,34 @@ export const Account: React.FC<AccountProps> = (props) => {
 						<Spacer size={20} />
 						<Row>
 							<SmallButton text="Edit" onPress={() => nav.navigate('EditProfile')} />
+							<Spacer size={10} />
+							<SmallButton text="Open Profile" onPress={() => nav.navigate('Profile', { profile, mine: true })} />
 						</Row>
 					</View>
 				</Row>
 				<Spacer size={50} />
 				<Row>
-					<SmallButton text="Reload account" onPress={() => reloadData()} />
+					<TouchableOpacity
+						style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: theme.step1, padding: 12, borderRadius: 10 }}
+						onPress={() => nav.navigate('Camera')}
+					>
+						<Text weight="semi-bold" size={16} color={theme.text}>
+							Create post
+						</Text>
+						<Spacer size={10} />
+						<Icon name="camera" size={18} color={theme.textFade} />
+					</TouchableOpacity>
+					<Fill />
 				</Row>
-				<Spacer size={50} />
+
+				{/* <Row>
+					<SmallButton text="Reload account" onPress={() => reloadData()} />
+				</Row> */}
+				{/* <Spacer size={50} />
 				<SmallButton text="Open Camera" onPress={() => nav.navigate('Camera')} />
 				<Spacer size={15} />
-				<SmallButton text="Open Profile" onPress={() => nav.navigate('Profile', profile)} />
-				<Spacer size={15} />
+				<SmallButton text="Open Profile" onPress={() => nav.navigate('Profile', { profile, mine: true })} />
+				<Spacer size={15} /> */}
 				{/* <ImagePicker /> */}
 				{/* <SmallButton text="Add photo to collection" onPress={() => nav.navigate('')} /> */}
 			</SidePadding>

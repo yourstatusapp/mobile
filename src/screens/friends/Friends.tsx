@@ -5,7 +5,8 @@ import { FlatList, TouchableOpacity, View } from 'react-native';
 import { request } from '../../core/utils';
 import { Avatar, Fill, Header, IconButton, Row, SmallButton, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
-import core, { Notification } from '@core';
+import core from '@core';
+import { Activity } from '../../core/modules/accounts';
 
 interface FriendsProps {}
 
@@ -26,13 +27,13 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 	};
 
 	const getNotifications = async () => {
-		const a = await request<Notification[]>('get', '/notifications');
-		core.notifications.collection.collect(a, 'default');
-		core.notifications.state.new_notification.set(!!a.filter((v) => !v.read_at).length);
+		const a = await request<Activity[]>('get', '/account/activity');
+		core.account.collection.activity.collect(a, 'default');
+		core.account.state.new_account_activity.set(!!a.filter((v) => !v.read_at).length);
 	};
 
 	const renderItem = ({ item, index }) => (
-		<ProfileRenderItem key={index} onPress={() => nav.navigate('Profile', item)}>
+		<ProfileRenderItem key={index} onPress={() => nav.navigate('Profile', { profile: item })}>
 			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} />
 			<Spacer size={15} />
 			<View style={{ flex: 1 }}>

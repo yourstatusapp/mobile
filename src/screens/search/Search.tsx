@@ -1,27 +1,51 @@
 import { request } from '@core';
 import { Avatar, Fill, IconButton, Input, Row, Spacer, Text } from '@parts';
+import { state } from '@pulsejs/core';
+import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 
 interface SearchProps {}
+interface ProfileSearchResult {
+	owner: string;
+	username: string;
+	avatar: string;
+	friend_status: number;
+}
 
 let timeoutID;
 
-export const Search: React.FC<SearchProps> = (props) => {
+const list = state<ProfileSearchResult[]>([]);
+
+export const Search: React.FC<SearchProps> = () => {
 	const theme = useTheme();
 	const nav = useNavigation();
-	const [SearchName, setSearchName] = React.useState('');
-	const [List, setList] = React.useState([]);
+	const [SearchName, setSearchName] = useState('');
+	const l = usePulse(list);
+	const [Loading, setLoading] = useState<boolean>(false);
+	// const [List, setList] = useState<ProfileSearchResult[]>([]);
 
 	const searchUser = async (name: string) => {
-		const a = await request('post', '/profile/search', { data: { search: name } });
-		setList(a);
+		setLoading(true);
+		const a = await request<ProfileSearchResult[]>('post', '/profile/search', { data: { search: name } });
+		list.set(a);
+		// setList(a);
+		setLoading(false);
 	};
 
 	const addFriend = async (id: string) => {
-		const a = await request('post', '/friends/add/' + id);
+		await request('post', '/friends/add/' + id);
+		// Get index from id
+		const index = l.indexOf(l.filter((v) => v.owner === id)[0]);
+		let newArr = l;
+
+		newArr[index].friend_status = 1;
+		console.log(newArr);
+
+		list.set(newArr);
 	};
 
 	React.useEffect(() => {
@@ -36,19 +60,30 @@ export const Search: React.FC<SearchProps> = (props) => {
 		}, 1000);
 	}, [SearchName]);
 
-	const renderItem = ({ item, index }) => (
-		<TouchableOpacity activeOpacity={0.5}>
-			<UserSearchEnty key={index}>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={60} />
-				<Spacer size={10} />
-				<Text weight="semi-bold" size={18} color={theme.text}>
-					{item.username}
-				</Text>
-				<Fill />
-				<IconButton name="user-add" color={theme.text} size={35} backgroundColor={theme.step1} onPress={() => addFriend(item.owner)} />
-			</UserSearchEnty>
-		</TouchableOpacity>
+	// useEffect(() => {
+	// 	console.log(list.value);
+	// }, [list.value]);
+
+	// 0 = nothing
+	// 1 = pending
+	// 2 = accepted
+	// 3 = denied;
+	const renderItem = ({ item, index }: { item: ProfileSearchResult; index: number }) => (
+		<UserSearchEnty key={index}>
+			{/* <TouchableOpacity onPress={() => nav.navigate('Profile', { profile: item })}> */}
+			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={50} />
+			{/* </TouchableOpacity> */}
+			<Spacer size={10} />
+			<Text weight="semi-bold" size={16} color={theme.text}>
+				{item.username}
+			</Text>
+			<Fill />
+			{item.friend_status < 2 && (
+				<IconButton name="user-add" color={theme.text} size={35} backgroundColor={theme.step1} onPress={() => addFriend(item.owner)} disabled={item.friend_status === 1} />
+			)}
+		</UserSearchEnty>
 	);
+
 	return (
 		<SearchBody>
 			<Spacer size={20} />
@@ -64,18 +99,27 @@ export const Search: React.FC<SearchProps> = (props) => {
 			</Text>
 
 			<Spacer size={20} />
-			<Input onChangeText={setSearchName} placeholder="Search for a name" style={{ backgroundColor: theme.step1, paddingHorizontal: 10, color: theme.text }} />
-			<Spacer size={10} />
-			<FlatList data={List} renderItem={renderItem} contentContainerStyle={{ paddingTop: 20 }} />
+			<View style={{ position: 'relative' }}>
+				{Loading && <ActivityIndicator style={{ position: 'absolute', right: 15, zIndex: 10, top: 0, bottom: 0 }} />}
+				<Input
+					onChangeText={setSearchName}
+					placeholder="Search for a name"
+					style={{ backgroundColor: theme.step1, paddingHorizontal: 15, color: theme.text }}
+					autoCapitalize="none"
+					autoCompleteType="off"
+					autoCorrect={false}
+				/>
+			</View>
+			<Spacer size={8} />
+
+			<FlatList data={l} renderItem={renderItem} contentContainerStyle={{ paddingTop: 20 }} />
 		</SearchBody>
 	);
 };
 
 const UserSearchEnty = styled(Row)`
-	/* justify-content: space-between; */
-	/* background-color: ${({ theme }) => theme.step0}; */
 	border-radius: 12px;
-	/* padding: 10px 0px; */
+	padding: 6px 0px;
 `;
 
 const SearchBody = styled.View`

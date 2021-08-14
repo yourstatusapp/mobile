@@ -57,6 +57,7 @@ const HoverButton = styled(IconButton)`
 	position: absolute;
 	right: 20;
 	top: -60;
+	z-index: 20;
 `;
 
 const CustomTabBarBody = styled.View<{ isIphoneX: boolean; tabIndex: number }>`
@@ -67,8 +68,7 @@ const CustomTabBarBody = styled.View<{ isIphoneX: boolean; tabIndex: number }>`
 
 	padding-bottom: 25px;
 	align-items: center;
-	/* border-top-width: 1px; */
-	/* border-top-color: #eeeeee; */
+	position: relative;
 `;
 
 const TabContainer = styled.View`

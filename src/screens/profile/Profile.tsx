@@ -1,24 +1,34 @@
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Avatar, Fill, Header, Row, SidePadding, SmallButton, Spacer, TabbarContentContainer, Text, TextButton } from '@parts';
+import { Avatar, Row, SmallButton, Spacer, TabbarContentContainer, Text } from '@parts';
 import core, { Collection, ProfileType, request } from '@core';
 import { useState } from 'react';
 
 interface ProfileProps {
 	route: {
-		params: any;
+		params: {
+			profile: any;
+			mine?: boolean;
+		};
 	};
 }
 
 export const Profile: React.FC<ProfileProps> = (props) => {
 	const { route } = props;
-	const profile = route.params;
+	const theme = useTheme();
+	const profile = route.params.profile;
 
-	const [Profile, setProfile] = useState<ProfileType>();
+	const [ProfileData, setProfileData] = useState<ProfileType>();
+	const [Colls, setColls] = useState<Collection[]>();
 
 	const loadProfile = async () => {
-		const p = await request<ProfileType>('get', '/profile/' + profile.username);
-		setProfile(p);
+		if (route.params.mine) {
+			const m = await request<Collection[]>('get', '/collection');
+			setColls(m);
+		} else {
+			const p = await request<ProfileType>('get', '/profile/' + profile.username);
+			setColls(p.collections);
+		}
 	};
 
 	// Load profile
@@ -27,20 +37,21 @@ export const Profile: React.FC<ProfileProps> = (props) => {
 	}, []);
 
 	return (
-		<ProfileBody noSidePadding>
-			<Row style={{ paddingLeft: 10 }}>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.owner}/${route.params.avatar}`} size={100} />
+		<ProfileBody noSidePadding topBarColor={theme.background}>
+			<Row style={{ paddingLeft: 20 }}>
+				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.profile.owner}/${route.params.profile.avatar}`} size={100} />
 				<Spacer size={20} />
 				<Text weight="bold" size={24}>
 					{profile.username}
 				</Text>
 			</Row>
 			<Spacer size={20} />
-			<Row style={{ paddingLeft: 10 }}>
+			<Row style={{ paddingLeft: 20 }}>
 				<SmallButton text="Add friend" />
 			</Row>
 			<Spacer size={35} />
-			{!!Profile?.collections?.length && <Collections data={Profile?.collections} />}
+			{/* <Text color="black">{JSON.stringify(ProfileData) || -1}</Text> */}
+			{Colls && <Collections data={Colls} />}
 		</ProfileBody>
 	);
 };
@@ -51,13 +62,16 @@ const ProfileBody = styled(TabbarContentContainer)`
 `;
 
 import FastImage from 'react-native-fast-image';
-import { FlatList, View } from 'react-native';
+import { Dimensions, FlatList, Touchable, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Collections: React.FC<{ data: Collection[] }> = (p) => {
 	const theme = useTheme();
 	const [Coll, setColl] = useState<Collection[]>([]);
 	const [Tabs, setTabs] = useState<string[]>();
 	const [SelectedTab, setSelectedTab] = useState<number>(0);
+
+	const [OpenImage, setOpenImage] = useState('');
 
 	// const collections = async () => {
 	// 	const a = await request<Collection[]>('get', '/collection');
@@ -69,8 +83,8 @@ const Collections: React.FC<{ data: Collection[] }> = (p) => {
 	// };
 
 	React.useEffect(() => {
-		if (p.data) {
-			console.log('-->', p.data);
+		if (p?.data) {
+			console.log('-->', p);
 
 			setColl(p.data);
 			setTabs(p.data.map((v) => v.title));
@@ -78,13 +92,15 @@ const Collections: React.FC<{ data: Collection[] }> = (p) => {
 		}
 	}, []);
 
+	const itemW = Dimensions.get('screen').width / 3;
+
 	const renderItem = ({ item, index }) => (
-		<CollectionPost>
+		<CollectionPost style={{ width: itemW, height: itemW }} onPress={() => setOpenImage(`https://cdn.yourstatus.app/collection/${item.collection}/${item.content}`)}>
 			<FastImage
 				key={index}
 				resizeMode="cover"
 				source={{ uri: `https://cdn.yourstatus.app/collection/${item.collection}/${item.content}` }}
-				style={{ height: 120, width: 120, borderRadius: 12 }}
+				style={{ height: itemW - 5, width: itemW - 5, borderRadius: 5 }}
 			/>
 		</CollectionPost>
 	);
@@ -95,7 +111,8 @@ const Collections: React.FC<{ data: Collection[] }> = (p) => {
 				<FlatList
 					data={Tabs}
 					horizontal={true}
-					contentContainerStyle={{ padding: 10 }}
+					style={{ borderBottomWidth: 1, borderBottomColor: theme.step3 }}
+					contentContainerStyle={{ padding: 10, alignItems: 'center' }}
 					renderItem={({ item, index }) => (
 						<SmallButton
 							textColor={SelectedTab === index ? theme.primary : theme.text}
@@ -109,13 +126,21 @@ const Collections: React.FC<{ data: Collection[] }> = (p) => {
 				/>
 			</CollectionsBtns>
 
-			<View style={{ flex: 1, backgroundColor: theme.step2 }}>
+			{!!OpenImage && (
+				<FullScreenImage style={{ flex: 1, backgroundColor: '#00000050' }}>
+					<TouchableOpacity onPress={() => setOpenImage('')} style={{ flex: 1 }} activeOpacity={1}>
+						<FastImage resizeMode="contain" source={{ uri: OpenImage }} style={{ height: Dimensions.get('screen').height, width: Dimensions.get('screen').width }} />
+					</TouchableOpacity>
+				</FullScreenImage>
+			)}
+
+			<View style={{ flex: 1, backgroundColor: theme.step1 }}>
 				<FlatList
 					data={Coll[SelectedTab]?.data || []}
 					renderItem={renderItem}
 					numColumns={3}
 					ItemSeparatorComponent={() => <Spacer size={5} />}
-					contentContainerStyle={{ paddingTop: 10, flex: 1, backgroundColor: theme.step0 }}
+					contentContainerStyle={{ paddingTop: 10, flex: 1, backgroundColor: theme.step1 }}
 					initialNumToRender={9}
 				/>
 			</View>
@@ -123,8 +148,17 @@ const Collections: React.FC<{ data: Collection[] }> = (p) => {
 	);
 };
 
+const FullScreenImage = styled.View`
+	position: absolute;
+	flex: 1;
+	z-index: 1;
+	left: 0;
+	top: -230;
+`;
+
 const CollectionsContainer = styled.View`
 	flex: 1;
+	position: relative;
 	background-color: ${({ theme }) => theme.primary};
 `;
 
@@ -134,8 +168,9 @@ const CollectionsBtns = styled.View`
 	border-bottom-color: ${({ theme }) => theme.step1};
 	border-bottom-width: 1px;
 `;
-const CollectionPost = styled.View`
-	flex: 1;
+const CollectionPost = styled(TouchableOpacity)`
+	/* flex: 1; */
+	width: 100%;
 	justify-content: center;
 	align-items: center;
 `;

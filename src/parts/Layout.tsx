@@ -39,6 +39,7 @@ export const Fill = styled.View`
 
 interface TabbarContentContainerConfig {
 	noSidePadding?: boolean;
+	topBarColor?: string;
 }
 
 export const TabbarContentContainer: React.FC<TabbarContentContainerConfig> = (p) => {
@@ -47,7 +48,7 @@ export const TabbarContentContainer: React.FC<TabbarContentContainerConfig> = (p
 
 	return (
 		<TabbarContentBody {...p}>
-			<View style={{ height: 40, backgroundColor: theme.navBar }}></View>
+			<View style={{ height: 40, backgroundColor: p.topBarColor || theme.step0 }} />
 			{children}
 		</TabbarContentBody>
 	);
