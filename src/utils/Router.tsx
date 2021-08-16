@@ -17,6 +17,7 @@ import { DebugView } from '../screens/debug/DebugView';
 import { Camera } from '../screens/camera/Camera';
 import { Newpost } from '../screens/newpost/Newpost';
 import { useEffect } from 'react';
+import { Stories } from '../screens/stories/Stories';
 
 const Stack = createStackNavigator();
 
@@ -70,6 +71,7 @@ export const Router: React.FC = () => {
 						cardStyle: { backgroundColor: theme.background },
 						cardOverlayEnabled: false,
 					}}
+					detachInactiveScreens
 				>
 					<Stack.Screen name="Auth" component={Auth} />
 					<Stack.Screen name="Register" component={Register} />
@@ -78,6 +80,7 @@ export const Router: React.FC = () => {
 					<Stack.Screen name="App" component={AppStacks} />
 					<Stack.Screen name="Camera" component={Camera} />
 					<Stack.Screen name="Newpost" component={Newpost} />
+					<Stack.Screen name="Stories" component={Stories} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>

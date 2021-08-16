@@ -1,7 +1,9 @@
+import core from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
-export const baseURL = state(process.env.NODE_ENV === 'production' ? 'https://api.yourstatus.app' : 'http://localhost:8080').persist('baseURL');
+// export const baseURL = state(process.env.NODE_ENV === 'production' ? 'https://api.yourstatus.app' : 'http://localhost:8080').persist('baseURL');
+export const baseURL = state('https://api.yourstatus.app').persist('baseURL');
 
 interface RequestOptions {
 	headers?: any;
@@ -23,8 +25,16 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 
 		return a.data.data;
 	} catch (error) {
-		console.log(error);
+		// if no auth, reset the accout
+		if (error.response.status == 401) {
+			core.account.state.ACCOUNT.reset();
+			core.profile.state.PROFILE.reset();
+		}
+		
+		console.log('request error', error);
+		// throw {};
 		return false;
+		// console.log(error);
 	}
 };
 
@@ -39,9 +49,9 @@ export const niceTime = (id: string) => {
 	let s = Math.floor((new Date() - d) / 1000);
 
 	if (s < 60) {
-		return 'Seconds';
+		return Math.floor(s) + 'Seconds';
 	} else if (s > 60 && s < 3600) {
-		return 'Miutes';
+		return Math.floor(s / 60) + ' Minutes';
 	} else if (s > 3600 && s < 86400) {
 		return Math.floor(s / 3600) + ' Hours';
 	} else if (s > 86400 && s < 2592000) {

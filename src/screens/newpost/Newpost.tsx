@@ -1,11 +1,10 @@
 import { Collection, request } from '@core';
-import { Fill, IconButton, SidePadding, SmallButton, Spacer, Text, TextButton, WideButton } from '@parts';
+import { Fill, IconButton, SidePadding, SmallButton, Spacer, Text, WideButton } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
 import { useState } from 'react';
 import { Platform } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { FlatList } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 
 interface NewpostProps {
@@ -46,6 +45,20 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 		nav.goBack();
 	};
 
+	const createRealTimeStorie = async () => {
+		const fd = new FormData();
+		const uri = Platform.OS === 'android' ? '' : Image.replace('file://', '');
+		fd.append('file', {
+			uri,
+			type: Image.split('.')[1],
+			name: Image.split('/').pop(),
+		});
+
+		const a = request('post', '/profile/stories/new', { data: fd, headers: { 'Content-Type': 'multipart/form-data;' } });
+
+		nav.canGoBack();
+	};
+
 	React.useEffect(() => {
 		setImage(route.params.image);
 
@@ -82,6 +95,8 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 							/>
 						))}
 				</CollsContainer>
+				<Spacer size={30} />
+				<SmallButton text="Post on realtime storie" onPress={() => createRealTimeStorie()} />
 				<Fill />
 				<WideButton text="Upload" onPress={() => createPost()} disabled={!SelectColl} />
 				<Spacer size={30} />
