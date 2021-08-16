@@ -1,27 +1,53 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { useState } from 'react';
-import { FlatList, TouchableOpacity, View } from 'react-native';
-import { request } from '../../core/utils';
+import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { niceTime, request } from '../../core/utils';
 import { Avatar, Fill, Header, IconButton, Row, SmallButton, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
 import core from '@core';
 import { Activity } from '../../core/modules/accounts';
+import { state } from '@pulsejs/core';
+import { usePulse } from '@pulsejs/react';
 
 interface FriendsProps {}
+
+const FriendsList = state<any[]>([]);
+const PendingList = state<any[]>([]);
 
 export const Friends: React.FC<FriendsProps> = (props) => {
 	const {} = props;
 	const theme = useTheme();
 	const nav = useNavigation();
 
-	const [List, setList] = useState<any>(null);
-	const [PendingList, setPendingList] = useState<any[]>();
+	const pendingList = usePulse(PendingList);
+	const friendList = usePulse(FriendsList);
+
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => setRefreshing(false), 2000);
+	}, []);
+
+	// const [PendingList, setPendingList] = useState<any[]>();
+	const getFriendList = async () => {
+		const a = await request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends');
+
+		FriendsList.set(a.friends);
+		PendingList.set(a.incoming_pending);
+	};
 
 	const replyFriendRequest = async (accept: boolean, id: string) => {
 		await request('post', '/friends/request/' + id, { data: { accept } });
 		// TODO: do logic
 		if (accept) {
+			let a = pendingList;
+			let item = pendingList.filter((v) => v.id === id)[0];
+			const i = pendingList.indexOf(item);
+			a = a.slice(i, i + 1);
+
+			PendingList.set(a);
+			getFriendList();
 		} else {
 		}
 	};
@@ -34,25 +60,29 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 
 	const renderItem = ({ item, index }) => (
 		<ProfileRenderItem key={index} onPress={() => nav.navigate('Profile', { profile: item })}>
-			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} />
+			<View>
+				<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} />
+				<Fill />
+			</View>
 			<Spacer size={15} />
-			<View style={{ flex: 1 }}>
+			<View>
 				<Text weight="medium" size={18}>
 					{item.username}
 				</Text>
-				{/* {item?.status && (
-					<StatusBox>
-						<Spacer size={5} />
-						<View style={{ backgroundColor: theme.textFade, borderRadius: 4, padding: 5 }}>
-							<Text size={13} color={theme.background} style={{}}>
-								{item.status.data.title}
+
+				{item?.status && (
+					<>
+						<Spacer size={8} />
+						<Row>
+							<StatusBox {...item.status} />
+							<Text size={12} color={theme.textFade} weight="medium">
+								<Spacer size={5} />
+								{niceTime(item?.status.id)} ago
 							</Text>
-						</View>
-					</StatusBox>
-				)} */}
-				{item?.status && <StatusBox {...item.status} />}
+						</Row>
+					</>
+				)}
 			</View>
-			{/* <Text weight="bold"></Text> */}
 		</ProfileRenderItem>
 	);
 
@@ -63,17 +93,14 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 			<Text>{item.username || 'none'}</Text>
 			{/* <Spacer size={10} /> */}
 			<Fill />
-			<SmallButton text="accept" onPress={() => replyFriendRequest(true, item.id)} />
+			<SmallButton text="Accept" onPress={() => replyFriendRequest(true, item.id)} />
 			<Spacer size={10} />
-			<SmallButton text="deny" onPress={() => replyFriendRequest(false, item.id)} />
+			<SmallButton text="Deny" onPress={() => replyFriendRequest(false, item.id)} />
 		</Row>
 	);
 
 	React.useEffect(() => {
-		request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends').then((c) => {
-			setList(c.friends);
-			setPendingList(c.incoming_pending);
-		});
+		getFriendList();
 		getNotifications();
 	}, []);
 
@@ -84,21 +111,21 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 				title="Friends"
 				rightArea={
 					<Row>
-						<IconButton name="search" size={35} color={theme.text} onPress={() => nav.navigate('SearchPeople')} />
-						<Spacer size={10} />
+						<IconButton name="search" size={35} color={theme.text} noBackground onPress={() => nav.navigate('SearchPeople')} />
+						<Spacer size={5} />
 					</Row>
 				}
 			/>
-			{!!PendingList?.length && (
+			{!!pendingList?.length && (
 				<>
 					<Spacer size={20} />
 					<Text style={{ paddingLeft: 10 }} weight="semi-bold" size={16} color={theme.primary}>
 						Pending friends requests
 					</Text>
-					<FlatList data={PendingList} renderItem={renderItem1} style={{ paddingTop: 20, flexGrow: 0 }} scrollEnabled={false} />
+					<FlatList data={pendingList} renderItem={renderItem1} style={{ paddingTop: 20, flexGrow: 0 }} scrollEnabled={false} />
 				</>
 			)}
-			<FlatList data={List} renderItem={renderItem} />
+			<FlatList data={friendList} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} />
 		</TabbarContentContainer>
 	);
 };

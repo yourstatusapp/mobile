@@ -45,13 +45,10 @@ export const Profile: React.FC<ProfileProps> = (props) => {
 					{profile.username}
 				</Text>
 			</Row>
-			<Spacer size={20} />
-			<Row style={{ paddingLeft: 20 }}>
-				<SmallButton text="Add friend" />
-			</Row>
+
 			<Spacer size={35} />
 			{/* <Text color="black">{JSON.stringify(ProfileData) || -1}</Text> */}
-			{Colls && <Collections data={Colls} />}
+			{!!Colls?.length && <Collections data={Colls} />}
 		</ProfileBody>
 	);
 };
@@ -62,7 +59,7 @@ const ProfileBody = styled(TabbarContentContainer)`
 `;
 
 import FastImage from 'react-native-fast-image';
-import { Dimensions, FlatList, Touchable, View } from 'react-native';
+import { Dimensions, FlatList, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Collections: React.FC<{ data: Collection[] }> = (p) => {
@@ -73,19 +70,8 @@ const Collections: React.FC<{ data: Collection[] }> = (p) => {
 
 	const [OpenImage, setOpenImage] = useState('');
 
-	// const collections = async () => {
-	// 	const a = await request<Collection[]>('get', '/collection');
-	// 	console.log(a);
-
-	// setColl(a);
-	// setTabs(a.map((v) => v.title));
-	// setSelectedTab(0);
-	// };
-
 	React.useEffect(() => {
 		if (p?.data) {
-			console.log('-->', p);
-
 			setColl(p.data);
 			setTabs(p.data.map((v) => v.title));
 			setSelectedTab(0);
@@ -127,7 +113,7 @@ const Collections: React.FC<{ data: Collection[] }> = (p) => {
 			</CollectionsBtns>
 
 			{!!OpenImage && (
-				<FullScreenImage style={{ flex: 1, backgroundColor: '#00000050' }}>
+				<FullScreenImage style={{}}>
 					<TouchableOpacity onPress={() => setOpenImage('')} style={{ flex: 1 }} activeOpacity={1}>
 						<FastImage resizeMode="contain" source={{ uri: OpenImage }} style={{ height: Dimensions.get('screen').height, width: Dimensions.get('screen').width }} />
 					</TouchableOpacity>
@@ -149,6 +135,7 @@ const Collections: React.FC<{ data: Collection[] }> = (p) => {
 };
 
 const FullScreenImage = styled.View`
+	background-color: #00000050;
 	position: absolute;
 	flex: 1;
 	z-index: 1;
@@ -164,12 +151,10 @@ const CollectionsContainer = styled.View`
 
 const CollectionsBtns = styled.View`
 	background-color: ${({ theme }) => theme.background};
-	/* border-bottom: solid 1px black; */
 	border-bottom-color: ${({ theme }) => theme.step1};
 	border-bottom-width: 1px;
 `;
 const CollectionPost = styled(TouchableOpacity)`
-	/* flex: 1; */
 	width: 100%;
 	justify-content: center;
 	align-items: center;

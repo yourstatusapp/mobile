@@ -1,9 +1,7 @@
 import { Status } from '@core';
-import { Spacer, Text } from '@parts';
+import { Text } from '@parts';
 import * as React from 'react';
-import { View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
-import { snow2time } from '../../core/utils';
 
 interface StatusBoxProps extends Partial<Status> {}
 
@@ -13,9 +11,8 @@ export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 
 	return (
 		<StatusBoxBody>
-			<Spacer size={5} />
 			<Box>
-				<Text size={13} color={theme.background} style={{}}>
+				<Text size={13} color={theme.text} style={{}}>
 					{data?.title || 'none'}
 				</Text>
 			</Box>
@@ -28,7 +25,7 @@ const StatusBoxBody = styled.View`
 `;
 
 const Box = styled.View`
-	background-color: ${({ theme }) => theme.textFade};
-	border-radius: 4;
-	padding: 5px;
+	border: solid 1px ${({ theme }) => theme.text};
+	border-radius: 16px;
+	padding: 5px 12px;
 `;

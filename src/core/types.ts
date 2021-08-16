@@ -16,10 +16,10 @@ export interface ProfileType {
 
 export interface Conversation {
 	conversation_id: string;
-	owner: string;
+	account_id: string;
 	username: string;
 	avatar: string;
-	id: string;
+	participants: string[];
 }
 
 export interface Message {

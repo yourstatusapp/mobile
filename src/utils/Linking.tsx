@@ -32,7 +32,7 @@ export const useInitialURL = () => {
 };
 
 export const useLinking = () => {
-	// TODO: Cannot use this here
+	
 	const { processing, url } = useInitialURL();
 	const nav = useNavigation();
 

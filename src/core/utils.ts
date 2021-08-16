@@ -28,6 +28,27 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 	}
 };
 
-export const snow2time = (snow: string) => {
+export const snow2time = (snow: string): Date => {
 	return new Date(Number(snow) / 8388608 + 1627845526000);
+};
+
+export const niceTime = (id: string) => {
+	let d = snow2time(id);
+
+	// @ts-ignore
+	let s = Math.floor((new Date() - d) / 1000);
+
+	if (s < 60) {
+		return 'Seconds';
+	} else if (s > 60 && s < 3600) {
+		return 'Miutes';
+	} else if (s > 3600 && s < 86400) {
+		return Math.floor(s / 3600) + ' Hours';
+	} else if (s > 86400 && s < 2592000) {
+		return Math.floor(s / 86400) + ' Days';
+	} else if (s > 2592000 && s < 2592000 * 12) {
+		return 'Months';
+	} else {
+		return s + ' Years';
+	}
 };

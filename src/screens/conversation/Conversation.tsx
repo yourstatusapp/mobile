@@ -30,22 +30,13 @@ export const Conversation: React.FC<ConversationProps> = (props) => {
 	const messages = usePulse(core.message.collection.getGroup(route.params.conversation_id));
 	const [newMessage, setnewMessage] = useState('');
 	const acc = usePulse(account.state.ACCOUNT);
-	const prof = usePulse(profile.state.PROFILE);
 	const nav = useNavigation();
 	const theme = useTheme();
 
 	const sendMessage = async (message: string) => {
-		// const m = {};
 		await request('post', `/conversation/${route.params.conversation_id}/send`, { data: { message } });
-		// core.message.collection.collect();
 	};
 
-	// const getMessage = async () => {
-	// 	const a = await request<any[]>('get', '/conversation/' + route.params.conversation_id + '/messages');
-	// 	console.log('messags', a);
-
-	// 	core.message.collection.collect(a, route.params.conversation_id);
-	// };
 	const getMessage = React.useCallback(async () => {
 		const a = await request<any[]>('get', '/conversation/' + route.params.conversation_id + '/messages');
 		core.message.collection.collect(a, route.params.conversation_id);
@@ -88,7 +79,7 @@ export const Conversation: React.FC<ConversationProps> = (props) => {
 				<BottomPart>
 					<SendMessageInput placeholder="Write a message..." onChangeText={setnewMessage} />
 					<Spacer size={10} />
-					<IconButton name="send" size={40} iconSize={22} color={theme.textFade} backgroundColor={theme.step1} onPress={() => sendMessage(newMessage)} />
+					<IconButton name="send" size={40} color={theme.textFade} backgroundColor={theme.step1} onPress={() => sendMessage(newMessage)} />
 				</BottomPart>
 			</KeyboardAvoidingView>
 			<Spacer size={25} />

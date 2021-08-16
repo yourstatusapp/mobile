@@ -12,22 +12,23 @@ interface MessagesProps {
 	route: any;
 }
 
-export const Messages: React.FC<MessagesProps> = (a) => {
+export const Messages: React.FC<MessagesProps> = () => {
 	const Convs = usePulse(core.conversations.collection.groups.all);
 	const nav = useNavigation();
 	const theme = useTheme();
+
 	const getMessages = async () => {
 		const a = await request<Conversation[]>('get', '/conversation');
 		core.conversations.collection.collect(a, 'all');
 	};
 
 	React.useEffect(() => {
-		// getMessages();
+		getMessages();
 	}, []);
 
 	const renderItem = ({ item, index }) => (
 		<ConversationEntryBody key={index} onPress={() => nav.navigate('conversation', { ...item })} style={{ backgroundColor: !(index % 2) ? theme.background : theme.step0 }}>
-			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={50} />
+			<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={50} />
 			<Spacer size={10} />
 			<View>
 				<Text size={18} weight="semi-bold">
@@ -38,18 +39,14 @@ export const Messages: React.FC<MessagesProps> = (a) => {
 				</Text>
 			</View>
 			<Fill />
-			<IconButton name="eclipse" color={theme.step4} iconSize={35} noBackground />
+			{/* <IconButton name="eclipse" color={theme.step4} iconSize={35} noBackground /> */}
 		</ConversationEntryBody>
 	);
 
 	return (
 		<TabbarContentContainer noSidePadding>
-			<Header title="Messages" padding />
-			<Spacer size={50} />
-			<Text center weight="semi-bold" size={20} color={theme.text}>
-				Sending messages coming soon...
-			</Text>
-			{/* <FlatList data={Convs} renderItem={renderItem} /> */}
+			<Header title="Messages" padding rightArea={<IconButton name="plus" size={35} color={theme.text} style={{ marginRight: 5 }} />} />
+			<FlatList data={Convs} renderItem={renderItem} />
 		</TabbarContentContainer>
 	);
 };
@@ -59,9 +56,6 @@ const ConversationEntryBody = styled(TouchableOpacity)`
 	align-items: center;
 	padding: 10px 15px;
 	width: 100%;
-	/* background-color: ${({ theme }) => theme.step1}; */
-	/* margin-bottom: 5px; */
 	border-bottom-color: ${({ theme }) => theme.step1};
-	/* border-bottom-style: solid; */
 	border-bottom-width: 1px;
 `;

@@ -27,7 +27,6 @@ const RowBody = styled.View<RowStyleType>`
 	${({ center }) => `
 		${center ? 'justify-content: center;' : ''}
 	`}
-
 	flex-direction: row;
 	align-items: center;
 `;

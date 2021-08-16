@@ -19,13 +19,15 @@ export const Preloader: React.FC<PreloaderProps> = (props) => {
 	const getAccount = async () => {
 		// try {
 		setTimeout(() => setTakingTooLong(true), 20 * 1000);
-		if (!loggedin_state) {
-			props.loaded();
-			return;
-		}
+		// if (!loggedin_state) {
+		// 	console.log('not logged in');
+
+		// 	props.loaded();
+		// 	return;
+		// }
 
 		const res = await request<{ account: any; profile: any; status: any }>('get', '/account');
-		console.log('ACCOUNT_DATA retrieved');
+		console.log('ACCOUNT_DATA retrieved', res);
 
 		core.account.state.ACCOUNT.set(res.account);
 		core.profile.state.PROFILE.set(res.profile);

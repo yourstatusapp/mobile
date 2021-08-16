@@ -5,11 +5,13 @@ import * as React from 'react';
 import { useState } from 'react';
 import DatePicker from 'react-native-date-picker';
 import { Switch } from 'react-native-gesture-handler';
+import { useTheme } from 'styled-components';
 
 interface CustomSelProps {}
 
 export const CustomSel: React.FC<CustomSelProps> = (props) => {
 	const {} = props;
+	const theme = useTheme();
 	const nav = useNavigation();
 	const [Title, setTitle] = useState('');
 	const [ActionType, setActionType] = useState();
@@ -43,7 +45,7 @@ export const CustomSel: React.FC<CustomSelProps> = (props) => {
 			</Row>
 			{Expire && (
 				<Row center>
-					<DatePicker minimumDate={new Date()} onDateChange={(v) => setEpireDate(v)} />
+					<DatePicker minimumDate={new Date()} onDateChange={(v) => setEpireDate(v)} textColor={theme.text} />
 				</Row>
 			)}
 

@@ -34,6 +34,7 @@ export const SmallInput: React.FC<InputProps> = (p) => {
 
 const SmallInputbody = styled(Input)`
 	background-color: ${({ theme }) => theme.step1};
+	color: ${({ theme }) => theme.text};
 	align-self: center;
 	width: 100%;
 

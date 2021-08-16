@@ -22,12 +22,12 @@ export const Header: React.FC<HeaderProps> = (props) => {
 			<Text color={theme.primary} size={26} weight="semi-bold">
 				{title}
 			</Text>
-			
+
 			<Fill />
 			{rightArea}
-			<IconButton name="bell" size={35} color={new_notification ? theme.primary : theme.textFade} onPress={() => nav.navigate('notifications')} />
-			<Spacer size={10} />
-			<IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('Settings')} />
+			<IconButton name="bell" size={35} color={new_notification ? theme.primary : theme.text} onPress={() => nav.navigate('notifications')} noBackground />
+			<Spacer size={5} />
+			<IconButton name="settings" size={35} noBackground color={theme.text} onPress={() => nav.navigate('Settings')} />
 			{/* <Spacer size={10} /> */}
 			{/* <IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('NewUser')} /> */}
 		</HeaderBody>

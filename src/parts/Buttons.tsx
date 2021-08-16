@@ -31,7 +31,7 @@ interface IconButtonProps {
 
 export const IconButton: React.FC<IconButtonProps> = (p) => {
 	return (
-		<IconButtonBody style={{ opacity: p.disabled ? 0.4 : 1 }}  onPress={p.onPress} disabled={p.disabled} {...p}>
+		<IconButtonBody style={{ opacity: p.disabled ? 0.4 : 1 }} onPress={p.onPress} disabled={p.disabled} {...p}>
 			<Icon name={p.name || ''} color={p.color} size={p.iconSize ? p.iconSize - 17 : p.size ? p.size - 17 : 17} />
 		</IconButtonBody>
 	);
