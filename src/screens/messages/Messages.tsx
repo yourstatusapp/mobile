@@ -45,7 +45,7 @@ export const Messages: React.FC<MessagesProps> = () => {
 
 	return (
 		<TabbarContentContainer noSidePadding>
-			<Header title="Messages" padding rightArea={<IconButton name="plus" size={35} color={theme.text} style={{ marginRight: 5 }} />} />
+			<Header title="Messages" padding rightArea={<IconButton name="plus" size={35} noBackground color={theme.text} style={{ marginRight: 5 }} />} />
 			<FlatList data={Convs} renderItem={renderItem} />
 		</TabbarContentContainer>
 	);

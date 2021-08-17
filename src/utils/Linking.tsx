@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Alert, Linking } from 'react-native';
-import { request } from '../core/utils';
+import { Linking } from 'react-native';
 
 const useMount = (func: () => void) => useEffect(() => func());
 
@@ -32,7 +31,6 @@ export const useInitialURL = () => {
 };
 
 export const useLinking = () => {
-	
 	const { processing, url } = useInitialURL();
 	const nav = useNavigation();
 

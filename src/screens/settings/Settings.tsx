@@ -47,7 +47,6 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 	}, [props]);
 
 	const logout = async () => {
-
 		await request('delete', '/account/devices/current/revoke');
 		nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
 
@@ -62,6 +61,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 	const currentTheme = usePulse(ui.state.Theme);
 
 	const toggleTheme = () => {
+		core.app.state.use_system_theme.set(false);
 		ui.state.Theme.set(currentTheme === 'light' ? 'dark' : 'light');
 	};
 

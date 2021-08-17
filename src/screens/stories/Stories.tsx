@@ -46,17 +46,17 @@ export const Stories: React.FC<StoriesProps> = (props) => {
 				source={{ uri: `https://cdn.yourstatus.app/stories/2252108220859396/c48e5911-dfe8-4593-b539-2d84c8d91b5f.jpg` }}
 				style={{ height: Dimensions.get('screen').height - 100, width: Dimensions.get('screen').width }}
 			/> */}
-			<TouchableOpacity onPress={() => nextImage()} activeOpacity={0} style={{ height: Dimensions.get('screen').height - 100 }}>
+			<TouchableOpacity onPress={() => nextImage()} activeOpacity={1} style={{ height: Dimensions.get('screen').height - 100 }}>
 				<FastImage
-					resizeMode="stretch"
+					resizeMode="contain"
 					source={{ uri: `https://cdn.yourstatus.app/stories/${route.params.account_id}/${route.params.stories[ImageIndex]?.picture}` }}
 					style={{ borderRadius: 10, height: Dimensions.get('screen').height - 100, width: Dimensions.get('screen').width }}
 				/>
 			</TouchableOpacity>
 			<FloatingArea>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.account_id}/${route.params.avatar}`} size={40} />
+				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.account_id}/${route.params.avatar}`} size={35} />
 				<Spacer size={10} />
-				<Text weight="semi-bold" color={theme.background}>
+				<Text weight="semi-bold" color="white">
 					{route.params.username}
 				</Text>
 				<Fill />
@@ -81,5 +81,5 @@ const FloatingArea = styled.View`
 	width: 100%;
 	top: 54;
 	z-index: 50;
-	padding: 5px 10px;
+	padding: 8px 10px;
 `;

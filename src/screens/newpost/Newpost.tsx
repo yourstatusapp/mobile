@@ -1,5 +1,5 @@
 import { Collection, request } from '@core';
-import { Fill, IconButton, SidePadding, SmallButton, Spacer, Text, WideButton } from '@parts';
+import { Fill, IconButton, Row, SidePadding, SmallButton, Spacer, Text, WideButton } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
 import { useState } from 'react';
@@ -56,7 +56,7 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 
 		const a = request('post', '/profile/stories/new', { data: fd, headers: { 'Content-Type': 'multipart/form-data;' } });
 
-		nav.canGoBack();
+		nav.goBack();
 	};
 
 	React.useEffect(() => {
@@ -70,9 +70,9 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 			<Spacer size={40} />
 			<IconButton
 				name="arrow-big"
-				size={40}
-				backgroundColor={theme.textFade}
-				color="black"
+				size={35}
+				backgroundColor={theme.step1}
+				color={theme.text}
 				style={{ transform: [{ rotate: '180deg' }], position: 'absolute', top: 55, zIndex: 15, left: 10 }}
 				onPress={() => nav.goBack()}
 			/>
@@ -96,7 +96,9 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 						))}
 				</CollsContainer>
 				<Spacer size={30} />
-				<SmallButton text="Post on realtime storie" onPress={() => createRealTimeStorie()} />
+				<Row>
+					<SmallButton text="Post on realtime stories" onPress={() => createRealTimeStorie()} />
+				</Row>
 				<Fill />
 				<WideButton text="Upload" onPress={() => createPost()} disabled={!SelectColl} />
 				<Spacer size={30} />

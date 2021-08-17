@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react';
 import { KeyboardAvoidingView, View, ViewStyle } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 import core from '../../core';
 import { baseURL, request } from '../../core/utils';
@@ -16,6 +16,10 @@ import RNPickerSelect from 'react-native-picker-select';
 export const Auth: React.FC = () => {
 	const [Email, setEmail] = useState('');
 	const [Password, setPassword] = useState('');
+
+	const [ShowManual, setShowManual] = useState(false);
+	const [MagicCode, setMagicCode] = useState('');
+
 	const nav = useNavigation();
 	const theme = useTheme();
 	const inputStyle = {
@@ -74,12 +78,23 @@ export const Auth: React.FC = () => {
 		<AuthBody>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior="position" keyboardVerticalOffset={-230}>
 				<Text center size={12} color="lightgray">
-					version: beta.1
+					version: beta.14
 				</Text>
 				<Spacer size={50 * 2} />
-				<LogoPlaceholder />
+				<TouchableOpacity onPress={() => setShowManual(!ShowManual)}>
+					<LogoPlaceholder />
+				</TouchableOpacity>
 				<Spacer size={30 * 6} />
 				<Input {...inputOptions} style={inputStyle} value={Email} onChangeText={(v) => setEmail(v)} placeholder="Email" />
+
+				{ShowManual && (
+					<>
+						<Spacer size={10} />
+						<Input {...inputOptions} style={inputStyle} value={MagicCode} onChangeText={(v) => setMagicCode(v)} placeholder="magic code" />
+						<Spacer size={10} />
+						<WideButton text="login" textColor={theme.text} backgroundColor={theme.step2} onPress={() => nav.navigate('Magic', { code: MagicCode })} />
+					</>
+				)}
 				<Spacer size={20} />
 				<Divider />
 				<Spacer size={20} />

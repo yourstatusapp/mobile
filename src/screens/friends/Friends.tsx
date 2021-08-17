@@ -128,7 +128,7 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 					</Row>
 				}
 			/>
-			{!!Stories.length || (!!MyStories.length && <StoriesArea data={Stories} mine={MyStories} />)}
+			{!!Stories.length && !!MyStories.length && <StoriesArea data={Stories} mine={MyStories} />}
 			{!!pendingList?.length && (
 				<>
 					<Spacer size={20} />
@@ -138,7 +138,7 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 					<FlatList data={pendingList} renderItem={renderItem1} style={{ paddingTop: 20, flexGrow: 0 }} scrollEnabled={false} />
 				</>
 			)}
-			<FlatList data={friendList} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} />
+			<FlatList data={friendList} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />} />
 		</TabbarContentContainer>
 	);
 };
@@ -170,7 +170,7 @@ const StoriesArea: React.FC<{ data: any[]; mine: any }> = (p) => {
 	return (
 		<StoriesAreaBody>
 			<Spacer size={10} />
-			<Text weight="semi-bold" size={18} style={{ paddingLeft: 15 }}>
+			<Text weight="semi-bold" size={16} style={{ paddingLeft: 15 }}>
 				Realtime Stories
 			</Text>
 

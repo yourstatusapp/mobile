@@ -6,6 +6,7 @@ interface PermissionsList {
 
 const State = {
 	use_system_theme: state<boolean>(false).persist('use_system_theme'),
+	system_theme: state<'light' | 'dark'>('light'),
 
 	// 0 = need to ask  | 1 = granted | 2 = denied
 	notifications_enabled: state<0 | 1 | 2>(0).persist('notification_enabled'),

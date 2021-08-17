@@ -7,7 +7,10 @@ const State = {
 	Theme: state<Themes>('light').persist('theme_name'),
 };
 
+app.state.system_theme.set(Appearance.getColorScheme() || 'light');
+
 Appearance.addChangeListener((v) => {
+	app.state.system_theme.set(v.colorScheme || 'light');
 	if (v.colorScheme && app.state.use_system_theme.is(true)) {
 		State.Theme.set(v.colorScheme);
 	}
