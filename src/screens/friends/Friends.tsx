@@ -87,7 +87,7 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 						<Row>
 							<StatusBox {...item.status} />
 							<Text size={12} color={theme.textFade} weight="medium">
-								<Spacer size={5} />
+								<Spacer size={10} />
 								{niceTime(item?.status.id)} ago
 							</Text>
 						</Row>
@@ -128,7 +128,7 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 					</Row>
 				}
 			/>
-			{!!Stories.length && !!MyStories.length && <StoriesArea data={Stories} mine={MyStories} />}
+			{(!!Stories.length || !!MyStories.length) && <StoriesArea data={Stories} mine={MyStories} />}
 			{!!pendingList?.length && (
 				<>
 					<Spacer size={20} />
@@ -173,12 +173,18 @@ const StoriesArea: React.FC<{ data: any[]; mine: any }> = (p) => {
 			<Text weight="semi-bold" size={16} style={{ paddingLeft: 15 }}>
 				Realtime Stories
 			</Text>
+			<Spacer size={5} />
 
-			<ScrollView horizontal={true} style={{ paddingVertical: 5 }}>
-				<Spacer size={15} />
-				<TouchableOpacity onPress={() => nav.navigate('Stories', { account_id: prof.owner, avatar: prof.avatar, username: prof.username, stories: p.mine })}>
-					<Avatar src={`https://cdn.yourstatus.app/profile/${prof.owner}/${prof.avatar}`} size={50} />
-				</TouchableOpacity>
+			<ScrollView horizontal={true} style={{ paddingVertical: 5, paddingLeft: 5 }}>
+				{!!p.mine.length && (
+					<>
+						<Spacer size={15} />
+						<TouchableOpacity onPress={() => nav.navigate('Stories', { account_id: prof.owner, avatar: prof.avatar, username: prof.username, stories: p.mine })}>
+							<Avatar src={`https://cdn.yourstatus.app/profile/${prof.owner}/${prof.avatar}`} size={50} />
+						</TouchableOpacity>
+					</>
+				)}
+
 				<FlatList
 					data={p.data}
 					renderItem={renderItem}

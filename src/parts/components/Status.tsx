@@ -12,7 +12,7 @@ export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 	return (
 		<StatusBoxBody>
 			<Box>
-				<Text size={13} color={theme.text} style={{}}>
+				<Text size={13} color={theme.text} weight="semi-bold">
 					{data?.title || 'none'}
 				</Text>
 			</Box>

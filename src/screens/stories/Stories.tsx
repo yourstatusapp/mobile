@@ -22,6 +22,10 @@ export const Stories: React.FC<StoriesProps> = (props) => {
 	const [Picture, setPicture] = React.useState('');
 
 	const nextImage = () => {
+		// TODO: Check if this works
+		if (ImageIndex === route.params.stories.length) {
+			return;
+		}
 		setImageIndex(ImageIndex + 1);
 	};
 

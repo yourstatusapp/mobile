@@ -39,5 +39,5 @@ const HeaderBody = styled.View<HeaderProps>`
 	align-items: center;
 	padding: 5px 0px;
 	background-color: ${({ theme }) => theme.navBar};
-	${({ padding }) => padding && 'padding: 5px 20px;'};
+	${({ padding }) => padding && 'padding: 5px 15px;'};
 `;

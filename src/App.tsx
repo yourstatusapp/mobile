@@ -9,8 +9,8 @@ import core from './core';
 import { usePulse } from '@pulsejs/react';
 import { CustomAlert } from './parts/alert/CustomAlert';
 
-// import * as Notifications from './utils/Notifications';
-// Notifications;
+import * as Notifications from './utils/Notifications';
+Notifications;
 
 instance.setStorage({
 	async: true,

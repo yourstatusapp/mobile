@@ -17,6 +17,8 @@ const State = {
 	permissions_list: state<PermissionsList>({
 		geolocation_access: false,
 	}).persist('phone_permissions_state'),
+
+	device_push_token: state<string>('').persist('device_push_token'),
 };
 
 export const app = {
