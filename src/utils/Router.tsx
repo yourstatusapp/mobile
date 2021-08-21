@@ -30,24 +30,15 @@ export const Router: React.FC = () => {
 
 	const barStyle = ((ThemeMode === 'light' ? 'dark' : 'light') + '-content') as StatusBarStyle;
 
-	const [RouterLoaded, setRouterLoaded] = React.useState(false);
 	const [Loaded, setLoaded] = React.useState(false);
 	const [PreloaderReady, setPreloaderReady] = React.useState(false);
 
 	// Checking for logged_in
 	core.account.state.logged_in.onNext((v) => {
-		// console.log('logged_in', v);
-
-		// if (v) console.log('account is loaded');
-		console.log('next');
-
 		setLoaded(true);
 	});
 
-	React.useEffect(() => {
-		console.log('loggedIn => ', loggedIn);
-		// setLoaded(true);
-	}, [loggedIn]);
+	React.useEffect(() => {}, [loggedIn]);
 
 	useEffect(() => {
 		setTimeout(() => setLoaded(true), 2000);

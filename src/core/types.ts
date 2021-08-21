@@ -3,7 +3,7 @@ export interface Account {
 	email: string;
 }
 
-export interface ProfileType {
+export interface IProfile {
 	id: string;
 	username: string;
 	location: string;

@@ -37,7 +37,6 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 	// const [PendingList, setPendingList] = useState<any[]>();
 	const getFriendList = async () => {
 		const a = await request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends');
-
 		FriendsList.set(a.friends);
 		PendingList.set(a.incoming_pending);
 	};

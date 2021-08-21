@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { request } from '../../core/utils';
 import { Avatar, Fill, Header, IconButton, Spacer, TabbarContentContainer, Text } from '@parts';
@@ -17,12 +17,17 @@ export const Messages: React.FC<MessagesProps> = () => {
 	const nav = useNavigation();
 	const theme = useTheme();
 
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(async () => {
+		setRefreshing(true);
+		await getMessages();
+		setTimeout(() => setRefreshing(false), 2000);
+	}, []);
+
 	const getMessages = async () => {
 		const a = await request<Conversation[]>('get', '/conversations');
-		// console.log(a);
-		// setTest(a);
-
-		core.conversations.collection.collect(a, 'mine', { method: 'push'});
+		core.conversations.collection.collect(a, 'mine', { method: 'push' });
 	};
 
 	React.useEffect(() => {
@@ -54,7 +59,7 @@ export const Messages: React.FC<MessagesProps> = () => {
 				rightArea={<IconButton name="plus" size={35} onPress={() => nav.navigate('NewConversation')} noBackground color={theme.text} style={{ marginRight: 5 }} />}
 			/>
 
-			<FlatList data={Convs} renderItem={renderItem} />
+			<FlatList data={Convs} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />} />
 		</TabbarContentContainer>
 	);
 };
