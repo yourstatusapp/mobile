@@ -2,7 +2,7 @@ import { Text } from '@parts';
 import * as React from 'react';
 import { Animated } from 'react-native';
 import { PanGestureHandler, State, TouchableOpacity } from 'react-native-gesture-handler';
-import { abs, add, Clock, cond, diff, divide, eq, lessThan, multiply, set, startClock, stopClock, Value } from 'react-native-reanimated';
+
 import styled from 'styled-components/native';
 
 interface CustomAlertProps {}

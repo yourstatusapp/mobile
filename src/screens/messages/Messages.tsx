@@ -13,13 +13,16 @@ interface MessagesProps {
 }
 
 export const Messages: React.FC<MessagesProps> = () => {
-	const Convs = usePulse(core.conversations.collection.groups.all);
+	const Convs = usePulse(core.conversations.collection.groups.mine);
 	const nav = useNavigation();
 	const theme = useTheme();
 
 	const getMessages = async () => {
-		const a = await request<Conversation[]>('get', '/conversation');
-		core.conversations.collection.collect(a, 'all');
+		const a = await request<Conversation[]>('get', '/conversations');
+		// console.log(a);
+		// setTest(a);
+
+		core.conversations.collection.collect(a, 'mine', { method: 'push'});
 	};
 
 	React.useEffect(() => {
@@ -45,7 +48,12 @@ export const Messages: React.FC<MessagesProps> = () => {
 
 	return (
 		<TabbarContentContainer noSidePadding>
-			<Header title="Messages" padding rightArea={<IconButton name="plus" size={35} noBackground color={theme.text} style={{ marginRight: 5 }} />} />
+			<Header
+				title="Messages"
+				padding
+				rightArea={<IconButton name="plus" size={35} onPress={() => nav.navigate('NewConversation')} noBackground color={theme.text} style={{ marginRight: 5 }} />}
+			/>
+
 			<FlatList data={Convs} renderItem={renderItem} />
 		</TabbarContentContainer>
 	);

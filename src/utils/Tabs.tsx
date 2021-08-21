@@ -18,6 +18,7 @@ import { Settings } from '../screens/settings/Settings';
 import { Status } from '../screens/status/Status';
 import { Newfriends } from '../screens/newfriends/Newfriends';
 import { Notifications } from '../screens/notifications/Notifications';
+import { Newconversation } from '../screens/newconversation/Newconversation';
 
 const Tab = createBottomTabNavigator();
 export const AppStack = createStackNavigator();
@@ -47,6 +48,7 @@ export const AppStacks: React.FC = () => {
 			<AppStack.Screen name="SearchPeople" component={Search} />
 			<AppStack.Screen name="EditProfile" component={EditProfile} />
 			<AppStack.Screen name="NewUser" component={Newuser} />
+			<AppStack.Screen name="NewConversation" component={Newconversation} />
 		</AppStack.Navigator>
 	);
 };

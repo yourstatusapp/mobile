@@ -44,10 +44,10 @@ export const Router: React.FC = () => {
 		setLoaded(true);
 	});
 
-	// React.useEffect(() => {
-	// 	console.log('loggedIn => ', loggedIn);
-	// 	setLoaded(true);
-	// }, [loggedIn]);
+	React.useEffect(() => {
+		console.log('loggedIn => ', loggedIn);
+		// setLoaded(true);
+	}, [loggedIn]);
 
 	useEffect(() => {
 		setTimeout(() => setLoaded(true), 2000);
@@ -77,6 +77,7 @@ export const Router: React.FC = () => {
 					<Stack.Screen name="Register" component={Register} />
 					<Stack.Screen name="Verify" component={Verify} />
 					<Stack.Screen name="Magic" component={Magic} />
+
 					<Stack.Screen name="App" component={AppStacks} />
 					<Stack.Screen name="Camera" component={Camera} />
 					<Stack.Screen name="Newpost" component={Newpost} />

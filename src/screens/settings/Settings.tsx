@@ -12,6 +12,7 @@ import { IconButton, TextButton } from '../../parts/Buttons';
 import { SettingsAccount } from './screens/SettingsAccount';
 import { SettingsApp } from './screens/SettingsApp';
 import { SettingsAppearance } from './screens/SettingsAppearance';
+import { SettingsNotifications } from './screens/SettingsNotiifcations';
 
 const SettingsStack = createStackNavigator();
 
@@ -24,6 +25,7 @@ export const Settings: React.FC = () => {
 			<SettingsStack.Screen name="SettingsAccount" component={SettingsAccount} />
 			<SettingsStack.Screen name="SettingsAppearance" component={SettingsAppearance} />
 			<SettingsStack.Screen name="SettingsInfo" component={SettingsApp} />
+			<SettingsStack.Screen name="SettingsNotifications" component={SettingsNotifications} />
 		</SettingsStack.Navigator>
 	);
 };
@@ -80,10 +82,11 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			</Row>
 			<Spacer size={30} />
 			<SettingsButton text="Account" routeName="Account" icon="person" />
+			<SettingsButton text="Notifications" routeName="Notifications" icon="bell" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
-			<SettingsButton text="App Info" routeName="Info" icon="info" />
-			<SettingsButton text="Toggle Debug" action={() => toggleDebug()} textColor="#4b9fff" />
-			<Spacer size={10} />
+			{/* <SettingsButton text="App Info" routeName="Info" icon="info" /> */}
+			{/* <SettingsButton text="Toggle Debug" action={() => toggleDebug()} textColor="#4b9fff" /> */}
+			<Spacer size={20} />
 			<SettingsButton text="Logout" action={() => logout()} textColor="#FF4B4B" />
 			<Spacer size={50} />
 		</SettingsBody>

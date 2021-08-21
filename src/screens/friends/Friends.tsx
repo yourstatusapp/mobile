@@ -8,7 +8,7 @@ import core from '@core';
 import { Activity } from '../../core/modules/accounts';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
-import { ScrollView } from 'react-native-gesture-handler';
+import { useState } from 'react';
 
 interface FriendsProps {}
 
@@ -22,8 +22,8 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 
 	const pendingList = usePulse(PendingList);
 	const friendList = usePulse(FriendsList);
-	const [Stories, setStories] = React.useState<any[]>([]);
-	const [MyStories, setMyStories] = React.useState<any[]>([]);
+	const [Stories, setStories] = useState<any[]>([]);
+	const [MyStories, setMyStories] = useState<any[]>([]);
 
 	const [refreshing, setRefreshing] = React.useState(false);
 
@@ -69,6 +69,15 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 		setMyStories(a.mine);
 	};
 
+	// const onScroll = (event) => {
+	// 	if (event.nativeEvent.contentOffset.y > 40) {
+	// 		setStoriesHide(false);
+	// 	} else {
+	// 		setStoriesHide(true);
+	// 	}
+	// 	console.log(event.nativeEvent.contentOffset.y);
+	// };
+
 	const renderItem = ({ item, index }) => (
 		<ProfileRenderItem key={index} onPress={() => nav.navigate('Profile', { profile: item })}>
 			<View>
@@ -102,7 +111,6 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={40} />
 			<Spacer size={10} />
 			<Text>{item.username || 'none'}</Text>
-			{/* <Spacer size={10} /> */}
 			<Fill />
 			<SmallButton text="Accept" onPress={() => replyFriendRequest(true, item.id)} />
 			<Spacer size={10} />
@@ -128,7 +136,7 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 					</Row>
 				}
 			/>
-			{(!!Stories.length || !!MyStories.length) && <StoriesArea data={Stories} mine={MyStories} />}
+			{(!!Stories?.length || !!MyStories?.length) && <StoriesArea data={Stories} mine={MyStories} />}
 			{!!pendingList?.length && (
 				<>
 					<Spacer size={20} />
@@ -138,7 +146,11 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 					<FlatList data={pendingList} renderItem={renderItem1} style={{ paddingTop: 20, flexGrow: 0 }} scrollEnabled={false} />
 				</>
 			)}
-			<FlatList data={friendList} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />} />
+			<FlatList
+				data={friendList}
+				renderItem={renderItem}
+				refreshControl={<RefreshControl style={{ backgroundColor: theme.step0 }} refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
+			/>
 		</TabbarContentContainer>
 	);
 };
@@ -157,50 +169,69 @@ const ProfileRenderItem = styled(TouchableOpacity)`
 // `;
 
 const StoriesArea: React.FC<{ data: any[]; mine: any }> = (p) => {
-	const theme = useTheme();
 	const nav = useNavigation();
 	const prof = usePulse(core.profile.state.PROFILE);
+	const listRef = React.useRef<any>();
+	const [Collapse, setCollapse] = useState(false);
+	// const HEIGHT = useSharedValue(100);
+
+	// const animatedStyles = useAnimatedStyle(() => {
+	// 	return {
+	// 		height: HEIGHT.value,
+	// 	};
+	// });
+
+	// Animation
+	// useEffect(() => {
+	// 	!Collapse
+	// 		? (HEIGHT.value = withTiming(40, { duration: 300, easing: Easing.out(Easing.exp) }))
+	// 		: (HEIGHT.value = withTiming(110, { duration: 300, easing: Easing.out(Easing.exp) }));
+	// }, [Collapse]);
 
 	const renderItem = ({ item, index }) => (
 		<TouchableOpacity key={index} onPress={() => nav.navigate('Stories', item)}>
-			<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={50} />
+			<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={60} />
 		</TouchableOpacity>
 	);
 
 	return (
 		<StoriesAreaBody>
 			<Spacer size={10} />
-			<Text weight="semi-bold" size={16} style={{ paddingLeft: 15 }}>
-				Realtime Stories
-			</Text>
-			<Spacer size={5} />
+			<TouchableOpacity onPress={() => setCollapse(!Collapse)} activeOpacity={1}>
+				<Text weight="semi-bold" size={16} style={{ paddingLeft: 15 }}>
+					Realtime Stories
+				</Text>
+			</TouchableOpacity>
 
-			<ScrollView horizontal={true} style={{ paddingVertical: 5, paddingLeft: 5 }}>
-				{!!p.mine.length && (
-					<>
-						<Spacer size={15} />
-						<TouchableOpacity onPress={() => nav.navigate('Stories', { account_id: prof.owner, avatar: prof.avatar, username: prof.username, stories: p.mine })}>
-							<Avatar src={`https://cdn.yourstatus.app/profile/${prof.owner}/${prof.avatar}`} size={50} />
-						</TouchableOpacity>
-					</>
-				)}
+			<Spacer size={7} />
 
-				<FlatList
-					data={p.data}
-					renderItem={renderItem}
-					ItemSeparatorComponent={() => <Spacer size={12} />}
-					style={{ flexGrow: 0 }}
-					contentContainerStyle={{ paddingLeft: 12 }}
-					horizontal
-					scrollEnabled={false}
-				/>
-			</ScrollView>
-			<Spacer size={5} />
+			<FlatList
+				ref={listRef}
+				data={p.data}
+				renderItem={renderItem}
+				ItemSeparatorComponent={() => <Spacer size={12} />}
+				contentContainerStyle={{ paddingLeft: 12, paddingRight: 20 }}
+				horizontal
+				showsHorizontalScrollIndicator={false}
+				ListHeaderComponent={
+					<TouchableOpacity
+						style={{ marginRight: 12 }}
+						onPress={() => nav.navigate('Stories', { account_id: prof.owner, avatar: prof.avatar, username: prof.username, stories: p.mine })}
+					>
+						<Avatar src={`https://cdn.yourstatus.app/profile/${prof.owner}/${prof.avatar}`} size={60} />
+					</TouchableOpacity>
+				}
+				scrollEnabled={true}
+			/>
+			<Spacer size={10} />
+			{/* </Row> */}
 		</StoriesAreaBody>
 	);
 };
 
 const StoriesAreaBody = styled.View`
+	width: 100%;
+	z-index: 10;
 	background-color: ${({ theme }) => theme.step1};
 	border-top-color: ${({ theme }) => theme.step2};
 	border-bottom-color: ${({ theme }) => theme.step2};

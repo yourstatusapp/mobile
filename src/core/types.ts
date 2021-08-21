@@ -14,12 +14,11 @@ export interface ProfileType {
 	status?: Status;
 }
 
-export interface Conversation {
-	conversation_id: string;
+export interface IConversation {
+	id: string;
 	account_id: string;
 	username: string;
 	avatar: string;
-	participants: string[];
 }
 
 export interface Message {

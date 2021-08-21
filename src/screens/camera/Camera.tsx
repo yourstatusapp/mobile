@@ -1,18 +1,19 @@
 import * as React from 'react';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { RNCamera, RNCameraProps } from 'react-native-camera';
-import { IconButton, Row, Spacer, Text } from '@parts';
+import { Fill, IconButton, Row, Spacer, Text } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import { useState } from 'react';
 import FastImage from 'react-native-fast-image';
 import { TouchableOpacity } from 'react-native';
-
+import ImagePicker from 'react-native-image-crop-picker';
 interface CameraProp {}
 
 export const Camera: React.FC<CameraProp> = (props) => {
 	const {} = props;
 	const nav = useNavigation();
 	const cameraRef = React.useRef<any>();
+	const theme = useTheme();
 	const [Flash, setFlash] = useState<'off' | 'on' | 'auto' | 'torch'>('off');
 	const [SelectedCam, setSelectedCam] = useState<'front' | 'back'>('back');
 	const [LastTaken, setLastTaken] = useState();
@@ -31,6 +32,15 @@ export const Camera: React.FC<CameraProp> = (props) => {
 		}
 	};
 
+	const chooseFromGalaery = () => {
+		ImagePicker.openPicker({
+			mediaType: 'photo',
+		}).then((video) => {
+			console.log(video.sourceURL);
+			nav.navigate('Newpost', { image: video.sourceURL });
+		});
+	};
+
 	return (
 		<CameraBody>
 			<RNCamera style={{ flex: 1 }} type={SelectedCam} ref={cameraRef} flashMode={Flash} useNativeZoom={true} maxZoom={1}>
@@ -39,6 +49,9 @@ export const Camera: React.FC<CameraProp> = (props) => {
 						<OverLay>
 							<CloseButton name="times" size={45} iconSize={45} color="white" noBackground onPress={() => nav.goBack()} />
 							<ControlBox center>
+								<Spacer size={10} />
+								<Spacer size={50} />
+								<Fill />
 								<IconButton
 									name="switch"
 									size={40}
@@ -52,6 +65,10 @@ export const Camera: React.FC<CameraProp> = (props) => {
 
 								<Spacer size={40} />
 								<IconButton name="flashlight" size={40} color={Flash === 'off' ? 'gray' : 'white'} noBackground onPress={() => setFlash(Flash === 'off' ? 'torch' : 'off')} />
+								<Fill />
+
+								<IconButton noBackground name="image" size={50} color="white" onPress={() => chooseFromGalaery()} />
+								<Spacer size={10} />
 							</ControlBox>
 						</OverLay>
 					);

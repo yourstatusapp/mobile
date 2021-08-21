@@ -1,46 +1,55 @@
-import core, { request } from '@core';
+import core, { IConversation, request } from '@core';
 import { Avatar, Fill, Icon, IconButton, Row, Spacer, TabbarContentContainer, Text } from '@parts';
-import { collection, usePulse } from '@pulsejs/react';
+import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, Platform, RefreshControl, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
-import { account, profile } from '../../core/modules';
+import { account } from '../../core/modules';
 
-interface ConversationItem {
-	conversation_id: string;
-	owner: string;
-	username: string;
-	avatar: string;
-	id: string;
-}
+// interface ConversationItem {
+// 	conversation_id: string;
+// 	owner: string;
+// 	username: string;
+// 	avatar: string;
+// 	id: string;
+// }
 
 interface ConversationProps {
 	route: {
 		name: string;
 		key: string;
-		params: ConversationItem;
+		params: IConversation;
 	};
 }
 
 export const Conversation: React.FC<ConversationProps> = (props) => {
 	const { route } = props;
-	const messages = usePulse(core.message.collection.getGroup(route.params.conversation_id));
+	const messages = usePulse(core.message.collection.getGroup(route.params.id));
 	const [newMessage, setnewMessage] = useState('');
 	const acc = usePulse(account.state.ACCOUNT);
 	const nav = useNavigation();
 	const theme = useTheme();
 
 	const sendMessage = async (message: string) => {
-		await request('post', `/conversation/${route.params.conversation_id}/send`, { data: { message } });
+		await request('post', `/conversations/${route.params.id}/send`, { data: { message } });
+		setnewMessage('');
 	};
 
 	const getMessage = React.useCallback(async () => {
-		const a = await request<any[]>('get', '/conversation/' + route.params.conversation_id + '/messages');
-		core.message.collection.collect(a, route.params.conversation_id);
-	}, [route.params.conversation_id]);
+		const a = await request<any[]>('get', '/conversations/' + route.params.id);
+		core.message.collection.collect(a, route.params.id);
+	}, [route.params.id]);
+
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	const onRefresh = React.useCallback(async () => {
+		setRefreshing(true);
+		await getMessage();
+		setTimeout(() => setRefreshing(false), 2000);
+	}, []);
 
 	useEffect(() => {
 		getMessage();
@@ -73,11 +82,19 @@ export const Conversation: React.FC<ConversationProps> = (props) => {
 						{route.params.username}
 					</Text>
 					<Fill />
-					<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.owner}/${route.params.avatar}`} size={40} />
+					<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.account_id}/${route.params.avatar}`} size={40} />
 				</ConversationHeader>
-				<FlatList data={messages} renderItem={renderItem} ListEmptyComponent={ListEmptyComponent} contentContainerStyle={{ paddingTop: 10 }} />
+
+				<FlatList
+					data={messages}
+					renderItem={renderItem}
+					ListEmptyComponent={ListEmptyComponent}
+					contentContainerStyle={{ paddingTop: 10 }}
+					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
+				/>
+
 				<BottomPart>
-					<SendMessageInput placeholder="Write a message..." onChangeText={setnewMessage} />
+					<SendMessageInput placeholder="Write a message..." onChangeText={setnewMessage} value={newMessage} />
 					<Spacer size={10} />
 					<IconButton name="send" size={40} color={theme.textFade} backgroundColor={theme.step1} onPress={() => sendMessage(newMessage)} />
 				</BottomPart>

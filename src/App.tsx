@@ -9,8 +9,17 @@ import core from './core';
 import { usePulse } from '@pulsejs/react';
 import { CustomAlert } from './parts/alert/CustomAlert';
 
-import * as Notifications from './utils/Notifications';
-Notifications;
+// import * as Notifications from './utils/Notifications';
+if (!__DEV__) {
+	console.log('__DEV__');
+
+	require('./utils/Notifications');
+
+	// Notifications;
+}
+
+import * as Socket from './core/socket';
+Socket;
 
 instance.setStorage({
 	async: true,
