@@ -13,6 +13,7 @@ import { SettingsAccount } from './screens/SettingsAccount';
 import { SettingsApp } from './screens/SettingsApp';
 import { SettingsAppearance } from './screens/SettingsAppearance';
 import { SettingsNotifications } from './screens/SettingsNotiifcations';
+import DeviceInfo from 'react-native-device-info';
 
 const SettingsStack = createStackNavigator();
 
@@ -80,7 +81,8 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 				<Spacer size={15} />
 				<TextButton size={18} weight="semi-bold" text="close" onPress={() => nav.goBack()} />
 			</Row>
-			<Spacer size={30} />
+			<Spacer size={20} />
+
 			<SettingsButton text="Account" routeName="Account" icon="person" />
 			<SettingsButton text="Notifications" routeName="Notifications" icon="bell" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
@@ -88,6 +90,10 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			{/* <SettingsButton text="Toggle Debug" action={() => toggleDebug()} textColor="#4b9fff" /> */}
 			<Spacer size={20} />
 			<SettingsButton text="Logout" action={() => logout()} textColor="#FF4B4B" />
+			<Spacer size={20} />
+			<Text center size={12} color={theme.textFade}>
+				version: beta.{DeviceInfo?.getBuildNumber()}
+			</Text>
 			<Spacer size={50} />
 		</SettingsBody>
 	);

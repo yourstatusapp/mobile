@@ -26,6 +26,7 @@ export const AppStack = createStackNavigator();
 export const AppStacks: React.FC = () => {
 	const theme = useTheme();
 
+
 	return (
 		<AppStack.Navigator
 			initialRouteName="AppTabs"
@@ -63,7 +64,6 @@ export const Tabs: React.FC = () => {
 			<Tab.Screen name="friends" component={Friends} />
 			<Tab.Screen name="discovery" component={Discovery} />
 			<Tab.Screen name="account" component={Account} />
-			<Tab.Screen name="conversation" component={Conversation} />
 			<Tab.Screen name="newfriends" component={Newfriends} />
 			<AppStack.Screen name="notifications" component={Notifications} />
 		</Tab.Navigator>

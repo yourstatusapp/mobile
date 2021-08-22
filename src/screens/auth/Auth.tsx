@@ -3,15 +3,16 @@ import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react';
 import { KeyboardAvoidingView, View, ViewStyle } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 import core from '../../core';
 import { baseURL, request } from '../../core/utils';
-import { Fill, Icon, Row, Spacer, Text } from '../../parts';
-import { IconButton, WideButton } from '../../parts/Buttons';
+import { Fill, Row, Spacer, Text } from '../../parts';
+import { WideButton } from '../../parts/Buttons';
 import { Input } from '../../parts/Input';
 import { useLinking } from '../../utils/Linking';
 import RNPickerSelect from 'react-native-picker-select';
+import DeviceInfo from 'react-native-device-info';
 
 export const Auth: React.FC = () => {
 	const [Email, setEmail] = useState('');
@@ -78,7 +79,7 @@ export const Auth: React.FC = () => {
 		<AuthBody>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior="position" keyboardVerticalOffset={-230}>
 				<Text center size={12} color="lightgray">
-					version: beta.14
+					version: beta.{DeviceInfo?.getBuildNumber()}
 				</Text>
 				<Spacer size={50 * 2} />
 				<TouchableOpacity onPress={() => setShowManual(!ShowManual)}>

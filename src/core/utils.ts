@@ -2,8 +2,8 @@ import core from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
-// export const baseURL = state('https://api.yourstatus.app').persist('baseURL');
-export const baseURL = state('http://localhost:8080').persist('baseURL');
+export const baseURL = state('https://api.yourstatus.app').persist('baseURL');
+// export const baseURL = state('http://localhost:8080').persist('baseURL');
 
 interface RequestOptions {
 	headers?: any;

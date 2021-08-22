@@ -18,6 +18,7 @@ import { Camera } from '../screens/camera/Camera';
 import { Newpost } from '../screens/newpost/Newpost';
 import { useEffect } from 'react';
 import { Stories } from '../screens/stories/Stories';
+import { Conversation } from '../screens/conversation/Conversation';
 
 const Stack = createStackNavigator();
 
@@ -73,6 +74,8 @@ export const Router: React.FC = () => {
 					<Stack.Screen name="Camera" component={Camera} />
 					<Stack.Screen name="Newpost" component={Newpost} />
 					<Stack.Screen name="Stories" component={Stories} />
+
+					<Stack.Screen name="conversation" component={Conversation} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>
