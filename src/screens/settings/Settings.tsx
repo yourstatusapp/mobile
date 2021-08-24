@@ -86,7 +86,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			<SettingsButton text="Account" routeName="Account" icon="person" />
 			<SettingsButton text="Notifications" routeName="Notifications" icon="bell" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
-			{/* <SettingsButton text="App Info" routeName="Info" icon="info" /> */}
+			<SettingsButton text="App Info" routeName="Info" icon="info" />
 			{/* <SettingsButton text="Toggle Debug" action={() => toggleDebug()} textColor="#4b9fff" /> */}
 			<Spacer size={20} />
 			<SettingsButton text="Logout" action={() => logout()} textColor="#FF4B4B" />

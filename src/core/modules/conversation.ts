@@ -1,7 +1,7 @@
 import { collection } from '@pulsejs/core';
-import { Conversation } from '../types';
+import { IConversation } from '../types';
 
-const CL = collection<Conversation>({ primaryKey: 'id' }).createSelector('current').createGroup('mine');
+const CL = collection<IConversation>({ primaryKey: 'id' }).createSelector('current').createGroup('mine');
 
 export const conversations = {
 	collection: CL,

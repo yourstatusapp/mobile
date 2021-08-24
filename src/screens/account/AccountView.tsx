@@ -10,7 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface AccountProps {}
 
-export const Account: React.FC<AccountProps> = (props) => {
+export const AccountView: React.FC<AccountProps> = (props) => {
 	const nav = useNavigation();
 	const theme = useTheme();
 	const acc = usePulse(core.account.state.ACCOUNT);

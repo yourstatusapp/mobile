@@ -19,7 +19,6 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 	const { route } = props;
 	const theme = useTheme();
 	const nav = useNavigation();
-	const [Image, setImage] = useState('');
 	const [Coll, setColl] = useState<Collection[]>();
 	const [SelectColl, setSelectColl] = useState<Collection>();
 
@@ -29,14 +28,16 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 	};
 
 	const createPost = async () => {
-		if (!SelectColl) return;
+		if (!SelectColl) {
+			return;
+		}
 
 		const fd = new FormData();
-		const uri = Platform.OS === 'android' ? '' : Image.replace('file://', '');
+		const uri = Platform.OS === 'android' ? '' : route.params.image.replace('file://', '');
 		fd.append('file', {
 			uri,
-			type: Image.split('.')[1],
-			name: Image.split('/').pop(),
+			type: route.params.image.split('.')[1],
+			name: route.params.image.split('/').pop(),
 		});
 		fd.append('type', 0);
 
@@ -47,20 +48,20 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 
 	const createRealTimeStorie = async () => {
 		const fd = new FormData();
-		const uri = Platform.OS === 'android' ? '' : Image.replace('file://', '');
+		const uri = Platform.OS === 'android' ? '' : route.params.image.replace('file://', '');
 		fd.append('file', {
 			uri,
-			type: Image.split('.')[1],
-			name: Image.split('/').pop(),
+			type: route.params.image.split('.')[1],
+			name: route.params.image.split('/').pop(),
 		});
 
-		const a = request('post', '/profile/stories/new', { data: fd, headers: { 'Content-Type': 'multipart/form-data;' } });
+		await request('post', '/profile/stories/new', { data: fd, headers: { 'Content-Type': 'multipart/form-data;' } });
 
 		nav.goBack();
 	};
 
 	React.useEffect(() => {
-		setImage(route.params.image);
+		// setImage(route.params.image);
 
 		getMyCollections();
 	}, []);
@@ -76,7 +77,7 @@ export const Newpost: React.FC<NewpostProps> = (props) => {
 				style={{ transform: [{ rotate: '180deg' }], position: 'absolute', top: 55, zIndex: 15, left: 10 }}
 				onPress={() => nav.goBack()}
 			/>
-			<FastImage source={{ uri: Image || '' }} style={{ height: 400, width: '100%' }} resizeMode="contain" />
+			<FastImage source={{ uri: route.params.image || '' }} style={{ height: 400, width: '100%' }} resizeMode="contain" />
 			<SidePadding>
 				<Spacer size={20} />
 				<Text weight="semi-bold" size={20}>

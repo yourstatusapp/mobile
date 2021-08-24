@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 interface CameraProp {}
 
-export const Camera: React.FC<CameraProp> = (props) => {
+export const CameraView: React.FC<CameraProp> = (props) => {
 	const {} = props;
 	const nav = useNavigation();
 	const cameraRef = React.useRef<any>();
@@ -26,7 +26,7 @@ export const Camera: React.FC<CameraProp> = (props) => {
 			const options = { quality: 0.5, base64: true };
 			// const data = await cameraRef.current.camera.takePictureAsync(options);
 			//@ts-ignore
-			const data = await camera.takePictureAsync(options);
+			const data = await camera.takePictureAsync({});
 			console.log(data);
 			setLastTaken(data.uri);
 		}
@@ -35,6 +35,7 @@ export const Camera: React.FC<CameraProp> = (props) => {
 	const chooseFromGalaery = () => {
 		ImagePicker.openPicker({
 			mediaType: 'photo',
+			cropping: true,
 		}).then((video) => {
 			console.log(video.sourceURL);
 			nav.navigate('Newpost', { image: video.sourceURL });

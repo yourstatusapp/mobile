@@ -4,12 +4,11 @@ import * as React from 'react';
 import { useTheme } from 'styled-components';
 
 import { CustomNavBar } from '../parts/components/CustomNavBar';
-import { Account } from '../screens/account/Account';
-import { Conversation } from '../screens/conversation/Conversation';
+import { AccountView } from '../screens/account/AccountView';
 import { Discovery } from '../screens/discovery/Discovery';
 import { EditProfile } from '../screens/edit_profile/EditProfile';
 import { Friendrequests } from '../screens/friendrequests/Friendrequests';
-import { Friends } from '../screens/friends/Friends';
+import { FriendsView } from '../screens/friends/FriendsView';
 import { Newuser } from '../screens/newuser/Newuser';
 import { Messages } from '../screens/messages/Messages';
 import { Profile } from '../screens/profile/Profile';
@@ -25,7 +24,6 @@ export const AppStack = createStackNavigator();
 
 export const AppStacks: React.FC = () => {
 	const theme = useTheme();
-
 
 	return (
 		<AppStack.Navigator
@@ -61,9 +59,9 @@ export const Tabs: React.FC = () => {
 	return (
 		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} tabBarOptions={{ style: { opacity: 0 } }}>
 			<Tab.Screen name="messages" component={Messages} />
-			<Tab.Screen name="friends" component={Friends} />
+			<Tab.Screen name="friends" component={FriendsView} />
 			<Tab.Screen name="discovery" component={Discovery} />
-			<Tab.Screen name="account" component={Account} />
+			<Tab.Screen name="account" component={AccountView} />
 			<Tab.Screen name="newfriends" component={Newfriends} />
 			<AppStack.Screen name="notifications" component={Notifications} />
 		</Tab.Navigator>

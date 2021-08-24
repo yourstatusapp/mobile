@@ -15,7 +15,7 @@ interface FriendsProps {}
 const FriendsList = state<any[]>([]);
 const PendingList = state<any[]>([]);
 
-export const Friends: React.FC<FriendsProps> = (props) => {
+export const FriendsView: React.FC<FriendsProps> = (props) => {
 	const {} = props;
 	const theme = useTheme();
 	const nav = useNavigation();
@@ -142,7 +142,7 @@ export const Friends: React.FC<FriendsProps> = (props) => {
 					<Text style={{ paddingLeft: 10 }} weight="semi-bold" size={16} color={theme.primary}>
 						Pending friends requests
 					</Text>
-					<FlatList data={pendingList} renderItem={renderItem1} style={{ paddingTop: 20, flexGrow: 0 }} scrollEnabled={false} />
+					<FlatList data={pendingList} renderItem={renderItem1} style={{ flexGrow: 0 }} scrollEnabled={false} />
 				</>
 			)}
 			<FlatList
@@ -215,7 +215,7 @@ const StoriesArea: React.FC<{ data: any[]; mine: any }> = (p) => {
 				ListHeaderComponent={
 					<TouchableOpacity
 						style={{ marginRight: 12 }}
-						onPress={() => nav.navigate('Stories', { account_id: prof.owner, avatar: prof.avatar, username: prof.username, stories: p.mine })}
+						onPress={() => nav.navigate('Stories', { account_id: prof.id, avatar: prof.avatar, username: prof.username, stories: p.mine })}
 					>
 						<Avatar src={`https://cdn.yourstatus.app/profile/${prof.owner}/${prof.avatar}`} size={60} />
 					</TouchableOpacity>
@@ -230,11 +230,11 @@ const StoriesArea: React.FC<{ data: any[]; mine: any }> = (p) => {
 
 const StoriesAreaBody = styled.View`
 	width: 100%;
-	z-index: 10;
+	/* z-index: 10; */
 	background-color: ${({ theme }) => theme.step1};
 	border-top-color: ${({ theme }) => theme.step2};
 	border-bottom-color: ${({ theme }) => theme.step2};
 	border-top-width: 1px;
 	border-bottom-width: 1px;
-	position: relative;
+	/* position: relative; */
 `;

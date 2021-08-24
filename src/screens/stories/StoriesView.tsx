@@ -13,7 +13,7 @@ interface StoriesProps {
 	};
 }
 
-export const Stories: React.FC<StoriesProps> = (props) => {
+export const StoriesView: React.FC<StoriesProps> = (props) => {
 	const { route } = props;
 	const theme = useTheme();
 	const nav = useNavigation();

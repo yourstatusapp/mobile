@@ -1473,6 +1473,11 @@
     "@types/react" "*"
     csstype "^3.0.2"
 
+"@types/uuid@^8.3.1":
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.1.tgz#1a32969cf8f0364b3d8c8af9cc3555b7805df14f"
+  integrity sha512-Y2mHTRAbqfFkpjldbkHGY8JIzRN6XqYRliG8/24FcHm2D2PwW24fl5xMRTVGdrb7iMrwCaIEbLWerGIkXuFWVg==
+
 "@types/yargs-parser@*":
   version "20.2.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-20.2.0.tgz#dd3e6699ba3237f0348cd085e4698780204842f9"
@@ -5699,10 +5704,10 @@ react-native-date-picker@^3.3.2:
   resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-3.3.2.tgz#1e08ae1793112510cd19eaca900b3be3b21c7339"
   integrity sha512-iLlze62sBPwHXaBz69eXPy8cA5vXWV21UaDflQ6TECDhOOQ5HTeDXqSHrQFNPqsYwfmHADGiQdKRnzRy5st2VA==
 
-react-native-device-info@^8.3.0:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.3.0.tgz#705d68b8d6112a6e46e74717606c77ed93a674e5"
-  integrity sha512-UkqK47w5r9rgjFpNMgXoMXj5D9GVQO8QxaTAbtJ/66XXt23WSHDroIzn+MVtTLl6SPKBw5/qakPKivLG44IPtw==
+react-native-device-info@^8.3.1:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.3.1.tgz#f32cbb22a74e51b05b896c03649fcbfd0a0da513"
+  integrity sha512-tEJlyECZeFVZcEJVSZIN8OGghnlrZmSy0J8PGU4mCNk4KMTvx3tHpHMc6c7afl3lS2vOBP3jslzHzRMDgh42cA==
 
 react-native-fast-image@^8.3.7:
   version "8.3.7"
@@ -7000,7 +7005,7 @@ uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
-uuid@^8.3.0:
+uuid@^8.3.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==

@@ -21,11 +21,13 @@ export interface IConversation {
 	avatar: string;
 }
 
-export interface Message {
+export interface IMessage {
 	id: string;
 	content: string;
+	conversation: string;
 	sender: string;
 	deleted_at: string;
+	nonce?: boolean;
 }
 
 export interface Device {
