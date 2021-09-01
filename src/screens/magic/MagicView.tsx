@@ -23,6 +23,7 @@ export const MagicView: React.FC<MagicProps> = (props) => {
 	const magicAuth = async (code: string, new_account: boolean) => {
 		const a = await request<{ account: any; profile: any; status: any; device: { id: string } }>('post', '/auth/magic/verify', { data: { code } });
 		if (!a) {
+			core.app.event.notification.emit({ title: 'Failed to verify magic link', type: 'error', desc: 'Send a dm to @yourstatusapp on Twitter' });
 			setTimeout(() => nav.goBack(), 1000);
 			return;
 		}
