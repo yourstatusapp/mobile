@@ -2,7 +2,6 @@
 import PushNotification from 'react-native-push-notification';
 import { app } from '../core/modules';
 
-
 PushNotification.configure({
 	onRegister: (token) => {
 		console.log('REGISTER  => ', token);

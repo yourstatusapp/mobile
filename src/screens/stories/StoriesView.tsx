@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { niceTime } from '../../core/utils';
 
 interface StoriesProps {
@@ -15,50 +15,27 @@ interface StoriesProps {
 
 export const StoriesView: React.FC<StoriesProps> = (props) => {
 	const { route } = props;
-	const theme = useTheme();
 	const nav = useNavigation();
 
 	const [ImageIndex, setImageIndex] = React.useState<number>(0);
-	const [Picture, setPicture] = React.useState('');
 
 	const nextImage = () => {
 		// TODO: Check if this works
-		if (ImageIndex === route.params.stories.length) {
+		if (ImageIndex > route.params.stories.length - 2) {
+			nav.goBack();
 			return;
 		}
 		setImageIndex(ImageIndex + 1);
 	};
 
-	React.useEffect(() => {
-		if (route.params.stories.length === ImageIndex) {
-			nav.goBack();
-		}
-	}, [ImageIndex]);
-
-	React.useEffect(() => {
-		console.log(route.params);
-	}, []);
-
 	return (
 		<StoriesBody>
-			<Spacer size={40} />
-
-			{/* <Text color="white">{`https://cdn.yourstatus.app/stories/${route.params.account_id}/${route.params.stories[0].picture}`}</Text> */}
-			<Text color="white">{Picture}</Text>
-			{/* <FastImage
-				resizeMode="contain"
-				source={{ uri: `https://cdn.yourstatus.app/stories/2252108220859396/c48e5911-dfe8-4593-b539-2d84c8d91b5f.jpg` }}
-				style={{ height: Dimensions.get('screen').height - 100, width: Dimensions.get('screen').width }}
-			/> */}
+			<Spacer size={60} />
 			<TouchableOpacity onPress={() => nextImage()} activeOpacity={1} style={{ height: Dimensions.get('screen').height - 100 }}>
-				<FastImage
-					resizeMode="contain"
-					source={{ uri: `https://cdn.yourstatus.app/stories/${route.params.account_id}/${route.params.stories[ImageIndex]?.picture}` }}
-					style={{ borderRadius: 10, height: Dimensions.get('screen').height - 100, width: Dimensions.get('screen').width }}
-				/>
+				<StorieImage resizeMode="contain" source={{ uri: `https://cdn.yourstatus.app/stories/${route.params.owner}/${route.params.stories[ImageIndex]?.picture}` }} />
 			</TouchableOpacity>
 			<FloatingArea>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.account_id}/${route.params.avatar}`} size={35} />
+				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.owner}/${route.params.avatar}`} size={35} />
 				<Spacer size={10} />
 				<Text weight="semi-bold" color="white">
 					{route.params.username}
@@ -75,6 +52,12 @@ export const StoriesView: React.FC<StoriesProps> = (props) => {
 const StoriesBody = styled.View`
 	flex: 1;
 	background-color: black;
+`;
+
+const StorieImage = styled(FastImage)`
+	border-radius: 10px;
+	height: ${() => Dimensions.get('screen').height - 100}px;
+	width: ${() => Dimensions.get('screen').width}px;
 `;
 
 const FloatingArea = styled.View`

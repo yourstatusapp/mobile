@@ -26,12 +26,13 @@ export const Preloader: React.FC<PreloaderProps> = (props) => {
 		// 	return;
 		// }
 
-		const res = await request<{ account: any; profile: any; status: any }>('get', '/account');
+		const res = await request<{ account: any; profile: any; status: any; device: { id: string } }>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
 
 		core.account.state.ACCOUNT.set(res.account);
 		core.profile.state.PROFILE.set(res.profile);
 		core.status.state.my_status.set(res.status);
+		core.app.state.device_id.set(res.device.id);
 
 		props.loaded();
 

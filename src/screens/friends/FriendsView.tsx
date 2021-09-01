@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { DatePickerAndroid, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { niceTime, request } from '../../core/utils';
 import { Avatar, Fill, Header, IconButton, Row, SmallButton, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
@@ -9,6 +9,7 @@ import { Activity } from '../../core/modules/accounts';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
 import { useState } from 'react';
+import FastImage from 'react-native-fast-image';
 
 interface FriendsProps {}
 
@@ -101,26 +102,29 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 						</Row>
 					</>
 				)}
+				<Spacer size={20} />
+				{!!item.stories?.length && <StoriesList data={item} />}
+				{/* <Text>{JSON.stringify(item.stories)}</Text> */}
 			</View>
 		</ProfileRenderItem>
 	);
 
-	const renderItem1 = ({ item, index }) => (
-		<Row key={index} style={{ paddingHorizontal: 15 }}>
-			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={40} />
-			<Spacer size={10} />
-			<Text>{item.username || 'none'}</Text>
-			<Fill />
-			<SmallButton text="Accept" onPress={() => replyFriendRequest(true, item.id)} />
-			<Spacer size={10} />
-			<SmallButton text="Deny" onPress={() => replyFriendRequest(false, item.id)} />
-		</Row>
-	);
+	// const renderItem1 = ({ item, index }) => (
+	// 	<Row key={index} style={{ paddingHorizontal: 15 }}>
+	// 		<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={40} />
+	// 		<Spacer size={10} />
+	// 		<Text>{item.username || 'none'}</Text>
+	// 		<Fill />
+	// 		<SmallButton text="Accept" onPress={() => replyFriendRequest(true, item.id)} />
+	// 		<Spacer size={10} />
+	// 		<SmallButton text="Deny" onPress={() => replyFriendRequest(false, item.id)} />
+	// 	</Row>
+	// );
 
 	React.useEffect(() => {
 		getFriendList();
-		getNotifications();
-		getStories();
+		// getNotifications();
+		// getStories();
 	}, []);
 
 	return (
@@ -130,31 +134,26 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				title="Friends"
 				rightArea={
 					<Row>
-						<IconButton name="search" size={35} color={theme.text} noBackground onPress={() => nav.navigate('SearchPeople')} />
+						<IconButton name="search" size={35} color={theme.textFade} noBackground onPress={() => nav.navigate('SearchPeople')} />
 						<Spacer size={5} />
 					</Row>
 				}
 			/>
-			{(!!Stories?.length || !!MyStories?.length) && <StoriesArea data={Stories} mine={MyStories} />}
-			{!!pendingList?.length && (
+			{/* {!!pendingList?.length && (
 				<>
 					<Spacer size={20} />
 					<Text style={{ paddingLeft: 10 }} weight="semi-bold" size={16} color={theme.primary}>
 						Pending friends requests
 					</Text>
-					<FlatList data={pendingList} renderItem={renderItem1} style={{ flexGrow: 0 }} scrollEnabled={false} />
+					<FlatList data={pendingList} renderItem={renderItem1}  scrollEnabled={false} />
 				</>
-			)}
-			<FlatList
-				data={friendList}
-				renderItem={renderItem}
-				refreshControl={<RefreshControl style={{ backgroundColor: theme.step0 }} refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
-			/>
+			)} */}
+			<FlatList data={friendList} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />} />
 		</TabbarContentContainer>
 	);
 };
 
-const ProfileRenderItem = styled(TouchableOpacity)`
+const ProfileRenderItem = styled.View`
 	flex-direction: row;
 	align-items: center;
 	/* justify-content: center; */
@@ -163,78 +162,62 @@ const ProfileRenderItem = styled(TouchableOpacity)`
 	border-bottom-width: 1px;
 `;
 
-// const StatusBox = styled.View`
-// 	align-items: flex-start;
-// `;
+interface IStories {
+	id: string;
+	picture: string;
+	account_id: string;
+	deleted_at: string;
+}
+interface StoriesList {
+	data: {
+		owner: string;
+		username: string;
+		avatar: string;
+		status: any;
+		stories: IStories[];
+	};
+}
 
-const StoriesArea: React.FC<{ data: any[]; mine: any }> = (p) => {
+const StoriesList: React.FC<StoriesList> = (props) => {
+	const { data } = props;
+	const theme = useTheme();
 	const nav = useNavigation();
-	const prof = usePulse(core.profile.state.PROFILE);
-	const listRef = React.useRef<any>();
-	const [Collapse, setCollapse] = useState(false);
-	// const HEIGHT = useSharedValue(100);
-
-	// const animatedStyles = useAnimatedStyle(() => {
-	// 	return {
-	// 		height: HEIGHT.value,
-	// 	};
-	// });
-
-	// Animation
-	// useEffect(() => {
-	// 	!Collapse
-	// 		? (HEIGHT.value = withTiming(40, { duration: 300, easing: Easing.out(Easing.exp) }))
-	// 		: (HEIGHT.value = withTiming(110, { duration: 300, easing: Easing.out(Easing.exp) }));
-	// }, [Collapse]);
-
-	const renderItem = ({ item, index }) => (
-		<TouchableOpacity key={index} onPress={() => nav.navigate('Stories', item)}>
-			<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={60} />
-		</TouchableOpacity>
-	);
+	// const profile = usePulse(core.profile.state.PROFILE);
 
 	return (
-		<StoriesAreaBody>
-			<Spacer size={10} />
-			<TouchableOpacity onPress={() => setCollapse(!Collapse)} activeOpacity={1}>
-				<Text weight="semi-bold" size={16} style={{ paddingLeft: 15 }}>
-					Realtime Stories
-				</Text>
-			</TouchableOpacity>
-
-			<Spacer size={7} />
-
-			<FlatList
-				ref={listRef}
-				data={p.data}
-				renderItem={renderItem}
-				ItemSeparatorComponent={() => <Spacer size={12} />}
-				contentContainerStyle={{ paddingLeft: 12, paddingRight: 20 }}
-				horizontal
-				showsHorizontalScrollIndicator={false}
-				ListHeaderComponent={
-					<TouchableOpacity
-						style={{ marginRight: 12 }}
-						onPress={() => nav.navigate('Stories', { account_id: prof.id, avatar: prof.avatar, username: prof.username, stories: p.mine })}
-					>
-						<Avatar src={`https://cdn.yourstatus.app/profile/${prof.owner}/${prof.avatar}`} size={60} />
-					</TouchableOpacity>
-				}
-				scrollEnabled={true}
-			/>
-			<Spacer size={10} />
-			{/* </Row> */}
-		</StoriesAreaBody>
+		<StoriesListBody>
+			{/* <Text>{JSON.stringify(data.stories)}</Text> */}
+			<StoriesPreviewer onPress={() => nav.navigate('Stories', { ...data })}>
+				<FastImage
+					source={{ uri: `https://cdn.yourstatus.app/stories/${data.owner}/${data.stories[0].picture}` }}
+					style={{ width: 90, height: 140, borderRadius: 16, zIndex: 2, borderWidth: 5, borderColor: theme.background }}
+				/>
+				{!!data.stories[1]?.account_id && (
+					<FastImage
+						source={{ uri: `https://cdn.yourstatus.app/stories/${data.owner}/${data.stories[1].picture}` }}
+						style={{ width: 90, height: 110, borderRadius: 10, position: 'absolute', zIndex: 1, left: 20, opacity: 0.3 }}
+					/>
+				)}
+				{data.stories.length >= 3 && (
+					<View style={{ backgroundColor: theme.textFade, marginLeft: 30, borderRadius: 7, padding: 2, paddingRight: 4, paddingBottom: 3, paddingLeft: 4 }}>
+						<Text color={theme.background} weight="bold">
+							{data.stories.length - 2}+
+						</Text>
+					</View>
+				)}
+			</StoriesPreviewer>
+		</StoriesListBody>
 	);
 };
 
-const StoriesAreaBody = styled.View`
-	width: 100%;
-	/* z-index: 10; */
-	background-color: ${({ theme }) => theme.step1};
-	border-top-color: ${({ theme }) => theme.step2};
-	border-bottom-color: ${({ theme }) => theme.step2};
-	border-top-width: 1px;
-	border-bottom-width: 1px;
-	/* position: relative; */
+const StoriesListBody = styled.View`
+	width: 110px;
 `;
+const StoriesPreviewer = styled(TouchableOpacity)`
+	display: flex;
+	flex-direction: row;
+	position: relative;
+	align-items: center;
+`;
+
+const Label = styled(Text)``;

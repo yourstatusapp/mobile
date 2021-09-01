@@ -13,7 +13,7 @@ import { Newuser } from '../screens/newuser/Newuser';
 import { Messages } from '../screens/messages/Messages';
 import { Profile } from '../screens/profile/Profile';
 import { Search } from '../screens/search/Search';
-import { Settings } from '../screens/settings/Settings';
+import { SettingsView } from '../screens/settings/SettingsView';
 import { Status } from '../screens/status/Status';
 import { Newfriends } from '../screens/newfriends/Newfriends';
 import { Notifications } from '../screens/notifications/Notifications';
@@ -42,7 +42,7 @@ export const AppStacks: React.FC = () => {
 			<AppStack.Screen name="AppTabs" component={Tabs} />
 			<AppStack.Screen name="CreateStatus" component={Status} />
 			<AppStack.Screen name="Profile" component={Profile} />
-			<AppStack.Screen name="Settings" component={Settings} />
+			<AppStack.Screen name="Settings" component={SettingsView} />
 			<AppStack.Screen name="Friendrequests" component={Friendrequests} />
 			<AppStack.Screen name="SearchPeople" component={Search} />
 			<AppStack.Screen name="EditProfile" component={EditProfile} />

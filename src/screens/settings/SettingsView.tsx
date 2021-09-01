@@ -12,12 +12,12 @@ import { IconButton, TextButton } from '../../parts/Buttons';
 import { SettingsAccount } from './screens/SettingsAccount';
 import { SettingsApp } from './screens/SettingsApp';
 import { SettingsAppearance } from './screens/SettingsAppearance';
-import { SettingsNotifications } from './screens/SettingsNotiifcations';
+import { SettingsNotifications } from './screens/SettingsNotifications';
 import DeviceInfo from 'react-native-device-info';
 
 const SettingsStack = createStackNavigator();
 
-export const Settings: React.FC = () => {
+export const SettingsView: React.FC = () => {
 	const theme = useTheme();
 	const cardStyle = { backgroundColor: theme.background };
 	return (
@@ -41,6 +41,7 @@ interface SettingsMainProps {
 		params: any;
 	};
 }
+
 const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
@@ -58,6 +59,8 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			profile.state.PROFILE.reset();
 			core.conversations.collection.reset();
 			core.message.collection.reset();
+			core.app.state.device_id.reset();
+			core.app.state.notifications_enabled.reset();
 		}, 500);
 	};
 
@@ -68,7 +71,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 		ui.state.Theme.set(currentTheme === 'light' ? 'dark' : 'light');
 	};
 
-	const toggleDebug = () => core.app.state.debug_enabled.set(!core.app.state.debug_enabled.value);
+	// const toggleDebug = () => core.app.state.debug_enabled.set(!core.app.state.debug_enabled.value);
 
 	return (
 		<SettingsBody>

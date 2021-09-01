@@ -2,7 +2,7 @@ import core from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
-export const baseURL = state('https://api.yourstatus.app').persist('baseURL');
+export const baseURL = state('https://api.yourstatus.app');
 // export const baseURL = state('http://localhost:8080');
 
 interface RequestOptions {
@@ -26,7 +26,7 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 		return a.data.data;
 	} catch (error: any) {
 		// if no auth, reset the accout
-		if (error.response.status == 401) {
+		if (error.response.status === 401) {
 			core.account.state.ACCOUNT.reset();
 			core.profile.state.PROFILE.reset();
 		}

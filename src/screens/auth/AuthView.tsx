@@ -11,10 +11,9 @@ import { Fill, Row, Spacer, Text } from '../../parts';
 import { WideButton } from '../../parts/Buttons';
 import { Input } from '../../parts/Input';
 import { useLinking } from '../../utils/Linking';
-import RNPickerSelect from 'react-native-picker-select';
 import DeviceInfo from 'react-native-device-info';
 
-export const Auth: React.FC = () => {
+export const AuthView: React.FC = () => {
 	const [Email, setEmail] = useState('');
 	const [Password, setPassword] = useState('');
 
@@ -68,6 +67,7 @@ export const Auth: React.FC = () => {
 				email: Email,
 			},
 		});
+		core.app.event.notification.emit({ title: 'Magic link has been send', type: 'success', desc: 'Click on the link in your inbox' });
 	};
 
 	const TermsAndServiceStyle: ViewStyle = { flexWrap: 'wrap', justifyContent: 'center' };
@@ -86,7 +86,7 @@ export const Auth: React.FC = () => {
 					<LogoPlaceholder />
 				</TouchableOpacity>
 				<Spacer size={30 * 6} />
-				<Input {...inputOptions} style={inputStyle} value={Email} onChangeText={(v) => setEmail(v)} placeholder="Email" />
+				<Input {...inputOptions} disabled style={inputStyle} value={Email} onChangeText={(v) => setEmail(v)} placeholder="Email" />
 
 				{ShowManual && (
 					<>
@@ -99,7 +99,7 @@ export const Auth: React.FC = () => {
 				<Spacer size={20} />
 				<Divider />
 				<Spacer size={20} />
-				<WideButton text="Send me login link" textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
+				<WideButton text="Send me login link" disabled={Email === ''} textColor={theme.text} backgroundColor={theme.step2} onPress={() => loginWithEmail()} />
 				<Spacer size={10} />
 
 				<Spacer size={10} />
@@ -119,7 +119,7 @@ export const Auth: React.FC = () => {
 						Privacy Policy
 					</Text>
 				</Row>
-				<Fill />
+				{/* <Fill />
 				<RNPickerSelect
 					pickerProps={{ dropdownIconColor: 'red' }}
 					onValueChange={(value) => selectApi(value)}
@@ -128,7 +128,7 @@ export const Auth: React.FC = () => {
 						{ label: 'Development', value: 'http://localhost:8080', color: '#c7cd6d' },
 						{ label: 'Local', value: 'https://5fde44026ae9.ngrok.io', color: '#FF8282' },
 					]}
-				/>
+				/> */}
 			</KeyboardAvoidingView>
 		</AuthBody>
 	);

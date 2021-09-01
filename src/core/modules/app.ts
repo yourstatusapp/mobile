@@ -1,4 +1,4 @@
-import { state } from '@pulsejs/core';
+import { event, state } from '@pulsejs/core';
 
 interface PermissionsList {
 	geolocation_access: boolean;
@@ -19,8 +19,14 @@ const State = {
 	}).persist('phone_permissions_state'),
 
 	device_push_token: state<string>('').persist('device_push_token'),
+	device_id: state<string>('').persist('device_id'),
+};
+
+const Events = {
+	notification: event({}),
 };
 
 export const app = {
 	state: State,
+	event: Events,
 };

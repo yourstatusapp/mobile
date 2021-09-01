@@ -16,20 +16,22 @@ interface MagicProps {
 	};
 }
 
-export const Magic: React.FC<MagicProps> = (props) => {
+export const MagicView: React.FC<MagicProps> = (props) => {
 	const { route, navigation } = props;
 	const nav = useNavigation();
 
 	const magicAuth = async (code: string, new_account: boolean) => {
-		const a = await request<{ account: any; profile: any; status: any }>('post', '/auth/magic/verify', { data: { code } });
+		const a = await request<{ account: any; profile: any; status: any; device: { id: string } }>('post', '/auth/magic/verify', { data: { code } });
 		if (!a) {
 			setTimeout(() => nav.goBack(), 1000);
 			return;
 		}
 
+		// set states
 		core.account.state.ACCOUNT.set(a.account);
 		core.profile.state.PROFILE.set(a.profile);
 		core.status.state.my_status.set(a.status);
+		core.app.state.device_id.set(a.device.id);
 
 		if (!new_account) {
 			nav.navigate('App');

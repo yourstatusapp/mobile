@@ -2,7 +2,6 @@ import * as React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Auth } from '../screens/auth/Auth';
 import { AppStacks } from './Tabs';
 import { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
@@ -11,12 +10,13 @@ import { StatusBar, StatusBarStyle } from 'react-native';
 import { Preloader } from './Preloader';
 import { Register } from '../screens/register/Register';
 import { Verify } from '../screens/verify/Verify';
-import { Magic } from '../screens/magic/Magic';
 import { useLinking } from './Linking';
 import { Newpost } from '../screens/newpost/Newpost';
 import { useEffect } from 'react';
 
 
+import { AuthView } from '../screens/auth/AuthView';
+import { MagicView } from '../screens/magic/MagicView';
 import { StoriesView } from '../screens/stories/StoriesView';
 import { CameraView } from '../screens/camera/CameraView';
 import { DebugView } from '../screens/debug/DebugView';
@@ -67,10 +67,10 @@ export const Router: React.FC = () => {
 					}}
 					detachInactiveScreens
 				>
-					<Stack.Screen name="Auth" component={Auth} />
+					<Stack.Screen name="Auth" component={AuthView} />
 					<Stack.Screen name="Register" component={Register} />
 					<Stack.Screen name="Verify" component={Verify} />
-					<Stack.Screen name="Magic" component={Magic} />
+					<Stack.Screen name="Magic" component={MagicView} />
 					<Stack.Screen name="App" component={AppStacks} />
 					<Stack.Screen name="Newpost" component={Newpost} />
 

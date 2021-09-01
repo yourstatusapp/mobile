@@ -34,36 +34,26 @@ export const ConversationView: React.FC<ConversationProps> = (props) => {
 		setnewMessage('');
 
 		// Put the message in a pending state
-		core.message.collection.collect(MESSAGE_OBJ, route.params.id);
-
+		core.message.collection.collect(MESSAGE_OBJ, route.params.id, { method: 'unshift' });
+		console.log('MESSAGE SENT');
 		// Send the message
 		const n = await request<{ nonce: string; message_id: string }>('post', `/conversations/${route.params.id}/send`, { data: { message, nonce: NONCE_ID } });
 
 		// Update the message from the pending state
+		// batch(() => {
+		core.message.collection.update(n.nonce, { id: n.message_id, nonce: false });
+		// core.message.collection.rebuildGroupsThatInclude(n.nonce);
+		console.log('MESSAGE IS OUT OF PENDING STATE');
 
-		await batch(() => {
-			core.message.collection.remove(n.nonce).everywhere();
-
-			core.message.collection.collect({ id: n.message_id, content: newMessage, deleted_at: '', sender: acc.id || '', nonce: true }, route.params.id);
-
-			core.message.collection.rebuildGroupsThatInclude(n.message_id);
-			core.message.collection.rebuildGroupsThatInclude(n.nonce);
-		});
-
-		// core.message.collection.rebuildGroupsThatInclude(route.params.id);
-
+		// core.message.collection.remove(n.nonce).everywhere();
+		// core.message.collection.collect({ id: n.message_id, content: newMessage, deleted_at: '', sender: acc.id || '', nonce: true }, route.params.id, { method: 'push' });
 		// core.message.collection.rebuildGroupsThatInclude(n.message_id);
-
-		// MESSAGE_OBJ.nonce = false;
-		// MESSAGE_OBJ.id = n.message_id;
-
-		// core.message.collection.update(NONCE_ID, { id: n.message_id, nonce: false });
-		// core.message.collection.rebuildGroupsThatInclude(route.params.id);
+		// });
 	};
 
 	const getMessage = React.useCallback(async () => {
 		const a = await request<any[]>('get', '/conversations/' + route.params.id);
-		core.message.collection.collect(a, route.params.id);
+		core.message.collection.collect(a.reverse(), route.params.id);
 
 		setLoading(false);
 	}, [route.params.id]);
@@ -79,10 +69,6 @@ export const ConversationView: React.FC<ConversationProps> = (props) => {
 	useEffect(() => {
 		getMessage();
 	}, [getMessage]);
-
-	// useEffect(() => {
-	// 	console.log(messages);
-	// }, [messages]);
 
 	const renderItem = ({ item, index }) => <MessageEntry {...item} account_id={acc.id} key={index} />;
 	const ListEmptyComponent = () => (
@@ -121,6 +107,7 @@ export const ConversationView: React.FC<ConversationProps> = (props) => {
 						ListEmptyComponent={ListEmptyComponent}
 						contentContainerStyle={{ paddingTop: 10 }}
 						refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
+						inverted={true}
 					/>
 				)}
 
@@ -144,7 +131,6 @@ const BottomPart = styled(Row)`
 `;
 
 const SendMessageInput = styled.TextInput`
-	/* border: solid 1px ${({ theme }) => theme.step2}; */
 	border-radius: 50px;
 	height: 40px;
 	background-color: ${({ theme }) => theme.step1};
@@ -155,7 +141,6 @@ const SendMessageInput = styled.TextInput`
 
 const ConversationHeader = styled(Row)`
 	height: 55px;
-	/* background-color: ${({ theme }) => theme.step1}; */
 	padding: 0px 10px;
 	border-bottom-color: ${({ theme }) => theme.step1};
 	border-bottom-width: 1px;
