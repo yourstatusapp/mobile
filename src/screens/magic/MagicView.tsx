@@ -17,7 +17,7 @@ interface MagicProps {
 }
 
 export const MagicView: React.FC<MagicProps> = (props) => {
-	const { route, navigation } = props;
+	const { route } = props;
 	const nav = useNavigation();
 
 	const magicAuth = async (code: string, new_account: boolean) => {

@@ -64,7 +64,7 @@ export const AuthView: React.FC = () => {
 	const loginWithEmail = async () => {
 		await request('post', '/auth/magic', {
 			data: {
-				email: Email,
+				email: Email?.trimLeft()?.trimRight(),
 			},
 		});
 		core.app.event.notification.emit({ title: 'Magic link has been send', type: 'success', desc: 'Click on the link in your inbox' });

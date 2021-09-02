@@ -103,7 +103,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 					</>
 				)}
 				<Spacer size={20} />
-				{!!item.stories?.length && <StoriesList data={item} />}
+				{/* {!!item.stories?.length && <StoriesList data={item} />} */}
 				{/* <Text>{JSON.stringify(item.stories)}</Text> */}
 			</View>
 		</ProfileRenderItem>
@@ -195,15 +195,15 @@ const StoriesList: React.FC<StoriesList> = (props) => {
 				{!!data.stories[1]?.account_id && (
 					<FastImage
 						source={{ uri: `https://cdn.yourstatus.app/stories/${data.owner}/${data.stories[1].picture}` }}
-						style={{ width: 90, height: 110, borderRadius: 10, position: 'absolute', zIndex: 1, left: 20, opacity: 0.3 }}
+						style={{ width: 90, height: 110, borderRadius: 10, position: 'absolute', zIndex: 1, left: 8, opacity: 0.5 }}
 					/>
 				)}
 				{data.stories.length >= 3 && (
-					<View style={{ backgroundColor: theme.textFade, marginLeft: 30, borderRadius: 7, padding: 2, paddingRight: 4, paddingBottom: 3, paddingLeft: 4 }}>
-						<Text color={theme.background} weight="bold">
-							{data.stories.length - 2}+
+					<CountBox>
+						<Text color={theme.text} weight="medium" size={15}>
+							{data.stories.length - 2} +
 						</Text>
-					</View>
+					</CountBox>
 				)}
 			</StoriesPreviewer>
 		</StoriesListBody>
@@ -220,4 +220,13 @@ const StoriesPreviewer = styled(TouchableOpacity)`
 	align-items: center;
 `;
 
-const Label = styled(Text)``;
+const CountBox = styled.View`
+	/* background-color: ${({ theme }) => theme.text}; */
+	margin-left: 10px;
+	border-radius: 7px;
+	padding: 2px;
+	/* margin-left: 10px; */
+	padding-right: 4px;
+	padding-bottom: 3px;
+	padding-left: 4px;
+`;
