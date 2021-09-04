@@ -4,14 +4,14 @@ import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
 import { useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Linking, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Linking } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 
 interface NewuserProps {}
 
 let timeoutID: any;
 
-export const Newuser: React.FC<NewuserProps> = (props) => {
+export const NewuserView: React.FC<NewuserProps> = (props) => {
 	const nav = useNavigation();
 	const theme = useTheme();
 	const profile = usePulse(core.profile.state.PROFILE);
@@ -79,15 +79,19 @@ export const Newuser: React.FC<NewuserProps> = (props) => {
 						{!Loaded && <ActivityIndicator style={{ position: 'absolute', right: 20 }} />}
 					</InputCont>
 
-					<Spacer size={70} />
+					<Spacer size={15} />
 					<FloatingBox>
 						<Text color="#FF6767" weight="bold" size={14}>
-							THIS VERSION OF THIS APP IS NOT A FINAL VERSION AND IS EARLY STAGE
+							This is not a final version of the app, parts of the app will change over time and optimized over time.
 						</Text>
 						<Spacer size={10} />
-						<Text color={theme.text}>For future updates follow @yourstatusapp on Twitter</Text>
+						<Text color="black">For future updates follow @yourstatusapp on Twitter</Text>
 						<Spacer size={30} />
-						<IconButton name="twitter" color="#64bdf1" backgroundColor="#ffc9c9" size={45} onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
+						<Row>
+							<IconButton name="twitter" color="#64bdf1" backgroundColor={theme.background} size={45} onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
+							<Spacer size={10} />
+							<IconButton name="discord" color="#404FED" size={45} backgroundColor={theme.background} onPress={() => Linking.openURL('https://discord.com/')} />
+						</Row>
 					</FloatingBox>
 
 					<Fill />

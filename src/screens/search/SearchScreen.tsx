@@ -20,7 +20,7 @@ let timeoutID;
 
 const list = state<ProfileSearchResult[]>([]);
 
-export const Search: React.FC<SearchProps> = () => {
+export const SearchScreen: React.FC<SearchProps> = () => {
 	const theme = useTheme();
 	const nav = useNavigation();
 	const [SearchName, setSearchName] = useState('');
@@ -29,7 +29,7 @@ export const Search: React.FC<SearchProps> = () => {
 	// const [List, setList] = useState<ProfileSearchResult[]>([]);
 
 	const searchUser = async (name: string) => {
-		setLoading(true);
+		
 		const a = await request<ProfileSearchResult[]>('post', '/profile/search', { data: { search: name } });
 		list.set(a);
 		// setList(a);
@@ -52,12 +52,12 @@ export const Search: React.FC<SearchProps> = () => {
 		if (SearchName === '') {
 			return;
 		}
-
+		setLoading(true);
 		clearTimeout(timeoutID);
 		timeoutID = setTimeout(() => {
 			searchUser(SearchName);
 			// console.log('searcing');
-		}, 1000);
+		}, 500);
 	}, [SearchName]);
 
 	// useEffect(() => {

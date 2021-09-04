@@ -6,13 +6,13 @@ import { request } from '../../core/utils';
 import { Avatar, Fill, Header, IconButton, Spacer, TabbarContentContainer, Text } from '@parts';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
-import { Conversation } from '../../core/types';
+import { IConversation } from '../../core/types';
 
 interface MessagesProps {
 	route: any;
 }
 
-export const Messages: React.FC<MessagesProps> = () => {
+export const MessagesScreen: React.FC<MessagesProps> = () => {
 	const Convs = usePulse(core.conversations.collection.groups.mine);
 	const nav = useNavigation();
 	const theme = useTheme();
@@ -26,7 +26,7 @@ export const Messages: React.FC<MessagesProps> = () => {
 	}, []);
 
 	const getMessages = async () => {
-		const a = await request<Conversation[]>('get', '/conversations');
+		const a = await request<IConversation[]>('get', '/conversations');
 		core.conversations.collection.collect(a, 'mine', { method: 'push' });
 	};
 

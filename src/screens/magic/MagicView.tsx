@@ -1,6 +1,6 @@
 import core, { request } from '@core';
 import { Row, Spacer, Text } from '@parts';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';

@@ -9,10 +9,10 @@ import { Discovery } from '../screens/discovery/Discovery';
 import { EditProfile } from '../screens/edit_profile/EditProfile';
 import { Friendrequests } from '../screens/friendrequests/Friendrequests';
 import { FriendsView } from '../screens/friends/FriendsView';
-import { Newuser } from '../screens/newuser/Newuser';
-import { Messages } from '../screens/messages/Messages';
+import { NewuserView } from '../screens/newuser/NewuserView';
+import { MessagesScreen } from '../screens/messages/MessagesScreen';
 import { Profile } from '../screens/profile/Profile';
-import { Search } from '../screens/search/Search';
+import { SearchScreen } from '../screens/search/SearchScreen';
 import { SettingsView } from '../screens/settings/SettingsView';
 import { Status } from '../screens/status/Status';
 import { Newfriends } from '../screens/newfriends/Newfriends';
@@ -44,9 +44,9 @@ export const AppStacks: React.FC = () => {
 			<AppStack.Screen name="Profile" component={Profile} />
 			<AppStack.Screen name="Settings" component={SettingsView} />
 			<AppStack.Screen name="Friendrequests" component={Friendrequests} />
-			<AppStack.Screen name="SearchPeople" component={Search} />
+			<AppStack.Screen name="SearchPeople" component={SearchScreen} />
 			<AppStack.Screen name="EditProfile" component={EditProfile} />
-			<AppStack.Screen name="NewUser" component={Newuser} />
+			<AppStack.Screen name="NewUser" component={NewuserView} />
 			<AppStack.Screen name="NewConversation" component={Newconversation} />
 		</AppStack.Navigator>
 	);
@@ -58,7 +58,7 @@ export const Tabs: React.FC = () => {
 
 	return (
 		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} tabBarOptions={{ style: { opacity: 0 } }}>
-			<Tab.Screen name="messages" component={Messages} />
+			<Tab.Screen name="messages" component={MessagesScreen} />
 			<Tab.Screen name="friends" component={FriendsView} />
 			<Tab.Screen name="discovery" component={Discovery} />
 			<Tab.Screen name="account" component={AccountView} />

@@ -79,9 +79,9 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	// };
 
 	const renderItem = ({ item, index }) => (
-		<ProfileRenderItem key={index} onPress={() => nav.navigate('Profile', { profile: item })}>
+		<ProfileRenderItem key={index}>
 			<View>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} />
+				<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
 				<Fill />
 			</View>
 			<Spacer size={15} />
@@ -102,7 +102,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 						</Row>
 					</>
 				)}
-				<Spacer size={20} />
+				{/* <Spacer size={20} /> */}
 				{/* {!!item.stories?.length && <StoriesList data={item} />} */}
 				{/* <Text>{JSON.stringify(item.stories)}</Text> */}
 			</View>

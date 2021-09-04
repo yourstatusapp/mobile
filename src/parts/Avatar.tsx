@@ -2,43 +2,33 @@ import * as React from 'react';
 import styled from 'styled-components/native';
 
 import FastImage from 'react-native-fast-image';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface AvatarProps {
 	src: string;
 	size?: number;
 	dot_status?: string;
+	onPress?: () => void;
 }
 
 export const Avatar: React.FC<AvatarProps> = (props) => {
-	const { src, dot_status } = props;
+	const { src, dot_status, onPress } = props;
 
 	const IMG: React.FC<any> = (p) => (src ? <Image {...p} source={{ uri: src }} {...props} /> : <Circle {...p} {...props} />);
 
-	// if (!src) {
-	// 	return <Circle {...props} />;
-	// }
-
 	if (!dot_status) {
-		return <IMG {...props} source={{ uri: src }} />;
+		return (
+			<TouchableOpacity onPress={onPress}>
+				<IMG {...props} source={{ uri: src }} />
+			</TouchableOpacity>
+		);
 	}
 
 	return (
 		<AvatarBody dot_status={dot_status}>
 			<IMG source={{ uri: src }} {...props} />
-			{/* <Dot dot_status={dot_status} /> */}
 		</AvatarBody>
 	);
-
-	// if (dot_status) {
-	// 	return (
-	// 		<AvatarBody dot_status={dot_status}>
-	// 			<IMG source={{ uri: src }} {...props} />
-	// 			{/* <Dot dot_status={dot_status} /> */}
-	// 		</AvatarBody>
-	// 	);
-	// } else {
-	// 	return <IMG source={{ uri: src }} {...props} />;
-	// }
 };
 
 const Image = styled(FastImage)<AvatarProps>`

@@ -19,25 +19,29 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
 	return (
 		<HeaderBody {...props}>
-			<Text color={theme.primary} size={26} weight="semi-bold">
+			<HeaderTitle color={theme.primary} size={27} weight="bold">
 				{title}
-			</Text>
+			</HeaderTitle>
 
 			<Fill />
 			{rightArea}
 			<IconButton name="bell" size={35} color={new_notification ? theme.primary : theme.textFade} onPress={() => nav.navigate('notifications')} noBackground />
-			<Spacer size={5} />
-			<IconButton name="settings" size={35} noBackground color={theme.textFade} onPress={() => nav.navigate('Settings')} />
+			<Spacer size={3} />
+			<IconButton name="settings" size={35} noBackground color={theme.text} onPress={() => nav.navigate('Settings')} />
 			{/* <Spacer size={10} /> */}
-			{/* <IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('NewUser')} /> */}
+			<IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('NewUser')} />
 		</HeaderBody>
 	);
 };
 
+const HeaderTitle = styled(Text)`
+	letter-spacing: -0.9px;
+`;
+
 const HeaderBody = styled.View<HeaderProps>`
 	flex-direction: row;
 	align-items: center;
-	padding: 5px 0px;
+	padding: 8px 0px;
 	background-color: ${({ theme }) => theme.navBar};
-	${({ padding }) => padding && 'padding: 5px 15px;'};
+	${({ padding }) => padding && 'padding: 8px 15px;'};
 `;
