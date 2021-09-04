@@ -29,7 +29,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 			<Spacer size={3} />
 			<IconButton name="settings" size={35} noBackground color={theme.text} onPress={() => nav.navigate('Settings')} />
 			{/* <Spacer size={10} /> */}
-			<IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('NewUser')} />
+			{/* <IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('NewUser')} /> */}
 		</HeaderBody>
 	);
 };

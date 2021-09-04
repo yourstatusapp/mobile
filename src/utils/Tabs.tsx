@@ -14,7 +14,7 @@ import { MessagesScreen } from '../screens/messages/MessagesScreen';
 import { Profile } from '../screens/profile/Profile';
 import { SearchScreen } from '../screens/search/SearchScreen';
 import { SettingsView } from '../screens/settings/SettingsView';
-import { Status } from '../screens/status/Status';
+import { StatusScreen } from '../screens/status/StatusScreen';
 import { Newfriends } from '../screens/newfriends/Newfriends';
 import { Notifications } from '../screens/notifications/Notifications';
 import { Newconversation } from '../screens/newconversation/Newconversation';
@@ -40,7 +40,7 @@ export const AppStacks: React.FC = () => {
 			headerMode="float"
 		>
 			<AppStack.Screen name="AppTabs" component={Tabs} />
-			<AppStack.Screen name="CreateStatus" component={Status} />
+			<AppStack.Screen name="CreateStatus" component={StatusScreen} />
 			<AppStack.Screen name="Profile" component={Profile} />
 			<AppStack.Screen name="Settings" component={SettingsView} />
 			<AppStack.Screen name="Friendrequests" component={Friendrequests} />

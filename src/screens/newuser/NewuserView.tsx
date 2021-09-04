@@ -90,7 +90,7 @@ export const NewuserView: React.FC<NewuserProps> = (props) => {
 						<Row>
 							<IconButton name="twitter" color="#64bdf1" backgroundColor={theme.background} size={45} onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
 							<Spacer size={10} />
-							<IconButton name="discord" color="#404FED" size={45} backgroundColor={theme.background} onPress={() => Linking.openURL('https://discord.com/')} />
+							<IconButton name="discord" color="#404FED" size={45} backgroundColor={theme.background} onPress={() => Linking.openURL('https://discord.gg/wCFdkbAdPA')} />
 						</Row>
 					</FloatingBox>
 

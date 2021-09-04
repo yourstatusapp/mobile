@@ -1,4 +1,4 @@
-import { request } from '@core';
+import core, { request } from '@core';
 import { Fill, Row, SidePadding, SmallInput, Spacer, Text, WideButton } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
@@ -21,6 +21,7 @@ export const CustomSel: React.FC<CustomSelProps> = (props) => {
 	const createStatus = async () => {
 		await request('post', '/status/new', { data: { data: { title: Title, expire: Expire ? EpireDate : null } } });
 		nav.goBack();
+		core.status.state.my_status.patch({ data: { title: Title, expire: Expire ? EpireDate : null } });
 	};
 
 	const ToggleChange = () => setExpire(!Expire);

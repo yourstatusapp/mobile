@@ -11,11 +11,11 @@ import { Preloader } from './Preloader';
 import { Register } from '../screens/register/Register';
 import { Verify } from '../screens/verify/Verify';
 import { useLinking } from './Linking';
-import { Newpost } from '../screens/newpost/Newpost';
+import { NewpostScreen } from '../screens/newpost/NewpostScreen';
 import { useEffect } from 'react';
 
 
-import { AuthView } from '../screens/auth/AuthView';
+import { AuthScreen } from '../screens/auth/AuthScreen';
 import { MagicView } from '../screens/magic/MagicView';
 import { StoriesView } from '../screens/stories/StoriesView';
 import { CameraView } from '../screens/camera/CameraView';
@@ -67,12 +67,12 @@ export const Router: React.FC = () => {
 					}}
 					detachInactiveScreens
 				>
-					<Stack.Screen name="Auth" component={AuthView} />
+					<Stack.Screen name="Auth" component={AuthScreen} />
 					<Stack.Screen name="Register" component={Register} />
 					<Stack.Screen name="Verify" component={Verify} />
 					<Stack.Screen name="Magic" component={MagicView} />
 					<Stack.Screen name="App" component={AppStacks} />
-					<Stack.Screen name="Newpost" component={Newpost} />
+					<Stack.Screen name="Newpost" component={NewpostScreen} />
 
 					<Stack.Screen name="Camera" component={CameraView} />
 					<Stack.Screen name="Stories" component={StoriesView} />

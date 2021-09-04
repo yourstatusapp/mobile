@@ -35,7 +35,7 @@ export const MagicView: React.FC<MagicProps> = (props) => {
 		core.app.state.device_id.set(a.device.id);
 
 		if (!new_account) {
-			nav.navigate('App');
+			nav.reset({ index: 0, routes: [{ name: 'App' }] });
 		} else {
 			nav.reset({ index: 0, routes: [{ name: 'App' }] });
 			setTimeout(() => {

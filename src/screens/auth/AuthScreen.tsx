@@ -13,7 +13,7 @@ import { Input } from '../../parts/Input';
 import { useLinking } from '../../utils/Linking';
 import DeviceInfo from 'react-native-device-info';
 
-export const AuthView: React.FC = () => {
+export const AuthScreen: React.FC = () => {
 	const [Email, setEmail] = useState('');
 	const [Password, setPassword] = useState('');
 

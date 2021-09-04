@@ -16,7 +16,7 @@ const SelectionStack = createStackNavigator();
 
 interface StatusProps {}
 
-export const Status: React.FC<StatusProps> = (props) => {
+export const StatusScreen: React.FC<StatusProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 	const {} = props;
@@ -118,7 +118,7 @@ const SelectionScreen: React.FC = () => {
 				You can choose a status how you want to share your friends what you're doing or you want to do.
 			</Text>
 			<Spacer size={20} />
-			{myStatus.id && (
+			{myStatus?.id && (
 				<CurrentStatus>
 					<Row>
 						<Text weight="semi-bold" size={18}>
@@ -135,7 +135,7 @@ const SelectionScreen: React.FC = () => {
 							{snow2time(myStatus?.id || '').toLocaleString()}
 						</Text>
 						<Fill />
-						<SmallButton text="End status" onPress={() => endStatus(myStatus.id)} textColor="#FF7878" />
+						<SmallButton text="End status" onPress={() => endStatus(myStatus.id || '')} textColor="#FF7878" />
 					</Row>
 				</CurrentStatus>
 			)}
