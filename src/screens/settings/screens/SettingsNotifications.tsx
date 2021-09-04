@@ -10,6 +10,7 @@ interface SettingsNotificationsProps {}
 export const SettingsNotifications: React.FC<SettingsNotificationsProps> = () => {
 	const theme = useTheme();
 	const notificationsEnabled = usePulse(core.app.state.notifications_enabled);
+	const devices = usePulse(core.account.collection.devices.selectors.current);
 	// const toggleTheme = () => {};
 
 	const enableNotifications = async () => {
@@ -20,6 +21,12 @@ export const SettingsNotifications: React.FC<SettingsNotificationsProps> = () =>
 		core.app.state.notifications_enabled.set(1);
 	};
 
+	// const getDevices = async () =>{
+	// 	const a = await request('get', '')
+	// }
+
+	React.useEffect(() => {}, []);
+
 	return (
 		<SettingsNotificationsBody>
 			<TopHeading text="Notifications" />
@@ -29,6 +36,7 @@ export const SettingsNotifications: React.FC<SettingsNotificationsProps> = () =>
 						<Text color="white" weight="semi-bold" size={18}>
 							Notifications are disabled
 						</Text>
+						<Text>{JSON.stringify(devices)}</Text>
 						<Spacer size={20} />
 						<Row>
 							<SmallButton text="Enable" backgroundColor="#245496" textColor="white" onPress={() => enableNotifications()} />

@@ -83,3 +83,13 @@ export interface CollectionData {
 	type: number;
 	content: string;
 }
+
+export interface IConnectionType {
+	id: string;
+	type: string;
+}
+
+export interface IDeviceType {
+	id: string;
+	enabled: boolean;
+}

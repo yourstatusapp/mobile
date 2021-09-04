@@ -1,6 +1,8 @@
 import { Status } from '@core';
 import { Text } from '@parts';
+import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 
 interface StatusBoxProps extends Partial<Status> {}
@@ -8,9 +10,10 @@ interface StatusBoxProps extends Partial<Status> {}
 export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 	const { data } = p;
 	const theme = useTheme();
+	const nav = useNavigation();
 
 	return (
-		<StatusBoxBody>
+		<StatusBoxBody onPress={() => nav.navigate('Statusinfo', { ...data })}>
 			<Box>
 				<Text size={13} color={theme.text} weight="semi-bold">
 					{data?.title || 'none'}
@@ -20,7 +23,7 @@ export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 	);
 };
 
-const StatusBoxBody = styled.View`
+const StatusBoxBody = styled(TouchableOpacity)`
 	align-items: flex-start;
 `;
 

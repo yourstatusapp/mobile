@@ -14,7 +14,6 @@ import { useLinking } from './Linking';
 import { NewpostScreen } from '../screens/newpost/NewpostScreen';
 import { useEffect } from 'react';
 
-
 import { AuthScreen } from '../screens/auth/AuthScreen';
 import { MagicView } from '../screens/magic/MagicView';
 import { StoriesView } from '../screens/stories/StoriesView';
@@ -37,7 +36,7 @@ export const Router: React.FC = () => {
 	const [PreloaderReady, setPreloaderReady] = React.useState(false);
 
 	// Checking for logged_in
-	core.account.state.logged_in.onNext((v) => {
+	core.account.state.logged_in.onNext(() => {
 		setLoaded(true);
 	});
 

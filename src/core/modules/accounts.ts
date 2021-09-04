@@ -1,3 +1,4 @@
+import { IDeviceType } from '@core';
 import { collection, state } from '@pulsejs/core';
 
 interface Account {
@@ -13,10 +14,10 @@ export interface Activity {
 	read_at?: boolean;
 }
 
-
 const AccountState = {
 	ACCOUNT: state<Account>({}).persist('account'),
-	new_account_activity: state<boolean>(false)
+	new_account_activity: state<boolean>(false),
+
 	// logged_in: state<boolean>(false).persist('logged_in'),
 };
 
@@ -29,7 +30,9 @@ const ComputedState = {
 
 const ActivityColl = collection<Activity>();
 
+const Devices = collection<IDeviceType>().createGroup('mine').createSelector('current');
+
 export const account = {
 	state: { ...ComputedState, ...AccountState },
-	collection: { activity: ActivityColl },
+	collection: { activity: ActivityColl, devices: Devices },
 };

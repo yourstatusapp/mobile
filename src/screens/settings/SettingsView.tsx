@@ -9,11 +9,8 @@ import { account, profile, ui } from '../../core/modules';
 import { request } from '../../core/utils';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, TextButton } from '../../parts/Buttons';
-import { SettingsAccount } from './screens/SettingsAccount';
-import { SettingsApp } from './screens/SettingsApp';
-import { SettingsAppearance } from './screens/SettingsAppearance';
-import { SettingsNotifications } from './screens/SettingsNotifications';
 import DeviceInfo from 'react-native-device-info';
+import { SettingsAccount, SettingsApp, SettingsAppearance, SettingsConnections, SettingsNotifications } from './screens';
 
 const SettingsStack = createStackNavigator();
 
@@ -27,6 +24,7 @@ export const SettingsView: React.FC = () => {
 			<SettingsStack.Screen name="SettingsAppearance" component={SettingsAppearance} />
 			<SettingsStack.Screen name="SettingsInfo" component={SettingsApp} />
 			<SettingsStack.Screen name="SettingsNotifications" component={SettingsNotifications} />
+			<SettingsStack.Screen name="SettingsConnections" component={SettingsConnections} />
 		</SettingsStack.Navigator>
 	);
 };
@@ -89,6 +87,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			<SettingsButton text="Account" routeName="Account" icon="person" />
 			<SettingsButton text="Notifications" routeName="Notifications" icon="bell" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
+			{/* <SettingsButton text="Connections" routeName="Connections" icon="link" /> */}
 			<SettingsButton text="App Info" routeName="Info" icon="info" />
 			{/* <SettingsButton text="Toggle Debug" action={() => toggleDebug()} textColor="#4b9fff" /> */}
 			<Spacer size={20} />
