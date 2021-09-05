@@ -20,6 +20,7 @@ import { StoriesView } from '../screens/stories/StoriesView';
 import { CameraView } from '../screens/camera/CameraView';
 import { DebugView } from '../screens/debug/DebugView';
 import { ConversationView } from '../screens/conversation/ConversationView';
+import { StatusinfoScreen } from '../screens/statusinfo/StatusinfoScreen';
 
 const Stack = createStackNavigator();
 
@@ -76,6 +77,7 @@ export const Router: React.FC = () => {
 					<Stack.Screen name="Camera" component={CameraView} />
 					<Stack.Screen name="Stories" component={StoriesView} />
 					<Stack.Screen name="conversation" component={ConversationView} />
+					<Stack.Screen name="Statusinfo" component={StatusinfoScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>

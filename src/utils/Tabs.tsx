@@ -49,7 +49,6 @@ export const AppStacks: React.FC = () => {
 			<AppStack.Screen name="EditProfile" component={EditProfile} />
 			<AppStack.Screen name="NewUser" component={NewuserView} />
 			<AppStack.Screen name="NewConversation" component={Newconversation} />
-			<AppStack.Screen name="Statusinfo" component={StatusinfoScreen} />
 		</AppStack.Navigator>
 	);
 };

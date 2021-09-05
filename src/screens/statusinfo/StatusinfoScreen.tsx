@@ -1,4 +1,4 @@
-import { Text } from '@parts';
+import { Header, IconButton, SidePadding, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
 import * as React from 'react';
 import styled from 'styled-components/native';
 
@@ -14,9 +14,15 @@ export const StatusinfoScreen: React.FC<StatusinfoScreenProps> = (props) => {
 	console.log(data);
 
 	return (
-		<StatusinfoScreenBody>
-			<Text>{JSON.stringify(data)}</Text>
-		</StatusinfoScreenBody>
+		<TabbarContentContainer noSidePadding>
+			<Spacer size={10} />
+			<SidePadding>
+				<IconButton name="arrow-big" size={40} color="white" style={{ transform: [{ rotate: '180deg' }] }} />
+				<Spacer size={20} />
+				<StatusBox {...data} />
+				<Text>{JSON.stringify(data)}</Text>
+			</SidePadding>
+		</TabbarContentContainer>
 	);
 };
 

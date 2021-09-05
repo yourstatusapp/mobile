@@ -13,7 +13,7 @@ export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 	const nav = useNavigation();
 
 	return (
-		<StatusBoxBody onPress={() => nav.navigate('Statusinfo', { ...data })}>
+		<StatusBoxBody onPress={() => nav.navigate('Statusinfo', { params: data })}>
 			<Box>
 				<Text size={13} color={theme.text} weight="semi-bold">
 					{data?.title || 'none'}
