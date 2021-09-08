@@ -22,11 +22,21 @@ const State = {
 	device_id: state<string>('').persist('device_id'),
 };
 
+const DevSettingsState = {
+	tabbar_show_text: state<boolean>(true).persist('tabbar_show_text'),
+};
+
+export interface INotificationType {
+	title: string;
+	desc?: string;
+	data?: any;
+}
+
 const Events = {
-	notification: event({}),
+	notification: event<INotificationType>({}),
 };
 
 export const app = {
-	state: State,
+	state: { ...State, ...DevSettingsState },
 	event: Events,
 };

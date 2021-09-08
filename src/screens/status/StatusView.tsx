@@ -16,7 +16,7 @@ const SelectionStack = createStackNavigator();
 
 interface StatusProps {}
 
-export const StatusScreen: React.FC<StatusProps> = (props) => {
+export const StatusView: React.FC<StatusProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 	const {} = props;

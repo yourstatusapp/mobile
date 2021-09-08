@@ -4,39 +4,46 @@ import { usePulse } from '@pulsejs/react';
 import * as React from 'react';
 import { View, Switch } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
+import { configureNotifications } from '../../../utils/Notifications';
 
 interface SettingsNotificationsProps {}
 
 export const SettingsNotifications: React.FC<SettingsNotificationsProps> = () => {
 	const theme = useTheme();
 	const notificationsEnabled = usePulse(core.app.state.notifications_enabled);
-	const devices = usePulse(core.account.collection.devices.selectors.current);
+	const device = usePulse(core.account.collection.devices.selectors.current);
 	// const toggleTheme = () => {};
 
 	const enableNotifications = async () => {
-		const deviceToken = core.app.state.device_push_token.value;
-		const deviceID = core.app.state.device_id.value;
+		configureNotifications();
+		// const device_push_token = core.app.state.device_push_token.value;
 
-		await request('post', `/account/devices/${deviceID}/notifications`, { data: { token: deviceToken } });
-		core.app.state.notifications_enabled.set(1);
+		// await request('post', `/account/devices/${device.id}`, {
+		// 	data: {
+		// 		notifications: true,
+		// 		push_token: device_push_token,
+		// 	},
+		// });
+
+		// core.app.state.notifications_enabled.set(1);
+		// core.account.collection.devices.update(device.id, { notifications: true });
 	};
 
-	// const getDevices = async () =>{
-	// 	const a = await request('get', '')
-	// }
-
-	React.useEffect(() => {}, []);
+	const UpdateDevice = async (notifications: boolean) => {
+		await request('patch', '/account/devices/' + device.id, { data: { notifications } });
+		core.account.collection.devices.update(device.id, { notifications });
+	};
 
 	return (
 		<SettingsNotificationsBody>
 			<TopHeading text="Notifications" />
 			<SidePadding>
-				{notificationsEnabled === 0 && (
+				<SmallButton text="Enable" backgroundColor="#245496" textColor="white" onPress={() => enableNotifications()} />
+				{notificationsEnabled === 2 && (
 					<NoticiationBoxAlert>
 						<Text color="white" weight="semi-bold" size={18}>
 							Notifications are disabled
 						</Text>
-						<Text>{JSON.stringify(devices)}</Text>
 						<Spacer size={20} />
 						<Row>
 							<SmallButton text="Enable" backgroundColor="#245496" textColor="white" onPress={() => enableNotifications()} />
@@ -54,7 +61,7 @@ export const SettingsNotifications: React.FC<SettingsNotificationsProps> = () =>
 						</Text>
 					</View>
 					<Fill />
-					<Switch />
+					<Switch value={device?.notifications} onValueChange={(v) => UpdateDevice(v)} />
 				</Row>
 			</SidePadding>
 		</SettingsNotificationsBody>

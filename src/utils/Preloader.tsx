@@ -34,6 +34,7 @@ export const Preloader: React.FC<PreloaderProps> = (props) => {
 		core.status.state.my_status.set(res.status);
 		core.app.state.device_id.set(res.device.id);
 		core.account.collection.devices.collect(res.device, 'mine');
+		core.account.collection.devices.selectors.current.select(res.device.id);
 
 		props.loaded();
 

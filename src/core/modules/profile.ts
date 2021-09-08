@@ -6,7 +6,7 @@ const S = {
 	PROFILE: state<IProfile>(null).persist('profile'),
 };
 
-const CL = collection<IProfile>({ primaryKey: 'owner' }).createGroup('friends').createGroup('mine');
+const CL = collection<IProfile>().createGroup('friends').createGroup('requests').createGroup('mine');
 
 export const profile = {
 	state: { ...S },

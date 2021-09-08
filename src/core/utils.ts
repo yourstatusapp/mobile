@@ -1,4 +1,4 @@
-import core from '@core';
+import core, { alert } from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
@@ -30,6 +30,8 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 			core.account.state.ACCOUNT.reset();
 			core.profile.state.PROFILE.reset();
 		}
+
+		alert({ title: error.response.message });
 
 		console.log('request error', error);
 		// throw {};

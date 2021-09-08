@@ -1,24 +1,29 @@
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Avatar, Row, SmallButton, Spacer, TabbarContentContainer, Text } from '@parts';
-import core, { Collection, ProfileType, request } from '@core';
+import FastImage from 'react-native-fast-image';
+import { Dimensions, FlatList, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Avatar, Row, SidePadding, SmallButton, Spacer, TabbarContentContainer, Text, TextButton, TopHeading } from '@parts';
+import core, { Collection, IProfile, request } from '@core';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/core';
 
 interface ProfileProps {
 	route: {
 		params: {
-			profile: any;
+			profile: IProfile;
 			mine?: boolean;
 		};
 	};
 }
 
-export const Profile: React.FC<ProfileProps> = (props) => {
+export const ProfileView: React.FC<ProfileProps> = (props) => {
 	const { route } = props;
 	const theme = useTheme();
+	const nav = useNavigation();
+
 	const profile = route.params.profile;
 
-	const [ProfileData, setProfileData] = useState<ProfileType>();
 	const [Colls, setColls] = useState<Collection[]>();
 
 	const loadProfile = async () => {
@@ -26,41 +31,60 @@ export const Profile: React.FC<ProfileProps> = (props) => {
 			const m = await request<Collection[]>('get', '/collection');
 			setColls(m);
 		} else {
-			const p = await request<ProfileType>('get', '/profile/' + profile.username);
+			const p = await request<IProfile>('get', '/profile/' + profile.username);
 			setColls(p.collections);
 		}
 	};
 
 	// Load profile
 	React.useEffect(() => {
-		loadProfile();
+		// loadProfile();
 	}, []);
 
 	return (
-		<ProfileBody noSidePadding topBarColor={theme.background}>
+		<ProfileBody>
+			<CardHeader>
+				<TextButton text="Close" weight="bold" color={theme.primary} onPress={() => nav.goBack()} />
+			</CardHeader>
+			<Spacer size={10} />
+
 			<Row style={{ paddingLeft: 20 }}>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.profile.owner}/${route.params.profile.avatar}`} size={100} />
+				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.profile.account_id}/${route.params.profile.avatar}`} size={100} />
 				<Spacer size={20} />
 				<Text weight="bold" size={24}>
 					{profile.username}
 				</Text>
 			</Row>
+			<SidePadding>
+				<Spacer size={20} />
+				{/* <Text color="black">{JSON.stringify(profile)}</Text> */}
+				<BioBox>
+					<Text color="black">{profile.bio}</Text>
+				</BioBox>
 
-			<Spacer size={35} />
-			{/* <Text color="black">{JSON.stringify(ProfileData) || -1}</Text> */}
-			{!!Colls?.length && <Collections data={Colls} />}
+				<Spacer size={35} />
+				{/* <Text color="black">{JSON.stringify(ProfileData) || -1}</Text> */}
+			</SidePadding>
+			{/* {!!Colls?.length && <Collections data={Colls} />} */}
 		</ProfileBody>
 	);
 };
 
-const ProfileBody = styled(TabbarContentContainer)`
+const ProfileBody = styled.View`
 	background-color: ${({ theme }) => theme.background};
 	flex: 1;
 `;
 
-import FastImage from 'react-native-fast-image';
-import { Dimensions, FlatList, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+const CardHeader = styled.View`
+	background-color: ${({ theme }) => theme.step1};
+	padding: 15px 20px;
+`;
+
+const BioBox = styled.View`
+	padding: 10px;
+	border-radius: 12px;
+	background-color: ${({ theme }) => theme.step1};
+`;
 
 const Collections: React.FC<{ data: Collection[] }> = (p) => {
 	const theme = useTheme();

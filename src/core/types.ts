@@ -4,11 +4,12 @@ export interface Account {
 }
 
 export interface IProfile {
-	id: string;
+	account_id: string;
 	username: string;
 	location: string;
 	gender: string;
 	avatar: string;
+	bio: string;
 	date_of_birth: string;
 	collections?: Collection[];
 	status?: Status;
@@ -91,5 +92,5 @@ export interface IConnectionType {
 
 export interface IDeviceType {
 	id: string;
-	enabled: boolean;
+	notifications: boolean;
 }

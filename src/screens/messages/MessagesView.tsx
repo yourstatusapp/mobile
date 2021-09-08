@@ -12,7 +12,7 @@ interface MessagesProps {
 	route: any;
 }
 
-export const MessagesScreen: React.FC<MessagesProps> = () => {
+export const MessagesView: React.FC<MessagesProps> = () => {
 	const Convs = usePulse(core.conversations.collection.groups.mine);
 	const nav = useNavigation();
 	const theme = useTheme();

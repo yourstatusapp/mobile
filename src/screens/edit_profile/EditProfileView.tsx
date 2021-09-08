@@ -12,7 +12,7 @@ interface EditProfileProps {}
 
 let timeoutID: any;
 
-export const EditProfile: React.FC<EditProfileProps> = (props) => {
+export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 	const nav = useNavigation();
 	const theme = useTheme();
 	const profile = usePulse(core.profile.state.PROFILE);

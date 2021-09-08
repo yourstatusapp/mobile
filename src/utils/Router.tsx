@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppStacks } from './Tabs';
-import { useTheme } from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import core from '../core';
 import { StatusBar, StatusBarStyle } from 'react-native';
@@ -53,7 +53,7 @@ export const Router: React.FC = () => {
 	}
 
 	return (
-		<>
+		<RouterBody>
 			<StatusBar barStyle={barStyle} />
 			{debug_enabled && <DebugView />}
 			<NavigationContainer>
@@ -80,6 +80,11 @@ export const Router: React.FC = () => {
 					<Stack.Screen name="Statusinfo" component={StatusinfoScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
-		</>
+		</RouterBody>
 	);
 };
+
+const RouterBody = styled.View`
+	flex: 1;
+	background-color: ${({ theme }) => theme.background};
+`;

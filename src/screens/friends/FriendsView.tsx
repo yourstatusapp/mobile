@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { DatePickerAndroid, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { niceTime, request } from '../../core/utils';
-import { Avatar, Fill, Header, IconButton, Row, SmallButton, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
+import { Avatar, Fill, Header, Icon, IconButton, Row, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
 import core from '@core';
 import { Activity } from '../../core/modules/accounts';
@@ -12,6 +12,23 @@ import { useState } from 'react';
 import FastImage from 'react-native-fast-image';
 
 interface FriendsProps {}
+
+interface IStories {
+	id: string;
+	picture: string;
+	account_id: string;
+	deleted_at: string;
+}
+
+interface StoriesList {
+	data: {
+		owner: string;
+		username: string;
+		avatar: string;
+		status: any;
+		stories: IStories[];
+	};
+}
 
 const FriendsList = state<any[]>([]);
 const PendingList = state<any[]>([]);
@@ -40,6 +57,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 		const a = await request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends');
 		FriendsList.set(a.friends);
 		PendingList.set(a.incoming_pending);
+		core.profile.collection.collect(a.incoming_pending, 'requests');
 	};
 
 	const replyFriendRequest = async (accept: boolean, id: string) => {
@@ -81,7 +99,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	const renderItem = ({ item, index }) => (
 		<ProfileRenderItem key={index}>
 			<View>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
+				<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
 				<Fill />
 			</View>
 			<Spacer size={15} />
@@ -109,18 +127,6 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 		</ProfileRenderItem>
 	);
 
-	// const renderItem1 = ({ item, index }) => (
-	// 	<Row key={index} style={{ paddingHorizontal: 15 }}>
-	// 		<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={40} />
-	// 		<Spacer size={10} />
-	// 		<Text>{item.username || 'none'}</Text>
-	// 		<Fill />
-	// 		<SmallButton text="Accept" onPress={() => replyFriendRequest(true, item.id)} />
-	// 		<Spacer size={10} />
-	// 		<SmallButton text="Deny" onPress={() => replyFriendRequest(false, item.id)} />
-	// 	</Row>
-	// );
-
 	React.useEffect(() => {
 		getFriendList();
 		// getNotifications();
@@ -139,15 +145,14 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 					</Row>
 				}
 			/>
-			{/* {!!pendingList?.length && (
-				<>
-					<Spacer size={20} />
-					<Text style={{ paddingLeft: 10 }} weight="semi-bold" size={16} color={theme.primary}>
-						Pending friends requests
-					</Text>
-					<FlatList data={pendingList} renderItem={renderItem1}  scrollEnabled={false} />
-				</>
-			)} */}
+
+			{!!pendingList?.length && (
+				<NewFriendRequestBox onPress={() => nav.navigate('newfriends', { data: pendingList })}>
+					<Text weight="semi-bold">You have a new friend request</Text>
+					<Fill />
+					<Icon name="incoming" size={25} color={theme.primary} />
+				</NewFriendRequestBox>
+			)}
 			<FlatList data={friendList} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />} />
 		</TabbarContentContainer>
 	);
@@ -156,27 +161,20 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 const ProfileRenderItem = styled.View`
 	flex-direction: row;
 	align-items: center;
-	/* justify-content: center; */
 	padding: 10px 15px;
 	border-bottom-color: ${({ theme }) => theme.step1};
 	border-bottom-width: 1px;
 `;
 
-interface IStories {
-	id: string;
-	picture: string;
-	account_id: string;
-	deleted_at: string;
-}
-interface StoriesList {
-	data: {
-		owner: string;
-		username: string;
-		avatar: string;
-		status: any;
-		stories: IStories[];
-	};
-}
+const NewFriendRequestBox = styled(TouchableOpacity).attrs({ activeOpacity: 0.5 })`
+	flex-direction: row;
+	align-items: center;
+	background-color: ${({ theme }) => theme.step1};
+	padding: 12px 20px;
+	width: 100%;
+	border-bottom-color: ${({ theme }) => theme.step1};
+	border-bottom-width: 1px;
+`;
 
 const StoriesList: React.FC<StoriesList> = (props) => {
 	const { data } = props;
@@ -221,11 +219,9 @@ const StoriesPreviewer = styled(TouchableOpacity)`
 `;
 
 const CountBox = styled.View`
-	/* background-color: ${({ theme }) => theme.text}; */
 	margin-left: 10px;
 	border-radius: 7px;
 	padding: 2px;
-	/* margin-left: 10px; */
 	padding-right: 4px;
 	padding-bottom: 3px;
 	padding-left: 4px;

@@ -3,7 +3,7 @@ import { Header, TabbarContentContainer, Text } from '../../parts';
 
 interface DiscoveryProps {}
 
-export const Discovery: React.FC<DiscoveryProps> = (props) => {
+export const DiscoveryView: React.FC<DiscoveryProps> = (props) => {
 	const {} = props;
 
 	return (

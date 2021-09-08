@@ -10,7 +10,7 @@ import { request } from '../../core/utils';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, TextButton } from '../../parts/Buttons';
 import DeviceInfo from 'react-native-device-info';
-import { SettingsAccount, SettingsApp, SettingsAppearance, SettingsConnections, SettingsNotifications } from './screens';
+import { SettingsDeveloper, SettingsAccount, SettingsApp, SettingsAppearance, SettingsConnections, SettingsNotifications } from './screens';
 
 const SettingsStack = createStackNavigator();
 
@@ -25,6 +25,7 @@ export const SettingsView: React.FC = () => {
 			<SettingsStack.Screen name="SettingsInfo" component={SettingsApp} />
 			<SettingsStack.Screen name="SettingsNotifications" component={SettingsNotifications} />
 			<SettingsStack.Screen name="SettingsConnections" component={SettingsConnections} />
+			<SettingsStack.Screen name="SettingsDeveloper" component={SettingsDeveloper} />
 		</SettingsStack.Navigator>
 	);
 };
@@ -88,9 +89,9 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			<SettingsButton text="Notifications" routeName="Notifications" icon="bell" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
 			{/* <SettingsButton text="Connections" routeName="Connections" icon="link" /> */}
-			<SettingsButton text="App Info" routeName="Info" icon="info" />
-			{/* <SettingsButton text="Toggle Debug" action={() => toggleDebug()} textColor="#4b9fff" /> */}
+			{/* <SettingsButton text="App Info" routeName="Info" icon="info" /> */}
 			<Spacer size={20} />
+			<SettingsButton text="Developers" routeName="Developer" icon="dev" />
 			<SettingsButton text="Logout" action={() => logout()} textColor="#FF4B4B" />
 			<Spacer size={20} />
 			<Text center size={12} color={theme.textFade}>

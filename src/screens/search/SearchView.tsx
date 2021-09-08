@@ -20,7 +20,7 @@ let timeoutID;
 
 const list = state<ProfileSearchResult[]>([]);
 
-export const SearchScreen: React.FC<SearchProps> = () => {
+export const SearchView: React.FC<SearchProps> = () => {
 	const theme = useTheme();
 	const nav = useNavigation();
 	const [SearchName, setSearchName] = useState('');

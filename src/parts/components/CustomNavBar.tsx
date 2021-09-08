@@ -6,11 +6,14 @@ import { hasNotch } from 'react-native-device-info';
 import { Text, Icon, Spacer } from '../../parts';
 import { TouchableOpacity } from 'react-native';
 import { IconButton } from '../Buttons';
+import { usePulse } from '@pulsejs/react';
 
 interface CustomTabBarProps extends BottomTabBarProps {}
 
 export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	const { state } = props;
+	const tabbar_show_text = usePulse(core.app.state.tabbar_show_text);
+
 	const isIphoneX = hasNotch();
 	const theme = useTheme();
 	const nav = useNavigation();
@@ -41,11 +44,15 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 			<TabContainer>
 				{tabs.map((v, i) => (
 					<TabButton key={i} onPress={() => nav.navigate(v.path)} activeOpacity={0.5}>
-						<Icon name={v.icon} size={23} color={Current === i ? theme.primary : theme.navBarFade} />
-						<Spacer size={5} />
-						<Text size={12} style={{ color: Current === i ? theme.primary : theme.navBarFade }}>
-							{v.name}
-						</Text>
+						<Icon name={v.icon} size={tabbar_show_text ? 23 : 26} color={Current === i ? theme.primary : theme.navBarFade} />
+						{tabbar_show_text && (
+							<>
+								<Spacer size={5} />
+								<Text size={12} style={{ color: Current === i ? theme.primary : theme.navBarFade }}>
+									{v.name}
+								</Text>
+							</>
+						)}
 					</TabButton>
 				))}
 			</TabContainer>

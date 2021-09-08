@@ -86,6 +86,8 @@ const TopHeadingBody = styled(Row)`
 	margin-bottom: 10px;
 	height: 50px;
 	background-color: ${({ theme }) => theme.step1};
+	border-bottom-color: ${({ theme }) => theme.step2};
+	border-bottom-width: 1;
 `;
 
 export const SidePadding = styled.View`
