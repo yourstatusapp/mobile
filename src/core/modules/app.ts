@@ -32,8 +32,11 @@ export interface INotificationType {
 	data?: any;
 }
 
+export interface ModalType {}
+
 const Events = {
 	notification: event<INotificationType>({}),
+	modal: event<ModalType>(),
 };
 
 export const app = {

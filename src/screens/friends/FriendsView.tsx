@@ -90,14 +90,33 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	const renderItem = ({ item, index }) => (
 		<ProfileRenderItem key={index}>
 			<View>
+				{/* {item.stories?.length ? (
+					<StorieCircle>
+						<Avatar size={44} src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
+					</StorieCircle>
+				) : (
+					<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
+				)} */}
+
 				<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
+
 				<Fill />
 			</View>
 			<Spacer size={15} />
 			<View>
-				<Text weight="medium" size={18}>
-					{item.username}
-				</Text>
+				<Row>
+					<Text weight="medium" size={18}>
+						{item.username}
+					</Text>
+					<Spacer size={10} />
+					{item.stories?.length && (
+						<ShowStoriesButton onPress={() => nav.navigate('Stories', { ...item })} activeOpacity={0.8}>
+							<Text weight="semi-bold" size={12} color="white">
+								New Stories
+							</Text>
+						</ShowStoriesButton>
+					)}
+				</Row>
 
 				{item?.status && (
 					<>
@@ -125,7 +144,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				title="Friends"
 				rightArea={
 					<Row>
-						<IconButton name="search" size={20} color={theme.textFade} noBackground onPress={() => nav.navigate('SearchPeople')} />
+						<IconButton name="search" size={25} color={theme.textFade} noBackground onPress={() => nav.navigate('SearchPeople')} />
 						<Spacer size={10} />
 					</Row>
 				}
@@ -159,6 +178,13 @@ const NewFriendRequestBox = styled(TouchableOpacity).attrs({ activeOpacity: 0.5 
 	width: 100%;
 	border-bottom-color: ${({ theme }) => theme.step1};
 	border-bottom-width: 1px;
+`;
+
+const ShowStoriesButton = styled(TouchableOpacity)`
+	padding: 2px 6px;
+	border-radius: 5px;
+	background-color: #68a4e9;
+	/* background-color: ${({ theme }) => theme.primary}; */
 `;
 
 const StoriesList: React.FC<StoriesList> = (props) => {

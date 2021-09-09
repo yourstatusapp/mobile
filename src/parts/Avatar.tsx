@@ -9,25 +9,18 @@ interface AvatarProps {
 	size?: number;
 	dot_status?: string;
 	onPress?: () => void;
+	style?: any;
 }
 
 export const Avatar: React.FC<AvatarProps> = (props) => {
-	const { src, dot_status, onPress } = props;
+	const { src, dot_status, onPress, style } = props;
 
 	const IMG: React.FC<any> = (p) => (src ? <Image {...p} source={{ uri: src }} {...props} /> : <Circle {...p} {...props} />);
 
-	if (!dot_status) {
-		return (
-			<TouchableOpacity onPress={onPress}>
-				<IMG {...props} source={{ uri: src }} />
-			</TouchableOpacity>
-		);
-	}
-
 	return (
-		<AvatarBody dot_status={dot_status}>
-			<IMG source={{ uri: src }} {...props} />
-		</AvatarBody>
+		<TouchableOpacity onPress={onPress} style={style}>
+			<IMG {...props} source={{ uri: src }} />
+		</TouchableOpacity>
 	);
 };
 

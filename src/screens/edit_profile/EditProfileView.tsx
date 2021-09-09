@@ -42,7 +42,7 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 		if (valueChanged(profile.username, Username)) d.username = Username;
 		if (valueChanged(profile.location, Location)) d.location = Location;
 		if (valueChanged(profile.bio, Bio)) d.bio = Bio;
-		if (valueChanged(profile.date_of_birth, Bio)) d.date_of_birth = Birthday;
+		// if (valueChanged(profile.date_of_birth, Bio)) d.date_of_birth = Birthday;
 
 		// if (valueChanged(profile.date_of_birth, Birthday?.toISOString() || '')) d.date_of_birth = Birthday?.toISOString();
 
@@ -59,9 +59,6 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 
 	// Check if the value has been changed for editing account and profile
 	const valueChanged = (original: string, changed: string): boolean => {
-		console.log('original value > ', original);
-		console.log('new value > ', changed);
-
 		return (original === null ? '' : original) !== changed;
 	};
 
@@ -141,7 +138,7 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 					/>
 
 					<Spacer size={20} />
-					<Row>
+					{/* <Row>
 						<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
 							Birthday
 						</Text>
@@ -152,7 +149,7 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 						<Row center style={{ borderColor: valueChanged(profile.bio, Bio) ? '#54A7FD' : theme.step1, borderWidth: 2 }}>
 							<DatePicker date={Birthday} textColor={theme.text} mode="date" onDateChange={onDateChange} />
 						</Row>
-					)}
+					)} */}
 					<Fill />
 					<WideButton text="save" onPress={() => saveInformation()} />
 					<Spacer size={30} />

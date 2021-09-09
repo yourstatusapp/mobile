@@ -55,7 +55,7 @@ export const AccountView: React.FC<AccountProps> = (props) => {
 				<Row>
 					<ImageSec>
 						<Avatar src={`https://cdn.yourstatus.app/profile/${acc.id}/${profile.avatar}` || ''} size={120} />
-						<ImageIconBtn name="pencil" size={32} color={theme.text} onPress={() => selectImage()} />
+						<ImageIconBtn name="pencil" size={20} color={theme.text} onPress={() => selectImage()} />
 					</ImageSec>
 					<Spacer size={25} />
 					<View>

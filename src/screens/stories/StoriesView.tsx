@@ -32,10 +32,10 @@ export const StoriesView: React.FC<StoriesProps> = (props) => {
 		<StoriesBody>
 			<Spacer size={60} />
 			<TouchableOpacity onPress={() => nextImage()} activeOpacity={1} style={{ height: Dimensions.get('screen').height - 100 }}>
-				<StorieImage resizeMode="contain" source={{ uri: `https://cdn.yourstatus.app/stories/${route.params.owner}/${route.params.stories[ImageIndex]?.picture}` }} />
+				<StorieImage resizeMode="contain" source={{ uri: `https://cdn.yourstatus.app/stories/${route.params.account_id}/${route.params.stories[ImageIndex]?.picture}` }} />
 			</TouchableOpacity>
 			<FloatingArea>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.owner}/${route.params.avatar}`} size={35} />
+				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.account_id}/${route.params.avatar}`} size={35} />
 				<Spacer size={10} />
 				<Text weight="semi-bold" color="white">
 					{route.params.username}

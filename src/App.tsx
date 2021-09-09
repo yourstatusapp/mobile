@@ -31,6 +31,7 @@ export const App: React.FC = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<CustomAlert />
+			{/* <Modal /> */}
 			<Router />
 		</ThemeProvider>
 	);
