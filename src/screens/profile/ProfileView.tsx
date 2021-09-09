@@ -58,9 +58,11 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 			<SidePadding>
 				<Spacer size={20} />
 				{/* <Text color="black">{JSON.stringify(profile)}</Text> */}
-				<BioBox>
-					<Text color="black">{profile.bio}</Text>
-				</BioBox>
+				{profile?.bio && (
+					<BioBox>
+						<Text color="black">{profile.bio}</Text>
+					</BioBox>
+				)}
 
 				<Spacer size={35} />
 				{/* <Text color="black">{JSON.stringify(ProfileData) || -1}</Text> */}

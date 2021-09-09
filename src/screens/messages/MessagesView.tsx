@@ -56,10 +56,13 @@ export const MessagesView: React.FC<MessagesProps> = () => {
 			<Header
 				title="Messages"
 				padding
-				rightArea={<IconButton name="plus" size={35} onPress={() => nav.navigate('NewConversation')} noBackground color={theme.text} style={{ marginRight: 5 }} />}
+				// rightArea={<IconButton name="plus" size={35} onPress={() => nav.navigate('NewConversation')} noBackground color={theme.text} style={{ marginRight: 5 }} disabled={true} />}
 			/>
-
-			<FlatList data={Convs} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />} />
+			<Spacer size={40} />
+			<Text center weight="semi-bold" size={20} color={theme.textFade}>
+				Will be available soon
+			</Text>
+			{/* <FlatList data={Convs} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />} /> */}
 		</TabbarContentContainer>
 	);
 };

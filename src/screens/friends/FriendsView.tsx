@@ -1,11 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
-import { niceTime, request } from '../../core/utils';
 import { Avatar, Fill, Header, Icon, IconButton, Row, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
-import core from '@core';
-import { Activity } from '../../core/modules/accounts';
+import core, { alert, niceTime, request } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
 import { useState } from 'react';
@@ -60,26 +58,11 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 		core.profile.collection.collect(a.incoming_pending, 'requests');
 	};
 
-	const replyFriendRequest = async (accept: boolean, id: string) => {
-		await request('post', '/friends/request/' + id, { data: { accept } });
-		// TODO: do logic
-		if (accept) {
-			let a = pendingList;
-			let item = pendingList.filter((v) => v.id === id)[0];
-			const i = pendingList.indexOf(item);
-			a = a.slice(i, i + 1);
-
-			PendingList.set(a);
-			getFriendList();
-		} else {
-		}
-	};
-
-	const getNotifications = async () => {
-		const a = await request<Activity[]>('get', '/account/activity');
-		core.account.collection.activity.collect(a, 'default');
-		core.account.state.new_account_activity.set(!!a.filter((v) => !v.read_at).length);
-	};
+	// const getNotifications = async () => {
+	// 	const a = await request<Activity[]>('get', '/account/activity');
+	// 	core.account.collection.activity.collect(a, 'default');
+	// 	core.account.state.new_account_activity.set(!!a.filter((v) => !v.read_at).length);
+	// };
 
 	const getStories = async () => {
 		const a = await request<{ mine: any; stories: any[] }>('get', '/profile/stories');
@@ -95,6 +78,14 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	// 	}
 	// 	console.log(event.nativeEvent.contentOffset.y);
 	// };
+
+	React.useEffect(() => {
+		console.log('friends_view');
+
+		getFriendList();
+		// getNotifications();
+		// getStories();
+	}, []);
 
 	const renderItem = ({ item, index }) => (
 		<ProfileRenderItem key={index}>
@@ -127,12 +118,6 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 		</ProfileRenderItem>
 	);
 
-	React.useEffect(() => {
-		getFriendList();
-		// getNotifications();
-		// getStories();
-	}, []);
-
 	return (
 		<TabbarContentContainer noSidePadding>
 			<Header
@@ -148,7 +133,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 
 			{!!pendingList?.length && (
 				<NewFriendRequestBox onPress={() => nav.navigate('newfriends', { data: pendingList })}>
-					<Text weight="semi-bold">You have a new friend request</Text>
+					<Text weight="bold">You have a new friend request</Text>
 					<Fill />
 					<Icon name="incoming" size={25} color={theme.primary} />
 				</NewFriendRequestBox>

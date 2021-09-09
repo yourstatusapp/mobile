@@ -1,11 +1,9 @@
-import core from '@core';
-import { usePulse } from '@pulsejs/react';
 import * as React from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 import styled from 'styled-components/native';
-import { request } from '../core/utils';
-import { Icon, Spacer, Text } from '../parts';
+import core, { IDeviceType, request } from '@core';
+import { Spacer, Text } from '@parts';
 
 interface PreloaderProps {
 	loaded: () => void;
@@ -14,7 +12,7 @@ interface PreloaderProps {
 export const Preloader: React.FC<PreloaderProps> = (props) => {
 	const {} = props;
 	const [TakingTooLong, setTakingTooLong] = React.useState(false);
-	const loggedin_state = usePulse(core.account.state.logged_in);
+	// const loggedin_state = usePulse(core.account.state.logged_in);
 
 	const getAccount = async () => {
 		// try {
@@ -26,7 +24,7 @@ export const Preloader: React.FC<PreloaderProps> = (props) => {
 		// 	return;
 		// }
 
-		const res = await request<{ account: any; profile: any; status: any; device: { id: string; enabled: boolean } }>('get', '/account');
+		const res = await request<{ account: any; profile: any; status: any; device: IDeviceType }>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
 
 		core.account.state.ACCOUNT.set(res.account);

@@ -1,22 +1,29 @@
 /* eslint-disable no-undef */
-// import { instance } from '@pulsejs/core';
+import { instance, usePulse } from '@pulsejs/react';
+import core from '@core';
+
 import * as React from 'react';
 import { Router } from './utils/Router';
-
 import { ThemeProvider } from 'styled-components/native';
-import core from './core';
-import { usePulse } from '@pulsejs/react';
 import { CustomAlert } from './parts/alert/CustomAlert';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// import * as Notifications from './utils/Notifications';
-if (!__DEV__) {
+instance.setStorage({
+	async: true,
+	get: AsyncStorage.getItem,
+	set: AsyncStorage.setItem,
+	remove: AsyncStorage.removeItem,
+});
+
+if (__DEV__) {
 	console.log('__DEV__');
-	// require('./utils/Notifications');
-	// Notifications;
 }
 
-import * as Socket from './core/socket';
-Socket;
+globalThis.AsyncStorage = AsyncStorage;
+globalThis.core = core;
+
+// import * as Socket from './core/socket';
+// Socket;
 
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);

@@ -21,6 +21,7 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 	const [Loaded, setLoaded] = useState(false);
 	const [Location, setLocation] = useState('');
 	const [Birthday, setBirthday] = useState<Date>();
+	const [Bio, setBio] = useState('');
 
 	const usernameCheck = async (username: string) => {
 		if (!valueChanged(profile.username, Username)) {
@@ -40,6 +41,9 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 		// Check for changed values
 		if (valueChanged(profile.username, Username)) d.username = Username;
 		if (valueChanged(profile.location, Location)) d.location = Location;
+		if (valueChanged(profile.bio, Bio)) d.bio = Bio;
+		if (valueChanged(profile.date_of_birth, Bio)) d.date_of_birth = Birthday;
+
 		// if (valueChanged(profile.date_of_birth, Birthday?.toISOString() || '')) d.date_of_birth = Birthday?.toISOString();
 
 		console.log(d);
@@ -55,10 +59,10 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 
 	// Check if the value has been changed for editing account and profile
 	const valueChanged = (original: string, changed: string): boolean => {
-		if (original === '' && changed === '') return false;
-		else if (original !== changed) return true;
+		console.log('original value > ', original);
+		console.log('new value > ', changed);
 
-		return false;
+		return (original === null ? '' : original) !== changed;
 	};
 
 	const onDateChange = (v: Date) => {
@@ -121,15 +125,34 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 					/>
 
 					<Spacer size={20} />
-					{/* <Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
-						Birthday
+					<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
+						Bio
 					</Text>
 					<Spacer size={10} />
-					{!Birthday && (
-						<Row center>
+					<BioInput
+						placeholder="Tell something about yourself"
+						multiline={true}
+						defaultValue={profile.bio}
+						onChangeText={setBio}
+						style={{ borderColor: valueChanged(profile.bio, Bio) ? '#54A7FD' : theme.step1, borderWidth: 2 }}
+						autoCompleteType="off"
+						autoCorrect={false}
+						autoCapitalize="none"
+					/>
+
+					<Spacer size={20} />
+					<Row>
+						<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
+							Birthday
+						</Text>
+					</Row>
+					<Spacer size={10} />
+
+					{Birthday && (
+						<Row center style={{ borderColor: valueChanged(profile.bio, Bio) ? '#54A7FD' : theme.step1, borderWidth: 2 }}>
 							<DatePicker date={Birthday} textColor={theme.text} mode="date" onDateChange={onDateChange} />
 						</Row>
-					)} */}
+					)}
 					<Fill />
 					<WideButton text="save" onPress={() => saveInformation()} />
 					<Spacer size={30} />
@@ -146,6 +169,13 @@ const EditProfileBody = styled.View`
 
 const InputCont = styled(Row)`
 	position: relative;
+`;
+
+const BioInput = styled(RegularInput)`
+	min-height: 120px;
+
+	padding: 15px 12px;
+	/* vertical-align: al; */
 `;
 
 const UsernameField = styled(RegularInput)<{ error: boolean; loaded: boolean; usernameValue: string; changed: boolean }>`
