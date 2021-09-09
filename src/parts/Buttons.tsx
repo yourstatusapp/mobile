@@ -15,15 +15,14 @@ const ButtonBody = styled.TouchableOpacity`
 `;
 
 interface IconButtonProps {
+	name: string;
+	size: number;
 	onPress?: () => void;
-
-	name?: string;
-	size?: number;
-	iconSize?: number;
 	color?: string;
 	backgroundColor?: string;
 	noPadding?: boolean;
 	noBackground?: boolean;
+	iconSize?: number;
 
 	style?: StyleProp<ViewStyle>;
 	disabled?: boolean;
@@ -32,7 +31,7 @@ interface IconButtonProps {
 export const IconButton: React.FC<IconButtonProps> = (p) => {
 	return (
 		<IconButtonBody style={{ opacity: p.disabled ? 0.4 : 1 }} onPress={p.onPress} disabled={p.disabled} {...p}>
-			<Icon name={p.name || ''} color={p.color} size={p.iconSize ? p.iconSize - 17 : p.size ? p.size - 17 : 17} />
+			<Icon name={p.name || ''} color={p.color} size={p.size + (p.iconSize || 0)} />
 		</IconButtonBody>
 	);
 };
@@ -41,10 +40,10 @@ const IconButtonBody = styled(TouchableOpacity)<IconButtonProps>`
 	justify-content: center;
 	align-items: center;
 
-	${({ backgroundColor, theme, size, iconSize, noBackground }) => `
+	${({ backgroundColor, theme, size, noBackground, noPadding }) => `
 		background-color: ${noBackground ? 'transparent' : backgroundColor || theme.step1};
-		height: ${iconSize ? iconSize : size ? size : 20}px;
-		width: ${iconSize ? iconSize : size ? size : 20}px;
+		height: ${size + (noPadding === true ? 0 : 10)}px;
+		width: ${size + (noPadding === true ? 0 : 10)}px;
 		border-radius: ${size || 30};
 	`}
 `;

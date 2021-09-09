@@ -79,7 +79,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 					Settings
 				</Text>
 				<Fill />
-				<IconButton onPress={() => toggleTheme()} name="moon" size={33} color={theme.text} />
+				<IconButton onPress={() => toggleTheme()} name="moon" size={20} color={theme.textFade} iconSize={-3} />
 				<Spacer size={15} />
 				<TextButton size={18} weight="semi-bold" text="close" onPress={() => nav.goBack()} />
 			</Row>
@@ -93,15 +93,17 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			{/* <SettingsButton text="App Info" routeName="Info" icon="info" /> */}
 
 			<Spacer size={40} />
-			<Text weight="bold" >For bugs or any other issues, Please contact on discord or twitter</Text>
-			<Spacer size={20} />
+			<Text weight="medium" size={16}>
+				For bugs or any other issues, Please contact on discord or twitter
+			</Text>
+			<Spacer size={10} />
 			<Row>
-				<IconButton name="discord" size={40} color="#5765F2" onPress={() => Linking.openURL('https://discord.gg/wCFdkbAdPA')} />
+				<IconButton name="discord" size={30} color="#5765F2" onPress={() => Linking.openURL('https://discord.gg/wCFdkbAdPA')} />
 				<Spacer size={10} />
-				<IconButton name="twitter" size={40} color="#1C9BF0" onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
+				<IconButton name="twitter" size={30} color="#1C9BF0" onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
 			</Row>
-			<Spacer size={20} />
-			<SettingsButton text="Developers" routeName="Developer" icon="dev" />
+			<Spacer size={25} />
+			<SettingsButton text="Developer options" routeName="Developer" icon="dev" />
 			<SettingsButton text="Logout" action={() => logout()} textColor="#FF4B4B" />
 			<Spacer size={5} />
 			<Text center size={12} color={theme.textFade}>
@@ -131,7 +133,7 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ text, routeName, icon, 
 
 	return (
 		<SettingsButtonBody onPress={() => (action ? action() : nav.navigate('Settings' + routeName))}>
-			<Text weight="bold" size={16} color={textColor || theme.text}>
+			<Text weight="semi-bold" size={16} color={textColor || theme.text}>
 				{text}
 			</Text>
 			<Fill />
@@ -142,7 +144,7 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ text, routeName, icon, 
 
 const SettingsButtonBody = styled(TouchableOpacity)`
 	background-color: ${({ theme }) => theme.step1};
-	border-radius: 8px;
+	border-radius: 15px;
 	height: 50px;
 	padding: 0px 15px;
 	align-items: center;

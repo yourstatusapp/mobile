@@ -49,7 +49,7 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 				<Row>
 					<Text color={theme.textFade}>{snow2time(item.id).toLocaleString()}</Text>
 					<Fill />
-					<IconButton name="trash" size={30} color="#FF4848" backgroundColor={theme.step3} onPress={() => revokeDevice(item.id)} />
+					<IconButton name="trash" size={20} iconSize={-5} color="#FF4848" backgroundColor={theme.step3} onPress={() => revokeDevice(item.id)} />
 				</Row>
 			</DeviceItem>
 		);

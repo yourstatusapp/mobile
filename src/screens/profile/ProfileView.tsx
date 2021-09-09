@@ -3,7 +3,7 @@ import styled, { useTheme } from 'styled-components/native';
 import FastImage from 'react-native-fast-image';
 import { Dimensions, FlatList, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Avatar, Row, SidePadding, SmallButton, Spacer, TabbarContentContainer, Text, TextButton, TopHeading } from '@parts';
+import { Avatar, Fill, IconButton, Row, SidePadding, SmallButton, Spacer, TabbarContentContainer, Text, TextButton, TopHeading } from '@parts';
 import core, { Collection, IProfile, request } from '@core';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
@@ -43,24 +43,29 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 
 	return (
 		<ProfileBody>
-			<CardHeader>
-				<TextButton text="Close" weight="bold" color={theme.primary} onPress={() => nav.goBack()} />
-			</CardHeader>
-			<Spacer size={10} />
+			{/* <Spacer size={30} /> */}
 
-			<Row style={{ paddingLeft: 20 }}>
+			<Row style={{ padding: 20 }}>
 				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.profile.account_id}/${route.params.profile.avatar}`} size={100} />
 				<Spacer size={20} />
-				<Text weight="bold" size={24}>
-					{profile.username}
-				</Text>
+				<Row style={{ flex: 1 }}>
+					<Text weight="bold" size={24}>
+						{profile.username}
+					</Text>
+					<Fill />
+					<View style={{ justifyContent: 'flex-start' }}>
+						<IconButton name="plus" color={theme.text} size={25} style={{ transform: [{ rotate: '45deg' }] }} noBackground onPress={() => nav.goBack()} />
+						<Fill />
+					</View>
+				</Row>
 			</Row>
+
 			<SidePadding>
 				<Spacer size={20} />
 				{/* <Text color="black">{JSON.stringify(profile)}</Text> */}
 				{profile?.bio && (
 					<BioBox>
-						<Text color="black">{profile.bio}</Text>
+						<Text>{profile.bio}</Text>
 					</BioBox>
 				)}
 
@@ -84,7 +89,7 @@ const CardHeader = styled.View`
 
 const BioBox = styled.View`
 	padding: 10px;
-	border-radius: 12px;
+	border-radius: 15px;
 	background-color: ${({ theme }) => theme.step1};
 `;
 

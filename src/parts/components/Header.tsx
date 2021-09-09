@@ -25,9 +25,9 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
 			<Fill />
 			{rightArea}
-			<IconButton name="bell" size={35} color={new_notification ? theme.primary : theme.textFade} onPress={() => nav.navigate('notifications')} noBackground />
-			<Spacer size={3} />
-			<IconButton name="settings" size={35} noBackground color={theme.text} onPress={() => nav.navigate('Settings')} />
+			{/* <IconButton name="bell" size={20} color={new_notification ? theme.primary : theme.textFade} onPress={() => nav.navigate('notifications')} noBackground /> */}
+			{/* <Spacer size={10} /> */}
+			<IconButton name="settings" size={20} noBackground color={theme.text} onPress={() => nav.navigate('Settings')} />
 			{/* <Spacer size={10} /> */}
 			{/* <IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('NewUser')} /> */}
 		</HeaderBody>

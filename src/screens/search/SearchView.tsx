@@ -29,7 +29,6 @@ export const SearchView: React.FC<SearchProps> = () => {
 	// const [List, setList] = useState<ProfileSearchResult[]>([]);
 
 	const searchUser = async (name: string) => {
-		
 		const a = await request<ProfileSearchResult[]>('post', '/profile/search', { data: { search: name } });
 		list.set(a);
 		// setList(a);
@@ -79,7 +78,7 @@ export const SearchView: React.FC<SearchProps> = () => {
 			</Text>
 			<Fill />
 			{item.friend_status < 2 && (
-				<IconButton name="user-add" color={theme.text} size={35} backgroundColor={theme.step1} onPress={() => addFriend(item.owner)} disabled={item.friend_status === 1} />
+				<IconButton name="user-add" color={theme.text} size={20} backgroundColor={theme.step1} onPress={() => addFriend(item.owner)} disabled={item.friend_status === 1} />
 			)}
 		</UserSearchEnty>
 	);
@@ -92,7 +91,7 @@ export const SearchView: React.FC<SearchProps> = () => {
 					Search users
 				</Text>
 				<Fill />
-				<IconButton name="times" size={35} color={theme.text} onPress={() => nav.goBack()} />
+				<IconButton name="times" size={23} color={theme.text} onPress={() => nav.goBack()} />
 			</Row>
 			<Text size={14} weight="semi-bold" color={theme.textFade}>
 				Find your friends to add to see their status

@@ -125,8 +125,8 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				title="Friends"
 				rightArea={
 					<Row>
-						<IconButton name="search" size={35} color={theme.textFade} noBackground onPress={() => nav.navigate('SearchPeople')} />
-						<Spacer size={5} />
+						<IconButton name="search" size={20} color={theme.textFade} noBackground onPress={() => nav.navigate('SearchPeople')} />
+						<Spacer size={10} />
 					</Row>
 				}
 			/>

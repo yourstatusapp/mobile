@@ -20,7 +20,7 @@ export const SettingsDeveloper: React.FC = () => {
 				<Spacer size={5} />
 				<WarningBox>
 					<Text weight="semi-bold" center color={theme.text}>
-						WARNING, EXPERIMENTAL FEATURES
+						WARNING, THESE FEATURES MAY NOT BE TEMPORARY OR WORKING CORRECTLY
 					</Text>
 				</WarningBox>
 

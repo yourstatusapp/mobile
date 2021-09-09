@@ -48,14 +48,14 @@ export const CameraView: React.FC<CameraProp> = (props) => {
 				{({ camera }) => {
 					return (
 						<OverLay>
-							<CloseButton name="times" size={45} iconSize={45} color="white" noBackground onPress={() => nav.goBack()} />
+							<CloseButton name="times" size={25} color="white" noBackground onPress={() => nav.goBack()} />
 							<ControlBox center>
 								<Spacer size={10} />
 								<Spacer size={50} />
 								<Fill />
 								<IconButton
 									name="switch"
-									size={40}
+									size={25}
 									color="white"
 									noBackground
 									onPress={() => setSelectedCam(SelectedCam === 'back' ? 'front' : 'back')}
@@ -65,10 +65,10 @@ export const CameraView: React.FC<CameraProp> = (props) => {
 								<ActionBtn onPress={() => takePicture(camera)} />
 
 								<Spacer size={40} />
-								<IconButton name="flashlight" size={40} color={Flash === 'off' ? 'gray' : 'white'} noBackground onPress={() => setFlash(Flash === 'off' ? 'torch' : 'off')} />
+								<IconButton name="flashlight" size={25} color={Flash === 'off' ? 'gray' : 'white'} noBackground onPress={() => setFlash(Flash === 'off' ? 'torch' : 'off')} />
 								<Fill />
 
-								<IconButton noBackground name="image" size={50} color="white" onPress={() => chooseFromGalaery()} />
+								<IconButton noBackground name="image" size={35} color="white" onPress={() => chooseFromGalaery()} />
 								<Spacer size={10} />
 							</ControlBox>
 						</OverLay>
