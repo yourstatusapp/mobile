@@ -2,7 +2,7 @@ import core, { alert } from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
-//export const baseURL = state('https://api.yourstatus.app');
+// export const baseURL = state('https://api.yourstatus.app');
 export const baseURL = state('http://localhost:8080');
 
 interface RequestOptions {

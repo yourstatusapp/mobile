@@ -20,6 +20,7 @@ import { NewuserView } from '../screens/newuser/NewuserView';
 import { FriendsView } from '../screens/friends/FriendsView';
 import { ProfileView } from '../screens/profile/ProfileView';
 import { SettingsView } from '../screens/settings/SettingsView';
+import { BrowserView } from '../screens/browser/BrowserView';
 
 const Tab = createBottomTabNavigator();
 export const AppStack = createStackNavigator();
@@ -50,6 +51,7 @@ export const AppStacks: React.FC = () => {
 			<AppStack.Screen name="EditProfile" component={EditProfileView} />
 			<AppStack.Screen name="NewUser" component={NewuserView} />
 			<AppStack.Screen name="NewConversation" component={Newconversation} />
+			<AppStack.Screen name="Browser" component={BrowserView} />
 		</AppStack.Navigator>
 	);
 };

@@ -86,10 +86,9 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			<Spacer size={20} />
 
 			<SettingsButton text="Account" routeName="Account" icon="person" />
+			{/* <SettingsButton text="Connections" routeName="Connections" icon="link" /> */}
 			<SettingsButton text="Notifications" routeName="Notifications" icon="bell" />
 			<SettingsButton text="Appearance" routeName="Appearance" icon="quil" />
-
-			{/* <SettingsButton text="Connections" routeName="Connections" icon="link" /> */}
 			{/* <SettingsButton text="App Info" routeName="Info" icon="info" /> */}
 
 			<Spacer size={40} />
