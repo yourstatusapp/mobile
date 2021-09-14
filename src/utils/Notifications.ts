@@ -31,7 +31,11 @@ export const configureNotifications = () => {
 			console.log('REGISTER ERROR => ', error);
 		},
 
-		onNotification: (notification) => {
+		onAction: async (n) => {
+			await request('post', `/notifications/${n.data.id}/open`);
+		},
+
+		onNotification: async (notification) => {
 			console.log('NOTIFICATION => ', notification);
 		},
 
