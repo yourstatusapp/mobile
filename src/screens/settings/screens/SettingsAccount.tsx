@@ -1,4 +1,4 @@
-import core, { Device, request } from '@core';
+import core, { DeviceType, request } from '@core';
 import * as React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
@@ -12,12 +12,16 @@ interface SettingsAccountProps {}
 export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
-	const [Devices, setDevices] = React.useState<Device[]>([]);
+
+	// const [Devices, setDevices] = React.useState<Device[]>([]);
+	const devices = usePulse(core.account.collection.devices.groups.mine);
 	const acc = usePulse(core.account.state.ACCOUNT);
+	const current_device = usePulse(core.app.state.device_id);
 
 	const getDevices = async () => {
-		const a = await request<Device[]>('get', '/account/devices');
-		setDevices(a);
+		const a = await request<DeviceType[]>('get', '/account/devices');
+		core.account.collection.devices.collect(a, 'mine');
+		// setDevices(a);
 	};
 
 	const revokeDevice = async (device_id: string) => {
@@ -28,21 +32,16 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 		getDevices();
 	}, []);
 
-	const renderItem = ({ item, index }) => {
+	const renderItem: React.FC<{ item: DeviceType; index: number }> = ({ item, index }) => {
 		return (
-			<DeviceItem key={index}>
+			<DeviceItem key={index} current={current_device === item.id}>
+				{/* {current_device === item.id && <CurrentIndicator />} */}
 				<Text weight="semi-bold" color={theme.text}>
-					{item.user_agent.slice(0, 40)}
+					{item.user_agent?.slice(0, 40)}
 				</Text>
 				<Spacer size={10} />
 				<TouchableOpacity activeOpacity={0.5}>
-					<Text color={theme.text}>
-						{item.ip.split('/')[0].slice(0, 4) +
-							item.ip
-								.split('/')[0]
-								.slice(4, item.ip.length)
-								.replaceAll(/([0-9])/g, 'x')}
-					</Text>
+					<Text color={theme.text}>{item.ip?.split('/')[0]}</Text>
 				</TouchableOpacity>
 				<Spacer size={35} />
 
@@ -65,7 +64,19 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 					Devices
 				</Text>
 				<Spacer size={5} />
-				<FlatList data={Devices} renderItem={renderItem} contentContainerStyle={{ paddingTop: 20 }} />
+
+				<Row>
+					<GreenDot />
+					<Text weight="semi-bold" style={{ paddingLeft: 5 }}>
+						= Current device
+					</Text>
+				</Row>
+
+				<Spacer size={10} />
+
+				{!!devices?.length && <FlatList data={devices} renderItem={renderItem} contentContainerStyle={{ paddingTop: 20 }} showsVerticalScrollIndicator={false} />}
+
+				<Spacer size={20} />
 			</SidePadding>
 		</SettingsAccountBody>
 	);
@@ -80,9 +91,17 @@ const SidePadding = styled.View`
 	flex: 1;
 `;
 
-const DeviceItem = styled.View`
+const DeviceItem = styled.View<{ current: boolean }>`
 	background-color: ${({ theme }) => theme.step1};
-	margin-bottom: 10px;
-	border-radius: 12px;
-	padding: 10px;
+	margin-bottom: 15px;
+	border-radius: 22px;
+	padding: 15px;
+	${({ current, theme }) => (current ? `border: solid 2px ${theme.primary};` : '')}
+`;
+
+const GreenDot = styled.View`
+	${({ theme }) => `background-color: ${theme.primary}`};
+	height: 15px;
+	width: 15px;
+	border-radius: 15px;
 `;

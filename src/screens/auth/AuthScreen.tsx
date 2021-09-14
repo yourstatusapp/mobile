@@ -67,7 +67,7 @@ export const AuthScreen: React.FC = () => {
 				email: Email?.trimLeft()?.trimRight(),
 			},
 		});
-		core.app.event.notification.emit({ title: 'Magic link has been send', type: 'success', desc: 'Click on the link in your inbox' });
+		core.app.event.notification.emit({ title: 'Magic link has been send', success: true, desc: 'Click on the link in your inbox' });
 	};
 
 	const TermsAndServiceStyle: ViewStyle = { flexWrap: 'wrap', justifyContent: 'center' };

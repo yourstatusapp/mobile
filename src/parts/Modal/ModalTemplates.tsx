@@ -1,3 +1,4 @@
+import { Text } from '@parts';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -7,6 +8,10 @@ interface ModalTemplatesTypes {
 
 export const ModalTemplates = [
 	{
-		component: () => <View></View>,
+		component: () => (
+			<View>
+				<Text>test</Text>
+			</View>
+		),
 	},
 ];

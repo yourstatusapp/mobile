@@ -7,6 +7,7 @@ import { Text, Icon, Spacer } from '../../parts';
 import { TouchableOpacity } from 'react-native';
 import { IconButton } from '../Buttons';
 import { usePulse } from '@pulsejs/react';
+import core from '@core';
 
 interface CustomTabBarProps extends BottomTabBarProps {}
 
@@ -30,11 +31,11 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	// }, [props]);
 
 	const tabs = [
-		{ name: 'Messages', path: 'messages', icon: 'conversation' },
+		// { name: 'Messages', path: 'messages', icon: 'conversation' },
 		{ name: 'Friends', path: 'friends', icon: 'friends' },
-		// { name: 'other', path: 'other', icon: 'info' },
-		{ name: 'Global', path: 'discovery', icon: 'global' },
+		// { name: 'New', path: 'new', icon: 'plus' },
 		{ name: 'Account', path: 'account', icon: 'person' },
+		// { name: 'Global', path: 'discovery', icon: 'global' },
 	];
 
 	return (

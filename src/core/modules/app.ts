@@ -1,4 +1,5 @@
 import { event, state } from '@pulsejs/core';
+import { AlertDataType } from '../../parts/alert/CustomAlert';
 
 interface PermissionsList {
 	geolocation_access: boolean;
@@ -26,16 +27,10 @@ const DevSettingsState = {
 	tabbar_show_text: state<boolean>(true).persist('tabbar_show_text'),
 };
 
-export interface INotificationType {
-	title: string;
-	desc?: string;
-	data?: any;
-}
-
 export interface ModalType {}
 
 const Events = {
-	notification: event<INotificationType>({}),
+	notification: event<AlertDataType>({}),
 	modal: event<ModalType>(),
 };
 

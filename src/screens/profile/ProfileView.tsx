@@ -43,7 +43,7 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 
 	return (
 		<ProfileBody>
-			{/* <Spacer size={30} /> */}
+			<Spacer size={10} />
 
 			<Row style={{ padding: 20 }}>
 				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.profile.account_id}/${route.params.profile.avatar}`} size={100} />

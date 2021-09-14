@@ -1,4 +1,4 @@
-import core, { Collection, request } from '@core';
+import core, { alert, Collection, request } from '@core';
 import { Fill, IconButton, Row, SidePadding, SmallButton, Spacer, Text, WideButton } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
@@ -29,10 +29,6 @@ export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 	};
 
 	const createPost = async () => {
-		if (!SelectColl) {
-			return;
-		}
-
 		const fd = new FormData();
 		const uri = Platform.OS === 'android' ? '' : route.params.image.replace('file://', '');
 		fd.append('file', {
@@ -43,6 +39,9 @@ export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 		fd.append('type', 0);
 
 		if (UploadType === 'collection') {
+			if (!SelectColl) {
+				alert({ title: 'Select collection', success: false });
+			}
 			await request('post', `/collection/${SelectColl?.id}/add`, { headers: { 'Content-Type': 'multipart/form-data;' }, data: fd });
 		} else {
 			await request('post', '/profile/stories/new', { data: fd, headers: { 'Content-Type': 'multipart/form-data;' } });
@@ -50,10 +49,10 @@ export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 
 		nav.goBack();
 
-		core.app.event.notification.emit({
+		alert({
 			title: 'Picture uploaded successfull',
-			type: 'success',
 			desc: UploadType === 'collection' ? 'picture has been added to the collection' : 'picture has been uploaded to realtime storier',
+			success: true,
 		});
 	};
 
@@ -66,7 +65,7 @@ export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 			<Spacer size={40} />
 			<IconButton
 				name="arrow-big"
-				size={35}
+				size={25}
 				backgroundColor={theme.step1}
 				color={theme.text}
 				style={{ transform: [{ rotate: '180deg' }], position: 'absolute', top: 55, zIndex: 15, left: 10 }}

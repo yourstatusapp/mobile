@@ -3,7 +3,7 @@ import * as React from 'react';
 import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Avatar, Fill, Header, Icon, IconButton, Row, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
-import core, { alert, niceTime, request } from '@core';
+import core, { alert, IStorieType, niceTime, request } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
 import { useState } from 'react';
@@ -39,7 +39,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	const pendingList = usePulse(PendingList);
 	const friendList = usePulse(FriendsList);
 	const [Stories, setStories] = useState<any[]>([]);
-	const [MyStories, setMyStories] = useState<any[]>([]);
+	const [MyStories, setMyStories] = useState<IStorieType[]>([]);
 
 	const [refreshing, setRefreshing] = React.useState(false);
 
@@ -84,7 +84,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 
 		getFriendList();
 		// getNotifications();
-		// getStories();
+		getStories();
 	}, []);
 
 	const renderItem = ({ item, index }) => (
@@ -150,6 +150,8 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				}
 			/>
 
+			{/* {!!MyStories.length && <MyContentContainer stories={MyStories} />} */}
+
 			{!!pendingList?.length && (
 				<NewFriendRequestBox onPress={() => nav.navigate('newfriends', { data: pendingList })}>
 					<Text weight="bold">You have a new friend request</Text>
@@ -157,8 +159,41 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 					<Icon name="incoming" size={25} color={theme.primary} />
 				</NewFriendRequestBox>
 			)}
-			<FlatList data={friendList} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />} />
+			<FlatList
+				data={friendList}
+				renderItem={renderItem}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
+				ListHeaderComponent={() => (MyStories?.length ? <MyContentContainer stories={MyStories} /> : <></>)}
+			/>
 		</TabbarContentContainer>
+	);
+};
+
+const MyContentContainer: React.FC<{ stories: IStorieType[] }> = (p) => {
+	const { stories } = p;
+
+	return (
+		<View>
+			<Spacer size={5} />
+			<Text style={{ paddingLeft: 15 }} weight="bold">
+				Stories: {stories.length}
+			</Text>
+			<Spacer size={5} />
+			<FlatList
+				data={stories}
+				horizontal
+				contentContainerStyle={{ paddingHorizontal: 15 }}
+				showsHorizontalScrollIndicator={false}
+				renderItem={({ item, index }) => (
+					<FastImage
+						key={index}
+						source={{ uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}` }}
+						style={{ width: 80, height: 100, borderRadius: 10, marginRight: 10 }}
+					/>
+				)}
+			/>
+			<Spacer size={10} />
+		</View>
 	);
 };
 
@@ -187,53 +222,53 @@ const ShowStoriesButton = styled(TouchableOpacity)`
 	/* background-color: ${({ theme }) => theme.primary}; */
 `;
 
-const StoriesList: React.FC<StoriesList> = (props) => {
-	const { data } = props;
-	const theme = useTheme();
-	const nav = useNavigation();
-	// const profile = usePulse(core.profile.state.PROFILE);
+// const StoriesList: React.FC<StoriesList> = (props) => {
+// 	const { data } = props;
+// 	const theme = useTheme();
+// 	const nav = useNavigation();
+// 	// const profile = usePulse(core.profile.state.PROFILE);
 
-	return (
-		<StoriesListBody>
-			{/* <Text>{JSON.stringify(data.stories)}</Text> */}
-			<StoriesPreviewer onPress={() => nav.navigate('Stories', { ...data })}>
-				<FastImage
-					source={{ uri: `https://cdn.yourstatus.app/stories/${data.owner}/${data.stories[0].picture}` }}
-					style={{ width: 90, height: 140, borderRadius: 16, zIndex: 2, borderWidth: 5, borderColor: theme.background }}
-				/>
-				{!!data.stories[1]?.account_id && (
-					<FastImage
-						source={{ uri: `https://cdn.yourstatus.app/stories/${data.owner}/${data.stories[1].picture}` }}
-						style={{ width: 90, height: 110, borderRadius: 10, position: 'absolute', zIndex: 1, left: 8, opacity: 0.5 }}
-					/>
-				)}
-				{data.stories.length >= 3 && (
-					<CountBox>
-						<Text color={theme.text} weight="medium" size={15}>
-							{data.stories.length - 2} +
-						</Text>
-					</CountBox>
-				)}
-			</StoriesPreviewer>
-		</StoriesListBody>
-	);
-};
+// 	return (
+// 		<StoriesListBody>
+// 			{/* <Text>{JSON.stringify(data.stories)}</Text> */}
+// 			<StoriesPreviewer onPress={() => nav.navigate('Stories', { ...data })}>
+// 				<FastImage
+// 					source={{ uri: `https://cdn.yourstatus.app/stories/${data.owner}/${data.stories[0].picture}` }}
+// 					style={{ width: 90, height: 140, borderRadius: 16, zIndex: 2, borderWidth: 5, borderColor: theme.background }}
+// 				/>
+// 				{!!data.stories[1]?.account_id && (
+// 					<FastImage
+// 						source={{ uri: `https://cdn.yourstatus.app/stories/${data.owner}/${data.stories[1].picture}` }}
+// 						style={{ width: 90, height: 110, borderRadius: 10, position: 'absolute', zIndex: 1, left: 8, opacity: 0.5 }}
+// 					/>
+// 				)}
+// 				{data.stories.length >= 3 && (
+// 					<CountBox>
+// 						<Text color={theme.text} weight="medium" size={15}>
+// 							{data.stories.length - 2} +
+// 						</Text>
+// 					</CountBox>
+// 				)}
+// 			</StoriesPreviewer>
+// 		</StoriesListBody>
+// 	);
+// };
 
-const StoriesListBody = styled.View`
-	width: 110px;
-`;
-const StoriesPreviewer = styled(TouchableOpacity)`
-	display: flex;
-	flex-direction: row;
-	position: relative;
-	align-items: center;
-`;
+// const StoriesListBody = styled.View`
+// 	width: 110px;
+// `;
+// const StoriesPreviewer = styled(TouchableOpacity)`
+// 	display: flex;
+// 	flex-direction: row;
+// 	position: relative;
+// 	align-items: center;
+// `;
 
-const CountBox = styled.View`
-	margin-left: 10px;
-	border-radius: 7px;
-	padding: 2px;
-	padding-right: 4px;
-	padding-bottom: 3px;
-	padding-left: 4px;
-`;
+// const CountBox = styled.View`
+// 	margin-left: 10px;
+// 	border-radius: 7px;
+// 	padding: 2px;
+// 	padding-right: 4px;
+// 	padding-bottom: 3px;
+// 	padding-left: 4px;
+// `;

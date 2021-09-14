@@ -31,7 +31,7 @@ export interface IMessage {
 	nonce?: boolean;
 }
 
-export interface Device {
+export interface DeviceType {
 	id: string;
 	deleted_at: string;
 	user_agent: string;
@@ -90,7 +90,8 @@ export interface IConnectionType {
 	type: string;
 }
 
-export interface IDeviceType {
+export interface IStorieType {
 	id: string;
-	notifications: boolean;
+	picture: string;
+	account_id: string;
 }

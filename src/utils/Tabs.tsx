@@ -64,9 +64,9 @@ export const Tabs: React.FC = () => {
 
 	return (
 		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} tabBarOptions={{ style: { opacity: 0 } }}>
-			<Tab.Screen name="messages" component={MessagesView} />
+			{/* <Tab.Screen name="messages" component={MessagesView} /> */}
 			<Tab.Screen name="friends" component={FriendsView} />
-			<Tab.Screen name="discovery" component={DiscoveryView} />
+			{/* <Tab.Screen name="discovery" component={DiscoveryView} /> */}
 			<Tab.Screen name="account" component={AccountView} />
 			<Tab.Screen name="newfriends" component={NewfriendsView} />
 			<Tab.Screen name="notifications" component={Notifications} />

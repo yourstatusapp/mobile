@@ -7,6 +7,7 @@ import { Router } from './utils/Router';
 import { ThemeProvider } from 'styled-components/native';
 import { CustomAlert } from './parts/alert/CustomAlert';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ModalComponent } from '@parts';
 
 instance.setStorage({
 	async: true,
@@ -31,7 +32,7 @@ export const App: React.FC = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<CustomAlert />
-			{/* <Modal /> */}
+			<ModalComponent />
 			<Router />
 		</ThemeProvider>
 	);

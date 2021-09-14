@@ -15,13 +15,15 @@ export const configureNotifications = () => {
 
 			const current_device = core.account.collection.devices.selectors.current;
 
-			// Update the sessions token and notification on true
-			await request('patch', '/account/devices/' + current_device.id, {
-				data: {
-					notifications: true,
-					push_token: token.token,
-				},
-			});
+			if (current_device.id) {
+				// Update the sessions token and notification on true
+				await request('patch', '/account/devices/' + current_device.id, {
+					data: {
+						notifications: true,
+						push_token: token.token,
+					},
+				});
+			}
 
 			core.account.collection.devices.update(current_device.id, { notifications: true });
 		},

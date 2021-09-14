@@ -7,9 +7,9 @@ import { Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
-interface AlertDataType {
-	type: 'success' | 'error';
+export interface AlertDataType {
 	title: string;
+	success: boolean;
 	desc?: string;
 }
 
@@ -73,7 +73,7 @@ const CustomAlertBody = styled(Animated.View)<AlertDataType>`
 	position: absolute;
 	height: 100px;
 	width: 100%;
-	background: ${({ type }) => (type === 'success' ? '#4cad5e' : '#f35b5b')};
+	background: ${({ success }) => (success ? '#4cad5e' : '#f35b5b')};
 	transform: translateY(-100px);
 	padding: 0px 20px;
 	padding-top: 45px;

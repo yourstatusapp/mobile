@@ -10,7 +10,7 @@ import styled, { useTheme } from 'styled-components/native';
 
 interface SearchProps {}
 interface ProfileSearchResult {
-	owner: string;
+	account_id: string;
 	username: string;
 	avatar: string;
 	friend_status: number;
@@ -38,7 +38,7 @@ export const SearchView: React.FC<SearchProps> = () => {
 	const addFriend = async (id: string) => {
 		await request('post', '/friends/add/' + id);
 		// Get index from id
-		const index = l.indexOf(l.filter((v) => v.owner === id)[0]);
+		const index = l.indexOf(l.filter((v) => v.account_id === id)[0]);
 		let newArr = l;
 
 		newArr[index].friend_status = 1;
@@ -70,7 +70,7 @@ export const SearchView: React.FC<SearchProps> = () => {
 	const renderItem = ({ item, index }: { item: ProfileSearchResult; index: number }) => (
 		<UserSearchEnty key={index}>
 			{/* <TouchableOpacity onPress={() => nav.navigate('Profile', { profile: item })}> */}
-			<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={50} />
+			<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={50} />
 			{/* </TouchableOpacity> */}
 			<Spacer size={10} />
 			<Text weight="semi-bold" size={16} color={theme.text}>
@@ -78,7 +78,7 @@ export const SearchView: React.FC<SearchProps> = () => {
 			</Text>
 			<Fill />
 			{item.friend_status < 2 && (
-				<IconButton name="user-add" color={theme.text} size={20} backgroundColor={theme.step1} onPress={() => addFriend(item.owner)} disabled={item.friend_status === 1} />
+				<IconButton name="user-add" color={theme.text} size={20} backgroundColor={theme.step1} onPress={() => addFriend(item.account_id)} disabled={item.friend_status === 1} />
 			)}
 		</UserSearchEnty>
 	);
