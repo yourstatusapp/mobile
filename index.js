@@ -6,6 +6,7 @@ import { initCore } from './src/core';
 import React, { AppRegistry } from 'react-native';
 import { App } from './src/App';
 import { name as appName } from './app.json';
+import { CodePushWrapper } from './src/utils/CodePush';
 
 initCore();
 
@@ -13,4 +14,4 @@ initCore();
 // LogBox.ignoreLogs(['Animated: `useNativeDriver`']); TODO: NOTE SURE IF I HAVE TO USE THIS
 React.LogBox.ignoreAllLogs(true);
 
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent(appName, () => CodePushWrapper(App));
