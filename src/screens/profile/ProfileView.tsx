@@ -41,6 +41,16 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 		// loadProfile();
 	}, []);
 
+	// return (
+	// 	<ProfileBody>
+	// 		{route.params?.profile?.avatar ? (
+	// 			<PhotoBanner source={{ uri: `https://cdn.yourstatus.app/profile/${route.params.profile.account_id}/${route.params.profile.avatar}` }} />
+	// 		) : (
+	// 			<PhotoBannerPlaceHolder />
+	// 		)}
+	// 	</ProfileBody>
+	// );
+
 	return (
 		<ProfileBody>
 			<Spacer size={10} />
@@ -80,6 +90,19 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 const ProfileBody = styled.View`
 	background-color: ${({ theme }) => theme.background};
 	flex: 1;
+`;
+
+const PhotoBanner = styled(FastImage)`
+	width: 100%;
+	height: 100%;
+	max-height: 190px;
+`;
+
+const PhotoBannerPlaceHolder = styled.View`
+	width: 100%;
+	height: 100%;
+	background-color: #583838;
+	max-height: 190px;
 `;
 
 const CardHeader = styled.View`

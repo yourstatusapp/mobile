@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ActivityIndicator } from 'react-native';
 import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 import styled from 'styled-components/native';
-import core, { IDeviceType, request } from '@core';
+import core, { DeviceType, request } from '@core';
 import { Spacer, Text } from '@parts';
 
 interface PreloaderProps {
@@ -24,7 +24,7 @@ export const Preloader: React.FC<PreloaderProps> = (props) => {
 		// 	return;
 		// }
 
-		const res = await request<{ account: any; profile: any; status: any; device: IDeviceType }>('get', '/account');
+		const res = await request<{ account: any; profile: any; status: any; device: DeviceType }>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
 
 		core.account.state.ACCOUNT.set(res.account);

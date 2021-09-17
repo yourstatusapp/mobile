@@ -15,12 +15,17 @@ const State = {
 	// Debug mode enabled for testing purpose
 	debug_enabled: state<boolean>(false).persist('debug_enabled'),
 
+	// 0 = need to ask  | 1 = granted | 2 = denied
+	location_service_enabled: state<0 | 1 | 2>(0).persist('location_service_enabled'),
+
 	permissions_list: state<PermissionsList>({
 		geolocation_access: false,
 	}).persist('phone_permissions_state'),
 
 	device_push_token: state<string>('').persist('device_push_token'),
 	device_id: state<string>('').persist('device_id'),
+
+	soft_update_available: state<boolean>(false).persist('soft_update_available'),
 };
 
 const DevSettingsState = {

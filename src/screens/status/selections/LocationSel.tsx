@@ -1,70 +1,42 @@
-import { BaseButton, Input, Row, SidePadding, SmallButton, SmallInput, Spacer, Text, TextButton } from '@parts';
+import { Row, SidePadding, SmallButton, SmallInput, Spacer, Text } from '@parts';
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import Geolocation from 'react-native-geolocation-service';
 import { usePulse } from '@pulsejs/react';
-import core, { ActivityLocation, request } from '@core';
-import { FlatList } from 'react-native-gesture-handler';
-import { Linking, Platform, View } from 'react-native';
+import core, { calcDistance, LocationType, request } from '@core';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { Linking, Platform } from 'react-native';
 import { useState } from 'react';
+import { listenLocationPosition, LocationState, requestLocationAccess } from '../../../utils/LocationService';
+import MapView from 'react-native-maps';
 
-interface LocationSelProps {}
-
-export const LocationSel: React.FC<LocationSelProps> = (props) => {
-	const {} = props;
-	const phonePerms = usePulse(core.app.state.permissions_list);
-	const [LocationName, setLocationName] = useState('');
-	const [Locations, setLocations] = useState<ActivityLocation[]>([]);
-	const [CurrentCoords, setCurrentCoords] = useState<number[]>([]);
-	const [LocError, setLocError] = useState<boolean>(false);
+export const LocationSel: React.FC = () => {
 	const theme = useTheme();
 
+	// const phonePerms = usePulse(core.app.state.permissions_list);
+	const locations = usePulse(core.account.collection.locations.groups.mine);
+	const loc_perm_enabled = usePulse(core.app.state.location_service_enabled);
+	const current_coords = usePulse(LocationState.coordinates);
+
+	const [LocationName, setLocationName] = useState('');
+	const [LocError, setLocError] = useState<boolean>(false);
+
 	const getLocations = async () => {
-		const a = await request('get', '/activity/location');
-		setLocations(a);
+		const a = await request<LocationType>('get', '/location/me');
+		core.account.collection.locations.collect(a, 'mine');
+		core.account.state.saved_locations.set(a);
 	};
 
 	const createLocation = async () => {
-		await request('post', '/activity/location/create', {
+		await request('post', '/location/create', {
 			data: {
 				title: LocationName,
-				lang: CurrentCoords[0],
-				long: CurrentCoords[1],
+				lang: current_coords[0],
+				long: current_coords[1],
 			},
 		});
 
 		await getLocations();
 	};
-
-	React.useEffect(() => {
-		getLocations();
-
-		// Check if has permissions, otherwise request it
-		// if (!phonePerms.geolocation_access) {
-		Geolocation.requestAuthorization('whenInUse').then(() => core.app.state.permissions_list.patch({ geolocation_access: true }));
-		// }
-
-		// Geolocation.watchPosition(
-		// 	(succ) => {
-		// 		console.log('tracking location', succ);
-		// 	},
-		// 	(err) => {},
-		// 	{ enableHighAccuracy: true, interval: 5 * 1000 }
-		// );
-
-		Geolocation.getCurrentPosition(
-			(pos) => {
-				console.log(pos);
-				setCurrentCoords([pos.coords.latitude, pos.coords.longitude]);
-			},
-			(error) => {
-				setLocError(true);
-				// See error code charts below.
-				console.log(error.code, error.message);
-			},
-			{ enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-		);
-	}, []);
 
 	const openLocWithMaps = (lat: number, lng: number, name?: string) => {
 		const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
@@ -79,21 +51,37 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 	};
 
 	const setStatus = async () => {
-		await request('post', '/act');
+		// await request('post', '/act');
 	};
 
 	const removeLocation = async (id: string) => {
-		await request('delete', `/activity/location/${id}/remove`);
-		let newArr = Locations.slice(Locations.indexOf(Locations.filter((v) => v.id === id)[0]), 1);
-		setLocations(newArr);
+		await request('delete', `/location/${id}/remove`);
+		// let newArr = Locations.slice(Locations.indexOf(Locations.filter((v) => v.id === id)[0]), 1);
+		// setLocations(newArr);
 	};
+
+	React.useEffect(() => {
+		if ([0, 1].includes(loc_perm_enabled)) {
+			// Request user location access
+			requestLocationAccess().then((v) => {
+				core.app.state.location_service_enabled.set(v ? 1 : 2);
+				if (v === false) {
+					return;
+				}
+				listenLocationPosition();
+			});
+		}
+
+		getLocations();
+	}, []);
 
 	const renderItem = ({ item, index }) => (
 		<Locationcard key={index}>
 			<Text color={theme.text} size={16}>
-				{item.title}
+				{item.title}you
 			</Text>
 			<Spacer size={5} />
+			<Text> - {calcDistance({ lat: item.lang, long: item.long }, { lat: current_coords.lat, long: current_coords.long })}</Text>
 
 			<Spacer size={10} />
 			<Row>
@@ -106,46 +94,59 @@ export const LocationSel: React.FC<LocationSelProps> = (props) => {
 		</Locationcard>
 	);
 
-	const PreferenceButtons = [`none`, `city`, `realtime`];
-
 	return (
 		<SidePadding>
-			<Spacer size={10} />
-
-			<Text weight="bold" size={28}>
-				Locations
-			</Text>
-			<Text color={theme.textFade} size={16}>
-				You can set locations and when your phone detects its nearby, it will ping us.
-			</Text>
-			<Spacer size={50} />
-
-			<Row>
-				{PreferenceButtons.map((v, i) => (
-					<SmallButton text={v} key={i} style={{ marginRight: 10, borderColor: 'red', borderWidth: 2 }} />
-				))}
-			</Row>
-
-			{LocError && (
-				<Text weight="medium" color="#FF6767">
-					Cannot get location
-				</Text>
-			)}
-			{/* <Text>Your coords: {JSON.stringify(CurrentCoords)}</Text> */}
-			{/* <SmallButton text="Open maps" onPress={() => openLocWithMaps(CurrentCoords[0], CurrentCoords[1])} /> */}
-			<Spacer size={20} />
-			<SmallInput placeholder="location name" onChangeText={setLocationName} />
-			<Spacer size={10} />
-			<Row>
-				<SmallButton text="Add location" onPress={() => createLocation()} disabled={LocError} />
+			<ScrollView style={{ flex: 1 }} >
 				<Spacer size={10} />
-				<SmallButton text="Set status" onPress={() => setStatus()} disabled={LocError} />
-			</Row>
-			<Spacer size={80} />
-			<Text size={20} weight="semi-bold">
-				Saved Location
-			</Text>
-			<FlatList data={Locations} renderItem={renderItem} contentContainerStyle={{ paddingTop: 10 }} />
+
+				<Text weight="bold" size={28}>
+					Locations
+				</Text>
+				<Text color={theme.textFade} size={16}>
+					You can set locations and when your phone detects its nearby, it will ping us.
+				</Text>
+				<Spacer size={50} />
+
+				{LocError && (
+					<Text weight="medium" color="#FF6767">
+						Cannot get location
+					</Text>
+				)}
+				<Text>
+					Your coords: (lat){current_coords.lat} + (long){current_coords.long}
+				</Text>
+				{/* <SmallButton text="Open maps" onPress={() => openLocWithMaps(CurrentCoords[0], CurrentCoords[1])} /> */}
+				<Spacer size={20} />
+				<SmallInput placeholder="location name" onChangeText={setLocationName} />
+				<Spacer size={10} />
+				<Row>
+					<SmallButton text="Add location" onPress={() => createLocation()} disabled={LocError} />
+					<Spacer size={10} />
+					<SmallButton text="Set status" onPress={() => setStatus()} disabled={LocError} />
+				</Row>
+				<Spacer size={80} />
+				<MapContainer>
+					<MapView
+						style={{ flex: 1, borderRadius: 12 }}
+						initialRegion={{
+							latitude: locations[0]?.lang || 122.432,
+							longitude: locations[0]?.long || -122.4324,
+							latitudeDelta: 0.0922,
+							longitudeDelta: 0.0421,
+						}}
+						region={{
+							latitude: locations[0]?.lang,
+							longitude: locations[0]?.long,
+							latitudeDelta: 0,
+							longitudeDelta: 0,
+						}}
+					/>
+				</MapContainer>
+				{/* <Text size={20} weight="semi-bold">
+				Saved Locations
+			</Text> */}
+				{!!locations?.length && <FlatList data={locations} renderItem={renderItem} contentContainerStyle={{ paddingTop: 10 }} />}
+			</ScrollView>
 		</SidePadding>
 	);
 };
@@ -155,4 +156,11 @@ const Locationcard = styled.View`
 	padding: 10px;
 	border-radius: 12px;
 	margin-bottom: 15px;
+`;
+
+const MapContainer = styled.View`
+	background-color: red;
+	flex: 1;
+	max-height: 300px;
+	border-radius: 12px;
 `;

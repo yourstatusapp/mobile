@@ -2,8 +2,8 @@ import core, { alert } from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
-// export const baseURL = state('https://api.yourstatus.app');
-export const baseURL = state('http://localhost:8080');
+export const baseURL = state('https://api.yourstatus.app');
+// export const baseURL = state('http://localhost:8080');
 
 interface RequestOptions {
 	headers?: any;
@@ -59,8 +59,31 @@ export const niceTime = (id: string) => {
 	} else if (s > 86400 && s < 2592000) {
 		return Math.floor(s / 86400) + ' Days';
 	} else if (s > 2592000 && s < 2592000 * 12) {
-		return 'Months';
+		return Math.floor(s / 2592000) + ' Months';
 	} else {
-		return s + ' Years';
+		return s + ' Year';
 	}
+};
+
+/**
+ * @description Calculate the distance between 2 coordinates points
+ * @returns {number} the distance in meters
+ */
+export const calcDistance = (c1: { lat: number; long: number }, c2: { lat: number; long: number }): number => {
+	const lat1 = c1.lat;
+	const lat2 = c2.lat;
+	const lon1 = c1.long;
+	const lon2 = c2.long;
+
+	const R = 6371e3; // metres
+	const φ1 = (lat1 * Math.PI) / 180; // φ, λ in radians
+	const φ2 = (lat2 * Math.PI) / 180;
+	const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+	const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+	const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+	const d = R * c; // in metres
+	return d;
 };

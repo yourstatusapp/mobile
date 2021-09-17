@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components/native';
 import { CustomAlert } from './parts/alert/CustomAlert';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ModalComponent } from '@parts';
+// import { syncMetaData } from './utils/CodePush';
 
 instance.setStorage({
 	async: true,
@@ -17,7 +18,7 @@ instance.setStorage({
 });
 
 if (__DEV__) {
-	console.log('__DEV__');
+	console.log('__DEV__', __DEV__);
 }
 
 globalThis.AsyncStorage = AsyncStorage;
@@ -28,6 +29,8 @@ globalThis.core = core;
 
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);
+
+	// syncMetaData();
 
 	return (
 		<ThemeProvider theme={theme}>

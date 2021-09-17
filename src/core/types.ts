@@ -6,13 +6,18 @@ export interface Account {
 export interface IProfile {
 	account_id: string;
 	username: string;
-	location: string;
 	gender: string;
 	avatar: string;
 	bio: string;
 	date_of_birth: string;
 	collections?: Collection[];
 	status?: Status;
+	location?: LocationType;
+}
+
+export interface LocationType {
+	id: string;
+	title: string;
 }
 
 export interface IConversation {
@@ -38,7 +43,7 @@ export interface DeviceType {
 	ip: string;
 }
 
-export interface ActivityLocation {
+export interface LocationType {
 	id: string;
 	lang: number;
 	long: number;

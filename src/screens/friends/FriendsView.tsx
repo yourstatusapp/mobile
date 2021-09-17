@@ -3,7 +3,7 @@ import * as React from 'react';
 import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Avatar, Fill, Header, Icon, IconButton, Row, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
-import core, { alert, IStorieType, niceTime, request } from '@core';
+import core, { IStorieType, niceTime, request } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
 import { useState } from 'react';
@@ -108,15 +108,39 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 					<Text weight="medium" size={18}>
 						{item.username}
 					</Text>
+					{/* <Row style={{ paddingLeft: 10 }}>
+						<Icon
+							name="location"
+							size={9}
+							color={theme.text}
+							style={{ marginRight: 5, backgroundColor: theme.primary, padding: 3, borderRadius: 50, paddingTop: 5, paddingRight: 5 }}
+						/>
+						<Text size={14} color={theme.textFade}>
+							{item.location.title}
+						</Text>
+					</Row> */}
 					<Spacer size={10} />
 					{item.stories?.length && (
 						<ShowStoriesButton onPress={() => nav.navigate('Stories', { ...item })} activeOpacity={0.8}>
-							<Text weight="semi-bold" size={12} color="white">
+							<Text weight="semi-bold" size={12} color={theme.background}>
 								New Stories
 							</Text>
 						</ShowStoriesButton>
 					)}
 				</Row>
+				{item?.location && (
+					<Row style={{ paddingTop: 5, paddingBottom: 5 }}>
+						<Icon
+							name="location"
+							size={9}
+							color={'white'}
+							style={{ marginRight: 5, backgroundColor: theme.primary, padding: 3, borderRadius: 50, paddingTop: 5, paddingRight: 5 }}
+						/>
+						<Text size={14} color={theme.textFade}>
+							{item.location.title}
+						</Text>
+					</Row>
+				)}
 
 				{item?.status && (
 					<>

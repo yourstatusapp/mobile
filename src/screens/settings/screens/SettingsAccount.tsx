@@ -26,6 +26,7 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 
 	const revokeDevice = async (device_id: string) => {
 		await request('delete', `/account/devices/${device_id}/revoke`);
+		core.account.collection.devices.removeFromGroups(device_id, ['mine']);
 	};
 
 	React.useEffect(() => {

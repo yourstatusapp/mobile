@@ -1,4 +1,4 @@
-import { IDeviceType } from '@core';
+import { DeviceType, LocationType } from '@core';
 import { collection, state } from '@pulsejs/core';
 
 interface Account {
@@ -30,9 +30,15 @@ const ComputedState = {
 
 const ActivityColl = collection<Activity>();
 
-const Devices = collection<IDeviceType>().createGroup('mine').createSelector('current');
+const Devices = collection<DeviceType>().createGroup('mine').createSelector('current');
+
+const Locations = collection<LocationType>().createGroup('mine');
+
+const OtherState = {
+	saved_locations: state<LocationType[]>([]),
+};
 
 export const account = {
-	state: { ...ComputedState, ...AccountState },
-	collection: { activity: ActivityColl, devices: Devices },
+	state: { ...ComputedState, ...AccountState, ...OtherState },
+	collection: { activity: ActivityColl, devices: Devices, locations: Locations },
 };

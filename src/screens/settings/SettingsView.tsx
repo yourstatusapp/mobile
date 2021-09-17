@@ -11,6 +11,7 @@ import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, TextButton } from '../../parts/Buttons';
 import DeviceInfo from 'react-native-device-info';
 import { SettingsDeveloper, SettingsAccount, SettingsApp, SettingsAppearance, SettingsConnections, SettingsNotifications } from './screens';
+// import { CodePushState } from '../../utils/CodePush';
 
 const SettingsStack = createStackNavigator();
 
@@ -45,9 +46,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 
-	React.useEffect(() => {
-		console.log(props);
-	}, [props]);
+	// const version = usePulse(CodePushState.VersionLabel);
 
 	const logout = async () => {
 		await request('delete', '/account/devices/current/revoke');
@@ -71,6 +70,10 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 	};
 
 	// const toggleDebug = () => core.app.state.debug_enabled.set(!core.app.state.debug_enabled.value);
+
+	React.useEffect(() => {
+		console.log(props);
+	}, [props]);
 
 	return (
 		<SettingsBody>
@@ -108,6 +111,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			<Text center size={12} color={theme.textFade}>
 				version: beta.{DeviceInfo?.getBuildNumber()}
 			</Text>
+			{/* <Text>{version}</Text> */}
 			<Spacer size={50} />
 		</SettingsBody>
 	);
