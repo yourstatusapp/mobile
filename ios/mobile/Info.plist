@@ -61,11 +61,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>usign your godam pcitures 2</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>use of your location</string>
+	<string>Get your location all the time</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>use of your location</string>
+	<string>Location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>use of your location</string>
+	<string>Using your location</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>usign your godam pcitures 4</string>
 	<key>NSPhotoLibraryUsageDescription</key>

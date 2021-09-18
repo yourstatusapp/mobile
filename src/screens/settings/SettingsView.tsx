@@ -5,12 +5,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { Linking, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
-import { account, profile, ui } from '../../core/modules';
+import { account, profile, status, ui } from '../../core/modules';
 import { request } from '../../core/utils';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, TextButton } from '../../parts/Buttons';
 import DeviceInfo from 'react-native-device-info';
 import { SettingsDeveloper, SettingsAccount, SettingsApp, SettingsAppearance, SettingsConnections, SettingsNotifications } from './screens';
+import { clearGeoWatcher } from '../../utils/LocationService';
 // import { CodePushState } from '../../utils/CodePush';
 
 const SettingsStack = createStackNavigator();
@@ -52,9 +53,13 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 		await request('delete', '/account/devices/current/revoke');
 		nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
 
+		clearGeoWatcher();
+
 		setTimeout(() => {
 			account.state.ACCOUNT.reset();
+			account.state.saved_locations.reset();
 			profile.state.PROFILE.reset();
+			status.state.my_status.reset();
 			core.conversations.collection.reset();
 			core.message.collection.reset();
 			core.app.state.device_id.reset();

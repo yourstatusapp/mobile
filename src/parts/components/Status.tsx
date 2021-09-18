@@ -30,5 +30,5 @@ const StatusBoxBody = styled(TouchableOpacity)`
 const Box = styled.View`
 	border: solid 1px ${({ theme }) => theme.text};
 	border-radius: 16px;
-	padding: 5px 12px;
+	padding: 3px 12px;
 `;

@@ -32,10 +32,10 @@ const ActivityColl = collection<Activity>();
 
 const Devices = collection<DeviceType>().createGroup('mine').createSelector('current');
 
-const Locations = collection<LocationType>().createGroup('mine');
+const Locations = collection<LocationType>().createGroup('mine').createSelector('current_here');
 
 const OtherState = {
-	saved_locations: state<LocationType[]>([]),
+	saved_locations: state<LocationType[]>([]).persist('saved_locations'),
 };
 
 export const account = {

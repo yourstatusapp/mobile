@@ -1,5 +1,5 @@
-import { request } from '@core';
-import { Avatar, Fill, IconButton, Input, Row, Spacer, Text } from '@parts';
+import { alert, request } from '@core';
+import { Avatar, Fill, Icon, IconButton, Input, Row, Spacer, Text } from '@parts';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/core';
@@ -45,6 +45,8 @@ export const SearchView: React.FC<SearchProps> = () => {
 		console.log(newArr);
 
 		list.set(newArr);
+
+		alert({ success: true, title: 'Friend request sent', desc: 'You will receive a notification once accepted' });
 	};
 
 	React.useEffect(() => {
@@ -73,7 +75,11 @@ export const SearchView: React.FC<SearchProps> = () => {
 			<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={50} />
 			{/* </TouchableOpacity> */}
 			<Spacer size={10} />
-			<Text weight="semi-bold" size={16} color={theme.text}>
+			<Text color={theme.textFade} weight="bold" size={18}>
+				@
+			</Text>
+			<Spacer size={2} />
+			<Text weight="semi-bold" size={18} color={theme.text}>
 				{item.username}
 			</Text>
 			<Fill />
@@ -85,44 +91,78 @@ export const SearchView: React.FC<SearchProps> = () => {
 
 	return (
 		<SearchBody>
-			<Spacer size={20} />
-			<Row>
-				<Text size={30} weight="bold" color={theme.text}>
-					Search users
+			<TopCard>
+				<Spacer size={20} />
+				<Row style={{ paddingHorizontal: 20 }}>
+					<Text size={30} weight="bold" color={theme.text}>
+						Search users
+					</Text>
+					<Fill />
+					<IconButton name="times" size={23} color={theme.text} backgroundColor={theme.step3} onPress={() => nav.goBack()} />
+				</Row>
+				<Text size={15} weight="semi-bold" color={theme.textFade} style={{ paddingHorizontal: 20 }}>
+					Find your friends to add to see their status
 				</Text>
-				<Fill />
-				<IconButton name="times" size={23} color={theme.text} onPress={() => nav.goBack()} />
-			</Row>
-			<Text size={14} weight="semi-bold" color={theme.textFade}>
-				Find your friends to add to see their status
-			</Text>
 
-			<Spacer size={20} />
-			<View style={{ position: 'relative' }}>
-				{Loading && <ActivityIndicator style={{ position: 'absolute', right: 15, zIndex: 10, top: 0, bottom: 0 }} />}
-				<Input
-					onChangeText={setSearchName}
-					placeholder="Search for a name"
-					style={{ backgroundColor: theme.step1, paddingHorizontal: 15, color: theme.text }}
-					autoCapitalize="none"
-					autoCompleteType="off"
-					autoCorrect={false}
-				/>
-			</View>
-			<Spacer size={8} />
+				<Spacer size={20} />
+				<View style={{ position: 'relative', paddingHorizontal: 20 }}>
+					{Loading && <ActivityIndicator color={theme.primary} style={{ position: 'absolute', right: 30, zIndex: 10, top: 0, bottom: 0 }} />}
+					<SearchInput
+						onChangeText={setSearchName}
+						placeholder="Search for a name"
+						autoCapitalize="none"
+						autoCompleteType="off"
+						placeholderTextColor={theme.textFade}
+						autoCorrect={false}
+					/>
+				</View>
+			</TopCard>
 
-			<FlatList data={l} renderItem={renderItem} contentContainerStyle={{ paddingTop: 20 }} />
+			<FlatList
+				data={l}
+				renderItem={renderItem}
+				style={{ flex: 1 }}
+				contentContainerStyle={{ paddingTop: 10 }}
+				ListEmptyComponent={() =>
+					Loading === false && SearchName !== '' ? (
+						<Row center style={{ paddingTop: 50 }}>
+							<Text weight="medium" size={20} color={theme.textFade}>
+								No results
+							</Text>
+							<Spacer size={10} />
+							<Icon name="sad-face" size={35} color={theme.textFade} style={{ opacity: 0.6 }} />
+						</Row>
+					) : (
+						<></>
+					)
+				}
+			/>
 		</SearchBody>
 	);
 };
 
+const SearchInput = styled(Input)`
+	color: ${({ theme }) => theme.text};
+	background-color: ${({ theme }) => theme.background};
+	padding: 0px 20px;
+`;
+
 const UserSearchEnty = styled(Row)`
-	border-radius: 12px;
-	padding: 6px 0px;
+	/* border-radius: 12px; */
+	padding: 10px 20px;
+	border-bottom-color: ${({ theme }) => theme.step2};
+	border-bottom-width: 1px;
 `;
 
 const SearchBody = styled.View`
 	flex: 1;
-	padding: 0px 20px;
+	/* padding: 0px 20px; */
 	background-color: ${({ theme }) => theme.background};
+`;
+
+const TopCard = styled.View`
+	background-color: ${({ theme }) => theme.step1};
+	padding-bottom: 20px;
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
 `;

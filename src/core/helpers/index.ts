@@ -1,6 +1,6 @@
 import core from '@core';
-import { INotificationType } from '../modules/app';
+import { AlertDataType } from '../../parts/alert/CustomAlert';
 
-export const alert = (config: INotificationType) => {
+export const alert = (config: AlertDataType) => {
 	core.app.event.notification.emit(config);
 };

@@ -61,7 +61,7 @@ export const Router: React.FC = () => {
 					screenOptions={{
 						headerShown: false,
 						headerTitleStyle: { backgroundColor: theme.background },
-						cardStyle: { backgroundColor: theme.background },
+						cardStyle: { backgroundColor: theme.step0 },
 						cardOverlayEnabled: false,
 					}}
 					detachInactiveScreens

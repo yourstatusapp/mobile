@@ -1,13 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
-import { Avatar, Fill, Header, Icon, IconButton, Row, Spacer, StatusBox, TabbarContentContainer, Text } from '@parts';
+import { Avatar, Fill, Header, Icon, IconButton, Row, SmallButton, Spacer, StatusBox, TabbarContentContainer, Text, TextButton } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
-import core, { IStorieType, niceTime, request } from '@core';
+import core, { LocationType, niceTime, request } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
-import { useState } from 'react';
-import FastImage from 'react-native-fast-image';
 
 interface FriendsProps {}
 
@@ -38,15 +36,12 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 
 	const pendingList = usePulse(PendingList);
 	const friendList = usePulse(FriendsList);
-	const [Stories, setStories] = useState<any[]>([]);
-	const [MyStories, setMyStories] = useState<IStorieType[]>([]);
 
 	const [refreshing, setRefreshing] = React.useState(false);
 
 	const onRefresh = React.useCallback(async () => {
 		setRefreshing(true);
 		await getFriendList();
-		await getStories();
 		setTimeout(() => setRefreshing(false), 2000);
 	}, []);
 
@@ -64,12 +59,6 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	// 	core.account.state.new_account_activity.set(!!a.filter((v) => !v.read_at).length);
 	// };
 
-	const getStories = async () => {
-		const a = await request<{ mine: any; stories: any[] }>('get', '/profile/stories');
-		setStories(a.stories);
-		setMyStories(a.mine);
-	};
-
 	// const onScroll = (event) => {
 	// 	if (event.nativeEvent.contentOffset.y > 40) {
 	// 		setStoriesHide(false);
@@ -79,25 +68,19 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	// 	console.log(event.nativeEvent.contentOffset.y);
 	// };
 
+	// const { expand } = useBottomSheet();
+	// const theme = usePulse(core.ui.state.ThemeObject);
+	// ref
+
 	React.useEffect(() => {
 		console.log('friends_view');
-
 		getFriendList();
 		// getNotifications();
-		getStories();
 	}, []);
 
 	const renderItem = ({ item, index }) => (
 		<ProfileRenderItem key={index}>
 			<View>
-				{/* {item.stories?.length ? (
-					<StorieCircle>
-						<Avatar size={44} src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
-					</StorieCircle>
-				) : (
-					<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
-				)} */}
-
 				<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
 
 				<Fill />
@@ -108,17 +91,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 					<Text weight="medium" size={18}>
 						{item.username}
 					</Text>
-					{/* <Row style={{ paddingLeft: 10 }}>
-						<Icon
-							name="location"
-							size={9}
-							color={theme.text}
-							style={{ marginRight: 5, backgroundColor: theme.primary, padding: 3, borderRadius: 50, paddingTop: 5, paddingRight: 5 }}
-						/>
-						<Text size={14} color={theme.textFade}>
-							{item.location.title}
-						</Text>
-					</Row> */}
+
 					<Spacer size={10} />
 					{item.stories?.length && (
 						<ShowStoriesButton onPress={() => nav.navigate('Stories', { ...item })} activeOpacity={0.8}>
@@ -128,19 +101,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 						</ShowStoriesButton>
 					)}
 				</Row>
-				{item?.location && (
-					<Row style={{ paddingTop: 5, paddingBottom: 5 }}>
-						<Icon
-							name="location"
-							size={9}
-							color={'white'}
-							style={{ marginRight: 5, backgroundColor: theme.primary, padding: 3, borderRadius: 50, paddingTop: 5, paddingRight: 5 }}
-						/>
-						<Text size={14} color={theme.textFade}>
-							{item.location.title}
-						</Text>
-					</Row>
-				)}
+				{item?.location && <LocationBox location={item.location} />}
 
 				{item?.status && (
 					<>
@@ -154,9 +115,6 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 						</Row>
 					</>
 				)}
-				{/* <Spacer size={20} /> */}
-				{/* {!!item.stories?.length && <StoriesList data={item} />} */}
-				{/* <Text>{JSON.stringify(item.stories)}</Text> */}
 			</View>
 		</ProfileRenderItem>
 	);
@@ -168,13 +126,11 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				title="Friends"
 				rightArea={
 					<Row>
-						<IconButton name="search" size={25} color={theme.textFade} noBackground onPress={() => nav.navigate('SearchPeople')} />
+						<IconButton name="search" size={22} color={theme.textFade} noBackground onPress={() => nav.navigate('SearchPeople')} />
 						<Spacer size={10} />
 					</Row>
 				}
 			/>
-
-			{/* {!!MyStories.length && <MyContentContainer stories={MyStories} />} */}
 
 			{!!pendingList?.length && (
 				<NewFriendRequestBox onPress={() => nav.navigate('newfriends', { data: pendingList })}>
@@ -187,39 +143,66 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				data={friendList}
 				renderItem={renderItem}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
-				ListHeaderComponent={() => (MyStories?.length ? <MyContentContainer stories={MyStories} /> : <></>)}
+				ListHeaderComponent={() => <MyContent />}
+				ListEmptyComponent={() => (
+					<Row center style={{ paddingTop: 50 }}>
+						<Text color={theme.textFade} size={20} weight="medium" >
+							Search for your first friend,
+						</Text>
+						<Spacer size={5} />
+						<TextButton text="Search" color={theme.primary} size={20} weight="bold" onPress={() => nav.navigate('SearchPeople')} />
+					</Row>
+				)}
 			/>
 		</TabbarContentContainer>
 	);
 };
 
-const MyContentContainer: React.FC<{ stories: IStorieType[] }> = (p) => {
-	const { stories } = p;
+const LocationBox: React.FC<{ location: LocationType }> = (p) => {
+	const { location } = p;
+	const theme = useTheme();
 
 	return (
-		<View>
-			<Spacer size={5} />
-			<Text style={{ paddingLeft: 15 }} weight="bold">
-				Stories: {stories.length}
+		<Row style={{ paddingTop: 5, paddingBottom: 5 }}>
+			<Icon name="location" size={9} color={'white'} style={{ marginRight: 5, backgroundColor: theme.primary, padding: 3, borderRadius: 50, paddingTop: 5, paddingRight: 5 }} />
+			<Text size={14} color={theme.textFade} style={{ paddingTop: 1 }}>
+				{location.title}
 			</Text>
-			<Spacer size={5} />
-			<FlatList
-				data={stories}
-				horizontal
-				contentContainerStyle={{ paddingHorizontal: 15 }}
-				showsHorizontalScrollIndicator={false}
-				renderItem={({ item, index }) => (
-					<FastImage
-						key={index}
-						source={{ uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}` }}
-						style={{ width: 80, height: 100, borderRadius: 10, marginRight: 10 }}
-					/>
-				)}
-			/>
-			<Spacer size={10} />
-		</View>
+		</Row>
 	);
 };
+
+const MyContent: React.FC = (p) => {
+	const currentLoc = usePulse(core.account.collection.locations.selectors.current_here);
+	const savedLocations = usePulse(core.account.state.saved_locations);
+	const my_status = usePulse(core.status.state.my_status);
+
+	// If no data, than just hide it
+	if (!my_status?.id || !savedLocations.filter((v) => v.id === currentLoc?.id).length) {
+		return <></>;
+	}
+
+	return (
+		<MycontentContainer>
+			<Text size={15} weight="semi-bold">
+				My stats:
+			</Text>
+			<Text>{JSON.stringify(savedLocations.filter((v) => v.id === currentLoc?.id))}</Text>
+			<Spacer size={2} />
+			{savedLocations.filter((v) => v.id === currentLoc?.id)[0] && <LocationBox location={savedLocations.filter((v) => v.id === currentLoc?.id)[0]} />}
+			<Spacer size={2} />
+			{my_status && <StatusBox {...my_status} />}
+
+			{/* <Text>{JSON.stringify(savedLocations)}</Text> */}
+		</MycontentContainer>
+	);
+};
+
+const MycontentContainer = styled.View`
+	background-color: ${({ theme }) => theme.step1};
+	padding-horizontal: 20px;
+	padding-vertical: 10px;
+`;
 
 const ProfileRenderItem = styled.View`
 	flex-direction: row;
@@ -245,54 +228,3 @@ const ShowStoriesButton = styled(TouchableOpacity)`
 	background-color: #68a4e9;
 	/* background-color: ${({ theme }) => theme.primary}; */
 `;
-
-// const StoriesList: React.FC<StoriesList> = (props) => {
-// 	const { data } = props;
-// 	const theme = useTheme();
-// 	const nav = useNavigation();
-// 	// const profile = usePulse(core.profile.state.PROFILE);
-
-// 	return (
-// 		<StoriesListBody>
-// 			{/* <Text>{JSON.stringify(data.stories)}</Text> */}
-// 			<StoriesPreviewer onPress={() => nav.navigate('Stories', { ...data })}>
-// 				<FastImage
-// 					source={{ uri: `https://cdn.yourstatus.app/stories/${data.owner}/${data.stories[0].picture}` }}
-// 					style={{ width: 90, height: 140, borderRadius: 16, zIndex: 2, borderWidth: 5, borderColor: theme.background }}
-// 				/>
-// 				{!!data.stories[1]?.account_id && (
-// 					<FastImage
-// 						source={{ uri: `https://cdn.yourstatus.app/stories/${data.owner}/${data.stories[1].picture}` }}
-// 						style={{ width: 90, height: 110, borderRadius: 10, position: 'absolute', zIndex: 1, left: 8, opacity: 0.5 }}
-// 					/>
-// 				)}
-// 				{data.stories.length >= 3 && (
-// 					<CountBox>
-// 						<Text color={theme.text} weight="medium" size={15}>
-// 							{data.stories.length - 2} +
-// 						</Text>
-// 					</CountBox>
-// 				)}
-// 			</StoriesPreviewer>
-// 		</StoriesListBody>
-// 	);
-// };
-
-// const StoriesListBody = styled.View`
-// 	width: 110px;
-// `;
-// const StoriesPreviewer = styled(TouchableOpacity)`
-// 	display: flex;
-// 	flex-direction: row;
-// 	position: relative;
-// 	align-items: center;
-// `;
-
-// const CountBox = styled.View`
-// 	margin-left: 10px;
-// 	border-radius: 7px;
-// 	padding: 2px;
-// 	padding-right: 4px;
-// 	padding-bottom: 3px;
-// 	padding-left: 4px;
-// `;

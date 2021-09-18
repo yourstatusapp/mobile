@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Text, Fill, Icon } from '@parts';
+import { Text, Fill, Icon, IconButton } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import core from '@core';
 // import { CodePushState } from '../../utils/CodePush';
@@ -32,7 +32,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 			{/* <Spacer size={10} /> */}
 			<TouchableOpacity style={{ position: 'relative', padding: 5 }} onPress={() => nav.navigate('Settings')}>
 				{/* {newUpdate === true && <Dot />} */}
-				<Icon name="settings" size={22} color={theme.text} />
+				<Icon name="settings" size={20} color={theme.text} />
 			</TouchableOpacity>
 			{/* <Spacer size={10} /> */}
 			{/* <IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('NewUser')} /> */}

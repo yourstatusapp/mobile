@@ -31,7 +31,6 @@ export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);
 
 	// syncMetaData();
-
 	return (
 		<ThemeProvider theme={theme}>
 			<CustomAlert />

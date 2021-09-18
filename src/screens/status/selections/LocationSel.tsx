@@ -30,8 +30,8 @@ export const LocationSel: React.FC = () => {
 		await request('post', '/location/create', {
 			data: {
 				title: LocationName,
-				lang: current_coords[0],
-				long: current_coords[1],
+				lang: current_coords.lat,
+				long: current_coords.long,
 			},
 		});
 
@@ -96,7 +96,7 @@ export const LocationSel: React.FC = () => {
 
 	return (
 		<SidePadding>
-			<ScrollView style={{ flex: 1 }} >
+			<ScrollView style={{ flex: 1 }}>
 				<Spacer size={10} />
 
 				<Text weight="bold" size={28}>
@@ -120,28 +120,12 @@ export const LocationSel: React.FC = () => {
 				<SmallInput placeholder="location name" onChangeText={setLocationName} />
 				<Spacer size={10} />
 				<Row>
-					<SmallButton text="Add location" onPress={() => createLocation()} disabled={LocError} />
-					<Spacer size={10} />
-					<SmallButton text="Set status" onPress={() => setStatus()} disabled={LocError} />
+					<SmallButton text="Add location" onPress={() => createLocation()} disabled={LocError || LocationName === ''} />
+					{/* <Spacer size={10} /> */}
+					{/* <SmallButton text="Set status" onPress={() => setStatus()} disabled={LocError} /> */}
 				</Row>
 				<Spacer size={80} />
-				<MapContainer>
-					<MapView
-						style={{ flex: 1, borderRadius: 12 }}
-						initialRegion={{
-							latitude: locations[0]?.lang || 122.432,
-							longitude: locations[0]?.long || -122.4324,
-							latitudeDelta: 0.0922,
-							longitudeDelta: 0.0421,
-						}}
-						region={{
-							latitude: locations[0]?.lang,
-							longitude: locations[0]?.long,
-							latitudeDelta: 0,
-							longitudeDelta: 0,
-						}}
-					/>
-				</MapContainer>
+				{/*   */}
 				{/* <Text size={20} weight="semi-bold">
 				Saved Locations
 			</Text> */}

@@ -14,7 +14,6 @@ export const CustomSel: React.FC<CustomSelProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 	const [Title, setTitle] = useState('');
-	const [ActionType, setActionType] = useState();
 	const [Expire, setExpire] = useState(false);
 	const [EpireDate, setEpireDate] = useState<Date>();
 
@@ -51,7 +50,7 @@ export const CustomSel: React.FC<CustomSelProps> = (props) => {
 			)}
 
 			<Fill />
-			<WideButton text="Create Status" onPress={() => createStatus()} />
+			<WideButton text="Create Status" onPress={() => createStatus()} disabled={Title === ''} />
 			<Spacer size={30} />
 		</SidePadding>
 	);
