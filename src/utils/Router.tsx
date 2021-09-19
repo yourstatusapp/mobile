@@ -77,7 +77,7 @@ export const Router: React.FC = () => {
 					<Stack.Screen name="Stories" component={StoriesView} />
 					<Stack.Screen name="conversation" component={ConversationView} />
 					<Stack.Screen name="Statusinfo" component={StatusinfoScreen} />
-					{/* <Stack.Screen name="Profile" component={ProfileView} /> */}
+					<Stack.Screen name="Profile" component={ProfileView} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</RouterBody>

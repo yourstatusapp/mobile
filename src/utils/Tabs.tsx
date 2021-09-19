@@ -44,7 +44,6 @@ export const AppStacks: React.FC = () => {
 		>
 			<AppStack.Screen name="AppTabs" component={Tabs} />
 			<AppStack.Screen name="CreateStatus" component={StatusView} />
-			<AppStack.Screen name="Profile" component={ProfileView} />
 			<AppStack.Screen name="Settings" component={SettingsView} />
 			<AppStack.Screen name="Friendrequests" component={Friendrequests} />
 			<AppStack.Screen name="SearchPeople" component={SearchView} />

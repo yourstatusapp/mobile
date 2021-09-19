@@ -18,17 +18,19 @@ export const CodePushState = {
 
 export const CodePushWrapper = (app: React.ReactNode): React.ReactNode => codePush(options)(app);
 
-codePush.sync(
-	{},
-	(status) => {
-		console.log(status);
-		parseStatusMessage(status);
-	},
-	(progress) => {
-		console.log(progress);
-		CodePushState.DownloadProgress.set(progress);
-	}
-);
+export const sync = () => {
+	codePush.sync(
+		{},
+		(status) => {
+			console.log(status);
+			parseStatusMessage(status);
+		},
+		(progress) => {
+			console.log(progress);
+			CodePushState.DownloadProgress.set(progress);
+		}
+	);
+};
 
 export const parseStatusMessage = (s: codePush.SyncStatus) => {
 	switch (s) {

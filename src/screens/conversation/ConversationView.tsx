@@ -114,7 +114,7 @@ export const ConversationView: React.FC<ConversationProps> = (props) => {
 				<BottomPart>
 					<SendMessageInput placeholder="Write a message..." onChangeText={setnewMessage} value={newMessage} autoCorrect={false} autoCapitalize="none" autoCompleteType="off" />
 					<Spacer size={10} />
-					<IconButton name="send" size={40} color={theme.textFade} backgroundColor={theme.step1} onPress={() => sendMessage(newMessage)} />
+					<SendMessageButton name="send" size={27} color={theme.textFade} backgroundColor={theme.step1} onPress={() => sendMessage(newMessage)} />
 				</BottomPart>
 			</KeyboardAvoidingView>
 			<Spacer size={25} />
@@ -144,4 +144,9 @@ const ConversationHeader = styled(Row)`
 	padding: 0px 10px;
 	border-bottom-color: ${({ theme }) => theme.step1};
 	border-bottom-width: 1px;
+`;
+
+const SendMessageButton = styled(IconButton)`
+	padding-top: 3px;
+	padding-right: 3px;
 `;

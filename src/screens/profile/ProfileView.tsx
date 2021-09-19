@@ -4,14 +4,14 @@ import FastImage from 'react-native-fast-image';
 import { Dimensions, FlatList, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Avatar, Fill, IconButton, Row, SidePadding, SmallButton, Spacer, TabbarContentContainer, Text, TextButton, TopHeading } from '@parts';
-import core, { Collection, IProfile, request } from '@core';
+import core, { Collection, ProfileType, request } from '@core';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
 
 interface ProfileProps {
 	route: {
 		params: {
-			profile: IProfile;
+			profile: ProfileType;
 			mine?: boolean;
 		};
 	};
@@ -19,10 +19,9 @@ interface ProfileProps {
 
 export const ProfileView: React.FC<ProfileProps> = (props) => {
 	const { route } = props;
+	const profile = route.params.profile;
 	const theme = useTheme();
 	const nav = useNavigation();
-
-	const profile = route.params.profile;
 
 	const [Colls, setColls] = useState<Collection[]>();
 
@@ -31,7 +30,7 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 			const m = await request<Collection[]>('get', '/collection');
 			setColls(m);
 		} else {
-			const p = await request<IProfile>('get', '/profile/' + profile.username);
+			const p = await request<ProfileType>('get', '/profile/' + profile.username);
 			setColls(p.collections);
 		}
 	};
@@ -41,50 +40,81 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 		// loadProfile();
 	}, []);
 
-	// return (
-	// 	<ProfileBody>
-	// 		{route.params?.profile?.avatar ? (
-	// 			<PhotoBanner source={{ uri: `https://cdn.yourstatus.app/profile/${route.params.profile.account_id}/${route.params.profile.avatar}` }} />
-	// 		) : (
-	// 			<PhotoBannerPlaceHolder />
-	// 		)}
-	// 	</ProfileBody>
-	// );
-
 	return (
 		<ProfileBody>
-			<Spacer size={10} />
+			<FloatingControlBar>
+				<IconButton name="arrow-big" size={25} iconSize={15} style={{ transform: [{ rotate: '180deg' }] }} color={theme.text} onPress={() => nav.goBack()} />
+			</FloatingControlBar>
+			{/* @ts-ignore */}
+			{profile?.banner ? (
+				<PhotoBanner source={{ uri: `https://cdn.yourstatus.app/profile/${route.params.profile.account_id}/${route.params.profile.avatar}` }} />
+			) : (
+				<PhotoBannerPlaceHolder />
+			)}
 
-			<Row style={{ padding: 20 }}>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.profile.account_id}/${route.params.profile.avatar}`} size={100} />
-				<Spacer size={20} />
-				<Row style={{ flex: 1 }}>
-					<Text weight="bold" size={24}>
-						{profile.username}
-					</Text>
-					<Fill />
-					<View style={{ justifyContent: 'flex-start' }}>
-						<IconButton name="plus" color={theme.text} size={25} style={{ transform: [{ rotate: '45deg' }] }} noBackground onPress={() => nav.goBack()} />
-						<Fill />
-					</View>
-				</Row>
-			</Row>
+			<SidePadding style={{ position: 'absolute', top: 110 }}>
+				<Avatar
+					size={100}
+					src={`https://cdn.yourstatus.app/profile/${profile.account_id}/${profile.avatar}`}
+					style={{ borderColor: theme.background, borderWidth: 3, borderRadius: 120 }}
+				/>
+			</SidePadding>
 
 			<SidePadding>
-				<Spacer size={20} />
-				{/* <Text color="black">{JSON.stringify(profile)}</Text> */}
-				{profile?.bio && (
-					<BioBox>
-						<Text>{profile.bio}</Text>
-					</BioBox>
-				)}
-
-				<Spacer size={35} />
-				{/* <Text color="black">{JSON.stringify(ProfileData) || -1}</Text> */}
+				<Spacer size={14} />
+				<Row style={{ marginLeft: 120, marginBottom: 30 }}>
+					<Text weight="semi-bold" size={26} color={theme.textFade}>
+						@
+					</Text>
+					<Spacer size={2} />
+					<Text weight="semi-bold" size={26}>
+						{profile.username}
+					</Text>
+				</Row>
+				<Spacer size={10} />
+				<Text>{profile.bio}</Text>
 			</SidePadding>
-			{/* {!!Colls?.length && <Collections data={Colls} />} */}
 		</ProfileBody>
 	);
+
+	// return (
+	// 	<ProfileBody>
+	// 		<Spacer size={10} />
+
+	// 		<Row style={{ padding: 20 }}>
+	// 			<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.profile.account_id}/${route.params.profile.avatar}`} size={100} />
+	// 			<Spacer size={20} />
+	// 			<Row style={{ flex: 1 }}>
+	// 				<Text color={theme.textFade} size={23} weight="bold">
+	// 					@
+	// 				</Text>
+	// 				<Spacer size={2} />
+	// 				<Text weight="bold" size={24}>
+	// 					{profile.username}
+	// 				</Text>
+	// 				<Fill />
+	// 				<View style={{ justifyContent: 'flex-start' }}>
+	// 					<IconButton name="plus" color={theme.text} size={25} style={{ transform: [{ rotate: '45deg' }] }} noBackground onPress={() => nav.goBack()} />
+	// 					<Fill />
+	// 				</View>
+	// 			</Row>
+	// 		</Row>
+
+	// 		<SidePadding>
+	// 			<Spacer size={10} />
+	// 			{/* <Text color="black">{JSON.stringify(profile)}</Text> */}
+	// 			{profile?.bio && (
+	// 				<BioBox>
+	// 					<Text>{profile.bio}</Text>
+	// 				</BioBox>
+	// 			)}
+
+	// 			<Spacer size={35} />
+	// 			{/* <Text color="black">{JSON.stringify(ProfileData) || -1}</Text> */}
+	// 		</SidePadding>
+	// 		{/* {!!Colls?.length && <Collections data={Colls} />} */}
+	// 	</ProfileBody>
+	// );
 };
 
 const ProfileBody = styled.View`
@@ -101,8 +131,16 @@ const PhotoBanner = styled(FastImage)`
 const PhotoBannerPlaceHolder = styled.View`
 	width: 100%;
 	height: 100%;
-	background-color: #583838;
-	max-height: 190px;
+	background-color: ${({ theme }) => theme.primary};
+	max-height: 150px;
+`;
+
+const FloatingControlBar = styled(Row)`
+	position: absolute;
+	top: 40px;
+	z-index: 10;
+	padding: 10px;
+	width: 100%;
 `;
 
 const CardHeader = styled.View`
@@ -111,9 +149,9 @@ const CardHeader = styled.View`
 `;
 
 const BioBox = styled.View`
-	padding: 10px;
-	border-radius: 15px;
-	background-color: ${({ theme }) => theme.step1};
+	/* padding: 10px; */
+	border-radius: 6px;
+	/* background-color: ${({ theme }) => theme.step1}; */
 `;
 
 const Collections: React.FC<{ data: Collection[] }> = (p) => {

@@ -15,7 +15,7 @@ interface AvatarProps {
 export const Avatar: React.FC<AvatarProps> = (props) => {
 	const { src, dot_status, onPress, style } = props;
 
-	const IMG: React.FC<any> = (p) => (src ? <Image {...p} source={{ uri: src }} {...props} /> : <Circle {...p} {...props} />);
+	const IMG: React.FC<any> = (p) => (src ? <Image {...p} source={{ uri: src }} /> : <Circle {...p} />);
 
 	return (
 		<TouchableOpacity onPress={onPress} style={style}>

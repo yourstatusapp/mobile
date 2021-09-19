@@ -40,7 +40,7 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 
 	return (
 		<CustomTabBarBody isIphoneX={isIphoneX} tabIndex={state.index}>
-			<HoverButton name="plus" color={theme.primary} size={28} iconSize={-5} backgroundColor={theme.step1} onPress={() => nav.navigate('CreateStatus')} />
+			<HoverButton name="plus" color={theme.primary} size={28} iconSize={20} backgroundColor={theme.step1} onPress={() => nav.navigate('CreateStatus')} />
 			{/* {state.index === 3 && <HoverButton name="send" color="black" size={45} iconSize={25} />} */}
 			<TabContainer>
 				{tabs.map((v, i) => (

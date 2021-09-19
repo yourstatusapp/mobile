@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Avatar, Fill, Header, Icon, IconButton, Row, SmallButton, Spacer, StatusBox, TabbarContentContainer, Text, TextButton } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
 import core, { LocationType, niceTime, request } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
+import { useState } from 'react';
 
 interface FriendsProps {}
 
@@ -26,7 +27,7 @@ interface StoriesList {
 	};
 }
 
-const FriendsList = state<any[]>([]);
+// const FriendsList = state<any[]>([]);
 const PendingList = state<any[]>([]);
 
 export const FriendsView: React.FC<FriendsProps> = (props) => {
@@ -34,8 +35,9 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 
+	const [Loaded, setLoaded] = useState(false);
 	const pendingList = usePulse(PendingList);
-	const friendList = usePulse(FriendsList);
+	const friendList = usePulse(core.profile.collection.groups.friends);
 
 	const [refreshing, setRefreshing] = React.useState(false);
 
@@ -48,9 +50,10 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	// const [PendingList, setPendingList] = useState<any[]>();
 	const getFriendList = async () => {
 		const a = await request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends');
-		FriendsList.set(a.friends);
+		core.profile.collection.collect(a.friends, 'friends');
 		PendingList.set(a.incoming_pending);
 		core.profile.collection.collect(a.incoming_pending, 'requests');
+		setLoaded(true);
 	};
 
 	// const getNotifications = async () => {
@@ -88,6 +91,10 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 			<Spacer size={15} />
 			<View>
 				<Row>
+					{/* <Text color={theme.textFade} size={18} weight="bold">
+						@
+					</Text>
+					<Spacer size={1} /> */}
 					<Text weight="medium" size={18}>
 						{item.username}
 					</Text>
@@ -106,13 +113,14 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				{item?.status && (
 					<>
 						<Spacer size={8} />
-						<Row>
+						<StatusContainer newLine={item.status.data?.title?.length > 30}>
 							<StatusBox {...item.status} />
+							{/* {item.status.data?.title?.length > 20 && <Spacer size={5} />}
 							<Text size={12} color={theme.textFade} weight="medium">
-								<Spacer size={10} />
+								{item.status.data?.title?.length < 20 && <Spacer size={8} />}
 								{niceTime(item?.status.id)} ago
-							</Text>
-						</Row>
+							</Text> */}
+						</StatusContainer>
 					</>
 				)}
 			</View>
@@ -144,15 +152,19 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				renderItem={renderItem}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
 				ListHeaderComponent={() => <MyContent />}
-				ListEmptyComponent={() => (
-					<Row center style={{ paddingTop: 50 }}>
-						<Text color={theme.textFade} size={20} weight="medium" >
-							Search for your first friend,
-						</Text>
-						<Spacer size={5} />
-						<TextButton text="Search" color={theme.primary} size={20} weight="bold" onPress={() => nav.navigate('SearchPeople')} />
-					</Row>
-				)}
+				ListEmptyComponent={() =>
+					Loaded ? (
+						<Row center style={{ paddingTop: 50 }}>
+							<Text color={theme.textFade} size={20} weight="medium">
+								Search for your first friend,
+							</Text>
+							<Spacer size={5} />
+							<TextButton text="Search" color={theme.primary} size={20} weight="bold" onPress={() => nav.navigate('SearchPeople')} />
+						</Row>
+					) : (
+						<></>
+					)
+				}
 			/>
 		</TabbarContentContainer>
 	);
@@ -227,4 +239,11 @@ const ShowStoriesButton = styled(TouchableOpacity)`
 	border-radius: 5px;
 	background-color: #68a4e9;
 	/* background-color: ${({ theme }) => theme.primary}; */
+`;
+
+const StatusContainer = styled.View<{ newLine: boolean }>`
+	flex-direction: ${({ newLine }) => (newLine ? 'column' : 'row')};
+	align-items: ${({ newLine }) => (newLine ? 'flex-start' : 'center')};
+	flex: 1;
+	/* flex-wrap: wrap; */
 `;

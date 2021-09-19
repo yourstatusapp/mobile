@@ -1,12 +1,12 @@
 import { collection, state } from '@pulsejs/core';
-import { IProfile } from '../types';
+import { ProfileType } from '../types';
 
 const S = {
 	// @ts-ignore
-	PROFILE: state<IProfile>(null).persist('profile'),
+	PROFILE: state<ProfileType>(null).persist('profile'),
 };
 
-const CL = collection<IProfile>().createGroup('friends').createGroup('requests').createGroup('mine');
+const CL = collection<ProfileType>().createGroup('friends').createGroup('requests').createGroup('mine');
 
 export const profile = {
 	state: { ...S },

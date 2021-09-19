@@ -1,5 +1,5 @@
 import core, { request } from '@core';
-import { Avatar, Fill, IconButton, Input, SmallButton, Spacer, Text, TextButton } from '@parts';
+import { Avatar, Fill, IconButton, Input, SidePadding, SmallButton, Spacer, Text, TextButton } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
@@ -12,7 +12,7 @@ export const Newconversation: React.FC<NewconversationProps> = () => {
 	const theme = useTheme();
 	const nav = useNavigation();
 
-	const a = usePulse(core.profile.collection.groups.friends);
+	const my_friends = usePulse(core.profile.collection.groups.friends);
 
 	const [refreshing, setRefreshing] = React.useState(false);
 
@@ -35,7 +35,7 @@ export const Newconversation: React.FC<NewconversationProps> = () => {
 	const renderItem = ({ item, index }) => {
 		return (
 			<FriendBody key={index}>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={40} />
+				<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={40} />
 				<Spacer size={10} />
 				<Text>{item.username}</Text>
 				<Fill />
@@ -52,8 +52,23 @@ export const Newconversation: React.FC<NewconversationProps> = () => {
 
 	return (
 		<NewconversationBody>
-			<Input placeholder="Search user" />
-			<FlatList data={a} renderItem={renderItem} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />} />
+			<Spacer size={20} />
+			<Text weight="bold" size={24} style={{ paddingHorizontal: 20 }}>
+				New conversation
+			</Text>
+			<Spacer size={20} />
+			<Input
+				placeholder="Search user"
+				style={{ paddingHorizontal: 14, color: theme.text, backgroundColor: theme.step2, marginHorizontal: 20 }}
+				placeholderTextColor={theme.textFade}
+			/>
+
+			<FlatList
+				data={my_friends}
+				renderItem={renderItem}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
+				style={{ paddingTop: 20 }}
+			/>
 		</NewconversationBody>
 	);
 };
