@@ -46,9 +46,10 @@ export interface DeviceType {
 
 export interface LocationType {
 	id: string;
+	title: string;
+	account_id?: string;
 	lang: number;
 	long: number;
-	title: string;
 }
 
 export interface Notification {
@@ -100,4 +101,23 @@ export interface IStorieType {
 	id: string;
 	picture: string;
 	account_id: string;
+}
+
+export interface GetAccountType {
+	account: Account;
+	profile: ProfileType;
+	status?: {
+		id: string;
+		type: 0;
+		event_type: 0;
+		account_id: string;
+		deleted_at: null;
+		data?: {
+			title: string;
+		};
+		expires_at: null;
+	};
+	device: DeviceType;
+	locations?: LocationType;
+	current_location?: string;
 }

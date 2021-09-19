@@ -41,7 +41,7 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 					<Icon name="phone" size={20} color={theme.textFade} />
 					<Spacer size={5} />
 					<Text weight="semi-bold" size={18} color={theme.text}>
-						{item.device_type.charAt(0).toUpperCase() + item.device_type.slice(1, item.device_type.length)}
+						{item.device_type?.charAt(0).toUpperCase() + item.device_type?.slice(1, item.device_type.length)}
 					</Text>
 					<Fill />
 					{/* <Icon name="bell" size={18} color={item.notifications ? theme.primary : theme.textFade} /> */}
@@ -74,16 +74,7 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 				</Text>
 				<Spacer size={5} />
 
-				<Row>
-					<GreenDot />
-					<Text weight="semi-bold" style={{ paddingLeft: 5 }}>
-						= Current device
-					</Text>
-				</Row>
-
-				<Spacer size={10} />
-
-				{!!devices?.length && <FlatList data={devices} renderItem={renderItem} contentContainerStyle={{ paddingTop: 20 }} showsVerticalScrollIndicator={false} />}
+				{!!devices?.length && <FlatList data={devices} renderItem={renderItem} contentContainerStyle={{ paddingTop: 10 }} showsVerticalScrollIndicator={false} />}
 
 				<Spacer size={20} />
 			</SidePadding>

@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { Linking, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
-import { account, profile, status, ui } from '../../core/modules';
+import { account, app, profile, status, ui } from '../../core/modules';
 import { request } from '../../core/utils';
 import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, TextButton } from '../../parts/Buttons';
@@ -58,12 +58,21 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 		setTimeout(() => {
 			account.state.ACCOUNT.reset();
 			account.state.saved_locations.reset();
+
+			account.collection.locations.reset();
+			account.collection.activity.reset();
+			account.collection.devices.reset();
+
 			profile.state.PROFILE.reset();
+			profile.collection.reset();
+
 			status.state.my_status.reset();
 			core.conversations.collection.reset();
 			core.message.collection.reset();
-			core.app.state.device_id.reset();
-			core.app.state.notifications_enabled.reset();
+
+			app.state.device_id.reset();
+			app.state.notifications_enabled.reset();
+			app.state.device_push_token.reset();
 		}, 500);
 	};
 

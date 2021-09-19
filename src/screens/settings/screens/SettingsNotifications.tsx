@@ -18,7 +18,8 @@ export const SettingsNotifications: React.FC<SettingsNotificationsProps> = () =>
 	};
 
 	const UpdateDevice = async (notifications: boolean) => {
-		await request('patch', '/account/devices/' + device.id, { data: { notifications } });
+		await request('patch', '/account/devices/' + device.id, { data: { notifications, push_token: notifications ? core.app.state.device_push_token.value : null } });
+
 		core.account.collection.devices.update(device.id, { notifications });
 	};
 

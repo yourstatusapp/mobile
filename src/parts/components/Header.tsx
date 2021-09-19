@@ -32,7 +32,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 			{/* <Spacer size={10} /> */}
 			<TouchableOpacity style={{ position: 'relative', padding: 5 }} onPress={() => nav.navigate('Settings')}>
 				{/* {newUpdate === true && <Dot />} */}
-				<Icon name="settings" size={20} color={theme.text} />
+				<Icon name="settings" size={18} color={theme.text} />
 			</TouchableOpacity>
 			{/* <Spacer size={10} /> */}
 			{/* <IconButton name="settings" size={35} color={theme.text} onPress={() => nav.navigate('NewUser')} /> */}
