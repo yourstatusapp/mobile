@@ -2,7 +2,7 @@ import core, { DeviceType, request } from '@core';
 import * as React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
-import { Fill, IconButton, Row, Spacer, Text, TopHeading } from '@parts';
+import { Fill, Icon, IconButton, Row, Spacer, Text, TopHeading } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import { snow2time } from '../../../core/utils';
 import { usePulse } from '@pulsejs/react';
@@ -37,14 +37,16 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 		return (
 			<DeviceItem key={index} current={current_device === item.id}>
 				{/* {current_device === item.id && <CurrentIndicator />} */}
-				<Text weight="semi-bold" color={theme.text}>
-					{item.user_agent?.slice(0, 40)}
-				</Text>
-				<Spacer size={10} />
-				<TouchableOpacity activeOpacity={0.5}>
-					<Text color={theme.text}>{item.ip?.split('/')[0]}</Text>
-				</TouchableOpacity>
-				<Spacer size={35} />
+				<Row>
+					<Icon name="phone" size={20} color={theme.textFade} />
+					<Spacer size={5} />
+					<Text weight="semi-bold" size={18} color={theme.text}>
+						{item.device_type.charAt(0).toUpperCase() + item.device_type.slice(1, item.device_type.length)}
+					</Text>
+					<Fill />
+					{/* <Icon name="bell" size={18} color={item.notifications ? theme.primary : theme.textFade} /> */}
+				</Row>
+				<Spacer size={30} />
 
 				<Row>
 					<Text color={theme.textFade}>{snow2time(item.id).toLocaleString()}</Text>
@@ -59,7 +61,13 @@ export const SettingsAccount: React.FC<SettingsAccountProps> = (props) => {
 		<SettingsAccountBody>
 			<TopHeading text="Account" />
 			<SidePadding>
-				<Text>{acc.email}</Text>
+				<Row>
+					<Text weight="semi-bold" size={18}>
+						Email:
+					</Text>
+					<Text size={18}> {acc.email}</Text>
+				</Row>
+
 				<Spacer size={50} />
 				<Text weight="semi-bold" size={22}>
 					Devices

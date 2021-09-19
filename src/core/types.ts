@@ -38,9 +38,10 @@ export interface IMessage {
 
 export interface DeviceType {
 	id: string;
-	deleted_at: string;
-	user_agent: string;
+	notifications: boolean;
 	ip: string;
+	device_type: string;
+	deleted_at: string;
 }
 
 export interface LocationType {
