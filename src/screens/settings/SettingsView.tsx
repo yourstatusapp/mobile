@@ -114,18 +114,17 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			</Text>
 			<Spacer size={10} />
 			<Row>
-				<IconButton name="discord" size={30} color="#5765F2" onPress={() => Linking.openURL('https://discord.gg/wCFdkbAdPA')} />
+				<IconButton name="discord" size={27} color="#5765F2" onPress={() => Linking.openURL('https://discord.gg/wCFdkbAdPA')} />
 				<Spacer size={10} />
-				<IconButton name="twitter" size={30} color="#1C9BF0" onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
+				<IconButton name="twitter" size={27} color="#1C9BF0" onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
 			</Row>
 			<Spacer size={25} />
 			<SettingsButton text="Developer options" routeName="Developer" icon="dev" />
 			<SettingsButton text="Logout" action={() => logout()} textColor="#FF4B4B" />
 			<Spacer size={5} />
 			<Text center size={12} color={theme.textFade}>
-				version: beta.{DeviceInfo?.getBuildNumber()}
+				Build: {DeviceInfo?.getBuildNumber()}
 			</Text>
-			{/* <Text>{version}</Text> */}
 			<Spacer size={50} />
 		</SettingsBody>
 	);

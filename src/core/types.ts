@@ -73,6 +73,7 @@ export interface Status {
 	type: number;
 	event_type: number;
 	account_id: string;
+	expires_at: string;
 	data: any;
 }
 

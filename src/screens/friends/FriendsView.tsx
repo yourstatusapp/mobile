@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Avatar, Fill, Header, Icon, IconButton, Row, SmallButton, Spacer, StatusBox, TabbarContentContainer, Text, TextButton } from '@parts';
-import styled, { useTheme } from 'styled-components/native';
+import styled, { ThemeContext, useTheme } from 'styled-components/native';
 import core, { LocationType, niceTime, request } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
@@ -115,6 +115,12 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 						<Spacer size={8} />
 						<StatusContainer newLine={item.status.data?.title?.length > 30}>
 							<StatusBox {...item.status} />
+							{/* <Spacer size={5} />
+							<NewBox>
+								<Text weight="bold" size={12} color={theme.background}>
+									NEW
+								</Text>
+							</NewBox> */}
 							{/* {item.status.data?.title?.length > 20 && <Spacer size={5} />}
 							<Text size={12} color={theme.textFade} weight="medium">
 								{item.status.data?.title?.length < 20 && <Spacer size={8} />}
@@ -169,6 +175,12 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 		</TabbarContentContainer>
 	);
 };
+
+const NewBox = styled.View`
+	background-color: #5acf4b;
+	padding: 2px 5px;
+	border-radius: 20px;
+`;
 
 const LocationBox: React.FC<{ location: LocationType }> = (p) => {
 	const { location } = p;

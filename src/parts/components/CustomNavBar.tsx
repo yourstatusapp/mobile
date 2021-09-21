@@ -31,7 +31,7 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	// }, [props]);
 
 	const tabs = [
-		// { name: 'Messages', path: 'messages', icon: 'conversation' },
+		{ name: 'Messages', path: 'messages', icon: 'conversation' },
 		{ name: 'Friends', path: 'friends', icon: 'friends' },
 		// { name: 'New', path: 'new', icon: 'plus' },
 		{ name: 'Account', path: 'account', icon: 'person' },

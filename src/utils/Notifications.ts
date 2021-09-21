@@ -32,7 +32,7 @@ export const configureNotifications = () => {
 		},
 
 		onAction: async (n) => {
-			await request('post', `/notifications/${n.data.id}/open`);
+			await request('post', `/notifications/${n.data.payload.id}/open`);
 		},
 
 		onNotification: async (notification) => {

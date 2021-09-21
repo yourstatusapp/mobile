@@ -24,8 +24,8 @@ if (__DEV__) {
 globalThis.AsyncStorage = AsyncStorage;
 globalThis.core = core;
 
-// import * as Socket from './core/socket';
-// Socket;
+import * as Socket from './core/socket';
+Socket;
 
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);

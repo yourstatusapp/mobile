@@ -72,7 +72,7 @@ export const SearchView: React.FC<SearchProps> = () => {
 	const renderItem = ({ item, index }: { item: ProfileSearchResult; index: number }) => (
 		<UserSearchEnty key={index}>
 			{/* <TouchableOpacity onPress={() => nav.navigate('Profile', { profile: item })}> */}
-			<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={50} />
+			<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={50} onPress={() => nav.navigate('Profile', { profile: item })} />
 			{/* </TouchableOpacity> */}
 			<Spacer size={10} />
 			<Text color={theme.textFade} weight="bold" size={18}>

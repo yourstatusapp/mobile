@@ -15,12 +15,12 @@ export const CustomSel: React.FC<CustomSelProps> = (props) => {
 	const nav = useNavigation();
 	const [Title, setTitle] = useState('');
 	const [Expire, setExpire] = useState(false);
-	const [EpireDate, setEpireDate] = useState<Date>();
+	const [EpireDate, setEpireDate] = useState<Date>(new Date());
 
 	const createStatus = async () => {
-		await request('post', '/status/new', { data: { data: { title: Title, expire: Expire ? EpireDate : null } } });
+		await request('post', '/status/new', { data: { data: { title: Title }, expires_at: Expire ? EpireDate : null } });
 		nav.goBack();
-		core.status.state.my_status.patch({ data: { title: Title, expire: Expire ? EpireDate : null } });
+		core.status.state.my_status.patch({ data: { title: Title }, expires_at: Expire ? EpireDate : null });
 	};
 
 	const ToggleChange = () => setExpire(!Expire);
@@ -45,7 +45,7 @@ export const CustomSel: React.FC<CustomSelProps> = (props) => {
 			</Row>
 			{Expire && (
 				<Row center>
-					<DatePicker minimumDate={new Date()} onDateChange={(v) => setEpireDate(v)} textColor={theme.text} />
+					<DatePicker date={EpireDate} minimumDate={new Date()} onDateChange={(v) => setEpireDate(v)} textColor={theme.text} />
 				</Row>
 			)}
 
