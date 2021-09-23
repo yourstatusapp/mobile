@@ -38,7 +38,7 @@ const SmallInputbody = styled(Input)`
 	align-self: center;
 	width: 100%;
 
-	height: 35px;
+	height: 40px;
 	justify-content: center;
 	padding: 3px 10px;
 	border-radius: 10px;

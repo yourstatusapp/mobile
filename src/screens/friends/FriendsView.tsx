@@ -1,33 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
-import { Avatar, Fill, Header, Icon, IconButton, Row, SmallButton, Spacer, StatusBox, TabbarContentContainer, Text, TextButton } from '@parts';
-import styled, { ThemeContext, useTheme } from 'styled-components/native';
-import core, { LocationType, niceTime, request } from '@core';
+import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { Avatar, Fill, Header, Icon, IconButton, Row, Spacer, StatusBox, TabbarContentContainer, Text, TextButton } from '@parts';
+import styled, { useTheme } from 'styled-components/native';
+import core, { LocationType, request } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
 import { useState } from 'react';
 
 interface FriendsProps {}
 
-interface IStories {
-	id: string;
-	picture: string;
-	account_id: string;
-	deleted_at: string;
-}
-
-interface StoriesList {
-	data: {
-		owner: string;
-		username: string;
-		avatar: string;
-		status: any;
-		stories: IStories[];
-	};
-}
-
-// const FriendsList = state<any[]>([]);
 const PendingList = state<any[]>([]);
 
 export const FriendsView: React.FC<FriendsProps> = (props) => {
@@ -113,8 +95,16 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				{item?.status && (
 					<>
 						<Spacer size={8} />
-						<StatusContainer newLine={item.status.data?.title?.length > 30}>
+						<StatusContainer>
 							<StatusBox {...item.status} />
+							<Spacer size={7} />
+							{item.status.taps !== 0 && (
+								<PopTagCounter>
+									<Text weight="semi-bold" size={14} color={theme.background}>
+										{item.status.taps}
+									</Text>
+								</PopTagCounter>
+							)}
 							{/* <Spacer size={5} />
 							<NewBox>
 								<Text weight="bold" size={12} color={theme.background}>
@@ -180,6 +170,12 @@ const NewBox = styled.View`
 	background-color: #5acf4b;
 	padding: 2px 5px;
 	border-radius: 20px;
+`;
+
+const PopTagCounter = styled.View`
+	background-color: ${({ theme }) => theme.primary};
+	padding: 2px 7px;
+	border-radius: 50px;
 `;
 
 const LocationBox: React.FC<{ location: LocationType }> = (p) => {
@@ -253,9 +249,9 @@ const ShowStoriesButton = styled(TouchableOpacity)`
 	/* background-color: ${({ theme }) => theme.primary}; */
 `;
 
-const StatusContainer = styled.View<{ newLine: boolean }>`
-	flex-direction: ${({ newLine }) => (newLine ? 'column' : 'row')};
-	align-items: ${({ newLine }) => (newLine ? 'flex-start' : 'center')};
+const StatusContainer = styled.View`
+	flex-direction: row;
+	align-items: center;
 	flex: 1;
 	/* flex-wrap: wrap; */
 `;

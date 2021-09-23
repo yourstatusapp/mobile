@@ -31,13 +31,21 @@ export const CustomSel: React.FC<CustomSelProps> = (props) => {
 			<Text weight="bold" size={28}>
 				Create your status
 			</Text>
-			<Spacer size={50} />
+			<Spacer size={30} />
+			<Text>
+				Keep the title under <Text weight="bold">33</Text> characters. Currently at:{' '}
+				<Text weight="bold" color={Title.length > 33 ? 'red' : theme.text}>
+					{Title.length}
+				</Text>
+			</Text>
 
-			<Text weight="medium" size={20} style={{ marginBottom: 10, marginLeft: 5 }}>
-				Your status title
+			<Spacer size={20} />
+
+			<Text weight="semi-bold" size={20} style={{ marginBottom: 7 }}>
+				Title
 			</Text>
 			<SmallInput onChangeText={setTitle} autoCapitalize="none" autoCorrect={false} autoCompleteType="off" />
-			<Spacer size={50} />
+			<Spacer size={15} />
 			<Row>
 				<Text weight="medium">Enable expire date</Text>
 				<Fill />

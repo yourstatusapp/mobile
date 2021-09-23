@@ -75,6 +75,8 @@ export interface Status {
 	account_id: string;
 	expires_at: string;
 	data: any;
+	taped?: boolean;
+	taps?: number;
 }
 
 export interface Collection {
