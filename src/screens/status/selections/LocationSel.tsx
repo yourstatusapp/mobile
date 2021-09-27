@@ -96,41 +96,40 @@ export const LocationSel: React.FC = () => {
 
 	return (
 		<SidePadding>
-			<ScrollView style={{ flex: 1 }}>
-				<Spacer size={10} />
+			<Spacer size={10} />
 
-				<Text weight="bold" size={28}>
-					Locations
-				</Text>
-				<Text color={theme.textFade} size={16}>
-					You can set locations and when your phone detects its nearby, it will ping us.
-				</Text>
-				<Spacer size={50} />
+			<Text weight="bold" size={28}>
+				Locations
+			</Text>
+			<Text color={theme.textFade} size={16}>
+				You can set locations and when your phone detects its nearby, it will ping us.
+			</Text>
+			<Spacer size={50} />
 
-				{LocError && (
-					<Text weight="medium" color="#FF6767">
-						Cannot get location
-					</Text>
-				)}
-				<Text>
-					Your coords: (lat){current_coords.lat} + (long){current_coords.long}
+			{LocError && (
+				<Text weight="medium" color="#FF6767">
+					Cannot get location
 				</Text>
-				{/* <SmallButton text="Open maps" onPress={() => openLocWithMaps(CurrentCoords[0], CurrentCoords[1])} /> */}
-				<Spacer size={20} />
-				<SmallInput placeholder="location name" onChangeText={setLocationName} />
-				<Spacer size={10} />
-				<Row>
-					<SmallButton text="Add location" onPress={() => createLocation()} disabled={LocError || LocationName === ''} />
-					{/* <Spacer size={10} /> */}
-					{/* <SmallButton text="Set status" onPress={() => setStatus()} disabled={LocError} /> */}
-				</Row>
-				<Spacer size={80} />
-				{/*   */}
-				{/* <Text size={20} weight="semi-bold">
+			)}
+			<Text>
+				Your coords: (lat){current_coords.lat} + (long){current_coords.long}
+			</Text>
+			{/* <SmallButton text="Open maps" onPress={() => openLocWithMaps(CurrentCoords[0], CurrentCoords[1])} /> */}
+			<Spacer size={20} />
+			<SmallInput placeholder="location name" onChangeText={setLocationName} />
+			<Spacer size={10} />
+			<Row>
+				<SmallButton text="Add location" onPress={() => createLocation()} disabled={LocError || LocationName === ''} />
+				{/* <Spacer size={10} /> */}
+				{/* <SmallButton text="Set status" onPress={() => setStatus()} disabled={LocError} /> */}
+			</Row>
+			<Spacer size={80} />
+			{/*   */}
+			{/* <Text size={20} weight="semi-bold">
 				Saved Locations
 			</Text> */}
-				{!!locations?.length && <FlatList data={locations} renderItem={renderItem} contentContainerStyle={{ paddingTop: 10 }} />}
-			</ScrollView>
+			{!!locations?.length && <FlatList data={locations} renderItem={renderItem} scrollEnabled={false} contentContainerStyle={{ paddingTop: 10 }} />}
+			<Spacer size={30} />
 		</SidePadding>
 	);
 };

@@ -2,7 +2,7 @@ import core from '@core';
 import CookieManager from '@react-native-cookies/cookies';
 import { io } from 'socket.io-client';
 
-const socket = io('ws://127.0.0.1:8080', {
+const socket = io(process.env.NODE_ENV === 'production' ? 'wss://yourstatus.app' : 'ws://127.0.0.1:8080', {
 	port: '8080',
 	path: '/ws',
 	withCredentials: true,
@@ -48,8 +48,8 @@ socket.on('connection', (err) => {
 socket.on('close', reconnect);
 
 (function () {
-	if (core.account.state.logged_in.is(true)) {
-		console.log('INITIALIZE SOCKETS');
-		socket.connect();
-	}
+	// if (core.account.state.logged_in.is(true)) {
+	// 	console.log('INITIALIZE SOCKETS');
+	// 	socket.connect();
+	// }
 })();

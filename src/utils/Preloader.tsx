@@ -2,8 +2,9 @@ import * as React from 'react';
 import { ActivityIndicator } from 'react-native';
 import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 import styled from 'styled-components/native';
-import core, { DeviceType, GetAccountType, request } from '@core';
+import core, { GetAccountType, request } from '@core';
 import { Spacer, Text } from '@parts';
+import { startService } from './ForeGroundService';
 
 interface PreloaderProps {
 	loaded: () => void;
@@ -26,6 +27,7 @@ export const Preloader: React.FC<PreloaderProps> = (props) => {
 
 		const res = await request<GetAccountType>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
+		
 
 		core.account.state.ACCOUNT.set(res.account);
 		core.profile.state.PROFILE.set(res.profile);

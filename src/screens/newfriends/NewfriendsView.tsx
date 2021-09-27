@@ -27,8 +27,8 @@ export const NewfriendsView: React.FC<NewfriendsProps> = (props) => {
 		await request('post', '/friends/request/' + id, { data: { accept: response } });
 		core.profile.collection.removeFromGroups(id, 'requests');
 		console.log('replied');
-
 		// if (a === false) return;
+
 		// console.log(a);
 	};
 
@@ -60,13 +60,13 @@ export const NewfriendsView: React.FC<NewfriendsProps> = (props) => {
 
 	return (
 		<NewfriendsBody>
-			<Spacer size={48} />
+			<Spacer size={15} />
 			<HeaderContainer>
 				<Text color={theme.primary} size={27} weight="bold" style={{ letterSpacing: -0.9 }}>
 					Friends requests
 				</Text>
 				<Fill />
-				<IconButton name="arrow-big" size={25} iconSize={-5} color={theme.text} style={{ transform: [{ rotate: '180deg' }] }} onPress={() => nav.goBack()} />
+				<IconButton name="arrow-big" size={25} iconSize={15} color={theme.text} style={{ transform: [{ rotate: '180deg' }] }} onPress={() => nav.goBack()} />
 			</HeaderContainer>
 			<Container>
 				<FlatList

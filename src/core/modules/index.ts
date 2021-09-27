@@ -7,3 +7,4 @@ export { app } from './app';
 export { notifications } from './notifications';
 export { connections } from './connections';
 export { status } from './status';
+export { storie } from './storie';

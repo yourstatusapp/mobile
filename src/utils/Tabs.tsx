@@ -51,6 +51,7 @@ export const AppStacks: React.FC = () => {
 			<AppStack.Screen name="NewUser" component={NewuserView} />
 			<AppStack.Screen name="NewConversation" component={Newconversation} />
 			<AppStack.Screen name="Browser" component={BrowserView} />
+			<AppStack.Screen name="newfriends" component={NewfriendsView} />
 		</AppStack.Navigator>
 	);
 };
@@ -65,11 +66,11 @@ export const Tabs: React.FC = () => {
 
 	return (
 		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} tabBarOptions={{ style: { opacity: 0 } }}>
-			<Tab.Screen name="messages" component={MessagesView} />
+			{/* <Tab.Screen name="messages" component={MessagesView} /> */}
 			<Tab.Screen name="friends" component={FriendsView} />
 			{/* <Tab.Screen name="discovery" component={DiscoveryView} /> */}
 			<Tab.Screen name="account" component={AccountView} />
-			<Tab.Screen name="newfriends" component={NewfriendsView} />
+
 			<Tab.Screen name="notifications" component={Notifications} />
 		</Tab.Navigator>
 	);

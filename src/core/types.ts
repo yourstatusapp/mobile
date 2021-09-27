@@ -100,10 +100,11 @@ export interface IConnectionType {
 	type: string;
 }
 
-export interface IStorieType {
+export interface StorieType {
 	id: string;
 	picture: string;
 	account_id: string;
+	deleted_at?: string;
 }
 
 export interface GetAccountType {
