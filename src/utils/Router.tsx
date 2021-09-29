@@ -6,7 +6,7 @@ import { AppStacks } from './Tabs';
 import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import core from '../core';
-import { StatusBar, StatusBarStyle } from 'react-native';
+import { SafeAreaView, StatusBar, StatusBarStyle } from 'react-native';
 import { Preloader } from './Preloader';
 import { Register } from '../screens/register/Register';
 import { Verify } from '../screens/verify/Verify';
@@ -22,8 +22,24 @@ import { DebugView } from '../screens/debug/DebugView';
 import { ConversationView } from '../screens/conversation/ConversationView';
 import { StatusinfoScreen } from '../screens/statusinfo/StatusinfoScreen';
 import { ProfileView } from '../screens/profile/ProfileView';
+import { Text } from '@parts';
 
 const Stack = createStackNavigator();
+
+const routes = [
+	{ name: 'Auth', component: AuthScreen },
+	{ name: 'Register', component: Register },
+	{ name: 'Verify', component: Verify },
+	{ name: 'Magic', component: MagicView },
+	{ name: 'App', component: AppStacks },
+	{ name: 'Newpost', component: NewpostScreen },
+
+	{ name: 'Camera', component: CameraView },
+	{ name: 'Stories', component: StoriesView },
+	{ name: 'conversation', component: ConversationView },
+	{ name: 'Statusinfo', component: StatusinfoScreen },
+	{ name: 'Profile', component: ProfileView },
+];
 
 export const Router: React.FC = () => {
 	useLinking;
@@ -60,24 +76,15 @@ export const Router: React.FC = () => {
 					initialRouteName={loggedIn ? 'App' : 'Auth'}
 					screenOptions={{
 						headerShown: false,
-						headerTitleStyle: { backgroundColor: theme.background },
-						cardStyle: { backgroundColor: theme.step0 },
+						headerTitleStyle: { backgroundColor: theme.step2 },
+						cardStyle: { backgroundColor: theme.background },
 						cardOverlayEnabled: false,
 					}}
 					detachInactiveScreens
 				>
-					<Stack.Screen name="Auth" component={AuthScreen} />
-					<Stack.Screen name="Register" component={Register} />
-					<Stack.Screen name="Verify" component={Verify} />
-					<Stack.Screen name="Magic" component={MagicView} />
-					<Stack.Screen name="App" component={AppStacks} />
-					<Stack.Screen name="Newpost" component={NewpostScreen} />
-
-					<Stack.Screen name="Camera" component={CameraView} />
-					<Stack.Screen name="Stories" component={StoriesView} />
-					<Stack.Screen name="conversation" component={ConversationView} />
-					<Stack.Screen name="Statusinfo" component={StatusinfoScreen} />
-					<Stack.Screen name="Profile" component={ProfileView} />
+					{routes?.map((v, i) => (
+						<Stack.Screen key={i} name={v.name} component={v.component} />
+					))}
 				</Stack.Navigator>
 			</NavigationContainer>
 		</RouterBody>
@@ -86,5 +93,10 @@ export const Router: React.FC = () => {
 
 const RouterBody = styled.View`
 	flex: 1;
-	background-color: ${({ theme }) => theme.background};
+	background-color: ${({ theme }) => theme.step0};
 `;
+
+// const TabsScreenWrapper = styled(SafeAreaView)`
+// 	flex: 1;
+// 	background-color: ${({ theme }) => theme.step0};
+// `;

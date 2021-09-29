@@ -24,10 +24,10 @@ if (__DEV__) {
 globalThis.AsyncStorage = AsyncStorage;
 globalThis.core = core;
 
-import * as Socket from './core/socket';
+// import * as Socket from './core/socket';
 import { destroyGeoListeners } from './utils/LocationService';
 import { useEffect } from 'react';
-Socket;
+// Socket;
 
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);

@@ -39,7 +39,7 @@ export const InternalThemes: { [k in Themes]: InternalTheme } = {
 	dark: {
 		...Other,
 		background: '#171717',
-		step0: '#141414',
+		step0: '#1E1E1E',
 		step1: '#1F1F1F',
 		step2: '#2A2A2A',
 		step3: '#333333',

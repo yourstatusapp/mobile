@@ -15,7 +15,7 @@ initCore();
 // LogBox.ignoreLogs(['Animated: `useNativeDriver`']); TODO: NOTE SURE IF I HAVE TO USE THIS
 React.LogBox.ignoreAllLogs(true);
 
-startGeoLocation();
+// startGeoLocation();
 
 // AppRegistry.registerComponent(appName, () => (__DEV__ === true ? App : CodePushWrapper(App)));
 AppRegistry.registerComponent(appName, () => App);

@@ -1,6 +1,6 @@
 import styled, { useTheme } from 'styled-components/native';
 import * as React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { SafeAreaView, View, ViewStyle } from 'react-native';
 import { TextButton } from './Buttons';
 import { useNavigation } from '@react-navigation/native';
 import { Text } from './Text';
@@ -43,21 +43,23 @@ interface TabbarContentContainerConfig {
 
 export const TabbarContentContainer: React.FC<TabbarContentContainerConfig> = (p) => {
 	const { children } = p;
-	const theme = useTheme();
 
 	return (
 		<TabbarContentBody {...p}>
-			<View style={{ height: 40, backgroundColor: p.topBarColor || theme.step0 }} />
-			{children}
+			<TabbarWrapper>{children}</TabbarWrapper>
 		</TabbarContentBody>
 	);
 };
 
-const TabbarContentBody = styled.View<TabbarContentContainerConfig>`
-	background-color: ${({ theme }) => theme.background};
+const TabbarContentBody = styled(SafeAreaView)<TabbarContentContainerConfig>`
 	flex: 1;
 	padding: 0px ${({ noSidePadding }) => (noSidePadding ? 0 : 20)}px;
-	/* padding-top: 45px; */
+	background-color: ${({ theme }) => theme.step0};
+`;
+
+const TabbarWrapper = styled.View`
+	flex: 1;
+	background-color: ${({ theme }) => theme.background};
 `;
 
 interface TopHeadingProps {

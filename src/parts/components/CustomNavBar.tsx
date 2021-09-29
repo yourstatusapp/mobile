@@ -15,7 +15,8 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	const { state } = props;
 	const tabbar_show_text = usePulse(core.app.state.tabbar_show_text);
 
-	const isIphoneX = hasNotch();
+	// const isIphoneX = hasNotch();
+
 	const theme = useTheme();
 	const nav = useNavigation();
 
@@ -39,7 +40,7 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 	];
 
 	return (
-		<CustomTabBarBody isIphoneX={isIphoneX} tabIndex={state.index}>
+		<CustomTabBarBody tabIndex={state.index}>
 			<HoverButton name="plus" color={theme.primary} size={28} iconSize={20} backgroundColor={theme.step1} onPress={() => nav.navigate('CreateStatus')} />
 			{/* {state.index === 3 && <HoverButton name="send" color="black" size={45} iconSize={25} />} */}
 			<TabContainer>
@@ -48,12 +49,14 @@ export const CustomNavBar: React.FC<CustomTabBarProps> = (props) => {
 						<Icon name={v.icon} size={tabbar_show_text ? 23 : 26} color={Current === i ? theme.primary : theme.navBarFade} />
 						{tabbar_show_text && (
 							<>
-								<Spacer size={5} />
+								<Spacer size={3} />
 								<Text size={12} style={{ color: Current === i ? theme.primary : theme.navBarFade }}>
 									{v.name}
 								</Text>
+								{/* <Spacer size={5} /> */}
 							</>
 						)}
+						<Spacer size={20} />
 					</TabButton>
 				))}
 			</TabContainer>
@@ -68,13 +71,17 @@ const HoverButton = styled(IconButton)`
 	z-index: 20;
 `;
 
-const CustomTabBarBody = styled.View<{ isIphoneX: boolean; tabIndex: number }>`
-	height: ${(p) => (p.isIphoneX ? 80 : 60)}px;
+const CustomTabBarBody = styled.View<{ isIphoneX?: boolean; tabIndex: number }>`
+	/* height: ${(p) => (p.isIphoneX ? 80 : 60)}px; */
+	height: 80px;
 	padding: 0px 20px;
+	/* position: absolute; */
+	bottom: 0px;
+	/* background-color: red; */
 	background-color: ${({ theme }) => theme.navBar};
-	display: ${({ tabIndex }) => (tabIndex === 4 ? 'none' : 'flex')};
+	/* display: ${({ tabIndex }) => (tabIndex === 4 ? 'none' : 'flex')}; */
 
-	padding-bottom: 25px;
+	/* padding-bottom: 25px; */
 	align-items: center;
 	position: relative;
 `;

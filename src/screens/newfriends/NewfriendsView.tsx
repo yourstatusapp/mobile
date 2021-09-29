@@ -66,8 +66,9 @@ export const NewfriendsView: React.FC<NewfriendsProps> = (props) => {
 					Friends requests
 				</Text>
 				<Fill />
-				<IconButton name="arrow-big" size={25} iconSize={15} color={theme.text} style={{ transform: [{ rotate: '180deg' }] }} onPress={() => nav.goBack()} />
+				<IconButton name="plus" size={25} iconSize={20} color={theme.text} onPress={() => nav.goBack()} style={{ transform: [{ rotate: '45deg' }] }} />
 			</HeaderContainer>
+			<Spacer size={10} />
 			<Container>
 				<FlatList
 					data={incomingList}

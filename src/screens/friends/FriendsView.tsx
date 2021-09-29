@@ -73,7 +73,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	React.useEffect(() => {
 		console.log('friends_view');
 		getFriendList();
-		// getStories();
+		getStories();
 
 		// getNotifications();
 	}, []);
@@ -93,7 +93,9 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 
 			{!!pendingList?.length && (
 				<NewFriendRequestBox onPress={() => nav.navigate('newfriends', { data: pendingList })}>
-					<Text weight="bold">You have a new friend request</Text>
+					<Text weight="medium" color={theme.text}>
+						You have a new friend request
+					</Text>
 					<Fill />
 					<Icon name="incoming" size={25} color={theme.primary} />
 				</NewFriendRequestBox>
@@ -102,7 +104,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				data={friendList}
 				renderItem={(fp) => <FriendItemEntry {...fp} />}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
-				ListHeaderComponent={() => <MyContent />}
+				// ListHeaderComponent={() => <MyContent />}
 				ListEmptyComponent={() =>
 					Loaded ? (
 						<Row center style={{ paddingTop: 50 }}>
@@ -133,7 +135,7 @@ const MyContent: React.FC = (p) => {
 	const my_status = usePulse(core.status.state.my_status);
 
 	// If no data, than just hide it
-	if (!my_status?.id || !savedLocations.filter((v) => v.id === currentLoc?.id).length) {
+	if (!my_status?.id && !savedLocations.filter((v) => v.id === currentLoc?.id).length) {
 		return <></>;
 	}
 
@@ -168,6 +170,6 @@ const NewFriendRequestBox = styled(TouchableOpacity).attrs({ activeOpacity: 0.5 
 	border-radius: 12px;
 	margin-top: 15px;
 	margin-bottom: 10px;
-	border-bottom-color: ${({ theme }) => theme.step1};
-	border-bottom-width: 1px;
+	border-color: ${({ theme }) => theme.step2};
+	border-width: 1px;
 `;

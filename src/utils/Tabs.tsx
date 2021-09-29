@@ -21,44 +21,15 @@ import { FriendsView } from '../screens/friends/FriendsView';
 import { ProfileView } from '../screens/profile/ProfileView';
 import { SettingsView } from '../screens/settings/SettingsView';
 import { BrowserView } from '../screens/browser/BrowserView';
+import { SafeAreaView } from 'react-native';
+import styled from 'styled-components/native';
 
 const Tab = createBottomTabNavigator();
 export const AppStack = createStackNavigator();
 
-export const AppStacks: React.FC = () => {
-	const theme = useTheme();
-
-	return (
-		<AppStack.Navigator
-			initialRouteName="AppTabs"
-			screenOptions={{
-				...TransitionPresets.ModalPresentationIOS,
-				headerShown: false,
-				gestureEnabled: true,
-				gestureResponseDistance: { vertical: 150 },
-				cardOverlayEnabled: true,
-				cardStyle: { backgroundColor: theme.background },
-			}}
-			mode="modal"
-			headerMode="float"
-		>
-			<AppStack.Screen name="AppTabs" component={Tabs} />
-			<AppStack.Screen name="CreateStatus" component={StatusView} />
-			<AppStack.Screen name="Settings" component={SettingsView} />
-			<AppStack.Screen name="Friendrequests" component={Friendrequests} />
-			<AppStack.Screen name="SearchPeople" component={SearchView} />
-			<AppStack.Screen name="EditProfile" component={EditProfileView} />
-			<AppStack.Screen name="NewUser" component={NewuserView} />
-			<AppStack.Screen name="NewConversation" component={Newconversation} />
-			<AppStack.Screen name="Browser" component={BrowserView} />
-			<AppStack.Screen name="newfriends" component={NewfriendsView} />
-		</AppStack.Navigator>
-	);
-};
-
 export const Tabs: React.FC = () => {
 	const theme = useTheme();
-	const sceneContainerStyle = { backgroundColor: theme.background };
+	const sceneContainerStyle = { backgroundColor: theme.step2 };
 
 	React.useEffect(() => {
 		configureNotifications();
@@ -73,5 +44,42 @@ export const Tabs: React.FC = () => {
 
 			<Tab.Screen name="notifications" component={Notifications} />
 		</Tab.Navigator>
+	);
+};
+
+const routes = [
+	{ name: 'AppTabs', component: Tabs },
+	{ name: 'CreateStatus', component: StatusView },
+	{ name: 'Settings', component: SettingsView },
+	{ name: 'Friendrequests', component: Friendrequests },
+	{ name: 'SearchPeople', component: SearchView },
+	{ name: 'EditProfile', component: EditProfileView },
+	{ name: 'NewUser', component: NewuserView },
+	{ name: 'NewConversation', component: Newconversation },
+	{ name: 'Browser', component: BrowserView },
+	{ name: 'newfriends', component: NewfriendsView },
+];
+
+export const AppStacks: React.FC = () => {
+	const theme = useTheme();
+
+	return (
+		<AppStack.Navigator
+			initialRouteName="AppTabs"
+			screenOptions={{
+				...TransitionPresets.ModalPresentationIOS,
+				headerShown: false,
+				gestureEnabled: true,
+				gestureResponseDistance: { vertical: 150 },
+				cardOverlayEnabled: true,
+				cardStyle: { backgroundColor: theme.step0 },
+			}}
+			mode="modal"
+			headerMode="float"
+		>
+			{routes?.map((v, i) => (
+				<AppStack.Screen key={i} name={v.name} component={v.component} />
+			))}
+		</AppStack.Navigator>
 	);
 };

@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { LocationType } from '@core';
+import core, { LocationType, niceTime } from '@core';
 import { Avatar, Fill, Spacer, Row, StatusBox, Text, Icon } from '@parts';
 import { TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
+import { usePulse } from '@pulsejs/react';
 
 interface FriendItemEntryProps {
 	item: any;
@@ -14,6 +15,8 @@ export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
 	const { item, index } = props;
 	const nav = useNavigation();
 	const theme = useTheme();
+
+	const stories = usePulse(core.storie.collection.getGroup(`profile/${item.account_id}`));
 
 	// console.log(props);
 
@@ -26,35 +29,31 @@ export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
 	return (
 		<FriendItemEntryBody key={index}>
 			<View>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} onPress={() => nav.navigate('Profile', { profile: item })} />
+				<Avatar
+					src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`}
+					onPress={() => nav.navigate('Profile', { profile: item })}
+					storie_availible={!!stories.length}
+				/>
+				{stories[0] && (
+					<NewStorieAlert onPress={() => nav.navigate('Stories', { ...item, stories })}>
+						<Text size={11} weight="semi-bold" color={theme.text}>
+							NEW
+						</Text>
+					</NewStorieAlert>
+				)}
 
 				<Fill />
 			</View>
 			<Spacer size={15} />
-			<View>
-				<Row>
-					{/* <Text color={theme.textFade} size={18} weight="bold">
-        @
-      </Text>
-      <Spacer size={1} /> */}
-					<Text weight="medium" size={18}>
-						{item.username}
-					</Text>
-
-					<Spacer size={10} />
-					{item.stories?.length && (
-						<ShowStoriesButton onPress={() => nav.navigate('Stories', { ...item })} activeOpacity={0.8}>
-							<Text weight="semi-bold" size={12} color={theme.background}>
-								New Stories
-							</Text>
-						</ShowStoriesButton>
-					)}
-				</Row>
+			<View style={{ flex: 1, alignSelf: 'flex-start' }}>
+				<Text weight="medium" size={18}>
+					{item.username}
+				</Text>
 				{item?.location && <LocationBox location={item.location} />}
 
 				{item?.status && (
-					<>
-						<Spacer size={8} />
+					<View style={{ flex: 1, justifyContent: 'flex-start' }}>
+						<Spacer size={5} />
 						<StatusContainer>
 							<StatusBox {...item.status} />
 							<Spacer size={7} />
@@ -66,18 +65,18 @@ export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
 								</PopTagCounter>
 							)}
 							{/* <Spacer size={5} />
-          <NewBox>
-            <Text weight="bold" size={12} color={theme.background}>
-              NEW
-            </Text>
-          </NewBox> */}
+							<NewBox>
+								<Text weight="bold" size={12} color={theme.background}>
+									NEW
+								</Text>
+							</NewBox> */}
 							{/* {item.status.data?.title?.length > 20 && <Spacer size={5} />}
-          <Text size={12} color={theme.textFade} weight="medium">
-            {item.status.data?.title?.length < 20 && <Spacer size={8} />}
-            {niceTime(item?.status.id)} ago
-          </Text> */}
+							<Text size={12} color={theme.textFade} weight="medium">
+								{item.status.data?.title?.length < 20 && <Spacer size={8} />}
+								{niceTime(item?.status.id)} ago
+							</Text> */}
 						</StatusContainer>
-					</>
+					</View>
 				)}
 			</View>
 		</FriendItemEntryBody>
@@ -102,14 +101,28 @@ const ShowStoriesButton = styled(TouchableOpacity)`
 const StatusContainer = styled.View`
 	flex-direction: row;
 	align-items: center;
-	flex: 1;
-	/* flex-wrap: wrap; */
 `;
 
 const PopTagCounter = styled.View`
 	background-color: ${({ theme }) => theme.primary};
 	padding: 2px 7px;
 	border-radius: 50px;
+`;
+
+const NewStorieAlert = styled(TouchableOpacity)`
+	background-color: #fca635;
+	padding: 2px;
+	border-radius: 12px;
+	margin: 0px 5px;
+	margin-top: 5px;
+	justify-content: center;
+	align-items: center;
+`;
+
+const StorieCricle = styled.View`
+	background-color: ${({ theme }) => theme.primary};
+	padding: 4px;
+	border-radius: 100px;
 `;
 
 export const LocationBox: React.FC<{ location: LocationType }> = (p) => {

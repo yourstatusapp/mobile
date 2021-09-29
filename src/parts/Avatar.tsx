@@ -7,22 +7,35 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 interface AvatarProps {
 	src: string;
 	size?: number;
-	dot_status?: string;
-	onPress?: () => void;
 	style?: any;
+
+	storie_availible?: boolean;
+	onPress?: () => void;
 }
 
 export const Avatar: React.FC<AvatarProps> = (props) => {
-	const { src, dot_status, onPress, style } = props;
+	const { src, storie_availible, onPress, style } = props;
 
-	const IMG: React.FC<any> = (p) => (src ? <Image {...p} source={{ uri: src }} /> : <Circle {...p} />);
-
-	return (
-		<TouchableOpacity onPress={onPress} style={style}>
-			<IMG {...props} source={{ uri: src }} />
-		</TouchableOpacity>
+	const IMG: React.FC<any> = (p) => (
+		<ClickArea {...p} onPress={onPress} style={{ ...style, ...p.style }}>
+			{src ? <Image {...p} source={{ uri: src }} /> : <Circle {...p} />}
+		</ClickArea>
 	);
+
+	if (storie_availible) {
+		return (
+			<StorieCricle {...props}>
+				<IMG {...props} source={{ uri: src }} style={{}} />
+			</StorieCricle>
+		);
+	}
+
+	return <IMG style={{ padding: 3 }} {...props} source={{ uri: src }} />;
 };
+
+const ClickArea = styled(TouchableOpacity)`
+	/* padding: 1px; */
+`;
 
 const Image = styled(FastImage)<AvatarProps>`
 	${({ size }) => `
@@ -43,21 +56,14 @@ const Circle = styled.View<AvatarProps>`
 	background-color: ${({ theme }) => theme.step2};
 `;
 
-const Dot = styled.View<{ dot_status: string }>`
-	height: 18px;
-	width: 18px;
-	background-color: ${({ dot_status }) => (dot_status === 'available' ? '#6ed457' : dot_status === 'dnd' && '#FE4D4D')};
-	border-radius: 20px;
-	position: absolute;
-	bottom: 0px;
-	right: 0px;
-	border: solid 3px ${({ theme }) => theme.background};
-`;
-
-const AvatarBody = styled.View<any>`
-	position: relative;
-	align-self: flex-start;
-	border-radius: 500px;
-	padding: 3px;
-	border: solid 2px ${({ dot_status }) => (dot_status === 'available' ? '#82db6e' : dot_status === 'dnd' ? '#f96565' : 'transparent')};
+const StorieCricle = styled.View<AvatarProps>`
+	justify-content: center;
+	align-items: center;
+	${({ size, theme }) => `
+		border-color: ${theme.primary};
+		border-width: 2px;
+		border-radius: ${(size || 50) + 6}px;
+		height: ${(size || 50) + 6}px;
+		width: ${(size || 50) + 6}px;
+	`}
 `;
