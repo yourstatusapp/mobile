@@ -1,11 +1,14 @@
-import { Avatar, Fill, Spacer, Text } from '@parts';
+import core from '@core';
+import { Avatar, Fill, IconButton, Spacer, Text } from '@parts';
+import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
+import { useState } from 'react';
 import { Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-import { niceTime } from '../../core/utils';
+import { niceTime, request } from '../../core/utils';
 
 interface StoriesProps {
 	route: {
@@ -16,6 +19,7 @@ interface StoriesProps {
 export const StoriesView: React.FC<StoriesProps> = (props) => {
 	const { route } = props;
 	const nav = useNavigation();
+	const my_account = usePulse(core.profile.state.PROFILE);
 
 	const [ImageIndex, setImageIndex] = React.useState<number>(0);
 
@@ -26,6 +30,16 @@ export const StoriesView: React.FC<StoriesProps> = (props) => {
 			return;
 		}
 		setImageIndex(ImageIndex + 1);
+	};
+
+	const [Loading, setLoading] = useState<boolean>(false);
+	const deleteStorie = async (storie_id: string) => {
+		if (Loading) return;
+		setLoading(true);
+
+		const a = await request('delete', `/profile/stories/${storie_id}`);
+		setLoading(false);
+		nextImage();
 	};
 
 	return (
@@ -45,6 +59,13 @@ export const StoriesView: React.FC<StoriesProps> = (props) => {
 					{niceTime(route.params.stories[ImageIndex]?.id)} ago
 				</Text>
 			</FloatingArea>
+			{my_account.account_id === route.params.account_id && (
+				<BottomArea>
+					<TouchableOpacity onPress={() => deleteStorie(route.params.stories[ImageIndex].id)} activeOpacity={0.8} style={{ marginBottom: 10, marginLeft: 10 }}>
+						<Text color="#e6554b">delete</Text>
+					</TouchableOpacity>
+				</BottomArea>
+			)}
 		</StoriesBody>
 	);
 };
@@ -67,6 +88,16 @@ const FloatingArea = styled.View`
 	position: absolute;
 	width: 100%;
 	top: 54;
+	z-index: 50;
+	padding: 8px 10px;
+`;
+
+const BottomArea = styled.View`
+	flex-direction: row;
+	align-items: center;
+	position: absolute;
+	width: 100%;
+	bottom: 20;
 	z-index: 50;
 	padding: 8px 10px;
 `;

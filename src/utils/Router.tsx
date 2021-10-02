@@ -58,8 +58,10 @@ export const Router: React.FC = () => {
 		setLoaded(true);
 	});
 
+	const mounted = () => setTimeout(() => setLoaded(true), 2000);
+
 	useEffect(() => {
-		setTimeout(() => setLoaded(true), 2000);
+		mounted();
 	}, []);
 
 	// Wait for the preloader and logged_in compute state

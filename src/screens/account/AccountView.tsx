@@ -80,8 +80,8 @@ export const AccountView: React.FC<AccountProps> = (props) => {
 				<Spacer size={50} />
 				<Row>
 					<BigButton onPress={() => nav.navigate('Camera')}>
-						<Text weight="bold" size={16} color={theme.text} style={{ paddingRight: 20 }}>
-							Create post
+						<Text weight="medium" size={16} color={theme.text} style={{ paddingRight: 10 }}>
+							Create story
 						</Text>
 						<Icon name="camera" size={18} color={theme.textFade} />
 					</BigButton>
@@ -118,6 +118,6 @@ const ImageIconBtn = styled(IconButton)`
 const BigButton = styled(TouchableOpacity)`
 	flex-direction: row;
 	background-color: ${({ theme }) => theme.step2};
-	padding: 14px 12px;
+	padding: 12px 10px;
 	border-radius: 8px;
 `;

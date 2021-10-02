@@ -8,6 +8,8 @@ import core, { LocationType, request, StorieType } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
 import { useState } from 'react';
+import FastImage from 'react-native-fast-image';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface FriendsProps {}
 
@@ -104,7 +106,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 				data={friendList}
 				renderItem={(fp) => <FriendItemEntry {...fp} />}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
-				// ListHeaderComponent={() => <MyContent />}
+				ListHeaderComponent={() => <MyContent />}
 				ListEmptyComponent={() =>
 					Loaded ? (
 						<Row center style={{ paddingTop: 50 }}>
@@ -133,6 +135,9 @@ const MyContent: React.FC = (p) => {
 	const currentLoc = usePulse(core.account.collection.locations.selectors.current_here);
 	const savedLocations = usePulse(core.account.state.saved_locations);
 	const my_status = usePulse(core.status.state.my_status);
+	const my_stories = usePulse(core.storie.collection.groups.mine);
+	const myAccount = usePulse(core.profile.state.PROFILE);
+	const nav = useNavigation();
 
 	// If no data, than just hide it
 	if (!my_status?.id && !savedLocations.filter((v) => v.id === currentLoc?.id).length) {
@@ -141,22 +146,21 @@ const MyContent: React.FC = (p) => {
 
 	return (
 		<MycontentContainer>
-			<Text size={15} weight="semi-bold">
-				My stats:
-			</Text>
-			<Spacer size={2} />
-			{savedLocations.filter((v) => v.id === currentLoc?.id)[0] && <LocationBox location={savedLocations.filter((v) => v.id === currentLoc?.id)[0]} />}
-			<Spacer size={2} />
-			{my_status && <StatusBox {...my_status} />}
-
-			{/* <Text>{JSON.stringify(savedLocations)}</Text> */}
+			<Avatar
+				src={`https://cdn.yourstatus.app/profile/${myAccount.account_id}/${myAccount.avatar}`}
+				size={50}
+				storie_availible={!!my_stories?.length}
+				onPress={() => (my_stories.length ? nav.navigate('Stories', { ...myAccount, stories: my_stories }) : nav.navigate('Profile', { profile: myAccount }))}
+			/>
 		</MycontentContainer>
 	);
 };
 
 const MycontentContainer = styled.View`
-	background-color: ${({ theme }) => theme.step1};
-	padding-horizontal: 20px;
+	background-color: ${({ theme }) => theme.step0};
+	border-bottom-color: ${({ theme }) => theme.step2};
+	border-bottom-width: 1px;
+	padding-horizontal: 15px;
 	padding-vertical: 10px;
 `;
 

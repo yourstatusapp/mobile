@@ -31,24 +31,27 @@ export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
 			<View>
 				<Avatar
 					src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`}
-					onPress={() => nav.navigate('Profile', { profile: item })}
+					onPress={() => (stories.length ? nav.navigate('Stories', { ...item, stories }) : nav.navigate('Profile', { profile: item }))}
+					// onLongPress={() => !stories.length && nav.navigate('Profile', { profile: item })}
 					storie_availible={!!stories.length}
 				/>
-				{stories[0] && (
+				{/* {stories[0] && (
 					<NewStorieAlert onPress={() => nav.navigate('Stories', { ...item, stories })}>
 						<Text size={11} weight="semi-bold" color={theme.text}>
 							NEW
 						</Text>
 					</NewStorieAlert>
-				)}
+				)} */}
 
 				<Fill />
 			</View>
 			<Spacer size={15} />
 			<View style={{ flex: 1, alignSelf: 'flex-start' }}>
-				<Text weight="medium" size={18}>
-					{item.username}
-				</Text>
+				<TouchableOpacity activeOpacity={0.8} onPress={() => nav.navigate('Profile', { profile: item })}>
+					<Text weight="medium" size={18}>
+						{item.username}
+					</Text>
+				</TouchableOpacity>
 				{item?.location && <LocationBox location={item.location} />}
 
 				{item?.status && (

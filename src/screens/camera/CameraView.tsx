@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components/native';
 import { RNCamera, RNCameraProps } from 'react-native-camera';
-import { Fill, IconButton, Row, Spacer, Text } from '@parts';
+import { Fill, IconButton, Row, Spacer, TabbarContentContainer, Text } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import { useState } from 'react';
 import FastImage from 'react-native-fast-image';
@@ -43,13 +43,14 @@ export const CameraView: React.FC<CameraProp> = (props) => {
 	};
 
 	return (
-		<CameraBody>
+		<CameraBody style={{ backgroundColor: 'black' }}>
 			<RNCamera style={{ flex: 1 }} type={SelectedCam} ref={cameraRef} flashMode={Flash} useNativeZoom={true} maxZoom={1}>
 				{({ camera }) => {
 					return (
-						<OverLay>
-							<CloseButton name="times" size={25} color="white" noBackground onPress={() => nav.goBack()} />
-							<ControlBox center>
+						<>
+							<CloseButton name="times" size={30} color="white" noBackground onPress={() => nav.goBack()} />
+
+							<ControlBox center style={{ zIndex: 10 }}>
 								<Spacer size={10} />
 								<Spacer size={50} />
 								<Fill />
@@ -71,7 +72,7 @@ export const CameraView: React.FC<CameraProp> = (props) => {
 								<IconButton noBackground name="image" size={35} color="white" onPress={() => chooseFromGalaery()} />
 								<Spacer size={10} />
 							</ControlBox>
-						</OverLay>
+						</>
 					);
 				}}
 			</RNCamera>
@@ -80,32 +81,12 @@ export const CameraView: React.FC<CameraProp> = (props) => {
 					<ImageThumbnail source={{ uri: LastTaken }} />
 				</ImageThumbnailContainer>
 			)}
-
-			{/* <ControlBox center>
-				<IconButton
-					name="switch"
-					size={40}
-					color="white"
-					noBackground
-					onPress={() => setSelectedCam(SelectedCam === 'back' ? 'front' : 'back')}
-					style={{ transform: [{ rotate: SelectedCam === 'back' ? '0deg' : '180deg' }] }}
-				/>
-				<Spacer size={40} />
-
-				<Spacer size={40} />
-				<IconButton name="flashlight" size={40} color={Flash === 'off' ? 'gray' : 'white'} noBackground onPress={() => setFlash(Flash === 'off' ? 'auto' : 'off')} />
-			</ControlBox> */}
 		</CameraBody>
 	);
 };
 
-const CameraBody = styled.View`
+const CameraBody = styled(TabbarContentContainer).attrs({ style: { backgroundColor: 'black' }, innerStyle: { backgroundColor: 'black' } })`
 	flex: 1;
-`;
-
-const OverLay = styled.View`
-	flex: 1;
-	position: relative;
 `;
 
 const ControlBox = styled(Row)`
@@ -125,7 +106,7 @@ const ActionBtn = styled(TouchableOpacity)`
 `;
 const CloseButton = styled(IconButton)`
 	position: absolute;
-	top: 50;
+	top: 10;
 	left: 10;
 `;
 

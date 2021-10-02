@@ -75,12 +75,12 @@ const SelectionScreen: React.FC = () => {
 			route: 'customSel',
 			color: '#57d973',
 		},
-		{
-			icon: '',
-			text: 'Location Preference (experimental)',
-			route: 'locationSel',
-			color: '#f6a265',
-		},
+		// {
+		// 	icon: '',
+		// 	text: 'Location Preference (experimental)',
+		// 	route: 'locationSel',
+		// 	color: '#f6a265',
+		// },
 		// {
 		// 	text: 'Create a Event',
 		// 	route: 'eventSel',

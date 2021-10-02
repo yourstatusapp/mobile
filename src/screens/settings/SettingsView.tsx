@@ -50,11 +50,8 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 	// const version = usePulse(CodePushState.VersionLabel);
 
 	const logout = async () => {
-		await request('delete', '/account/devices/current/revoke');
 		nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
-
 		clearGeoWatcher();
-
 		setTimeout(() => {
 			account.state.ACCOUNT.reset();
 			account.state.saved_locations.reset();
@@ -74,6 +71,8 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 			app.state.notifications_enabled.reset();
 			app.state.device_push_token.reset();
 		}, 500);
+
+		await request('delete', '/account/devices/current/revoke');
 	};
 
 	const currentTheme = usePulse(ui.state.Theme);

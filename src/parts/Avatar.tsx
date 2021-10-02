@@ -11,13 +11,14 @@ interface AvatarProps {
 
 	storie_availible?: boolean;
 	onPress?: () => void;
+	onLongPress?: () => void;
 }
 
 export const Avatar: React.FC<AvatarProps> = (props) => {
-	const { src, storie_availible, onPress, style } = props;
+	const { src, storie_availible, onPress, onLongPress, style } = props;
 
 	const IMG: React.FC<any> = (p) => (
-		<ClickArea {...p} onPress={onPress} style={{ ...style, ...p.style }}>
+		<ClickArea onLongPress={storie_availible && onLongPress} {...p} onPress={onPress} style={{ ...style, ...p.style }}>
 			{src ? <Image {...p} source={{ uri: src }} /> : <Circle {...p} />}
 		</ClickArea>
 	);

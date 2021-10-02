@@ -1,9 +1,9 @@
 import core, { alert, Collection, request } from '@core';
-import { Fill, IconButton, Row, SidePadding, SmallButton, Spacer, Text, WideButton } from '@parts';
+import { Fill, IconButton, Row, SidePadding, SmallButton, Spacer, TabbarContentContainer, Text, WideButton } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
 import { useState } from 'react';
-import { Platform, View } from 'react-native';
+import { Dimensions, Platform, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styled, { useTheme } from 'styled-components/native';
 
@@ -15,6 +15,13 @@ interface NewpostProps {
 	};
 }
 
+interface UploadprogressType {
+	loaded: number;
+	total: number;
+}
+
+const deviceWidth = Dimensions.get('screen').width;
+
 export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 	const { route } = props;
 	const theme = useTheme();
@@ -22,6 +29,8 @@ export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 	const [Coll, setColl] = useState<Collection[]>();
 	const [SelectColl, setSelectColl] = useState<Collection>();
 	const [UploadType, setUploadType] = useState<'storie' | 'collection'>('storie');
+	const [Loading, setLoading] = useState(false);
+	const [Loaded, setLoaded] = useState<number>(0);
 
 	const getMyCollections = async () => {
 		const c = await request<Collection[]>('get', '/collection');
@@ -29,6 +38,7 @@ export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 	};
 
 	const createPost = async () => {
+		setLoading(true);
 		const fd = new FormData();
 		const uri = Platform.OS === 'android' ? '' : route.params.image.replace('file://', '');
 		fd.append('file', {
@@ -42,9 +52,9 @@ export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 			if (!SelectColl) {
 				alert({ title: 'Select collection', success: false });
 			}
-			await request('post', `/collection/${SelectColl?.id}/add`, { headers: { 'Content-Type': 'multipart/form-data;' }, data: fd });
+			await request('post', `/collection/${SelectColl?.id}/add`, { headers: { 'Content-Type': 'multipart/form-data;' }, data: fd, onUploadProgress: uploading });
 		} else {
-			await request('post', '/profile/stories/new', { data: fd, headers: { 'Content-Type': 'multipart/form-data;' } });
+			await request('post', '/profile/stories/new', { data: fd, headers: { 'Content-Type': 'multipart/form-data;' }, onUploadProgress: uploading });
 		}
 
 		nav.goBack();
@@ -54,6 +64,13 @@ export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 			desc: UploadType === 'collection' ? 'picture has been added to the collection' : 'picture has been uploaded to realtime storier',
 			success: true,
 		});
+
+		setLoading(false);
+	};
+
+	const uploading = (UploadProgress: UploadprogressType) => {
+		const percentage = (UploadProgress.loaded / UploadProgress.total) * 100;
+		setLoaded(percentage);
 	};
 
 	React.useEffect(() => {
@@ -62,64 +79,49 @@ export const NewpostScreen: React.FC<NewpostProps> = (props) => {
 
 	return (
 		<NewpostBody>
-			<Spacer size={40} />
-			<IconButton
-				name="arrow-big"
-				size={25}
-				backgroundColor={theme.step1}
-				color={theme.text}
-				style={{ transform: [{ rotate: '180deg' }], position: 'absolute', top: 55, zIndex: 15, left: 10 }}
-				onPress={() => nav.goBack()}
-			/>
-			<FastImage source={{ uri: route.params.image || '' }} style={{ height: 400, width: '100%' }} resizeMode="contain" />
-
-			<Spacer size={20} />
-
-			<SidePadding>
-				<Text center size={19} weight="bold">
-					Choose type
-				</Text>
-				<Spacer size={11} />
-				<Row center>
-					<SmallButton text="STORIE" onPress={() => setUploadType('storie')} textColor={UploadType === 'storie' ? theme.primary : theme.text} />
-					<Spacer size={20} />
-					<SmallButton text="COLLECTION" onPress={() => setUploadType('collection')} textColor={UploadType === 'collection' ? theme.primary : theme.text} />
-				</Row>
-				<Spacer size={20} />
-
-				{UploadType === 'collection' && (
-					<View>
-						<Text center size={19} weight="bold">
-							Select collection
-						</Text>
-						<Spacer size={11} />
-						<CollsContainer>
-							{!!Coll?.length &&
-								Coll.map((item, index) => (
-									<SmallButton
-										text={item.title}
-										key={index}
-										onPress={() => setSelectColl(item)}
-										textColor={item.id === SelectColl?.id ? theme.primary : theme.text}
-										style={{ marginRight: 10, marginBottom: 10 }}
-									/>
-								))}
-						</CollsContainer>
-					</View>
-				)}
-
+			<FastImage source={{ uri: route.params.image || '' }} style={{ height: '100%', width: deviceWidth, opacity: Loading ? 0.8 : 1 }} resizeMode="cover" />
+			<UploadProgress style={{ width: Loaded + '%' }}></UploadProgress>
+			<FloatingBox>
 				<Fill />
-				<WideButton text="Upload" onPress={() => createPost()} disabled={UploadType === 'collection' ? !SelectColl : false} />
-				<Spacer size={30} />
-			</SidePadding>
+				<Text size={15}>Upload to story</Text>
+				<Spacer size={10} />
+				<IconButton
+					name="send"
+					size={27}
+					iconSize={23}
+					color={'white'}
+					backgroundColor={theme.step4}
+					iconStyle={{ paddingRight: 3 }}
+					onPress={() => createPost()}
+					disabled={Loading === true}
+				/>
+				<Spacer size={20} />
+			</FloatingBox>
 		</NewpostBody>
 	);
 };
 
-const NewpostBody = styled.View`
+const NewpostBody = styled(TabbarContentContainer).attrs({ style: { backgroundColor: 'black' } })`
 	flex: 1;
+	background-color: black;
 `;
-const CollsContainer = styled.View`
-	flex-direction: row;
-	flex-wrap: wrap;
+
+const UploadBtn = styled.View``;
+
+const FloatingBox = styled(Row)`
+	position: absolute;
+	bottom: 0;
+	height: 70px;
+	width: 100%;
+	/* background-color: ${({ theme }) => theme.background}20; */
+	z-index: 10;
+`;
+
+const UploadProgress = styled.View`
+	height: 5px;
+	border-radius: 20px;
+	background-color: ${({ theme }) => theme.primary};
+	/* width: 100%; */
+	bottom: 0%;
+	position: absolute;
 `;

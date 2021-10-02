@@ -3,11 +3,12 @@ import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
 export const baseURL = state('https://api.yourstatus.app');
-// export const baseURL = state('http://localhost:8080');
+// export const baseURL = state('http://192.168.1.15:8080');
 
 interface RequestOptions {
 	headers?: any;
 	data?: any;
+	onUploadProgress?: (progressEvent: any) => void;
 }
 
 export const request = async <T extends any>(method: 'post' | 'get' | 'delete' | 'patch', path: string, x?: RequestOptions): Promise<T> => {
@@ -21,6 +22,7 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 			},
 			url: baseURL.value + path,
 			withCredentials: true,
+			onUploadProgress: x?.onUploadProgress,
 		});
 
 		return a.data.data;

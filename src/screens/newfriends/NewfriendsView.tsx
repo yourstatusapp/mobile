@@ -25,30 +25,29 @@ export const NewfriendsView: React.FC<NewfriendsProps> = (props) => {
 
 	const replyRequest = async (id: string, owner: string, response: boolean) => {
 		await request('post', '/friends/request/' + id, { data: { accept: response } });
-		core.profile.collection.removeFromGroups(id, 'requests');
+		core.profile.collection.removeFromGroups(owner, 'requests');
 		console.log('replied');
 		// if (a === false) return;
-
 		// console.log(a);
 	};
 
 	const renderItem1 = ({ item, index }) => (
 		<RequestItemContainer key={index}>
 			<Row>
-				<Avatar src={`https://cdn.yourstatus.app/profile/${item.owner}/${item.avatar}`} size={40} />
+				<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={40} />
 				<Spacer size={10} />
 				<Text>{item.username || 'none'}</Text>
 			</Row>
 
 			<BottomPart>
 				<BottomBtn>
-					<TouchableHighlight onPress={() => replyRequest(item.id, item.owner, false)} activeOpacity={1}>
+					<TouchableHighlight onPress={() => replyRequest(item.id, item.account_id, false)} activeOpacity={1}>
 						<Text center>Deny</Text>
 					</TouchableHighlight>
 				</BottomBtn>
 				<Spacer size={10} />
 				<BottomBtn style={{ backgroundColor: theme.primary }}>
-					<TouchableHighlight onPress={() => replyRequest(item.id, item.owner, true)}>
+					<TouchableHighlight onPress={() => replyRequest(item.id, item.account_id, true)}>
 						<Text center color="white">
 							Accept
 						</Text>

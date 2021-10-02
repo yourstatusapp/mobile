@@ -6,7 +6,7 @@ import { initCore } from './src/core';
 import React, { AppRegistry } from 'react-native';
 import { App } from './src/App';
 import { name as appName } from './app.json';
-import { startGeoLocation } from './src/utils/LocationService';
+// import { startGeoLocation } from './src/utils/LocationService';
 // import { CodePushWrapper } from './src/utils/CodePush';
 
 initCore();

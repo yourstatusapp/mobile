@@ -1,6 +1,6 @@
 import styled, { useTheme } from 'styled-components/native';
 import * as React from 'react';
-import { SafeAreaView, View, ViewStyle } from 'react-native';
+import { SafeAreaView, ViewStyle } from 'react-native';
 import { TextButton } from './Buttons';
 import { useNavigation } from '@react-navigation/native';
 import { Text } from './Text';
@@ -15,10 +15,11 @@ const SpacerBody = styled.View<{ size: number }>`
 interface RowStyleType {
 	style?: ViewStyle;
 	center?: boolean;
+	pointerEvents?: any;
 }
 
 export const Row: React.FC<RowStyleType> = (p) => (
-	<RowBody {...p} style={p.style}>
+	<RowBody {...p} style={p.style} pointerEvents={p.pointerEvents}>
 		{p.children}
 	</RowBody>
 );
@@ -39,6 +40,8 @@ export const Fill = styled.View`
 interface TabbarContentContainerConfig {
 	noSidePadding?: boolean;
 	topBarColor?: string;
+	innerStyle?: ViewStyle;
+	style?: ViewStyle;
 }
 
 export const TabbarContentContainer: React.FC<TabbarContentContainerConfig> = (p) => {
