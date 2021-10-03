@@ -1,5 +1,5 @@
 import core from '@core';
-import { Avatar, Fill, IconButton, Spacer, Text } from '@parts';
+import { Avatar, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
@@ -46,7 +46,10 @@ export const StoriesView: React.FC<StoriesProps> = (props) => {
 		<StoriesBody>
 			<Spacer size={60} />
 			<TouchableOpacity onPress={() => nextImage()} activeOpacity={1} style={{ height: Dimensions.get('screen').height - 100 }}>
-				<StorieImage resizeMode="contain" source={{ uri: `https://cdn.yourstatus.app/stories/${route.params.account_id}/${route.params.stories[ImageIndex]?.picture}` }} />
+				<StorieImage
+					resizeMode="contain"
+					source={{ uri: `https://cdn.yourstatus.app/stories/${route.params.account_id}/${route.params.stories[ImageIndex]?.picture}`, cache: 'immutable' }}
+				/>
 			</TouchableOpacity>
 			<FloatingArea>
 				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.account_id}/${route.params.avatar}`} size={35} />
@@ -61,9 +64,10 @@ export const StoriesView: React.FC<StoriesProps> = (props) => {
 			</FloatingArea>
 			{my_account.account_id === route.params.account_id && (
 				<BottomArea>
-					<TouchableOpacity onPress={() => deleteStorie(route.params.stories[ImageIndex].id)} activeOpacity={0.8} style={{ marginBottom: 10, marginLeft: 10 }}>
+					<TextButton color="#e6554b" text="delete" />
+					{/* <TouchableOpacity onPress={() => deleteStorie(route.params.stories[ImageIndex].id)} activeOpacity={0.8} style={{ marginBottom: 10, marginLeft: 10 }}>
 						<Text color="#e6554b">delete</Text>
-					</TouchableOpacity>
+					</TouchableOpacity> */}
 				</BottomArea>
 			)}
 		</StoriesBody>

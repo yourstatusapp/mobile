@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { RNCamera, RNCameraProps } from 'react-native-camera';
+import { RNCamera, RNCameraProps, TakePictureOptions } from 'react-native-camera';
 import { Fill, IconButton, Row, Spacer, TabbarContentContainer, Text } from '@parts';
 import { useNavigation } from '@react-navigation/core';
 import { useState } from 'react';
@@ -23,10 +23,10 @@ export const CameraView: React.FC<CameraProp> = (props) => {
 
 		//@ts-ignore
 		if (camera) {
-			const options = { quality: 0.5, base64: true };
+			const options: TakePictureOptions = { forceUpOrientation: true, fixOrientation: true };
 			// const data = await cameraRef.current.camera.takePictureAsync(options);
 			//@ts-ignore
-			const data = await camera.takePictureAsync({});
+			const data = await camera.takePictureAsync(options);
 			console.log(data);
 			setLastTaken(data.uri);
 		}

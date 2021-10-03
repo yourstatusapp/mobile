@@ -63,7 +63,6 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 
 	const getStories = async () => {
 		const s = await request<{ stories: { stories: StorieType[]; account_id: string; username: string; avatar: string }[]; mine: StorieType[] }>('get', '/profile/stories');
-
 		core.storie.collection.collect(s.mine, 'mine');
 
 		for (let item of s.stories) {
@@ -140,7 +139,7 @@ const MyContent: React.FC = (p) => {
 	const nav = useNavigation();
 
 	// If no data, than just hide it
-	if (!my_status?.id && !savedLocations.filter((v) => v.id === currentLoc?.id).length) {
+	if (!my_stories.length) {
 		return <></>;
 	}
 
