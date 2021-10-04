@@ -3,8 +3,8 @@ import styled, { useTheme } from 'styled-components/native';
 import FastImage from 'react-native-fast-image';
 import { Dimensions, FlatList, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Avatar, Fill, IconButton, Row, SidePadding, SmallButton, Spacer, TabbarContentContainer, Text, TextButton, TopHeading } from '@parts';
-import core, { Collection, ProfileType, request } from '@core';
+import { Avatar, Icon, IconButton, Row, SidePadding, SmallButton, Spacer, StatusBox, Text } from '@parts';
+import { Collection, ProfileType, snow2time } from '@core';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
 
@@ -23,17 +23,17 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 
-	const [Colls, setColls] = useState<Collection[]>();
+	// const [Colls, setColls] = useState<Collection[]>();
 
-	const loadProfile = async () => {
-		if (route.params.mine) {
-			const m = await request<Collection[]>('get', '/collection');
-			setColls(m);
-		} else {
-			const p = await request<ProfileType>('get', '/profile/' + profile.username);
-			setColls(p.collections);
-		}
-	};
+	// const loadProfile = async () => {
+	// 	if (route.params.mine) {
+	// 		const m = await request<Collection[]>('get', '/collection');
+	// 		setColls(m);
+	// 	} else {
+	// 		const p = await request<ProfileType>('get', '/profile/' + profile.username);
+	// 		setColls(p.collections);
+	// 	}
+	// };
 
 	// Load profile
 	React.useEffect(() => {
@@ -71,51 +71,41 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 						{profile.username}
 					</Text>
 				</Row>
-				<Spacer size={10} />
-				<Text>{profile.bio}</Text>
+				<Spacer size={5} />
+				{profile?.status && (
+					<Row>
+						<StatusBox {...profile.status} />
+						{new Date(new Date().getTime() - 24 * 60 * 60 * 1000) < snow2time(profile.status.id) && (
+							<NewBadge>
+								<Text size={10} color={theme.background} weight="bold">
+									new
+								</Text>
+							</NewBadge>
+						)}
+					</Row>
+				)}
+				{profile?.bio && <Text style={{ paddingTop: 10 }}>{profile.bio}</Text>}
+				{profile?.location && (
+					<>
+						<Spacer size={10} />
+						<Row>
+							<Icon name="map-marker" size={18} color={theme.step3} />
+							<Spacer size={5} />
+							<Text size={15} color={theme.textFade} weight="medium"  >{profile.location}</Text>
+						</Row>
+					</>
+				)}
 			</SidePadding>
 		</ProfileBody>
 	);
-
-	// return (
-	// 	<ProfileBody>
-	// 		<Spacer size={10} />
-
-	// 		<Row style={{ padding: 20 }}>
-	// 			<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.profile.account_id}/${route.params.profile.avatar}`} size={100} />
-	// 			<Spacer size={20} />
-	// 			<Row style={{ flex: 1 }}>
-	// 				<Text color={theme.textFade} size={23} weight="bold">
-	// 					@
-	// 				</Text>
-	// 				<Spacer size={2} />
-	// 				<Text weight="bold" size={24}>
-	// 					{profile.username}
-	// 				</Text>
-	// 				<Fill />
-	// 				<View style={{ justifyContent: 'flex-start' }}>
-	// 					<IconButton name="plus" color={theme.text} size={25} style={{ transform: [{ rotate: '45deg' }] }} noBackground onPress={() => nav.goBack()} />
-	// 					<Fill />
-	// 				</View>
-	// 			</Row>
-	// 		</Row>
-
-	// 		<SidePadding>
-	// 			<Spacer size={10} />
-	// 			{/* <Text color="black">{JSON.stringify(profile)}</Text> */}
-	// 			{profile?.bio && (
-	// 				<BioBox>
-	// 					<Text>{profile.bio}</Text>
-	// 				</BioBox>
-	// 			)}
-
-	// 			<Spacer size={35} />
-	// 			{/* <Text color="black">{JSON.stringify(ProfileData) || -1}</Text> */}
-	// 		</SidePadding>
-	// 		{/* {!!Colls?.length && <Collections data={Colls} />} */}
-	// 	</ProfileBody>
-	// );
 };
+
+const NewBadge = styled.View`
+	background-color: #f16464;
+	margin-left: 5px;
+	border-radius: 20px;
+	padding: 2px 6px;
+`;
 
 const ProfileBody = styled.View`
 	background-color: ${({ theme }) => theme.background};
@@ -143,16 +133,7 @@ const FloatingControlBar = styled(Row)`
 	width: 100%;
 `;
 
-const CardHeader = styled.View`
-	background-color: ${({ theme }) => theme.step1};
-	padding: 15px 20px;
-`;
 
-const BioBox = styled.View`
-	/* padding: 10px; */
-	border-radius: 6px;
-	/* background-color: ${({ theme }) => theme.step1}; */
-`;
 
 const Collections: React.FC<{ data: Collection[] }> = (p) => {
 	const theme = useTheme();

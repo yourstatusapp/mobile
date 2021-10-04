@@ -1,5 +1,5 @@
 import * as React from 'react';
-import core, { LocationType, niceTime } from '@core';
+import core, { LocationType, niceTime, snow2time } from '@core';
 import { Avatar, Fill, Spacer, Row, StatusBox, Text, Icon } from '@parts';
 import { TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
@@ -32,16 +32,9 @@ export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
 				<Avatar
 					src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`}
 					onPress={() => (stories.length ? nav.navigate('Stories', { ...item, stories }) : nav.navigate('Profile', { profile: item }))}
-					// onLongPress={() => !stories.length && nav.navigate('Profile', { profile: item })}
+					onLongPress={() => stories.length && nav.navigate('Profile', { profile: item })}
 					storie_availible={!!stories.length}
 				/>
-				{/* {stories[0] && (
-					<NewStorieAlert onPress={() => nav.navigate('Stories', { ...item, stories })}>
-						<Text size={11} weight="semi-bold" color={theme.text}>
-							NEW
-						</Text>
-					</NewStorieAlert>
-				)} */}
 
 				<Fill />
 			</View>
@@ -52,32 +45,19 @@ export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
 						{item.username}
 					</Text>
 				</TouchableOpacity>
-				{item?.location && <LocationBox location={item.location} />}
 
 				{item?.status && (
 					<View style={{ flex: 1, justifyContent: 'flex-start' }}>
 						<Spacer size={5} />
 						<StatusContainer>
 							<StatusBox {...item.status} />
-							<Spacer size={7} />
-							{item.status.taps !== 0 && (
-								<PopTagCounter>
-									<Text weight="semi-bold" size={14} color={theme.background}>
-										{item.status.taps}
+							{new Date(new Date().getTime() - 24 * 60 * 60 * 1000) < snow2time(item.status.id) && (
+								<NewBadge>
+									<Text size={10} color={theme.background} weight="bold">
+										new
 									</Text>
-								</PopTagCounter>
+								</NewBadge>
 							)}
-							{/* <Spacer size={5} />
-							<NewBox>
-								<Text weight="bold" size={12} color={theme.background}>
-									NEW
-								</Text>
-							</NewBox> */}
-							{/* {item.status.data?.title?.length > 20 && <Spacer size={5} />}
-							<Text size={12} color={theme.textFade} weight="medium">
-								{item.status.data?.title?.length < 20 && <Spacer size={8} />}
-								{niceTime(item?.status.id)} ago
-							</Text> */}
 						</StatusContainer>
 					</View>
 				)}
@@ -94,6 +74,13 @@ const FriendItemEntryBody = styled.View`
 	border-bottom-width: 1px;
 `;
 
+const NewBadge = styled.View`
+	background-color: #f16464;
+	margin-left: 5px;
+	border-radius: 20px;
+	padding: 2px 6px;
+`;
+
 const ShowStoriesButton = styled(TouchableOpacity)`
 	padding: 2px 6px;
 	border-radius: 5px;
@@ -107,9 +94,16 @@ const StatusContainer = styled.View`
 `;
 
 const PopTagCounter = styled.View`
-	background-color: ${({ theme }) => theme.primary};
+	/* background-color: ${({ theme }) => theme.primary}; */
 	padding: 2px 7px;
-	border-radius: 50px;
+	background-color: red;
+	border-top-right-radius: 12;
+	height: 20px;
+	position: relative;
+	right: 10px;
+	z-index: 5;
+	border-bottom-right-radius: 12;
+	/* border-radius: 50px; */
 `;
 
 const NewStorieAlert = styled(TouchableOpacity)`

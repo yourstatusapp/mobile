@@ -1,5 +1,5 @@
 import core from '@core';
-import { Avatar, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
+import { Avatar, Fill, IconButton, SmallButton, Spacer, Text, TextButton } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
@@ -33,6 +33,7 @@ export const StoriesView: React.FC<StoriesProps> = (props) => {
 	};
 
 	const [Loading, setLoading] = useState<boolean>(false);
+
 	const deleteStorie = async (storie_id: string) => {
 		if (Loading) return;
 		setLoading(true);
@@ -51,6 +52,14 @@ export const StoriesView: React.FC<StoriesProps> = (props) => {
 					source={{ uri: `https://cdn.yourstatus.app/stories/${route.params.account_id}/${route.params.stories[ImageIndex]?.picture}`, cache: 'immutable' }}
 				/>
 			</TouchableOpacity>
+
+			{route.params.stories[ImageIndex + 1]?.id && (
+				<StorieImage
+					resizeMode="contain"
+					source={{ uri: `https://cdn.yourstatus.app/stories/${route.params.account_id}/${route.params.stories[ImageIndex + 1]?.picture}`, cache: 'immutable' }}
+					style={{ display: 'none' }}
+				/>
+			)}
 			<FloatingArea>
 				<Avatar src={`https://cdn.yourstatus.app/profile/${route.params.account_id}/${route.params.avatar}`} size={35} />
 				<Spacer size={10} />
@@ -64,7 +73,7 @@ export const StoriesView: React.FC<StoriesProps> = (props) => {
 			</FloatingArea>
 			{my_account.account_id === route.params.account_id && (
 				<BottomArea>
-					<TextButton color="#e6554b" text="delete" />
+					<SmallButton text="delete" backgroundColor="#e6554b" textColor="white" onPress={() => deleteStorie(route.params.stories[ImageIndex].id)} />
 					{/* <TouchableOpacity onPress={() => deleteStorie(route.params.stories[ImageIndex].id)} activeOpacity={0.8} style={{ marginBottom: 10, marginLeft: 10 }}>
 						<Text color="#e6554b">delete</Text>
 					</TouchableOpacity> */}
@@ -101,7 +110,8 @@ const BottomArea = styled.View`
 	align-items: center;
 	position: absolute;
 	width: 100%;
-	bottom: 20;
+	bottom: 25;
+	left: 10;
 	z-index: 50;
 	padding: 8px 10px;
 `;

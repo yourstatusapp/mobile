@@ -1,15 +1,13 @@
-import { FriendItemEntry, LocationBox } from './parts/FriendItemEntry';
+import { FriendItemEntry } from './parts/FriendItemEntry';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Avatar, Fill, Header, Icon, IconButton, Row, Spacer, StatusBox, TabbarContentContainer, Text, TextButton } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
-import core, { LocationType, request, StorieType } from '@core';
+import core, { request, StorieType } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
 import { useState } from 'react';
-import FastImage from 'react-native-fast-image';
-import { ScrollView } from 'react-native-gesture-handler';
 
 interface FriendsProps {}
 
@@ -131,6 +129,7 @@ const NewBox = styled.View`
 `;
 
 const MyContent: React.FC = (p) => {
+	const theme = useTheme();
 	const currentLoc = usePulse(core.account.collection.locations.selectors.current_here);
 	const savedLocations = usePulse(core.account.state.saved_locations);
 	const my_status = usePulse(core.status.state.my_status);
@@ -145,22 +144,44 @@ const MyContent: React.FC = (p) => {
 
 	return (
 		<MycontentContainer>
-			<Avatar
-				src={`https://cdn.yourstatus.app/profile/${myAccount.account_id}/${myAccount.avatar}`}
-				size={50}
-				storie_availible={!!my_stories?.length}
-				onPress={() => (my_stories.length ? nav.navigate('Stories', { ...myAccount, stories: my_stories }) : nav.navigate('Profile', { profile: myAccount }))}
-			/>
+			{my_stories?.length && (
+				<Avatar
+					src={`https://cdn.yourstatus.app/profile/${myAccount.account_id}/${myAccount.avatar}`}
+					size={50}
+					storie_availible={!!my_stories?.length}
+					onPress={() => (my_stories.length ? nav.navigate('Stories', { ...myAccount, stories: my_stories }) : nav.navigate('Profile', { profile: myAccount }))}
+				/>
+			)}
+
+			{my_status && (
+				<View style={{ flex: 1, paddingLeft: !my_stories?.length ? 0 : 12 }}>
+					<StatusBox {...my_status} disableTap={true} />
+					<Spacer size={5} />
+					<Row>
+						<Text size={14} color={theme.textFade}>
+							Tapped {my_status.taps} time{my_status.taps > 0 ? '' : "'s"}
+						</Text>
+					</Row>
+				</View>
+			)}
 		</MycontentContainer>
 	);
 };
 
 const MycontentContainer = styled.View`
+	flex-direction: row;
+	align-items: center;
 	background-color: ${({ theme }) => theme.step0};
 	border-bottom-color: ${({ theme }) => theme.step2};
 	border-bottom-width: 1px;
 	padding-horizontal: 15px;
 	padding-vertical: 10px;
+	/* padding-top: 2px; */
+`;
+
+const TapsTextArea = styled.View`
+	background-color: yellow;
+	padding: 2px;
 `;
 
 const NewFriendRequestBox = styled(TouchableOpacity).attrs({ activeOpacity: 0.5 })`

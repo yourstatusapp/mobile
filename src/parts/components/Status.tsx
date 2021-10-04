@@ -6,16 +6,19 @@ import styled, { useTheme } from 'styled-components/native';
 import Animated, { useSharedValue, useAnimatedStyle, Easing, withTiming } from 'react-native-reanimated';
 import { useState } from 'react';
 
-interface StatusBoxProps extends Status {}
+interface StatusBoxProps extends Status {
+	disableTap?: boolean;
+}
 
 export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 	const offset = useSharedValue(1);
-	const { data } = p;
+	const { data, disableTap } = p;
 	const theme = useTheme();
 
 	const [Loading, setLoading] = useState(false);
 
 	const tapStatus = async (id: string) => {
+		if (disableTap === true) return;
 		if (p.taped === true) {
 			return;
 		}
@@ -60,7 +63,7 @@ export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 
 	return (
 		<Animated.View style={[animatedStyles]}>
-			<StatusBoxBody onPress={() => tapStatus(p.id)} activeOpacity={0.8} disabled={p?.taped === true}>
+			<StatusBoxBody onPress={() => tapStatus(p.id)} activeOpacity={0.8} disabled={disableTap || p?.taped === true}>
 				<Box>
 					<Text size={13} color={theme.text} weight="semi-bold">
 						{data?.title || 'none'}
@@ -73,6 +76,7 @@ export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 
 const StatusBoxBody = styled(TouchableOpacity)`
 	align-items: flex-start;
+	z-index: 10;
 `;
 
 const Box = styled.View`

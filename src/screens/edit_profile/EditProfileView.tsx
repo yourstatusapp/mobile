@@ -21,7 +21,7 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 	const [Loaded, setLoaded] = useState(false);
 	const [Location, setLocation] = useState('');
 	const [Birthday, setBirthday] = useState<Date>();
-	const [Bio, setBio] = useState('');
+	const [Bio, setBio] = useState<string | null>(null);
 
 	const usernameCheck = async (username: string) => {
 		if (!valueChanged(profile.username, Username)) {
@@ -59,7 +59,10 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 
 	// Check if the value has been changed for editing account and profile
 	const valueChanged = (original: string, changed: string): boolean => {
-		return (original === null ? '' : original) !== changed;
+		if (changed === null) return false;
+		if (original === changed) return false;
+		return true;
+		// if (changed === '' && original === '') return (original === null ? '' : original) !== changed;
 	};
 
 	const onDateChange = (v: Date) => {
@@ -126,12 +129,14 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 						Bio
 					</Text>
 					<Spacer size={10} />
+					<Text>1, {profile.bio}</Text>
+					<Text>2, {Bio}</Text>
 					<BioInput
 						placeholder="Tell something about yourself"
 						multiline={true}
 						defaultValue={profile.bio}
-						onChangeText={setBio}
-						style={{ borderColor: valueChanged(profile.bio, Bio) ? '#54A7FD' : theme.step1, borderWidth: 2 }}
+						onChangeText={(v) => setBio(v)}
+						style={{ borderColor: valueChanged(profile.bio, Bio || '') ? '#54A7FD' : theme.step1, borderWidth: 2 }}
 						autoCompleteType="off"
 						autoCorrect={false}
 						autoCapitalize="none"

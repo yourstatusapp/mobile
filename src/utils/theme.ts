@@ -18,7 +18,6 @@ interface InteralThemeOther {
 export type Themes = 'light' | 'dark';
 
 const Other = {
-	// primary: '#707BDC',
 	primary: '#488DEB',
 };
 

@@ -15,6 +15,7 @@ export const AccountView: React.FC<AccountProps> = (props) => {
 	const theme = useTheme();
 	const acc = usePulse(core.account.state.ACCOUNT);
 	const profile: any = usePulse(core.profile.state.PROFILE);
+	const my_status = usePulse(core.status.state.my_status);
 
 	const selectImage = async () => {
 		const img = await ImagePicker.openPicker({

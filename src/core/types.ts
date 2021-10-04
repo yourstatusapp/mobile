@@ -9,10 +9,10 @@ export interface ProfileType {
 	gender: string;
 	avatar: string;
 	bio: string;
+	location: string;
 	date_of_birth: string;
 	collections?: Collection[];
 	status?: Status;
-	location?: LocationType;
 }
 
 export interface LocationType {
@@ -75,8 +75,8 @@ export interface Status {
 	account_id: string;
 	expires_at: string;
 	data: any;
-	taped?: boolean;
-	taps?: number;
+	taps: number;
+	taped: boolean;
 }
 
 export interface Collection {
