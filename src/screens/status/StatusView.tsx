@@ -117,14 +117,16 @@ const SelectionScreen: React.FC = () => {
 			<Text center color={theme.textFade}>
 				You can choose a status how you want to share your friends what you're doing or you want to do.
 			</Text>
+
 			<Spacer size={20} />
-			{myStatus?.id && (
+
+			
+			{/* {myStatus?.id && (
 				<CurrentStatus>
 					<Row>
 						<Text weight="semi-bold" size={18}>
 							Current status:
 						</Text>
-						{/* <Spacer size={5} /> */}
 						<Fill />
 
 						{myStatus?.data && <StatusBox {...myStatus} />}
@@ -138,16 +140,16 @@ const SelectionScreen: React.FC = () => {
 						<SmallButton text="End status" onPress={() => endStatus(myStatus.id || '')} textColor="#FF7878" />
 					</Row>
 				</CurrentStatus>
-			)}
+			)} */}
 
-			<FlatList
+			{/* <FlatList
 				data={buttons}
 				renderItem={renderItem}
 				numColumns={2}
 				horizontal={false}
 				columnWrapperStyle={{ justifyContent: 'space-between' }}
 				contentContainerStyle={{ paddingTop: 15 }}
-			/>
+			/> */}
 		</SidePadding>
 	);
 };

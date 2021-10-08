@@ -27,12 +27,14 @@ globalThis.core = core;
 // import * as Socket from './core/socket';
 import { destroyGeoListeners } from './utils/LocationService';
 import { useEffect } from 'react';
+import PushNotification from 'react-native-push-notification';
 // Socket;
 
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);
 
 	useEffect(() => {
+		PushNotification.setApplicationIconBadgeNumber(0);
 		return () => {
 			destroyGeoListeners;
 		};

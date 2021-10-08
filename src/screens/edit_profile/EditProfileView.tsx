@@ -41,7 +41,7 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 		// Check for changed values
 		if (valueChanged(profile.username, Username)) d.username = Username;
 		if (valueChanged(profile.location, Location)) d.location = Location;
-		if (valueChanged(profile.bio, Bio)) d.bio = Bio;
+		if (valueChanged(profile.bio, Bio || '')) d.bio = Bio;
 		// if (valueChanged(profile.date_of_birth, Bio)) d.date_of_birth = Birthday;
 
 		// if (valueChanged(profile.date_of_birth, Birthday?.toISOString() || '')) d.date_of_birth = Birthday?.toISOString();
@@ -59,7 +59,6 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 
 	// Check if the value has been changed for editing account and profile
 	const valueChanged = (original: string, changed: string): boolean => {
-		if (changed === null) return false;
 		if (original === changed) return false;
 		return true;
 		// if (changed === '' && original === '') return (original === null ? '' : original) !== changed;
@@ -129,17 +128,12 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 						Bio
 					</Text>
 					<Spacer size={10} />
-					<Text>1, {profile.bio}</Text>
-					<Text>2, {Bio}</Text>
 					<BioInput
 						placeholder="Tell something about yourself"
 						multiline={true}
 						defaultValue={profile.bio}
 						onChangeText={(v) => setBio(v)}
 						style={{ borderColor: valueChanged(profile.bio, Bio || '') ? '#54A7FD' : theme.step1, borderWidth: 2 }}
-						autoCompleteType="off"
-						autoCorrect={false}
-						autoCapitalize="none"
 					/>
 
 					<Spacer size={20} />

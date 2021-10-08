@@ -1,6 +1,6 @@
 // import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import core, { request } from '@core';
-import PushNotification from 'react-native-push-notification';
+import PushNotification, { ReceivedNotification } from 'react-native-push-notification';
 import { app } from '../core/modules';
 
 export const configureNotifications = () => {
@@ -31,13 +31,13 @@ export const configureNotifications = () => {
 			console.log('REGISTER ERROR => ', error);
 		},
 
-		onAction: async (n) => {
-			await request('post', `/notifications/${n.data.payload.id}/open`);
+		onAction: async (n: ReceivedNotification) => {
+			await request('post', `/notifications/${n.data.id}/open`);
 		},
 
-		onNotification: async (notification) => {
-			console.log('NOTIFICATION => ', notification);
-		},
+		// onNotification: async (notification: ReceivedNotification) => {
+		// 	console.log('NOTIFICATION => ', notification);
+		// },
 
 		// IOS ONLY
 		permissions: {

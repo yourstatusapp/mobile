@@ -1,8 +1,5 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - CocoaLumberjack (3.7.2):
-    - CocoaLumberjack/Core (= 3.7.2)
-  - CocoaLumberjack/Core (3.7.2)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.65.1)
   - FBReactNativeSpec (0.65.1):
@@ -331,9 +328,6 @@ PODS:
     - React-perflogger (= 0.65.1)
   - RNBackgroundFetch (4.0.3):
     - React-Core
-  - RNBackgroundGeolocation (4.3.0):
-    - CocoaLumberjack (~> 3.7.2)
-    - React-Core
   - RNCAsyncStorage (1.15.8):
     - React-Core
   - RNCMaskedView (0.1.11):
@@ -445,7 +439,6 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
-  - RNBackgroundGeolocation (from `../node_modules/react-native-background-geolocation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
@@ -462,7 +455,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
-    - CocoaLumberjack
     - fmt
     - hermes-engine
     - libevent
@@ -550,8 +542,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNBackgroundFetch:
     :path: "../node_modules/react-native-background-fetch"
-  RNBackgroundGeolocation:
-    :path: "../node_modules/react-native-background-geolocation"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
@@ -579,7 +569,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: 33c82491102f20ecddb6c6a2c273696ace3191e0
   FBReactNativeSpec: df8f81d2a7541ee6755a047b398a5cb5a72acd0e
@@ -624,7 +613,6 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 85187f19dd9c47a7c102f9994f9d14e4dc2110de
   ReactCommon: eafed38eec7b591c31751bfa7494801618460459
   RNBackgroundFetch: 182d0ff90747bacbb3d4e168ecc2194442d0a2d3
-  RNBackgroundGeolocation: 58f32f1cc6527843a324e07bf931208f794d4e48
   RNCAsyncStorage: e8b8d6320a0dd90eb610fb0d0b1ef90596697c69
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNCPicker: f7a40b21b915b7a187624d52f52b7bc2f73ea413
@@ -641,6 +629,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
 
-PODFILE CHECKSUM: e58a3f4fe6cbd7f04ae583855a77d5f46df07930
+PODFILE CHECKSUM: c7bf1537723f2edf94296b96018ea17615c0cec6
 
 COCOAPODS: 1.11.2

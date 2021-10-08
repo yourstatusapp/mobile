@@ -4,7 +4,6 @@ import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 import styled from 'styled-components/native';
 import core, { GetAccountType, request } from '@core';
 import { Spacer, Text } from '@parts';
-import { startService } from './ForeGroundService';
 
 interface PreloaderProps {
 	loaded: () => void;
@@ -27,11 +26,15 @@ export const Preloader: React.FC<PreloaderProps> = (props) => {
 
 		const res = await request<GetAccountType>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
-		
 
 		core.account.state.ACCOUNT.set(res.account);
 		core.profile.state.PROFILE.set(res.profile);
-		core.status.state.my_status.set(res.status);
+		if (res?.status === null) {
+			core.status.state.my_status.reset();
+		} else {
+			core.status.state.my_status.set(res.status);
+		}
+
 		core.app.state.device_id.set(res.device.id);
 		core.account.collection.devices.collect(res.device, 'mine');
 		core.account.collection.devices.selectors.current.select(res.device.id);

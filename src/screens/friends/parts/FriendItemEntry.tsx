@@ -51,7 +51,7 @@ export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
 						<Spacer size={5} />
 						<StatusContainer>
 							<StatusBox {...item.status} />
-							{new Date(new Date().getTime() - 24 * 60 * 60 * 1000) < snow2time(item.status.id) && (
+							{!item.status.taped && new Date(new Date().getTime() - 24 * 60 * 60 * 1000) < snow2time(item.status.id) && (
 								<NewBadge>
 									<Text size={10} color={theme.background} weight="bold">
 										new

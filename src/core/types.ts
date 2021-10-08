@@ -76,7 +76,7 @@ export interface Status {
 	expires_at: string;
 	data: any;
 	taps: number;
-	taped: boolean;
+	taped?: boolean;
 }
 
 export interface Collection {
@@ -120,6 +120,8 @@ export interface GetAccountType {
 			title: string;
 		};
 		expires_at: null;
+		taps: number;
+		taped?: boolean;
 	};
 	device: DeviceType;
 	locations?: LocationType;

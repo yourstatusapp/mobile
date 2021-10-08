@@ -5,9 +5,9 @@ platform :ios, '11.0'
 
 target 'mobile' do
 
-  if [ "${CONFIGURATION}" == "Debug" ]; then
-    export SKIP_BUNDLING=true
-  fi
+  # if [ "${CONFIGURATION}" == "Debug" ]; then
+  #   export SKIP_BUNDLING=true
+  # end
    
   config = use_native_modules!
 
@@ -31,4 +31,5 @@ target 'mobile' do
   post_install do |installer|
     react_native_post_install(installer)
   end
+
 end
