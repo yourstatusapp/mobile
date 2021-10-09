@@ -56,23 +56,27 @@ export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 
 	const animatedStyles = useAnimatedStyle(() => {
 		return {
-			opacity: p.taped ? 0.6 : 1,
+			// opacity: p.taped ? 0.6 : 1,
 			transform: [{ scale: offset.value }],
 		};
 	});
 
+	const onPressAction = () => tapStatus(p.id);
+
 	return (
-		<Animated.View style={[animatedStyles]}>
-			<StatusBoxBody onPress={() => tapStatus(p.id)} activeOpacity={0.8} disabled={disableTap || p?.taped === true}>
+		<AnimatedLayer style={[animatedStyles]}>
+			<StatusBoxBody onPress={onPressAction} activeOpacity={0.8} disabled={disableTap || p?.taped === true}>
 				<Box>
 					<Text size={13} color={theme.text} weight="semi-bold">
 						{data?.title || 'none'}
 					</Text>
 				</Box>
 			</StatusBoxBody>
-		</Animated.View>
+		</AnimatedLayer>
 	);
 };
+
+const AnimatedLayer = styled(Animated.View)``;
 
 const StatusBoxBody = styled(TouchableOpacity)`
 	align-items: flex-start;
@@ -80,7 +84,7 @@ const StatusBoxBody = styled(TouchableOpacity)`
 `;
 
 const Box = styled.View`
-	border: solid 1px ${({ theme }) => theme.text};
+	border: solid 1.5px ${({ theme }) => theme.text};
 	border-radius: 16px;
 	padding: 3px 9px;
 `;

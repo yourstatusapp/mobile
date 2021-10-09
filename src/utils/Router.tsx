@@ -78,7 +78,6 @@ export const Router: React.FC = () => {
 					initialRouteName={loggedIn ? 'App' : 'Auth'}
 					screenOptions={{
 						headerShown: false,
-						headerTitleStyle: { backgroundColor: theme.step2 },
 						cardStyle: { backgroundColor: theme.background },
 						cardOverlayEnabled: false,
 					}}
@@ -95,7 +94,7 @@ export const Router: React.FC = () => {
 
 const RouterBody = styled.View`
 	flex: 1;
-	background-color: ${({ theme }) => theme.step0};
+	background-color: ${({ theme }) => theme.background};
 `;
 
 // const TabsScreenWrapper = styled(SafeAreaView)`

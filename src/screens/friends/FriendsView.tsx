@@ -69,6 +69,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 		// core.storie.collection.collect(s.mine, 'mine');
 	};
 
+	const ItemSeparatorComponent = () => <FriendItemSeperator />;
 	React.useEffect(() => {
 		console.log('friends_view');
 		getFriendList();
@@ -101,6 +102,7 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 			)}
 			<FlatList
 				data={friendList}
+				ItemSeparatorComponent={ItemSeparatorComponent}
 				renderItem={(fp) => <FriendItemEntry {...fp} />}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
 				ListHeaderComponent={() => <MyContent />}
@@ -128,6 +130,14 @@ const NewBox = styled.View`
 	border-radius: 20px;
 `;
 
+const FriendItemSeperator = styled.View`
+	height: 3px;
+	width: 90%;
+	border-radius: 20px;
+	margin: 4px auto;
+	background-color: ${({ theme }) => theme.step0};
+`;
+
 const MyContent: React.FC = (p) => {
 	const theme = useTheme();
 	const currentLoc = usePulse(core.account.collection.locations.selectors.current_here);
@@ -138,13 +148,13 @@ const MyContent: React.FC = (p) => {
 	const nav = useNavigation();
 
 	// If no data, than just hide it
-	if (!my_stories.length) {
+	if (!my_stories?.length && !my_status?.id) {
 		return <></>;
 	}
 
 	return (
 		<MycontentContainer>
-			{my_stories?.length && (
+			{!!my_stories?.length && (
 				<Avatar
 					src={`https://cdn.yourstatus.app/profile/${myAccount.account_id}/${myAccount.avatar}`}
 					size={50}
@@ -152,16 +162,15 @@ const MyContent: React.FC = (p) => {
 					onPress={() => (my_stories.length ? nav.navigate('Stories', { ...myAccount, stories: my_stories }) : nav.navigate('Profile', { profile: myAccount }))}
 				/>
 			)}
-
-			{my_status && (
+			{my_status?.id && (
 				<View style={{ flex: 1, paddingLeft: !my_stories?.length ? 0 : 12 }}>
 					<StatusBox {...my_status} disableTap={true} />
-					<Spacer size={5} />
+					{/* <Spacer size={5} />
 					<Row>
 						<Text size={14} color={theme.textFade}>
 							Tapped {my_status.taps} time{my_status.taps > 0 ? '' : "'s"}
 						</Text>
-					</Row>
+					</Row> */}
 				</View>
 			)}
 		</MycontentContainer>
@@ -172,8 +181,8 @@ const MycontentContainer = styled.View`
 	flex-direction: row;
 	align-items: center;
 	background-color: ${({ theme }) => theme.step0};
-	border-bottom-color: ${({ theme }) => theme.step2};
-	border-bottom-width: 1px;
+	border-bottom-color: ${({ theme }) => theme.step1};
+	/* border-bottom-width: 3px; */
 	padding-horizontal: 15px;
 	padding-vertical: 10px;
 	/* padding-top: 2px; */

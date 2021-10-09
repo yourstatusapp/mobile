@@ -21,7 +21,7 @@ import { FriendsView } from '../screens/friends/FriendsView';
 import { ProfileView } from '../screens/profile/ProfileView';
 import { SettingsView } from '../screens/settings/SettingsView';
 import { BrowserView } from '../screens/browser/BrowserView';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import styled from 'styled-components/native';
 
 const Tab = createBottomTabNavigator();
@@ -36,7 +36,7 @@ export const Tabs: React.FC = () => {
 	}, []);
 
 	return (
-		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} tabBarOptions={{ style: { opacity: 0 } }}>
+		<Tab.Navigator initialRouteName="friends" sceneContainerStyle={sceneContainerStyle} tabBar={(props) => <CustomNavBar {...props} />} screenOptions={{ headerShown: false }}>
 			{/* <Tab.Screen name="messages" component={MessagesView} /> */}
 			<Tab.Screen name="friends" component={FriendsView} />
 			{/* <Tab.Screen name="discovery" component={DiscoveryView} /> */}
@@ -70,12 +70,11 @@ export const AppStacks: React.FC = () => {
 				...TransitionPresets.ModalPresentationIOS,
 				headerShown: false,
 				gestureEnabled: true,
-				gestureResponseDistance: { vertical: 150 },
-				cardOverlayEnabled: true,
-				cardStyle: { backgroundColor: theme.step0 },
+				gestureResponseDistance: 150,
+				// gestureResponseDistance: { vertical: 150 },
+				// cardOverlayEnabled: true,
+				cardStyle: { backgroundColor: theme.background },
 			}}
-			mode="modal"
-			headerMode="float"
 		>
 			{routes?.map((v, i) => (
 				<AppStack.Screen key={i} name={v.name} component={v.component} />

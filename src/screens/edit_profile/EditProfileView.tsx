@@ -4,8 +4,9 @@ import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView } from 'react-native';
+import { ActivityIndicator, Keyboard, KeyboardAvoidingView } from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 
 interface EditProfileProps {}
@@ -86,58 +87,59 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 	return (
 		<EditProfileBody>
 			<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={40}>
-				<TopHeading text="Edit profile" />
-				<SidePadding>
-					<Spacer size={20} />
-					<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
-						Username
-					</Text>
-					<Spacer size={10} />
-					<InputCont>
-						<UsernameField
-							defaultValue={profile.username}
-							onChangeText={setUsername}
-							loaded={Loaded}
-							error={!Available}
-							changed={valueChanged(profile.username, Username)}
+				<TouchableWithoutFeedback style={{ flex: 1 }} containerStyle={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
+					<TopHeading text="Edit profile" />
+					<SidePadding>
+						<Spacer size={20} />
+						<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
+							Username
+						</Text>
+						<Spacer size={10} />
+						<InputCont>
+							<UsernameField
+								defaultValue={profile.username}
+								onChangeText={setUsername}
+								loaded={Loaded}
+								error={!Available}
+								changed={valueChanged(profile.username, Username)}
+								autoCompleteType="off"
+								autoCorrect={false}
+								autoCapitalize="none"
+								usernameValue={Username}
+							/>
+							{!Loaded && <ActivityIndicator style={{ position: 'absolute', right: 20 }} />}
+						</InputCont>
+
+						<Spacer size={20} />
+						<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
+							Location
+						</Text>
+						<Spacer size={10} />
+						<RegularInput
+							defaultValue={profile.location}
+							onChangeText={setLocation}
+							style={{ borderColor: valueChanged(profile.location, Location) ? '#54A7FD' : theme.step1, borderStyle: 'solid', borderWidth: 2 }}
+							placeholder="Canada"
 							autoCompleteType="off"
 							autoCorrect={false}
 							autoCapitalize="none"
-							usernameValue={Username}
 						/>
-						{!Loaded && <ActivityIndicator style={{ position: 'absolute', right: 20 }} />}
-					</InputCont>
 
-					<Spacer size={20} />
-					<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
-						Location
-					</Text>
-					<Spacer size={10} />
-					<RegularInput
-						defaultValue={profile.location}
-						onChangeText={setLocation}
-						style={{ borderColor: valueChanged(profile.location, Location) ? '#54A7FD' : theme.step1, borderStyle: 'solid', borderWidth: 2 }}
-						placeholder="Canada"
-						autoCompleteType="off"
-						autoCorrect={false}
-						autoCapitalize="none"
-					/>
+						<Spacer size={20} />
+						<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
+							Bio
+						</Text>
+						<Spacer size={10} />
+						<BioInput
+							placeholder="Tell something about yourself"
+							multiline={true}
+							defaultValue={profile.bio}
+							onChangeText={(v) => setBio(v)}
+							style={{ borderColor: valueChanged(profile.bio, Bio || '') ? '#54A7FD' : theme.step1, borderWidth: 2 }}
+						/>
 
-					<Spacer size={20} />
-					<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
-						Bio
-					</Text>
-					<Spacer size={10} />
-					<BioInput
-						placeholder="Tell something about yourself"
-						multiline={true}
-						defaultValue={profile.bio}
-						onChangeText={(v) => setBio(v)}
-						style={{ borderColor: valueChanged(profile.bio, Bio || '') ? '#54A7FD' : theme.step1, borderWidth: 2 }}
-					/>
-
-					<Spacer size={20} />
-					{/* <Row>
+						<Spacer size={20} />
+						{/* <Row>
 						<Text size={18} weight="semi-bold" style={{ paddingLeft: 10 }}>
 							Birthday
 						</Text>
@@ -149,10 +151,11 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 							<DatePicker date={Birthday} textColor={theme.text} mode="date" onDateChange={onDateChange} />
 						</Row>
 					)} */}
-					<Fill />
-					<WideButton text="save" onPress={() => saveInformation()} />
-					<Spacer size={30} />
-				</SidePadding>
+						<Fill />
+						<WideButton text="save" onPress={() => saveInformation()} />
+						<Spacer size={30} />
+					</SidePadding>
+				</TouchableWithoutFeedback>
 			</KeyboardAvoidingView>
 		</EditProfileBody>
 	);

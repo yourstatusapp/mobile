@@ -70,8 +70,8 @@ const FriendItemEntryBody = styled.View`
 	flex-direction: row;
 	align-items: center;
 	padding: 10px 15px;
-	border-bottom-color: ${({ theme }) => theme.step1};
-	border-bottom-width: 1px;
+	/* border-bottom-color: ${({ theme }) => theme.step1}; */
+	/* border-bottom-width: 1px; */
 `;
 
 const NewBadge = styled.View`

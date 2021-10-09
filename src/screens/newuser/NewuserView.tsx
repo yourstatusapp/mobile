@@ -4,7 +4,8 @@ import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
 import { useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Linking } from 'react-native';
+import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Linking, View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 
 interface NewuserProps {}
@@ -48,19 +49,37 @@ export const NewuserView: React.FC<NewuserProps> = (props) => {
 	}, [Username]);
 
 	return (
-		<NewuserBody>
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={40}>
+		<KeyboardAvoidingView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }} behavior="height" keyboardVerticalOffset={50}>
+			<TouchableWithoutFeedback style={{ flex: 1 }} containerStyle={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
 				<SidePadding>
 					<Spacer size={20} />
 					<Text size={28} weight="bold" color={theme.primary}>
 						Welcome to YourStatus
 					</Text>
-					<Spacer size={10} />
-					<Text color={theme.textFade} weight="semi-bold">
+					<Spacer size={5} />
+					<Text color={theme.textFade} size={14}>
 						Thank you for using the beta version of this app
 					</Text>
 
-					<Spacer size={80} />
+					<Spacer size={15} />
+					<FloatingBox>
+						<Text color="#FF6767" weight="semi-bold" size={16}>
+							This app is still in beta
+						</Text>
+						<Spacer size={10} />
+						<Text size={14} weight="semi-bold" color={theme.textFade}>
+							For future updates follow @yourstatusapp on Twitter
+						</Text>
+						<Spacer size={30} />
+						<Row>
+							<IconButton name="twitter" color="#64bdf1" backgroundColor={theme.step2} size={25} onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
+							<Spacer size={10} />
+							<IconButton name="discord" color="#404FED" size={25} backgroundColor={theme.step2} onPress={() => Linking.openURL('https://discord.gg/wCFdkbAdPA')} />
+						</Row>
+					</FloatingBox>
+
+					<Spacer size={40} />
+
 					<Text size={20} weight="semi-bold" style={{ paddingLeft: 8 }}>
 						Username
 					</Text>
@@ -79,27 +98,13 @@ export const NewuserView: React.FC<NewuserProps> = (props) => {
 						{!Loaded && <ActivityIndicator style={{ position: 'absolute', right: 20 }} />}
 					</InputCont>
 
-					<Spacer size={15} />
-					<FloatingBox>
-						<Text color="#FF6767" weight="bold" size={14}>
-							This is not a final version of the app, parts of the app will change over time and optimized over time.
-						</Text>
-						<Spacer size={10} />
-						<Text color="black">For future updates follow @yourstatusapp on Twitter</Text>
-						<Spacer size={30} />
-						<Row>
-							<IconButton name="twitter" color="#64bdf1" backgroundColor={theme.background} size={25} onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')} />
-							<Spacer size={10} />
-							<IconButton name="discord" color="#404FED" size={25} backgroundColor={theme.background} onPress={() => Linking.openURL('https://discord.gg/wCFdkbAdPA')} />
-						</Row>
-					</FloatingBox>
-
+					{/* <Spacer size={10} /> */}
 					<Fill />
 					<WideButton text="Updates and continue" disabled={!Username} onPress={() => saveInformation()} />
-					<Spacer size={30} />
+					<Spacer size={25} />
 				</SidePadding>
-			</KeyboardAvoidingView>
-		</NewuserBody>
+			</TouchableWithoutFeedback>
+		</KeyboardAvoidingView>
 	);
 };
 
@@ -120,6 +125,7 @@ const FloatingBox = styled.View`
 	/* background-color: ${({ theme }) => theme.step0}; */
 	padding: 15px;
 	border-radius: 15px;
-	border: solid 1px #ffa4a4;
-	background-color: #ffe6e6;
+	border: solid 2px #ffa4a4;
+	/* background-color: #ffe6e6; */
+	background-color: ${({ theme }) => theme.step0};
 `;

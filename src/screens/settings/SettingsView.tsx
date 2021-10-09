@@ -3,7 +3,7 @@ import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { Linking, TouchableOpacity } from 'react-native';
+import { Linking, TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { account, app, profile, status, ui } from '../../core/modules';
 import { request } from '../../core/utils';
@@ -11,7 +11,7 @@ import { Fill, Icon, Row, Spacer, Text } from '../../parts';
 import { IconButton, TextButton } from '../../parts/Buttons';
 import DeviceInfo from 'react-native-device-info';
 import { SettingsDeveloper, SettingsAccount, SettingsApp, SettingsAppearance, SettingsConnections, SettingsNotifications } from './screens';
-import { clearGeoWatcher } from '../../utils/LocationService';
+// import { clearGeoWatcher } from '../../utils/LocationService';
 // import { CodePushState } from '../../utils/CodePush';
 
 const SettingsStack = createStackNavigator();
@@ -19,8 +19,9 @@ const SettingsStack = createStackNavigator();
 export const SettingsView: React.FC = () => {
 	const theme = useTheme();
 	const cardStyle = { backgroundColor: theme.background };
+	const screenOptions = { cardStyle, headerShown: false };
 	return (
-		<SettingsStack.Navigator headerMode="none" initialRouteName="SettingsMain" screenOptions={{ cardStyle }}>
+		<SettingsStack.Navigator initialRouteName="SettingsMain" screenOptions={screenOptions}>
 			<SettingsStack.Screen name="SettingsMain" component={SettingsMain} />
 			<SettingsStack.Screen name="SettingsAccount" component={SettingsAccount} />
 			<SettingsStack.Screen name="SettingsAppearance" component={SettingsAppearance} />
@@ -50,8 +51,9 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 	// const version = usePulse(CodePushState.VersionLabel);
 
 	const logout = async () => {
+		// @ts-ignore
 		nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
-		clearGeoWatcher();
+		// clearGeoWatcher();
 		setTimeout(() => {
 			account.state.ACCOUNT.reset();
 			account.state.saved_locations.reset();
@@ -132,6 +134,7 @@ const SettingsMain: React.FC<SettingsMainProps> = (props) => {
 const SettingsBody = styled.View`
 	flex: 1;
 	padding: 20px;
+	background-color: ${({ theme }) => theme.background};
 `;
 
 interface SettingsButtonProps {

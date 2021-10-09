@@ -57,7 +57,7 @@ interface TextButtonProps extends Partial<TextProps> {
 export const TextButton: React.FC<TextButtonProps> = (p) => {
 	const { onPress, text } = p;
 	return (
-		<TouchableOpacity onPress={onPress}>
+		<TouchableOpacity onPress={onPress} activeOpacity={1}>
 			<Text {...p}>{text}</Text>
 		</TouchableOpacity>
 	);
