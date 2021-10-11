@@ -4,9 +4,8 @@ import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Switch, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Switch, TouchableWithoutFeedback } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import styled, { useTheme } from 'styled-components/native';
 import { niceTime, request } from '../../core/utils';
 
@@ -39,7 +38,7 @@ export const StatusView: React.FC<StatusProps> = (props) => {
 			<TopHeading style={{ height: 50, backgroundColor: theme.step1 }}>
 				<TextButton text="Close" size={18} weight="semi-bold" color={theme.primary} onPress={() => nav.goBack()} />
 			</TopHeading>
-			<TouchableWithoutFeedback style={{ flex: 1 }} containerStyle={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
+			<TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
 				<Spacer size={20} />
 				<Text weight="bold" size={28} color={theme.text} center>
 					Choose your status
@@ -108,9 +107,9 @@ export const StatusView: React.FC<StatusProps> = (props) => {
 					)}
 
 					<Fill />
-					<WideButton text="Create Status" onPress={() => createStatus()} disabled={Title === ''} />
-					<Spacer size={30} />
 				</SidePadding>
+				<WideButton text="Create Status" onPress={() => createStatus()} disabled={Title === ''} />
+				<Spacer size={30} />
 			</TouchableWithoutFeedback>
 		</KeyboardAvoidingView>
 	);

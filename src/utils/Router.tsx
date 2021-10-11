@@ -73,7 +73,7 @@ export const Router: React.FC = () => {
 		<RouterBody>
 			<StatusBar barStyle={barStyle} />
 			{debug_enabled && <DebugView />}
-			<NavigationContainer>
+			<NavigationContainer >
 				<Stack.Navigator
 					initialRouteName={loggedIn ? 'App' : 'Auth'}
 					screenOptions={{
