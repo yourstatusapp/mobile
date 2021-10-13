@@ -115,7 +115,7 @@ export const SmallButton: React.FC<SmallButtonProps> = (p) => {
 const SmallButtonBody = styled(TouchableOpacity)<SmallButtonProps>`
 	background-color: ${({ theme, backgroundColor }) => backgroundColor || theme.step1};
 	align-self: center;
-	height: 31px;
+	height: 34px;
 	justify-content: center;
 	padding: 0px 10px;
 	border-radius: 10px;

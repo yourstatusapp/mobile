@@ -22,7 +22,7 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 	const [Loaded, setLoaded] = useState(false);
 	const [Location, setLocation] = useState('');
 	const [Birthday, setBirthday] = useState<Date>();
-	const [Bio, setBio] = useState<string | null>(null);
+	const [Bio, setBio] = useState<string>('');
 
 	const usernameCheck = async (username: string) => {
 		if (!valueChanged(profile.username, Username)) {
@@ -117,7 +117,7 @@ export const EditProfileView: React.FC<EditProfileProps> = (props) => {
 						<Spacer size={10} />
 						<RegularInput
 							defaultValue={profile.location}
-							onChangeText={setLocation}
+							onChangeText={(v) => core.profile.state.PROFILE.patch({ location: v })}
 							style={{ borderColor: valueChanged(profile.location, Location) ? '#54A7FD' : theme.step1, borderStyle: 'solid', borderWidth: 2 }}
 							placeholder="Canada"
 							autoCompleteType="off"

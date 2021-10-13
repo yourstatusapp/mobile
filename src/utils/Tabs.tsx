@@ -23,6 +23,7 @@ import { SettingsView } from '../screens/settings/SettingsView';
 import { BrowserView } from '../screens/browser/BrowserView';
 import { SafeAreaView, View } from 'react-native';
 import styled from 'styled-components/native';
+import { Statushistory } from '../screens/statushistory/Statushistory';
 
 const Tab = createBottomTabNavigator();
 export const AppStack = createStackNavigator();
@@ -58,6 +59,7 @@ const routes = [
 	{ name: 'NewConversation', component: Newconversation },
 	{ name: 'Browser', component: BrowserView },
 	{ name: 'newfriends', component: NewfriendsView },
+	{ name: 'StatusHistory', component: Statushistory },
 ];
 
 export const AppStacks: React.FC = () => {

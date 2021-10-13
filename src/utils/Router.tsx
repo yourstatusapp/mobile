@@ -6,7 +6,7 @@ import { AppStacks } from './Tabs';
 import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import core from '../core';
-import { SafeAreaView, StatusBar, StatusBarStyle } from 'react-native';
+import { StatusBar, StatusBarStyle } from 'react-native';
 import { Preloader } from './Preloader';
 import { Register } from '../screens/register/Register';
 import { Verify } from '../screens/verify/Verify';
@@ -22,7 +22,6 @@ import { DebugView } from '../screens/debug/DebugView';
 import { ConversationView } from '../screens/conversation/ConversationView';
 import { StatusinfoScreen } from '../screens/statusinfo/StatusinfoScreen';
 import { ProfileView } from '../screens/profile/ProfileView';
-import { Text } from '@parts';
 
 const Stack = createStackNavigator();
 
@@ -73,7 +72,7 @@ export const Router: React.FC = () => {
 		<RouterBody>
 			<StatusBar barStyle={barStyle} />
 			{debug_enabled && <DebugView />}
-			<NavigationContainer >
+			<NavigationContainer>
 				<Stack.Navigator
 					initialRouteName={loggedIn ? 'App' : 'Auth'}
 					screenOptions={{
@@ -96,8 +95,3 @@ const RouterBody = styled.View`
 	flex: 1;
 	background-color: ${({ theme }) => theme.background};
 `;
-
-// const TabsScreenWrapper = styled(SafeAreaView)`
-// 	flex: 1;
-// 	background-color: ${({ theme }) => theme.step0};
-// `;
