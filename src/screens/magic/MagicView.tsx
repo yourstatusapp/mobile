@@ -32,9 +32,13 @@ export const MagicView: React.FC<MagicProps> = (props) => {
 
 	const magicAuth = async (code: string, new_account: boolean) => {
 		const res = await request<IAccountRequestProps>('post', '/auth/magic/verify', { data: { code } });
-		
+
 		if (!res) {
-			core.app.event.notification.emit({ title: 'Failed to verify magic link', type: 'error', desc: 'Send a dm to @yourstatusapp on Twitter' });
+			core.app.event.notification.emit({
+				title: 'Failed to verify magic link',
+				success: false,
+				desc: 'Send a dm to @yourstatusapp on Twitter',
+			});
 			setTimeout(() => nav.goBack(), 1000);
 			return;
 		}
@@ -65,7 +69,7 @@ export const MagicView: React.FC<MagicProps> = (props) => {
 		<MagicBody>
 			<Spacer size={100} />
 			<Text weight="semi-bold" size={28} center>
-				Verifing your magic link
+				Verifying your magic link
 			</Text>
 			<Spacer size={40} />
 			<Row center>

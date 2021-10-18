@@ -8,6 +8,7 @@ import { useState } from 'react';
 
 interface StatusBoxProps extends Status {
 	disableTap?: boolean;
+	onPress?: () => void;
 }
 
 export const StatusBox: React.FC<StatusBoxProps> = (p) => {
@@ -65,7 +66,7 @@ export const StatusBox: React.FC<StatusBoxProps> = (p) => {
 
 	return (
 		<AnimatedLayer style={[animatedStyles]}>
-			<StatusBoxBody onPress={onPressAction} activeOpacity={0.8} disabled={disableTap || p?.taped === true}>
+			<StatusBoxBody onPress={p.onPress} activeOpacity={0.5} disabled={p.disableTap}>
 				<Box>
 					<Text size={13} color={theme.text} weight="semi-bold">
 						{data?.title || 'none'}

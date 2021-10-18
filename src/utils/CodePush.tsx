@@ -21,9 +21,9 @@ import { Alert } from 'react-native';
 // export const sync = () => {
 // 	codePush.sync(
 // 		{},
-// 		(status) => {
-// 			console.log(status);
-// 			parseStatusMessage(status);
+// 		(createstatus) => {
+// 			console.log(createstatus);
+// 			parseStatusMessage(createstatus);
 // 		},
 // 		(progress) => {
 // 			console.log(progress);

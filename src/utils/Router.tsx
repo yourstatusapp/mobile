@@ -6,7 +6,7 @@ import { AppStacks } from './Tabs';
 import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import core from '../core';
-import { StatusBar, StatusBarStyle } from 'react-native';
+import { StatusBar, StatusBarStyle, View } from 'react-native';
 import { Preloader } from './Preloader';
 import { Register } from '../screens/register/Register';
 import { Verify } from '../screens/verify/Verify';
@@ -38,6 +38,7 @@ const routes = [
 	{ name: 'conversation', component: ConversationView },
 	{ name: 'Statusinfo', component: StatusinfoScreen },
 	{ name: 'Profile', component: ProfileView },
+
 ];
 
 export const Router: React.FC = () => {

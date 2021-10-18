@@ -4,7 +4,7 @@ import * as React from 'react';
 import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Avatar, Fill, Header, Icon, IconButton, Row, Spacer, StatusBox, TabbarContentContainer, Text, TextButton } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
-import core, { request, StorieType } from '@core';
+import core, { ProfileType, request, StorieType } from '@core';
 import { state } from '@pulsejs/core';
 import { usePulse } from '@pulsejs/react';
 import { useState } from 'react';
@@ -19,10 +19,10 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	const nav = useNavigation();
 
 	const [Loaded, setLoaded] = useState(false);
+	const [refreshing, setRefreshing] = useState(false);
+
 	const pendingList = usePulse(PendingList);
 	const friendList = usePulse(core.profile.collection.groups.friends);
-
-	const [refreshing, setRefreshing] = React.useState(false);
 
 	const onRefresh = React.useCallback(async () => {
 		setRefreshing(true);
@@ -69,13 +69,22 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 		// core.storie.collection.collect(s.mine, 'mine');
 	};
 
+	const openMyStatus = (v: ProfileType) => {
+		nav.navigate('Status', v);
+		getComments(v.status?.id);
+	};
+
+	const getComments = async (id: string) => {
+		const a: any = await request('get', `/status/${id}/comments`);
+		core.status.collection.comments.collect(a, [id]);
+	};
+
 	const ItemSeparatorComponent = () => <FriendItemSeperator />;
+
 	React.useEffect(() => {
 		console.log('friends_view');
 		getFriendList();
 		getStories();
-
-		// getNotifications();
 	}, []);
 
 	return (
@@ -103,12 +112,12 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 			<FlatList
 				data={friendList}
 				ItemSeparatorComponent={ItemSeparatorComponent}
-				renderItem={(fp) => <FriendItemEntry {...fp} />}
+				renderItem={(fp) => <FriendItemEntry {...fp} onStatusPress={(v) => openMyStatus(v)} />}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.textFade} />}
-				ListHeaderComponent={() => <MyContent />}
+				ListHeaderComponent={() => <MyContent myStatusPress={openMyStatus} />}
 				ListEmptyComponent={() =>
 					Loaded ? (
-						<Row center style={{ paddingTop: 50 }}>
+						<Row centesr style={{ paddingTop: 50 }}>
 							<Text color={theme.textFade} size={20} weight="medium">
 								Search for your first friend,
 							</Text>
@@ -124,12 +133,6 @@ export const FriendsView: React.FC<FriendsProps> = (props) => {
 	);
 };
 
-const NewBox = styled.View`
-	background-color: #5acf4b;
-	padding: 2px 5px;
-	border-radius: 20px;
-`;
-
 const FriendItemSeperator = styled.View`
 	height: 3px;
 	width: 90%;
@@ -138,7 +141,7 @@ const FriendItemSeperator = styled.View`
 	background-color: ${({ theme }) => theme.step0};
 `;
 
-const MyContent: React.FC = (p) => {
+const MyContent: React.FC<{ myStatusPress: (v: ProfileTypes) => void }> = (p) => {
 	const theme = useTheme();
 	const currentLoc = usePulse(core.account.collection.locations.selectors.current_here);
 	const savedLocations = usePulse(core.account.state.saved_locations);
@@ -159,18 +162,19 @@ const MyContent: React.FC = (p) => {
 					src={`https://cdn.yourstatus.app/profile/${myAccount.account_id}/${myAccount.avatar}`}
 					size={50}
 					storie_availible={!!my_stories?.length}
-					onPress={() => (my_stories.length ? nav.navigate('Stories', { ...myAccount, stories: my_stories }) : nav.navigate('Profile', { profile: myAccount }))}
+					onPress={() =>
+						my_stories.length
+							? nav.navigate('Stories', {
+									...myAccount,
+									stories: my_stories,
+							  })
+							: nav.navigate('Profile', { profile: myAccount })
+					}
 				/>
 			)}
 			{my_status?.id && (
 				<View style={{ flex: 1, paddingLeft: !my_stories?.length ? 0 : 12 }}>
-					<StatusBox {...my_status} disableTap={true} />
-					{/* <Spacer size={5} />
-					<Row>
-						<Text size={14} color={theme.textFade}>
-							Tapped {my_status.taps} time{my_status.taps > 0 ? '' : "'s"}
-						</Text>
-					</Row> */}
+					<StatusBox {...my_status} onPress={() => p.myStatusPress({ ...myAccount, status: my_status })} />
 				</View>
 			)}
 		</MycontentContainer>
@@ -181,16 +185,10 @@ const MycontentContainer = styled.View`
 	flex-direction: row;
 	align-items: center;
 	background-color: ${({ theme }) => theme.step0};
-	border-bottom-color: ${({ theme }) => theme.step1};
-	/* border-bottom-width: 3px; */
+	border-bottom-color: ${({ theme }) => theme.step2};
+	border-bottom-width: 1px;
 	padding-horizontal: 15px;
 	padding-vertical: 10px;
-	/* padding-top: 2px; */
-`;
-
-const TapsTextArea = styled.View`
-	background-color: yellow;
-	padding: 2px;
 `;
 
 const NewFriendRequestBox = styled(TouchableOpacity).attrs({ activeOpacity: 0.5 })`

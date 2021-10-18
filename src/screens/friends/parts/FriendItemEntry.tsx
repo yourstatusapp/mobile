@@ -1,37 +1,77 @@
 import * as React from 'react';
-import core, { LocationType, niceTime, snow2time } from '@core';
-import { Avatar, Fill, Spacer, Row, StatusBox, Text, Icon } from '@parts';
-import { TouchableOpacity, View } from 'react-native';
+import core, { alert, LocationType, niceTime, request, snow2time, Status, StatusComment } from '@core';
+import { Avatar, Fill, Spacer, Row, StatusBox, Text, Icon, IconButton, Cul } from '@parts';
+import { FlatList, KeyboardAvoidingView, LayoutAnimation, TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { usePulse } from '@pulsejs/react';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useState } from 'react';
+import { StatusInfoBox } from './StatusInfoBox';
 
 interface FriendItemEntryProps {
 	item: any;
 	index: number;
+	onStatusPress: (v: Status) => void;
 }
 
 export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
-	const { item, index } = props;
+	const { item, index, onStatusPress } = props;
 	const nav = useNavigation();
 	const theme = useTheme();
-
+	const ThemeName = usePulse(core.ui.state.Theme);
+	const [Loading, setLoading] = useState(false);
 	const stories = usePulse(core.storie.collection.getGroup(`profile/${item.account_id}`));
+	const comments = usePulse(core.status.collection.comments.getGroup(item?.status?.id));
 
-	// console.log(props);
+	const [CommentFocus, setCommentFocus] = useState(false);
+	const [CommentText, setCommentText] = useState('');
 
-	// return (
-	// 	<View>
-	// 		<Text>test</Text>
-	// 	</View>
+	// const SheetShadow = React.useMemo(
+	// 	() => [
+	// 		{
+	// 			shadowColor: ThemeName === 'dark' ? '#4e4e4e' : '#6b6b6b',
+	// 			// shadowColor: '#000',
+	// 			shadowOffset: {
+	// 				width: 0,
+	// 				height: 9,
+	// 			},
+	// 			shadowOpacity: 0.48,
+	// 			shadowRadius: 11.95,
+	//
+	// 			elevation: 18,
+	// 		},
+	// 	],
+	// 	[ThemeName]
 	// );
+
+	// // This will be called when opening a createstatus for the comments
+	// const getComments = async (id: string) => {
+	// 	const a: any = await request('get', `/createstatus/${id}/comments`);
+	// 	core.createstatus.collection.comments.collect(a, [id]);
+	// };
+
+
+	// const bottomSheetModalRef = React.useRef<BottomSheetModal>(null);
+
+
+
+	// const handleStyle = { backgroundColor: theme.background, height: 0, borderTopColor: theme.step2, borderTopWidth: 1 };
+	// const backgroundStyle = { backgroundColor: theme.background, borderTopLeftRadius: 50, borderTopRightRadius: 50 };
 
 	return (
 		<FriendItemEntryBody key={index}>
 			<View>
 				<Avatar
 					src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`}
-					onPress={() => (stories.length ? nav.navigate('Stories', { ...item, stories }) : nav.navigate('Profile', { profile: item }))}
+					onPress={() =>
+						stories.length
+							? nav.navigate('Stories', {
+									...item,
+									stories,
+							  })
+							: nav.navigate('Profile', { profile: item })
+					}
 					onLongPress={() => stories.length && nav.navigate('Profile', { profile: item })}
 					storie_availible={!!stories.length}
 				/>
@@ -47,10 +87,9 @@ export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
 				</TouchableOpacity>
 
 				{item?.status && (
-					<View style={{ flex: 1, justifyContent: 'flex-start' }}>
-						<Spacer size={5} />
+					<Row style={{ flex: 1, justifyContent: 'flex-start', marginTop: 5 }}>
 						<StatusContainer>
-							<StatusBox {...item.status} />
+							<StatusBox {...item.status} onPress={() => onStatusPress(item)} />
 							{!item.status.taped && new Date(new Date().getTime() - 24 * 60 * 60 * 1000) < snow2time(item.status.id) && (
 								<NewBadge>
 									<Text size={10} color={theme.background} weight="bold">
@@ -59,7 +98,9 @@ export const FriendItemEntry: React.FC<FriendItemEntryProps> = (props) => {
 								</NewBadge>
 							)}
 						</StatusContainer>
-					</View>
+						<Spacer size={10} />
+						{/* <IconButton name="chat" size={18} iconSize={16} color={theme.textFade} onPress={() => handlePresentModalPress()} /> */}
+					</Row>
 				)}
 			</View>
 		</FriendItemEntryBody>
@@ -81,11 +122,14 @@ const NewBadge = styled.View`
 	padding: 2px 6px;
 `;
 
-const ShowStoriesButton = styled(TouchableOpacity)`
-	padding: 2px 6px;
-	border-radius: 5px;
-	background-color: #68a4e9;
-	/* background-color: ${({ theme }) => theme.primary}; */
+const CommentInput = styled.TextInput`
+	background-color: ${({ theme }) => theme.step1};
+	color: ${({ theme }) => theme.text};
+	padding: 0px 15px;
+	height: 40px;
+	font-weight: 600;
+	flex: 1;
+	border-radius: 20px;
 `;
 
 const StatusContainer = styled.View`
@@ -93,33 +137,13 @@ const StatusContainer = styled.View`
 	align-items: center;
 `;
 
-const PopTagCounter = styled.View`
-	/* background-color: ${({ theme }) => theme.primary}; */
-	padding: 2px 7px;
-	background-color: red;
-	border-top-right-radius: 12;
-	height: 20px;
-	position: relative;
-	right: 10px;
-	z-index: 5;
-	border-bottom-right-radius: 12;
-	/* border-radius: 50px; */
-`;
-
-const NewStorieAlert = styled(TouchableOpacity)`
-	background-color: #fca635;
-	padding: 2px;
-	border-radius: 12px;
-	margin: 0px 5px;
-	margin-top: 5px;
-	justify-content: center;
-	align-items: center;
-`;
-
-const StorieCricle = styled.View`
-	background-color: ${({ theme }) => theme.primary};
-	padding: 4px;
-	border-radius: 100px;
+const Line = styled.View`
+	height: 1px;
+	width: 100%;
+	margin: 20px 0px;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	background-color: ${({ theme }) => theme.step2};
 `;
 
 export const LocationBox: React.FC<{ location: LocationType }> = (p) => {
@@ -128,10 +152,51 @@ export const LocationBox: React.FC<{ location: LocationType }> = (p) => {
 
 	return (
 		<Row style={{ paddingTop: 5, paddingBottom: 5 }}>
-			<Icon name="location" size={9} color={'white'} style={{ marginRight: 5, backgroundColor: theme.primary, padding: 3, borderRadius: 50, paddingTop: 5, paddingRight: 5 }} />
+			<Icon
+				name="location"
+				size={9}
+				color={'white'}
+				style={{
+					marginRight: 5,
+					backgroundColor: theme.primary,
+					padding: 3,
+					borderRadius: 50,
+					paddingTop: 5,
+					paddingRight: 5,
+				}}
+			/>
 			<Text size={14} color={theme.textFade} style={{ paddingTop: 1 }}>
 				{location.title}
 			</Text>
 		</Row>
 	);
 };
+
+const Comments: React.FC<{ data: StatusComment[] }> = ({ data }) => {
+	const theme = useTheme();
+
+	return (
+		<FlatList
+			contentContainerStyle={{ paddingTop: 10 }}
+			data={data}
+			renderItem={({ item, index }) => (
+				<CommentItem key={index}>
+					<Avatar src={`https://cdn.yourstatus.app/profile/${item.sender}/${item.avatar}`} size={25} />
+					<Spacer size={5} />
+					<Text weight="semi-bold" size={14}>
+						{item.content}
+					</Text>
+					<Fill />
+					<Text color={theme.textFade} weight="bold" size={12}>
+						{niceTime(item.id)}
+					</Text>
+				</CommentItem>
+			)}
+		/>
+	);
+};
+
+const CommentItem = styled(Row)`
+	/* padding: 2px 0px; */
+	padding-bottom: 5px;
+`;

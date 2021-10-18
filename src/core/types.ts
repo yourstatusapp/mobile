@@ -127,3 +127,11 @@ export interface GetAccountType {
 	locations?: LocationType;
 	current_location?: string;
 }
+
+export interface StatusComment {
+	id: string;
+	status_id: string;
+	content: string;
+	sender: string;
+	avatar: string;
+}

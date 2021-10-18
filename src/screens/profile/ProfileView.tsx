@@ -91,7 +91,9 @@ export const ProfileView: React.FC<ProfileProps> = (props) => {
 						<Row>
 							<Icon name="map-marker" size={18} color={theme.step3} />
 							<Spacer size={5} />
-							<Text size={15} color={theme.textFade} weight="medium"  >{profile.location}</Text>
+							<Text size={15} color={theme.textFade} weight="medium">
+								{profile.location}
+							</Text>
 						</Row>
 					</>
 				)}
@@ -132,8 +134,6 @@ const FloatingControlBar = styled(Row)`
 	padding: 10px;
 	width: 100%;
 `;
-
-
 
 const Collections: React.FC<{ data: Collection[] }> = (p) => {
 	const theme = useTheme();

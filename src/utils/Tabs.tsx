@@ -11,19 +11,15 @@ import { configureNotifications } from './Notifications';
 
 import { EditProfileView } from '../screens/edit_profile/EditProfileView';
 import { SearchView } from '../screens/search/SearchView';
-import { StatusView } from '../screens/status/StatusView';
+import { CreateStatusView } from '../screens/createstatus/CreateStatus';
 import { NewfriendsView } from '../screens/newfriends/NewfriendsView';
-import { DiscoveryView } from '../screens/discovery/DiscoveryView';
-import { MessagesView } from '../screens/messages/MessagesView';
 import { AccountView } from '../screens/account/AccountView';
 import { NewuserView } from '../screens/newuser/NewuserView';
 import { FriendsView } from '../screens/friends/FriendsView';
-import { ProfileView } from '../screens/profile/ProfileView';
 import { SettingsView } from '../screens/settings/SettingsView';
 import { BrowserView } from '../screens/browser/BrowserView';
-import { SafeAreaView, View } from 'react-native';
-import styled from 'styled-components/native';
 import { Statushistory } from '../screens/statushistory/Statushistory';
+import { Status } from '../screens/status/Status';
 
 const Tab = createBottomTabNavigator();
 export const AppStack = createStackNavigator();
@@ -48,9 +44,9 @@ export const Tabs: React.FC = () => {
 	);
 };
 
-const routes = [
+const routes: { name: string; component: React.FC }[] = [
 	{ name: 'AppTabs', component: Tabs },
-	{ name: 'CreateStatus', component: StatusView },
+	{ name: 'CreateStatus', component: CreateStatusView },
 	{ name: 'Settings', component: SettingsView },
 	{ name: 'Friendrequests', component: Friendrequests },
 	{ name: 'SearchPeople', component: SearchView },
@@ -60,6 +56,7 @@ const routes = [
 	{ name: 'Browser', component: BrowserView },
 	{ name: 'newfriends', component: NewfriendsView },
 	{ name: 'StatusHistory', component: Statushistory },
+	{ name: 'Status', component: Status },
 ];
 
 export const AppStacks: React.FC = () => {

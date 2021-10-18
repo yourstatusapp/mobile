@@ -13,7 +13,7 @@ export const Statushistory: React.FC<StatushistoryProps> = (props) => {
 	const [History, setHistory] = useState<any[]>([]);
 
 	const getHistory = async () => {
-		const a = await request<any[]>('get', '/status/history');
+		const a = await request<any[]>('get', '/createstatus/history');
 		setHistory(a);
 	};
 

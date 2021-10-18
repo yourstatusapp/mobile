@@ -11,7 +11,7 @@ import { niceTime, request } from '../../core/utils';
 
 interface StatusProps {}
 
-export const StatusView: React.FC<StatusProps> = (props) => {
+export const CreateStatusView: React.FC<StatusProps> = (p) => {
 	const theme = useTheme();
 	const nav = useNavigation();
 	const myStatus = usePulse(core.status.state.my_status);
@@ -21,7 +21,7 @@ export const StatusView: React.FC<StatusProps> = (props) => {
 	const [EpireDate, setEpireDate] = useState<Date>(new Date());
 
 	const createStatus = async () => {
-		await request('post', '/status/new', { data: { data: { title: Title }, expires_at: Expire ? EpireDate : null } });
+		await request('post', '/createstatus/new', { data: { data: { title: Title }, expires_at: Expire ? EpireDate : null } });
 		nav.goBack();
 		core.status.state.my_status.patch({ data: { title: Title }, expires_at: Expire ? EpireDate : null });
 	};

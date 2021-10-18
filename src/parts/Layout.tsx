@@ -99,3 +99,9 @@ export const SidePadding = styled.View`
 	padding: 0px 20px;
 	flex: 1;
 `;
+
+export const Cul = styled.View<{ center?: boolean }>`
+	width: 100%;
+	flex-direction: column;
+	${({ center }) => center && 'align-items: center;'}
+`;
