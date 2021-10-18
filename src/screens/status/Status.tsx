@@ -3,7 +3,7 @@ import styled, { useTheme } from 'styled-components';
 import core, { niceTime, ProfileType, request, StatusComment } from '@core';
 import { FlatList, KeyboardAvoidingView, View } from 'react-native';
 import { Avatar, Cul, Fill, IconButton, Row, Spacer, StatusBox, Text } from '@parts';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 import { usePulse } from '@pulsejs/react';
 import { useState } from 'react';
 
@@ -47,7 +47,7 @@ export const Status: React.FC<StatusProps> = (p) => {
 				<Row>
 					<IconButton name="plus" size={25} iconSize={20} color={theme.textFade} style={{ transform: [{ rotate: '45deg' }] }} onPress={() => nav.goBack()} />
 				</Row>
-				<Spacer size={15} />
+				{/* <Spacer size={15} /> */}
 				<Cul center>
 					<Avatar src={`https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}`} size={60} />
 					<Spacer size={5} />
