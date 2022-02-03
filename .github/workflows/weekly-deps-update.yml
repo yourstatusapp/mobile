@@ -19,9 +19,9 @@ jobs:
             - [ ] clean build folder
             - [ ] step 2 bla bvla
 
-          ### Discussion Points
-          Add things to discuss below
-        pinned: false
-        close-previous: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            ### Discussion Points
+            Add things to discuss below
+          pinned: false
+          close-previous: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
