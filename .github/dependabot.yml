@@ -6,4 +6,4 @@ updates:
       interval: 'daily'
     allow:
       - dependency-name: '*'
-        update-types: ['semver-patch']
+        update-types: ['version-update:semver-patch']
