@@ -1,7 +1,5 @@
 name: Weekly Dependecies App update
-on:
-  schedule:
-    - cron: '30 5,17 * * *'
+on: [push]
 
 jobs:
   create_issue:
