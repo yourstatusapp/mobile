@@ -13,9 +13,8 @@ jobs:
       - name: Issue Bot Action
         uses: imjohnbo/issue-bot@v3.3.4
         with:
-          assignees: 'twanluttik'
-          labels: 'deps-update-check'
-          title: 'Weekly update'
+          labels: 'dev, P0'
+          title: 'Weekly Mobile App Dependencies Upgrade'
           body: |
             - [ ] Run command `yarn outdated` and check for the following dependencies updates available:
                   - react-native-navigation/*
@@ -24,5 +23,3 @@ jobs:
             - [ ] If everything works, create a new pr with the changes
           pinned: false
           close-previous: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
