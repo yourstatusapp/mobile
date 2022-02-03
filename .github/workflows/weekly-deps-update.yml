@@ -6,7 +6,7 @@ on:
 jobs:
   create_issue:
     name: Weekly app update check
-    runs-on: ubutnu-latest
+    runs-on: ubuntu-latest
     permissions:
       issues: write
     steps:
