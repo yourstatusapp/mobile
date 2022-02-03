@@ -10,24 +10,9 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: Create team sync issue
-        uses: imjohnbo/issue-bot@v3
+      - uses: actions/github-script@v5
         with:
-          assignees: 'twanluttik'
-          title: 'Team sync'
-          body: |
-            ### Agenda
-
-            - [ ] Start the recording
-            - [ ] Check-ins
-            - [ ] Discussion points
-            - [ ] Post the recording
-                    
-            ### Discussion Points
-            Add things to discuss below
-
-            - [Work this week](https://github.com/orgs/github/projects/3)
-          pinned: false
-          close-previous: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const diff_url = context.payload.pull_request.diff_url
+            const result = await github.request(diff_url)
+            console.log(result)
