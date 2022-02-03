@@ -10,9 +10,16 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: actions/github-script@v5
+      - name: Issue Bot Action
+        uses: imjohnbo/issue-bot@v3.3.4
         with:
-          script: |
-            const deps = ['react-native-camera'];
-
-            console.log(deps);
+          assignees: 'twanluttik'
+          labels: 'deps-update-check'
+          title: 'Weekly update'
+          body: |
+            - [ ] Start the recording
+            - [ ] Check-ins
+          pinned: false
+          close-previous: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
