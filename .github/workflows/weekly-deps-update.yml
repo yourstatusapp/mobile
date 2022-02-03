@@ -13,6 +13,6 @@ jobs:
       - uses: actions/github-script@v5
         with:
           script: |
-            const diff_url = context.payload.pull_request.diff_url
-            const result = await github.request(diff_url)
-            console.log(result)
+            const deps = ['react-native-camera'];
+
+            console.log(deps);
