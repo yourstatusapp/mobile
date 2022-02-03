@@ -8,6 +8,8 @@ jobs:
     permissions:
       issues: write
     steps:
+      - name: fetching updates
+        echo: yarn outdated eslint
       - name: Issue Bot Action
         uses: imjohnbo/issue-bot@v3.3.4
         with:
