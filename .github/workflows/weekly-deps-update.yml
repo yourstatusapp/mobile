@@ -15,10 +15,11 @@ jobs:
           labels: 'deps-update-check'
           title: 'Weekly update'
           body: |
-            - [ ] run command `yarn outdated` and check for the following dependecies updates avaiable:
+            - [ ] Run command `yarn outdated` and check for the following dependencies updates available:
                   - react-native-navigation/*
             - [ ] Make a clean build including clearing the node_modules, Pods and clean the build folder xcode -> `(↑ Shift + ⌘ Cmd + K)`
-            - [ ] run command `yarn && npx pod-install && yarn ios` to test the app for any issues that may have occure
+            - [ ] Run command `yarn && npx pod-install && yarn ios` to test the app for any issues that may have occure
+            - [ ] If everything works, create a new pr with the changes
           pinned: false
           close-previous: false
         env:
