@@ -1,27 +1,26 @@
 import { state } from '@pulsejs/core';
 import { Appearance } from 'react-native';
-import { app } from '.';
-import { InternalTheme, InternalThemes, Themes } from '../../utils/theme';
+import { InternalTheme, InternalThemes, Themes } from '../../utils/Theme';
 
-const State = {
+export const UiState = {
 	Theme: state<Themes>('light').persist('theme_name'),
+	system_theme: state<Themes>('light'),
+	use_system_theme: state<boolean>(false),
 };
 
-app.state.system_theme.set(Appearance.getColorScheme() || 'light');
+UiState.system_theme.set(Appearance.getColorScheme() || 'light');
 
-Appearance.addChangeListener((v) => {
-	app.state.system_theme.set(v.colorScheme || 'light');
-	if (v.colorScheme && app.state.use_system_theme.is(true)) {
-		State.Theme.set(v.colorScheme);
+Appearance.addChangeListener(v => {
+	UiState.system_theme.set(v.colorScheme || 'light');
+	if (v.colorScheme && UiState.use_system_theme.is(true)) {
+		UiState.Theme.set(v.colorScheme);
 	}
 });
 
-const ComputedState = {
+export const UiComputedState = {
 	ThemeObject: state<InternalTheme>(() => {
-		return InternalThemes[State.Theme.value];
+		return InternalThemes[UiState.Theme.value];
 	}),
 };
 
-export const ui = {
-	state: { ...ComputedState, ...State },
-};
+export const ui = { state: { ...UiComputedState, ...UiState } };

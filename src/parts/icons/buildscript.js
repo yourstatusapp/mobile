@@ -3,26 +3,21 @@ const fs = require('fs');
 const SVG_FOLDER = './svg';
 const BUILD_FOLDER = './icons';
 
-const ICON_BASE =
-	"import * as React from 'react';import { Path, Svg, G } from 'react-native-svg';interface IconSVG_NAMEProps {color?: any;style?: any;size: number;}export const SVG_NAME: React.FC<IconSVG_NAMEProps> = (p) => {return (%%_SVG_CONTENT_%%);};";
+const ICON_BASE = `import React from 'react';
+import { Path, Svg, G } from 'react-native-svg';
+export const SVG_NAME = ({color,style,size}: {color?:any;style?:any;size:number}) => {return (%%_SVG_CONTENT_%%);};`;
 
-const MASTER_BASE = `import * as React from 'react';
-import styled from 'styled-components/native';
+const MASTER_BASE = `
+import React from 'react';
+import { View } from 'react-native'
 %%_IMPORTS_%%
-interface IconProps {
-	name: string;
-	color?: any;
-	size?: any;
-	style?: any;
-}
-export const Icon: React.FC<IconProps> = p => {
+export const Icon = ({ name, color, size, style}: {name: string;color?: any;size?: any;style?: any;}) => {
 	return (
-		<IconBody style={p.style}>
+		<View style={style}>
 			%%_IMPORTS2_%%
-    </IconBody>
+    </View>
   );
 };
-const IconBody = styled.View${'``'};
 `;
 
 (async function () {
@@ -40,10 +35,12 @@ const IconBody = styled.View${'``'};
 		let svgTitleName = svg.split('.')[0].charAt(0).toUpperCase() + svg.split('.')[0].slice(1);
 
 		// If there is a dash included, parse the svg title
-		if (svgTitleName.includes('-')) svgTitleName = svgTitleName.split('-')[0] + svgTitleName.split('-')[1].charAt(0).toUpperCase() + svgTitleName.split('-')[1].slice(1);
+		if (svgTitleName.includes('-')) {
+			svgTitleName = svgTitleName.split('-')[0] + svgTitleName.split('-')[1].charAt(0).toUpperCase() + svgTitleName.split('-')[1].slice(1);
+		}
 
 		// Read the contents
-		let svgContent = fs.readFileSync(`${SVG_FOLDER}/${svg}`, { encoding: 'utf8' }).replace('<svg', '<svg style={p.style}');
+		let svgContent = fs.readFileSync(`${SVG_FOLDER}/${svg}`, { encoding: 'utf8' }).replace('<svg', '<svg style={style}');
 		svgContent = parsePropertiesNames(svgContent);
 		svgContent = parseColorNames(svgContent);
 		svgContent = sizeProperties(svgContent);
@@ -68,7 +65,10 @@ const IconBody = styled.View${'``'};
 		// Build the imports and the content for the component
 		_imports = _imports + `import{${svgTitleName}}from'./icons/${svgTitleName}';`;
 		_render =
-			_render + `{ p.name === '${svg.split('.')[0].charAt(0) + svg.split('.')[0].slice(1)}' && <${svgTitleName} size={p.size} color={p.color} style={{ width: p.size, height: p.size }} /> }`;
+			_render +
+			`{ name === '${
+				svg.split('.')[0].charAt(0) + svg.split('.')[0].slice(1)
+			}' && <${svgTitleName} size={size} color={color} style={{ width: size, height: size }} /> }`;
 		count++;
 	}
 
@@ -83,37 +83,39 @@ const IconBody = styled.View${'``'};
 	console.log(`\n🔥 Processed ${count} icons\n`);
 })();
 
-const parsePropertiesNames = (text) => {
-	if (text?.includes('enable-width')) text.split('enable-width=').map(() => (text = text.replace(/(enable-width=)/, 'enableWidth=')));
-	if (text?.includes('enable-linecap')) text.split('enable-linecap=').map(() => (text = text.replace(/(enable-linecap=)/, 'strokeLinecap=')));
-	if (text?.includes('enable-linejoin')) text.split('enable-linejoin=').map(() => (text = text.replace(/(enable-linejoin=)/, 'strokeLinejoin=')));
-	if (text?.includes('enable-background')) text.split('enable-background=').map(() => (text = text.replace(/(enable-background=)/, 'enableBackground=')));
-	if (text?.includes('clip-rule')) text.split('clip-rule=').map(() => (text = text.replace(/(clip-rule=)/, 'clipRule=')));
-	if (text?.includes('clip-path')) text.split('clip-path=').map(() => (text = text.replace(/(clip-path=)/, 'clipPath=')));
-	if (text?.includes('fill-rule')) text.split('fill-rule=').map(() => (text = text.replace(/(fill-rule=)/, 'fillRule=')));
-	if (text?.includes('stroke-width')) text.split('stroke-width=').map(() => (text = text.replace(/(stroke-width=)/, 'strokeWidth=')));
-
+const parsePropertiesNames = text => {
+	text = text.replaceAll(/(enable-width=)/g, 'enableWidth=');
+	text = text.replaceAll(/(enable-linecap=)/g, 'strokeLinecap=');
+	text = text.replaceAll(/(enable-linejoin=)/g, 'strokeLinejoin=');
+	text = text.replaceAll(/(enable-background=)/g, 'enableBackground=');
+	text = text.replaceAll(/(clip-rule=)/g, 'clipRule=');
+	text = text.replaceAll(/(clip-path=)/g, 'clipPath=');
+	text = text.replaceAll(/(fill-rule=)/g, 'fillRule=');
+	text = text.replaceAll(/(stroke-width=)/g, 'strokeWidth=');
 	return text;
 };
 
-const parseColorNames = (text) => {
-	if (text?.includes('fill=')) text.split('fill=').map(() => (text = text.replace(/(fill=)\"(.+?)\"/, 'fill={p.color}')));
+const parseColorNames = text => {
+	text = text.replaceAll(/(fill=)"(.+?|)"()/g, 'fill={color}');
 	return text;
 };
 
-const sizeProperties = (text) => {
-	if (text?.includes('width=')) text.split('width=').map(() => (text = text.replace(/(width=)\"(.+?)\"/, 'width={p.size}')));
-	if (text?.includes('height=')) text.split('height=').map(() => (text = text.replace(/(height=)\"(.+?)\"/, 'height={p.size}')));
+const sizeProperties = text => {
+	text = text.replaceAll(/(width=)"(.+?|)"()/g, 'width={size}');
+	text = text.replaceAll(/(height=)"(.+?|)"()/g, 'height={size}');
 	return text;
 };
 
-const removeProperties = (text) => {
-	if (text?.includes('class=')) text.split('class=').map(() => (text = text.replace(/(class=)\"(.+?)\"/, '')));
+const removeProperties = text => {
+	text = text.replaceAll(/(class=)"(.+?|)"()/g, '');
+	text = text.replaceAll(/(xmlns=)"(.+?|)"()/g, '');
+	text = text.replaceAll(/(focusable=)"(.+?|)"()/g, '');
+	text = text.replaceAll(/(role=)"(.+?|)"()/g, '');
 	return text;
 };
 
 // Fix all tags
-const fixTags = (text) => {
+const fixTags = text => {
 	text = fixTag(text, 'svg');
 	text = fixTag(text, 'path');
 	text = fixTag(text, 'g');
@@ -124,11 +126,17 @@ const fixTags = (text) => {
 // Transform normal tag names to upper case for react native since they don't support lower case starting tags
 const fixTag = (text, tagName) => {
 	text.split(`<${tagName}`).map(() => {
-		text = text?.replace(`<${tagName}`, `<${tagName?.length > 0 ? tagName.charAt(0).toUpperCase() + tagName?.slice(1, tagName.length) : tagName.toUpperCase()}`);
+		text = text?.replace(
+			`<${tagName}`,
+			`<${tagName?.length > 0 ? tagName.charAt(0).toUpperCase() + tagName?.slice(1, tagName.length) : tagName.toUpperCase()}`,
+		);
 	});
 
 	text.split(`/${tagName}>`).map(() => {
-		text = text?.replace(`/${tagName}>`, `/${tagName?.length > 0 ? tagName.charAt(0).toUpperCase() + tagName?.slice(1, tagName.length) : tagName.toUpperCase()}>`);
+		text = text?.replace(
+			`/${tagName}>`,
+			`/${tagName?.length > 0 ? tagName.charAt(0).toUpperCase() + tagName?.slice(1, tagName.length) : tagName.toUpperCase()}>`,
+		);
 	});
 
 	return text;

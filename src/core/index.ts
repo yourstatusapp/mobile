@@ -10,6 +10,5 @@ export function initCore() {
 console.log({ core });
 
 export * from './types';
-export * from './helpers/index';
 export * from './utils';
 export default { ...core };
