@@ -1,51 +1,38 @@
-export interface InternalTheme extends InteralThemeOther {
-	background: string;
-	step0: string;
-	step1: string;
-	step2: string;
-	step3: string;
-	step4: string;
-	navBar: string;
-	navBarFade: string;
-	text: string;
-	textFade: string;
-}
+import { DefaultTheme } from 'styled-components/native';
 
-interface InteralThemeOther {
-	primary: string;
-}
-
-export type Themes = 'light' | 'dark';
-
-const Other = {
-	primary: '#488DEB',
-};
-
-export const InternalThemes: { [k in Themes]: InternalTheme } = {
+export const InternalThemes: { [k in 'light' | 'dark']: DefaultTheme } = {
 	light: {
-		...Other,
-		background: '#ffffff',
-		step0: '#F6F6F6',
-		step1: '#ECECEC',
-		step2: '#E1E1E1',
-		step3: '#D4D4D4',
-		step4: '#CECECE',
-		navBar: '#F8F8F8',
-		navBarFade: '#D7D7D7',
-		text: 'black',
-		textFade: '#7F7F7F',
+		theme: {
+			primary: '#2647E7',
+		},
+		colors: {
+			white20: 'rgba(255, 255, 255, 0.2)',
+			white40: 'rgba(255, 255, 255, 0.4)',
+			white60: 'rgba(255, 255, 255, 0.6)',
+			white80: 'rgba(255, 255, 255, 0.8)',
+			white: 'rgb(255, 255, 255)',
+			black20: 'rgba(0, 0, 0, 0.2)',
+			black40: 'rgba(0, 0, 0, 0.4)',
+			black60: 'rgba(0, 0, 0, 0.6)',
+			black80: 'rgba(0, 0, 0, 0.8)',
+			black: 'rgb(0, 0, 0)',
+		},
 	},
 	dark: {
-		...Other,
-		background: '#171717',
-		step0: '#1E1E1E',
-		step1: '#1F1F1F',
-		step2: '#2A2A2A',
-		step3: '#333333',
-		step4: '#434343',
-		navBar: '#1E1E1E',
-		navBarFade: '#333333',
-		text: 'white',
-		textFade: '#7F7F7F',
+		theme: {
+			primary: '#2647E7',
+		},
+		colors: {
+			white20: 'rgba(255, 255, 255, 0.2)',
+			white40: 'rgba(255, 255, 255, 0.4)',
+			white60: 'rgba(255, 255, 255, 0.6)',
+			white80: 'rgba(255, 255, 255, 0.8)',
+			white: 'rgba(255, 255, 255)',
+			black20: 'rgba(0, 0, 0, 0.2)',
+			black40: 'rgba(0, 0, 0, 0.4)',
+			black60: 'rgba(0, 0, 0, 0.6)',
+			black80: 'rgba(0, 0, 0, 0.8)',
+			black: 'rgba(0, 0, 0)',
+		},
 	},
 };

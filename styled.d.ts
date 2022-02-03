@@ -3,16 +3,20 @@ import 'styled-components';
 
 declare module 'styled-components' {
 	export interface DefaultTheme {
-		background: string;
-		step0: string;
-		step1: string;
-		step2: string;
-		step3: string;
-		step4: string;
-		navBar: string;
-		navBarFade: string;
-		text: string;
-		textFade: string;
-		primary: string;
+		theme: {
+			primary: string;
+		};
+		colors: {
+			white20: string;
+			white40: string;
+			white60: string;
+			white80: string;
+			white: string;
+			black20: string;
+			black40: string;
+			black60: string;
+			black80: string;
+			black: string;
+		};
 	}
 }

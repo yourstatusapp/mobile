@@ -60,5 +60,4 @@ buck-out/
 /ios/Pods/
 
 
-
-out/
+/src/parts/icons/icons/*
