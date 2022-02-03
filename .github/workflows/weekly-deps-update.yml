@@ -1,7 +1,7 @@
 name: Weekly Dependecies App update
 on:
   schedule:
-    - cron: 0 6 * * 1
+    - cron: 20 07 * * 1
 
 jobs:
   create_issue:
@@ -9,19 +9,3 @@ jobs:
     runs-on: ubutnu-latest
     permissions:
       issues: write
-    steps:
-      - name: create team sync issue
-        with:
-          title: 'test'
-          body: |
-            ### Steps
-
-            - [ ] clean build folder
-            - [ ] step 2 bla bvla
-
-            ### Discussion Points
-            Add things to discuss below
-          pinned: false
-          close-previous: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
