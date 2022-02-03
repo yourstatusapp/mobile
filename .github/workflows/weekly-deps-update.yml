@@ -8,8 +8,6 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: fetching updates
-        run: 'yarn outdated eslint'
       - name: Issue Bot Action
         uses: imjohnbo/issue-bot@v3.3.4
         with:
@@ -17,8 +15,10 @@ jobs:
           labels: 'deps-update-check'
           title: 'Weekly update'
           body: |
-            - [ ] Start the recording
-            - [ ] Check-ins
+            - [ ] run command `yarn outdated` and check for the following dependecies updates avaiable:
+                  - react-native-navigation/*
+            - [ ] Make a clean build including clearing the node_modules, Pods and clean the build folder xcode -> `(↑ Shift + ⌘ Cmd + K)`
+            - [ ] run command `yarn && npx pod-install && yarn ios` to test the app for any issues that may have occure
           pinned: false
           close-previous: false
         env:
