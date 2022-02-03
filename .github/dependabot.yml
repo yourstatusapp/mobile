@@ -7,3 +7,5 @@ updates:
       day: 'wednesday'
     ignore:
       - dependency-name: '@types/*'
+      - dependency-name: '@babel/*'
+      - dependency-name: 'metro-react-native-babel-preset'
