@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
@@ -37,6 +37,10 @@ const CustomNavBar: React.FC<BottomTabBarProps> = props => {
 		{ name: 'Friends', path: 'friends', icon: 'friends' },
 	];
 
+	useEffect(() => {
+		console.log(Current);
+	}, [Current]);
+
 	return (
 		<CustomTabBarBody tabIndex={state.index}>
 			<TabContainer>
@@ -52,8 +56,8 @@ const CustomNavBar: React.FC<BottomTabBarProps> = props => {
 					<AvatarTabBtn active={Current === 3} account={acc} />
 				</IconTabBtnBody>
 			</TabContainer>
-			{/*<DimmingOverlay height={80} />*/}
-			<BlurView style={sh} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} downsampleFactor={50} />
+			<DimmingOverlay height={80} />
+			<BlurView style={sh} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} />
 		</CustomTabBarBody>
 	);
 };
@@ -63,22 +67,20 @@ const DimmingOverlay = styled.View<{ height: number }>`
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: rgba(0, 0, 0, 0.04);
+	background-color: rgba(0, 0, 0, 0.44);
 	opacity: 1;
 	height: ${props => props.height}px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
 `;
 
 const CustomTabBarBody = styled.View<{ isIphoneX?: boolean; tabIndex: number }>`
 	height: 80px;
-
 	bottom: 0px;
-	//border-top-color: #1a1a1a;
-	//border-top-width: 1px;
-
-	//border-top-style: solid;
 	align-items: center;
 	position: absolute;
-	//top: 0;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
 `;
 
 const TabContainer = styled.View`
@@ -94,6 +96,7 @@ const TabContainer = styled.View`
 
 const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 	const acc = usePulse(core.account.state.account);
+	// const profile = usePulse(core.account);
 	const { theme } = useTheme();
 
 	return (
@@ -115,8 +118,8 @@ const Avatar = styled(FastImage)`
 
 const AvatarBody = styled.View<{ active: boolean }>`
 	border-radius: 50px;
-	border: solid 2px ${({ active, theme }) => (active ? theme.theme.primary : 'black')};
-	background-color: ${({ active }) => (active ? 'black' : '#303030')};
+	/* border: solid 2px ${({ active, theme }) => (active ? theme.theme.primary : 'black')}; */
+	background-color: ${({ active }) => (active ? '#ffffff32' : '#303030')};
 	height: 35px;
 	width: 35px;
 	align-items: center;

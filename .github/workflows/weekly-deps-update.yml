@@ -1,9 +1,11 @@
-name: Weekly Dependecies App update
-on: [push]
+name: Weekly deps upgrade alert
+on:
+  schedule:
+    - cron: '0 13 * * 1'
 
 jobs:
   create_issue:
-    name: Weekly app update check
+    name: create-issue
     runs-on: ubuntu-latest
     permissions:
       issues: write

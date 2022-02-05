@@ -1,4 +1,4 @@
-import { StyleProp, ViewProps, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 export interface AccountType {
 	id: string;

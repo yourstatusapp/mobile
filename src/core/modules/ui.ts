@@ -1,25 +1,24 @@
 import { state } from '@pulsejs/core';
-import { Appearance } from 'react-native';
-import { InternalTheme, InternalThemes, Themes } from '../../utils/Theme';
+import { InternalThemes } from '../../utils/theme';
+import { DefaultTheme } from 'styled-components/native';
 
 export const UiState = {
-	Theme: state<Themes>('light').persist('theme_name'),
-	system_theme: state<Themes>('light'),
+	current_theme: state<'light' | 'dark'>('light').persist('theme_name'),
 	use_system_theme: state<boolean>(false),
 };
 
-UiState.system_theme.set(Appearance.getColorScheme() || 'light');
+// UiState.system_theme.set(Appearance.getColorScheme() || 'light');
 
-Appearance.addChangeListener(v => {
-	UiState.system_theme.set(v.colorScheme || 'light');
-	if (v.colorScheme && UiState.use_system_theme.is(true)) {
-		UiState.Theme.set(v.colorScheme);
-	}
-});
+// Appearance.addChangeListener(v => {
+// 	UiState.system_theme.set(v.colorScheme || 'light');
+// 	if (v.colorScheme && UiState.use_system_theme.is(true)) {
+// 		UiState.Theme.set(v.colorScheme);
+// 	}
+// });
 
 export const UiComputedState = {
-	ThemeObject: state<InternalTheme>(() => {
-		return InternalThemes[UiState.Theme.value];
+	ThemeObject: state<DefaultTheme>(() => {
+		return InternalThemes[UiState.current_theme.value];
 	}),
 };
 

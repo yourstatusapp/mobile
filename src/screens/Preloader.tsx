@@ -28,6 +28,7 @@ export const PreloaderView: React.FC<PreloaderProps> = ({ loaded }) => {
 
 		// @ts-ignore
 		core.account.state.account.set(res.account);
+		core.profile.state.profile.set(res.profile);
 
 		loaded();
 	};

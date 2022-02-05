@@ -9,6 +9,7 @@ export const Account: React.FC = () => {
 	const nav = useNavigation();
 	const { colors } = useTheme();
 	const account = usePulse(core.account.state.account);
+	const profile = usePulse(core.profile.state.profile);
 
 	return (
 		<Block safe paddingHorizontal={20}>
@@ -17,6 +18,7 @@ export const Account: React.FC = () => {
 			</Text>
 			<Spacer size={20} />
 			<Text>{account.email}</Text>
+			<Text>{profile.avatar}</Text>
 			<Fill />
 			<Button
 				text="Logout"

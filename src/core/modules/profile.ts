@@ -1,14 +1,13 @@
 import { collection, state } from '@pulsejs/core';
 import { ProfileType } from '../types';
 
-const S = {
-	// @ts-ignore
-	PROFILE: state<ProfileType>(null).persist('profile'),
+const ProfileState = {
+	profile: state<Partial<AccountType>>({}).persist('profile'),
 };
 
-const CL = collection<ProfileType>({ primaryKey: 'account_id' }).createGroup('friends').createGroup('requests').createGroup('mine');
+const ProfileCollection = collection<ProfileType>({ primaryKey: 'account_id' }).createGroup('friends').createGroup('requests').createGroup('mine');
 
 export const profile = {
-	state: { ...S },
-	collection: CL,
+	state: { ...ProfileState },
+	collection: ProfileCollection,
 };

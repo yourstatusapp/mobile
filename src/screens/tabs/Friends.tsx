@@ -1,7 +1,7 @@
 import { request } from '@core';
 import { Block, HeadingBlurOverlay, Row, Spacer, Text } from '@parts';
 import * as React from 'react';
-import { FlatList, ListRenderItemInfo, ScrollView, View } from 'react-native';
+import { FlatList, ListRenderItemInfo, MaskedViewBase, ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styled, { useTheme } from 'styled-components/native';
 import { useState } from 'react';
