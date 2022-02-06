@@ -4,6 +4,7 @@ export { Block } from './Block';
 export { Button } from './Buttons';
 export { Icon } from './icons/Icon';
 export { HeadingBlurOverlay } from './HeadingBlurOverlay';
+export { TextButton } from './TextButton';
 
 export * from './IconButton';
 export * from './Layout';

@@ -10,9 +10,9 @@ interface AvatarProps {
 }
 
 export const Avatar = ({ src, srcObj, style, size }: AvatarProps) => {
-	const s = StyleSheet.flatten([style, { height: size || 45, width: size || 45, borderRadius: 55 }]);
+	const s = StyleSheet.flatten([style, { height: size ?? 45, width: size ?? 45, borderRadius: 55 }]);
 
 	const image_src = srcObj ? `https://cdn.yourstatus.app/profile/${srcObj[0]}/${srcObj[1]}` : src;
 
-	return <FastImage source={{ uri: image_src || '', cache: 'cacheOnly' }} style={s} />;
+	return <FastImage source={{ uri: image_src ?? '', cache: 'cacheOnly' }} style={s} />;
 };

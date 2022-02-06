@@ -1,8 +1,9 @@
-export * from './Auth';
-export * from './Magic';
-export * from './Preloader';
+export { AuthView } from './Auth';
+export { MagicView } from './Magic';
+export { PreloaderView } from './Preloader';
 
-export * from './tabs/Account';
-export * from './tabs/Friends';
-export * from './tabs/Projects';
-export * from './Profile';
+export { Account } from './tabs/Account';
+export { Friends } from './tabs/Friends';
+export { Projects } from './tabs/Projects';
+export { Profile } from './Profile';
+export { Settings } from './Settings';

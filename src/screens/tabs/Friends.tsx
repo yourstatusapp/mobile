@@ -1,10 +1,9 @@
+import React, { useState } from 'react';
 import { request } from '@core';
 import { Block, HeadingBlurOverlay, Row, Spacer, Text } from '@parts';
-import * as React from 'react';
 import { FlatList, ListRenderItemInfo, MaskedViewBase, ScrollView, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styled, { useTheme } from 'styled-components/native';
-import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 interface FriendItem {

@@ -1,25 +1,27 @@
 import React from 'react';
 import { BlockType } from '@core';
-import { SafeAreaView, StyleSheet, View, ViewStyle } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-export const Block: React.FC<BlockType> = ({ children, vCenter, hCenter, color, safe, paddingHorizontal, style, row }) => {
+export const Block: React.FC<BlockType> = ({ children, vCenter, hCenter, color, safe, paddingHorizontal, style, row, flex, press, onPress }) => {
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
-		{ backgroundColor: color || '#000000' },
-		{ flex: 1, width: '100%', flexDirection: 'column' },
+		!!paddingHorizontal && { paddingHorizontal },
+		{ backgroundColor: color ?? 'hsl(0, 0%, 0%)' },
+		{ flex: flex ?? 1, width: '100%', flexDirection: 'column' },
 		!!vCenter && { justifyContent: 'center' },
 		!!hCenter && { alignItems: 'center' },
-		!!paddingHorizontal && { paddingHorizontal },
 		!!row && { flexDirection: 'row' },
 		style,
 	]);
 
-	if (safe) {
+	if (press) {
 		return (
-			<SafeAreaView style={blockStyle}>
-				<View style={blockStyle}>{children}</View>
-			</SafeAreaView>
+			<TouchableOpacity onPress={onPress} activeOpacity={0.6} style={blockStyle}>
+				{children}
+			</TouchableOpacity>
 		);
+	} else if (safe) {
+		return <SafeAreaView style={blockStyle}>{children}</SafeAreaView>;
+	} else {
+		return <View style={blockStyle}>{children}</View>;
 	}
-
-	return <View style={blockStyle}>{children}</View>;
 };

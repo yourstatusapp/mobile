@@ -7,7 +7,7 @@ import { Block, Icon } from '@parts';
 import FastImage from 'react-native-fast-image';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
-import { Account, Friends, Projects, Profile } from '../screens';
+import { Account, Friends, Projects, Profile, Settings } from '../screens';
 import { BlurView } from '@react-native-community/blur';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
@@ -25,7 +25,7 @@ export const BottomTabNavigator: React.FC = () => {
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
 				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
 				<TabsStackNavigator.Screen name="projects" component={Projects} options={o} />
-				<TabsStackNavigator.Screen name="profile" component={Profile} options={{ gestureEnabled: true }} />
+				<TabsStackNavigator.Screen name="profile" component={Profile} options={o} />
 			</TabsStackNavigator.Navigator>
 			<CustomNavBar />
 		</Block>
@@ -123,8 +123,8 @@ const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 
 	return (
 		<AvatarBody active={c.active}>
-			{profile.avatar ? (
-				<Avatar source={{ uri: `https://cdn.yourstatus.app/profile/${acc?.id}/${profile?.avatar}` }} />
+			{profile?.avatar ? (
+				<Avatar source={{ uri: `https://cdn.yourstatus.app/profile/${acc?.id}/${profile?.avatar}`, cache: 'cacheOnly' }} />
 			) : (
 				<Icon name="person" size={14} color={c.active ? theme.primary : '#000000'} />
 			)}

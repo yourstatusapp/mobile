@@ -23,9 +23,12 @@ export interface BlockType {
 	hCenter?: boolean;
 	color?: string;
 	safe?: boolean;
+	press?: boolean;
+	onPress?: () => void;
 	paddingHorizontal?: number;
 	style?: ViewStyle;
 	row?: boolean;
+	flex?: 1 | 0;
 }
 
 export interface TextType {

@@ -6,7 +6,7 @@ import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { useLinking } from '../hooks';
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { AuthView, MagicView } from '../screens';
+import { AuthView, MagicView, Settings } from '../screens';
 import { PreloaderView } from '../screens/Preloader';
 import { NewProject } from '../screens/NewProject';
 
@@ -41,7 +41,18 @@ export const RootNavigator = () => {
 			<RootStack.Screen name="tabs" component={BottomTabNavigator} />
 			<RootStack.Screen name="auth" component={AuthView} />
 			<RootStack.Screen name="magic" component={MagicView} />
-			<RootStack.Screen name="newproject" component={NewProject} options={{ animation: 'slide_from_bottom', gestureEnabled: false }} />
+			<RootStack.Screen
+				name="newproject"
+				component={NewProject}
+				options={{
+					headerShown: false,
+					gestureEnabled: true,
+					animationTypeForReplace: 'push',
+					// gestureResponseDistance: { vertical: 150 },
+					// cardOverlayEnabled: true,
+				}}
+			/>
+			<RootStack.Screen name="settings" component={Settings} options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }} />
 		</RootStack.Navigator>
 	);
 };

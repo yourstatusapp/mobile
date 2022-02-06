@@ -4,14 +4,14 @@ const SVG_FOLDER = './svg';
 const BUILD_FOLDER = './icons';
 
 const ICON_BASE = `import React from 'react';
-import { Path, Svg, G } from 'react-native-svg';
+import { Path, Svg, G, Defs, ClipPath, Rect } from 'react-native-svg';
 export const SVG_NAME = ({color,style,size}: {color?:any;style?:any;size:number}) => {return (%%_SVG_CONTENT_%%);};`;
 
 const MASTER_BASE = `
 import React from 'react';
-import { View } from 'react-native'
+import { View, ViewStyle } from 'react-native'
 %%_IMPORTS_%%
-export const Icon = ({ name, color, size, style}: {name: string;color?: any;size?: any;style?: any;}) => {
+export const Icon = ({ name, color, size, style}: {name: string;color?: string;size?: number;style?: ViewStyle;}) => {
 	return (
 		<View style={style}>
 			%%_IMPORTS2_%%
@@ -119,6 +119,9 @@ const fixTags = text => {
 	text = fixTag(text, 'svg');
 	text = fixTag(text, 'path');
 	text = fixTag(text, 'g');
+	text = fixTag(text, 'defs');
+	text = fixTag(text, 'clipPath');
+	text = fixTag(text, 'rect');
 
 	return text;
 };

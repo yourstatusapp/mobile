@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Block, Text } from '@parts';
 import { useRoute } from '@react-navigation/native';
-import { AccountType, ProfileType, request } from '@core';
-import FastImage from 'react-native-fast-image';
-import { StyleSheet } from 'react-native';
+import { ProfileType, request } from '@core';
+
 import { useTheme } from 'styled-components/native';
 
 export const Profile = () => {
@@ -29,9 +28,11 @@ export const Profile = () => {
 	}, []);
 
 	if (!ProfileData.account_id) {
-		<Block safe color="red">
-			<Text>{Loaded ? 'Failed to load profile' : 'Loading profile data'}</Text>
-		</Block>;
+		return (
+			<Block safe color="red">
+				<Text>{Loaded ? 'Failed to load profile' : 'Loading profile data'}</Text>
+			</Block>
+		);
 	} else {
 		return (
 			<Block safe paddingHorizontal={20}>
