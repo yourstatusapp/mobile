@@ -25,6 +25,7 @@ export interface BlockType {
 	safe?: boolean;
 	paddingHorizontal?: number;
 	style?: ViewStyle;
+	row?: boolean;
 }
 
 export interface TextType {
@@ -36,4 +37,11 @@ export interface TextType {
 	italic?: boolean;
 	bold?: boolean;
 	textAlign?: string;
+}
+
+export interface PaddingStyle {
+	paddingTop?: number;
+	paddingBottom?: number;
+	paddingLeft?: number;
+	paddingRight?: number;
 }

@@ -21,9 +21,9 @@ export const RootNavigator = () => {
 
 	const mounted = () => setTimeout(() => SetLoaded(true));
 
-	useEffect(() => {
-		mounted();
-	}, []);
+	// useEffect(() => {
+	// 	// mounted();
+	// }, []);
 
 	useEffect(() => {
 		if (loggedIn) {
@@ -32,7 +32,7 @@ export const RootNavigator = () => {
 	}, [loggedIn]);
 
 	// Wait for the preloader and logged_in compute state
-	if (Loaded === false ?? PreloaderReady === false) {
+	if (Loaded === false || PreloaderReady === false) {
 		return <PreloaderView loaded={() => setPreloaderReady(true)} />;
 	}
 

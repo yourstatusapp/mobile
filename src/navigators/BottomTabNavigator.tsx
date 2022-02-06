@@ -1,32 +1,38 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 
-import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import styled, { useTheme } from 'styled-components/native';
-import { HeadingBlurOverlay, Icon } from '@parts';
+import { Block, Icon } from '@parts';
 import FastImage from 'react-native-fast-image';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
-import { Account, Friends, Projects } from '../screens';
-import { BlurView, VibrancyView } from '@react-native-community/blur';
+import { Account, Friends, Projects, Profile } from '../screens';
+import { BlurView } from '@react-native-community/blur';
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
-const BottomTab = createBottomTabNavigator();
+const TabsStackNavigator = createNativeStackNavigator();
 
 export const BottomTabNavigator: React.FC = () => {
+	const o: NativeStackNavigationOptions = {
+		gestureEnabled: false,
+		animation: 'none',
+	};
+
 	return (
-		<View style={{ flex: 1, backgroundColor: 'black' }}>
-			<BottomTab.Navigator initialRouteName="account" tabBar={props => <CustomNavBar {...props} />} screenOptions={{ headerShown: false }}>
-				<BottomTab.Screen name="account" component={Account} />
-				<BottomTab.Screen name="friends" component={Friends} />
-				<BottomTab.Screen name="projects" component={Projects} />
-			</BottomTab.Navigator>
-		</View>
+		<Block color="black">
+			<TabsStackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="account">
+				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
+				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
+				<TabsStackNavigator.Screen name="projects" component={Projects} options={o} />
+				<TabsStackNavigator.Screen name="profile" component={Profile} options={{ gestureEnabled: true }} />
+			</TabsStackNavigator.Navigator>
+			<CustomNavBar />
+		</Block>
 	);
 };
 
-const CustomNavBar: React.FC<BottomTabBarProps> = props => {
-	const { state } = props;
+const CustomNavBar = () => {
 	const acc = usePulse(core.account.state.account);
 	const nav = useNavigation();
 	const [Current, setCurrent] = useState(3);
@@ -37,15 +43,31 @@ const CustomNavBar: React.FC<BottomTabBarProps> = props => {
 		{ name: 'Friends', path: 'friends', icon: 'friends' },
 	];
 
+	const navigate = (name: string, s: number) => {
+		setCurrent(s + 1);
+		nav.navigate(name as never);
+	};
+
 	useEffect(() => {
 		console.log(Current);
 	}, [Current]);
 
+	useEffect(() => {
+		console.log('render');
+	}, []);
+
 	return (
-		<CustomTabBarBody tabIndex={state.index}>
+		<CustomTabBarBody>
 			<TabContainer>
 				{tabs.map((item, index) => (
-					<IconTabBtn key={index} icon={item.icon} route={item.path} active={index + 1 === Current} onPress={() => setCurrent(index + 1)} name={item.name} />
+					<IconTabBtn
+						key={index}
+						icon={item.icon}
+						route={item.path}
+						active={index + 1 === Current}
+						onPress={() => navigate(item.path, index)}
+						name={item.name}
+					/>
 				))}
 
 				<IconTabBtnBody
@@ -74,7 +96,7 @@ const DimmingOverlay = styled.View<{ height: number }>`
 	border-top-right-radius: 15px;
 `;
 
-const CustomTabBarBody = styled.View<{ isIphoneX?: boolean; tabIndex: number }>`
+const CustomTabBarBody = styled.View<{ isIphoneX?: boolean }>`
 	height: 80px;
 	bottom: 0px;
 	align-items: center;
@@ -96,13 +118,13 @@ const TabContainer = styled.View`
 
 const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 	const acc = usePulse(core.account.state.account);
-	// const profile = usePulse(core.account);
+	const profile = usePulse(core.profile.state.profile);
 	const { theme } = useTheme();
 
 	return (
 		<AvatarBody active={c.active}>
-			{acc.avatar ? (
-				<Avatar source={{ uri: `https://cdn.yourstatus.app/profile/${acc?.id}/${acc?.avatar}` }} />
+			{profile.avatar ? (
+				<Avatar source={{ uri: `https://cdn.yourstatus.app/profile/${acc?.id}/${profile?.avatar}` }} />
 			) : (
 				<Icon name="person" size={14} color={c.active ? theme.primary : '#000000'} />
 			)}
@@ -111,14 +133,13 @@ const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 };
 
 const Avatar = styled(FastImage)`
-	height: 40px;
-	width: 40px;
+	height: 36px;
+	width: 36px;
 	border-radius: 50px;
 `;
 
 const AvatarBody = styled.View<{ active: boolean }>`
 	border-radius: 50px;
-	/* border: solid 2px ${({ active, theme }) => (active ? theme.theme.primary : 'black')}; */
 	background-color: ${({ active }) => (active ? '#ffffff32' : '#303030')};
 	height: 35px;
 	width: 35px;
@@ -127,16 +148,11 @@ const AvatarBody = styled.View<{ active: boolean }>`
 `;
 
 const IconTabBtn: React.FC<{ route: string; icon: string; active?: boolean; onPress: () => void; name: string }> = c => {
-	const nav = useNavigation();
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	return (
-		<IconTabBtnBody
-			onPress={() => {
-				nav.navigate(c.route as never);
-				c.onPress();
-			}}>
-			<Icon name={c.icon} size={22} color={c.active ? theme.primary : 'rgba(255,255,255,0.5)'} />
+		<IconTabBtnBody onPress={c.onPress}>
+			<Icon name={c.icon} size={22} color={c.active ? colors.white40 : '#ffffff22'} />
 		</IconTabBtnBody>
 	);
 };

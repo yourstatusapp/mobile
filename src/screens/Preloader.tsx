@@ -11,30 +11,21 @@ interface PreloaderProps {
 
 export const PreloaderView: React.FC<PreloaderProps> = ({ loaded }) => {
 	const [TakingTooLong, setTakingTooLong] = React.useState(false);
-	// const loggedin_state = usePulse(core.account.state.logged_in);
 
 	const getAccount = async () => {
-		// try {
 		setTimeout(() => setTakingTooLong(true), 20 * 1000);
-		// if (!loggedin_state) {
-		// 	console.log('not logged in');
 
-		// 	props.loaded();
-		// 	return;
-		// }
-
-		const res = await request<any>('get', '/account');
+		const res = await request<{ account: any; profile: any }>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
 
-		// @ts-ignore
-		core.account.state.account.set(res.account);
-		core.profile.state.profile.set(res.profile);
+		if (res.data?.account) core.account.state.account.set(res.data?.account);
+		if (res.data?.profile) core.profile.state.profile.set(res.data?.profile);
 
-		loaded();
+		setTimeout(() => loaded(), []);
 	};
 
 	React.useEffect(() => {
-		console.log('preloader');
+		// console.log('preloader');
 		getAccount();
 	}, []);
 
@@ -45,7 +36,7 @@ export const PreloaderView: React.FC<PreloaderProps> = ({ loaded }) => {
 			<ActivityIndicator />
 			<Spacer size={20} />
 			{TakingTooLong && (
-				<Text weight="semi-bold" size={16}>
+				<Text weight="600" size={16}>
 					Still loading...
 				</Text>
 			)}

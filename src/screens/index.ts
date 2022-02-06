@@ -5,3 +5,4 @@ export * from './Preloader';
 export * from './tabs/Account';
 export * from './tabs/Friends';
 export * from './tabs/Projects';
+export * from './Profile';

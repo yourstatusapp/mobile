@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Block, Button, Fill, Spacer, Text } from '@parts';
+import { Avatar, Block, Button, Fill, Spacer, Text } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
@@ -17,8 +17,12 @@ export const Account: React.FC = () => {
 				Account
 			</Text>
 			<Spacer size={20} />
-			<Text>{account.email}</Text>
-			<Text>{profile.avatar}</Text>
+			{profile.account_id && <Avatar srcObj={[profile.account_id, profile.avatar]} size={120} />}
+			<Spacer size={20} />
+			<Text>
+				<Text bold>Email: </Text>
+				{account?.email}
+			</Text>
 			<Fill />
 			<Button
 				text="Logout"

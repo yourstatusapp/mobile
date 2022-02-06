@@ -2,13 +2,14 @@ import React from 'react';
 import { BlockType } from '@core';
 import { SafeAreaView, StyleSheet, View, ViewStyle } from 'react-native';
 
-export const Block: React.FC<BlockType> = ({ children, vCenter, hCenter, color, safe, paddingHorizontal, style }) => {
+export const Block: React.FC<BlockType> = ({ children, vCenter, hCenter, color, safe, paddingHorizontal, style, row }) => {
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
+		{ backgroundColor: color || '#000000' },
+		{ flex: 1, width: '100%', flexDirection: 'column' },
 		!!vCenter && { justifyContent: 'center' },
 		!!hCenter && { alignItems: 'center' },
 		!!paddingHorizontal && { paddingHorizontal },
-		{ backgroundColor: color || '#000000' },
-		{ flex: 1, width: '100%', flexDirection: 'column' },
+		!!row && { flexDirection: 'row' },
 		style,
 	]);
 
