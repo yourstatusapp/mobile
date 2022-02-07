@@ -36,7 +36,8 @@ export const MagicView: React.FC<MagicProps> = ({ route }) => {
 		}
 
 		// @ts-ignore
-		core.account.state.account.set(res.data.account);
+		core.account.state.account.set(res.data.account); // @ts-ignore
+		core.profile.state.profile.set(res.data.profile);
 
 		if (!new_account) {
 			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });

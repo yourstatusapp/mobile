@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
-import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
+import Svg, { G, Path } from 'react-native-svg';
 import styled from 'styled-components/native';
 import core, { request } from '@core';
 import { Spacer, Text } from '@parts';
@@ -9,22 +9,28 @@ interface PreloaderProps {
 	loaded: () => void;
 }
 
-export const PreloaderView: React.FC<PreloaderProps> = ({ loaded }) => {
-	const [TakingTooLong, setTakingTooLong] = React.useState(false);
+export const PreloaderView = ({ loaded }: PreloaderProps) => {
+	const [TakingTooLong, setTakingTooLong] = useState(false);
 
 	const getAccount = async () => {
 		setTimeout(() => setTakingTooLong(true), 20 * 1000);
 
 		const res = await request<{ account: any; profile: any }>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
+		loaded();
 
-		if (res.data?.account) core.account.state.account.set(res.data?.account);
-		if (res.data?.profile) core.profile.state.profile.set(res.data?.profile);
+		if (!res.success) {
+			core.account.state.account.reset();
+			core.profile.state.profile.reset();
+		} else {
+			if (res.data?.account) core.account.state.account.set(res.data?.account);
+			if (res.data?.profile) core.profile.state.profile.set(res.data?.profile);
+		}
 
-		setTimeout(() => loaded(), []);
+		setTimeout(() => loaded(), 10);
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		// console.log('preloader');
 		getAccount();
 	}, []);
@@ -52,17 +58,19 @@ const PreloaderBody = styled.View`
 
 const Logo: React.FC = () => {
 	return (
-		<Svg width={80} height={82} viewBox="0 0 636 657" fill="none">
-			<Path
-				d="M214.857 585C214.857 618.941 214.857 635.912 225.401 646.456C235.945 657 252.916 657 286.857 657H349.143C383.084 657 400.055 657 410.599 646.456C421.143 635.912 421.143 618.941 421.143 585V466.956C421.143 457.987 421.143 453.503 422.221 449.197C423.299 444.892 425.413 440.936 429.639 433.026L604.403 105.93C629.675 58.6294 642.311 34.9793 631.826 17.4896C621.341 0 594.527 0 540.899 0H489.08C466.714 0 455.532 0 446.663 5.67114C437.795 11.3423 433.104 21.4934 423.722 41.7956L320.763 264.585C320.265 265.662 319.186 266.351 318 266.351C316.814 266.351 315.735 265.662 315.237 264.585L212.278 41.7956C202.896 21.4934 198.205 11.3423 189.337 5.67114C180.468 0 169.286 0 146.92 0H95.1013C41.473 0 14.6589 0 4.17396 17.4896C-6.31098 34.9793 6.32501 58.6294 31.597 105.93L206.361 433.026C210.587 440.936 212.701 444.892 213.779 449.197C214.857 453.503 214.857 457.987 214.857 466.956V585Z"
-				fill="url(#paint0_linear)"
-			/>
-			<Defs>
-				<LinearGradient id="paint0_linear" x1="496.98" y1="-1.10294e-05" x2="252.459" y2="668.015" gradientUnits="userSpaceOnUse">
-					<Stop stopColor="#C4A3FB" />
-					<Stop offset="1" stopColor="#4C5DF1" />
-				</LinearGradient>
-			</Defs>
+		<Svg width="120" height="120" viewBox="0 0 192 192" fill="none">
+			<G>
+				<Path
+					d="M80.2133 135.667C80.2133 141.952 80.2133 145.095 82.1426 147.047C84.0719 149 87.1771 149 93.3876 149H99.6124C105.823 149 108.928 149 110.857 147.047C112.787 145.095 112.787 141.952 112.787 135.667V119.085C112.787 117.424 112.787 116.594 112.984 115.796C113.181 114.999 113.568 114.267 114.341 112.802L140.306 63.6163C144.93 54.8571 147.242 50.4775 145.323 47.2388C143.405 44 138.498 44 128.686 44H124.669C120.576 44 118.53 44 116.907 45.0502C115.285 46.1005 114.426 47.9804 112.71 51.7401L96.9362 86.2852C96.8576 86.4574 96.6873 86.5676 96.5 86.5676C96.3127 86.5676 96.1424 86.4574 96.0638 86.2852L80.2903 51.7401C78.5736 47.9804 77.7152 46.1005 76.0925 45.0502C74.4698 44 72.4236 44 68.3312 44H64.3141C54.5016 44 49.5953 44 47.6768 47.2388C45.7583 50.4775 48.0703 54.8571 52.6942 63.6164L78.6588 112.802C79.4321 114.267 79.8187 114.999 80.016 115.796C80.2133 116.594 80.2133 117.424 80.2133 119.085V135.667Z"
+					fill="black"
+				/>
+			</G>
+			<G>
+				<Path
+					d="M80.2133 135.667C80.2133 141.952 80.2133 145.095 82.1426 147.047C84.0719 149 87.1771 149 93.3876 149H99.6124C105.823 149 108.928 149 110.857 147.047C112.787 145.095 112.787 141.952 112.787 135.667V119.085C112.787 117.424 112.787 116.594 112.984 115.796C113.181 114.999 113.568 114.267 114.341 112.802L140.306 63.6163C144.93 54.8571 147.242 50.4775 145.323 47.2388C143.405 44 138.498 44 128.686 44H124.669C120.576 44 118.53 44 116.907 45.0502C115.285 46.1005 114.426 47.9804 112.71 51.7401L96.9362 86.2852C96.8576 86.4574 96.6873 86.5676 96.5 86.5676C96.3127 86.5676 96.1424 86.4574 96.0638 86.2852L80.2903 51.7401C78.5736 47.9804 77.7152 46.1005 76.0925 45.0502C74.4698 44 72.4236 44 68.3312 44H64.3141C54.5016 44 49.5953 44 47.6768 47.2388C45.7583 50.4775 48.0703 54.8571 52.6942 63.6164L78.6588 112.802C79.4321 114.267 79.8187 114.999 80.016 115.796C80.2133 116.594 80.2133 117.424 80.2133 119.085V135.667Z"
+					fill="#3859FD"
+				/>
+			</G>
 		</Svg>
 	);
 };

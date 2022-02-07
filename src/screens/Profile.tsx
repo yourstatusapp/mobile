@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Block, Text } from '@parts';
+import { Avatar, Block, Spacer, Status, Text } from '@parts';
 import { useRoute } from '@react-navigation/native';
 import { ProfileType, request } from '@core';
 
@@ -10,7 +10,7 @@ export const Profile = () => {
 	const { colors } = useTheme();
 	// @ts-ignore
 	const usr_name = params.username;
-	const [ProfileData, SetProfile] = useState<ProfileType | false>(false);
+	const [ProfileData, SetProfile] = useState<ProfileType>();
 	const [Loaded, SetLoaded] = useState(false);
 
 	const getProfile = async () => {
@@ -27,20 +27,23 @@ export const Profile = () => {
 		getProfile();
 	}, []);
 
-	if (!ProfileData.account_id) {
+	if (!ProfileData) {
 		return (
-			<Block safe color="red">
+			<Block safe>
 				<Text>{Loaded ? 'Failed to load profile' : 'Loading profile data'}</Text>
 			</Block>
 		);
 	} else {
 		return (
-			<Block safe paddingHorizontal={20}>
-				<Avatar srcObj={[ProfileData.account_id, ProfileData.avatar]} size={100} />
-				<Text bold size={40} style={{ paddingTop: 30 }}>
+			<Block paddingHorizontal={20}>
+				<Spacer size={60} />
+				<Avatar src={[ProfileData.account_id, ProfileData.avatar]} size={100} />
+				<Text bold size={40} style={{ paddingTop: 20 }}>
 					{ProfileData.username}
 				</Text>
-				<Text bold size={14} color={colors.white80} style={{ paddingTop: 30 }}>
+				<Spacer size={10} />
+				{ProfileData.status && <Status status={ProfileData.status} />}
+				<Text bold size={14} color={colors.white80} style={{ paddingTop: 20 }}>
 					{ProfileData.bio}
 				</Text>
 			</Block>

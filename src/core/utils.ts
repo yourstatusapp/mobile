@@ -3,8 +3,8 @@ import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 import { navigationRef } from '../navigators/RootNavigator';
 
-// export const baseURL = state('https://api.yourstatus.app');
-export const baseURL = state('http://192.168.0.4:3000');
+export const baseURL = state('https://api.yourstatus.app');
+// export const baseURL = state('http://192.168.0.4:3020');
 
 interface RequestOptions {
 	headers?: any;
@@ -15,15 +15,12 @@ interface RequestOptions {
 interface ReturnRequestType<T> {
 	data?: T;
 	message?: string;
+	success: boolean;
 }
 
-export const request = async <DataG extends any>(
-	method: 'post' | 'get' | 'delete' | 'patch',
-	path: string,
-	x?: RequestOptions,
-): Promise<ReturnRequestType<DataG>> => {
+export const request = async <T extends any>(method: 'post' | 'get' | 'delete' | 'patch', path: string, x?: RequestOptions): Promise<ReturnRequestType<T>> => {
 	try {
-		const a: AxiosResponse<ReturnRequestType<DataG>> = await axios({
+		const a: AxiosResponse<ReturnRequestType<T>> = await axios({
 			method,
 			data: x?.data,
 			headers: {
@@ -37,13 +34,13 @@ export const request = async <DataG extends any>(
 
 		return a.data;
 	} catch (error: any) {
-		console.log(error.response.status);
+		console.log(error);
 
-		if (error?.response?.status === 401) {
-			navigationRef.reset({ routes: [{ name: 'auth' }] });
-			core.account.state.account.reset();
-		}
-		throw false;
+		// if (error?.response?.status === 401) {
+		// 	navigationRef.reset({ routes: [{ name: 'auth' }] });
+		// 	core.account.state.account.reset();
+		// }
+		return { success: false, message: error.response.data.message };
 		// // if no auth, reset the accout
 
 		// // alert({ title: error.response.message });

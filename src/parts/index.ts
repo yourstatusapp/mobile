@@ -9,3 +9,5 @@ export { TextButton } from './TextButton';
 export * from './IconButton';
 export * from './Layout';
 export * from './Input';
+
+export { Status } from './Status';

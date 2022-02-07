@@ -8,7 +8,7 @@ export const Settings = () => {
 	const { colors, theme } = useTheme();
 	return (
 		<>
-			<Block row flex={0} style={{ height: 50, padding: 10 }} vCenter>
+			<Block row flex={0} style={{ height: 50, padding: 10 }} vCenter color="red">
 				<Text bold size={24} center>
 					Settings
 				</Text>

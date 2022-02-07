@@ -9,12 +9,13 @@ interface InputProps {
 	onChange?: (v: string) => void;
 	disabled?: boolean;
 	textContentType?: 'email' | 'none';
+	autoFocus?: boolean;
 
 	style?: ViewStyle;
 	className?: string;
 }
 
-export const Input: React.FC<InputProps> = ({ onChange, placeholder, value, style, disabled, textContentType }) => {
+export const Input: React.FC<InputProps> = ({ onChange, placeholder, value, style, disabled, textContentType, autoFocus }) => {
 	return (
 		<InputBox>
 			{placeholder && (
@@ -25,6 +26,7 @@ export const Input: React.FC<InputProps> = ({ onChange, placeholder, value, styl
 				</PlaceholderBox>
 			)}
 			<InputBody
+				autoFocus={autoFocus}
 				style={style}
 				value={value}
 				onChangeText={onChange}

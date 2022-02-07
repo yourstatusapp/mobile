@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { request } from '@core';
-import { Block, HeadingBlurOverlay, Row, Spacer, Text } from '@parts';
+import { Avatar, Block, HeadingBlurOverlay, Row, Spacer, Status, Text } from '@parts';
 import { FlatList, ListRenderItemInfo, MaskedViewBase, ScrollView, TouchableOpacity, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -40,24 +39,45 @@ export const Friends = () => {
 		// if (a.da) SetD(a.data.friends);
 	};
 
+	const [MyStatus, setMyStatus] = useState();
+	const getMyStatus = async () => {
+		const res = await request<any>('get', '/status');
+		setMyStatus(res.data);
+	};
+
 	React.useEffect(() => {
 		getFriends();
+		setTimeout(() => {
+			getMyStatus();
+		}, 200);
 	}, []);
 
 	const renderItem = (p: FriendItemType) => <FriendComp {...p} />;
 
 	return (
 		<Block>
-			{/* {D && <Text>{JSON.stringify(D)}</Text>} */}
 			<ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: 50, paddingBottom: 120 }}>
-				<FlatList
-					data={D}
-					renderItem={renderItem}
-					initialNumToRender={20}
-					showsVerticalScrollIndicator={false}
-					keyExtractor={item => item.account_id}
-					getItemLayout={(data, index) => ({ length: FRIEND_ITEM_HEIGHT, offset: FRIEND_ITEM_HEIGHT * index, index })}
-				/>
+				{!!MyStatus?.data && (
+					<Block style={{ padding: 20 }} row hCenter>
+						<Text bold style={{ paddingRight: 3 }}>
+							My status:{' '}
+						</Text>
+						<Status status={MyStatus} />
+					</Block>
+				)}
+
+				{React.useMemo(() => {
+					return (
+						<FlatList
+							data={D}
+							renderItem={renderItem}
+							initialNumToRender={20}
+							showsVerticalScrollIndicator={false}
+							keyExtractor={item => item.account_id}
+							getItemLayout={(data, index) => ({ length: FRIEND_ITEM_HEIGHT, offset: FRIEND_ITEM_HEIGHT * index, index })}
+						/>
+					);
+				}, [D])}
 			</ScrollView>
 		</Block>
 	);
@@ -71,13 +91,13 @@ const FriendComp: React.FC<FriendItemType> = props => {
 	const openProfile = () => nav.navigate('profile' as never, { username: item.username } as never);
 
 	React.useEffect(() => {
-		console.log('friend render');
+		console.log('friend render ' + item.username);
 	}, []);
 	return (
 		<FriendCompBody key={index}>
 			<Block row paddingHorizontal={20}>
 				<TouchableOpacity activeOpacity={0.6} onPress={openProfile}>
-					<Avatar source={{ uri: `https://cdn.yourstatus.app/profile/${item.account_id}/${item.avatar}` }} />
+					<Avatar src={[item.account_id, item.avatar]} size={45} />
 				</TouchableOpacity>
 				<Block style={{ paddingLeft: 20 }}>
 					<Text weight="700" size={16}>
@@ -105,43 +125,4 @@ const FriendCompBody = styled.View`
 	border-bottom-color: #111111;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
-`;
-
-const Avatar = styled(FastImage)`
-	height: 45px;
-	width: 45px;
-	border-radius: 55px;
-
-	background-color: rgba(255, 255, 255, 0.06);
-`;
-
-interface StatusType {
-	status: {
-		id: string;
-		data: { title: string };
-	};
-}
-
-const Status = React.memo(({ status }: StatusType) => {
-	return (
-		<StatusBody>
-			<Text weight="600" size={12} color="#3D60FF" style={{ paddingTop: 2 }}>
-				{status.data.title}
-			</Text>
-		</StatusBody>
-	);
-});
-
-const StatusBody = styled.View`
-	background-color: #0c1b37;
-	align-self: flex-start;
-	border-radius: 4px;
-	padding: 0px 4px;
-	padding-bottom: 2px;
-	margin-top: 4px;
-	/* opacity: 0.6;
-	border: solid 1px #ffffff;
-	align-self: center;
-	padding: 2px 8px;
-	border-radius: 90px; */
 `;

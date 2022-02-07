@@ -1,8 +1,8 @@
 import React from 'react';
 import { BlockType } from '@core';
-import { SafeAreaView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-export const Block: React.FC<BlockType> = ({ children, vCenter, hCenter, color, safe, paddingHorizontal, style, row, flex, press, onPress }) => {
+export const Block: React.FC<BlockType> = ({ scroll, children, vCenter, hCenter, color, safe, paddingHorizontal, style, row, flex, press, onPress }) => {
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
 		!!paddingHorizontal && { paddingHorizontal },
 		{ backgroundColor: color ?? 'hsl(0, 0%, 0%)' },
@@ -20,7 +20,17 @@ export const Block: React.FC<BlockType> = ({ children, vCenter, hCenter, color, 
 			</TouchableOpacity>
 		);
 	} else if (safe) {
-		return <SafeAreaView style={blockStyle}>{children}</SafeAreaView>;
+		return (
+			<SafeAreaView style={{ flex: blockStyle.flex, backgroundColor: blockStyle.backgroundColor }}>
+				<View style={blockStyle}>{children}</View>
+			</SafeAreaView>
+		);
+	} else if (scroll) {
+		return (
+			<ScrollView scrollEnabled={true} style={blockStyle}>
+				{children}
+			</ScrollView>
+		);
 	} else {
 		return <View style={blockStyle}>{children}</View>;
 	}

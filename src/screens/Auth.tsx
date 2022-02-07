@@ -1,6 +1,6 @@
 import styled, { useTheme } from 'styled-components/native';
 import React, { useState } from 'react';
-import { Block, Button, Fill, Icon, Input, Spacer, Text } from '@parts';
+import { Block, Button, Fill, Icon, Input, Row, Spacer, Text } from '@parts';
 import core, { request } from '@core';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -31,13 +31,15 @@ export const AuthView: React.FC = () => {
 			</Text>
 			<Spacer size={30} />
 			<Input placeholder="Email" onChange={SetEmail} textContentType={'email'} />
-			<Spacer size={20} />
+			<Spacer size={15} />
 			<Button text="Login" onPress={() => login()} disabled={Email === '' || Loading} />
-			<Spacer size={20} />
-			<Text center color={colors.white60}>
-				<Icon name={'sparkle'} size={20} color={'#393984'} style={{ paddingLeft: 5 }} />
-			</Text>
-
+			<Spacer size={5} />
+			<Block row vCenter flex={0}>
+				<Text center italic color={colors.white40} bold>
+					We use magic links
+				</Text>
+				<Icon name={'sparkle'} size={15} color={'#5e37c9'} style={{ paddingLeft: 5, paddingBottom: 5 }} />
+			</Block>
 			<Spacer size={20} />
 
 			{loggedin && (

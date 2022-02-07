@@ -12,7 +12,8 @@ export const Account = () => {
 	const profile = usePulse(core.profile.state.profile);
 
 	return (
-		<Block paddingHorizontal={20}>
+		<Block scroll paddingHorizontal={20}>
+			<Spacer size={20} />
 			<Spacer size={50} />
 			<Block row flex={0}>
 				<Text size={28} bold color={colors.white}>
@@ -22,12 +23,14 @@ export const Account = () => {
 				<IconButton name="cog" size={25} color={colors.white} onPress={() => nav.navigate('settings' as never)} />
 			</Block>
 			<Spacer size={20} />
-			{profile.account_id && <Avatar srcObj={[profile.account_id, profile.avatar]} size={120} />}
+			{profile?.account_id && <Avatar src={[profile.account_id, profile?.avatar]} size={120} />}
 			<Spacer size={20} />
 			<Text>
 				<Text bold>Email: </Text>
 				{account?.email}
 			</Text>
+			<Spacer size={20} />
+
 			<Fill />
 			<TextButton
 				text="Logout"

@@ -15,7 +15,7 @@ export interface ProfileType {
 	location: string;
 	date_of_birth: string;
 	// collections?: Collection[];
-	// status?: Status;
+	status?: any;
 }
 
 export interface BlockType {
@@ -24,6 +24,7 @@ export interface BlockType {
 	color?: string;
 	safe?: boolean;
 	press?: boolean;
+	scroll?: boolean;
 	onPress?: () => void;
 	paddingHorizontal?: number;
 	style?: ViewStyle;
