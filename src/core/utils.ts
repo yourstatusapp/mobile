@@ -3,8 +3,8 @@ import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 import { navigationRef } from '../navigators/RootNavigator';
 
-export const baseURL = state('https://api.yourstatus.app');
-// export const baseURL = state('http://192.168.0.4:3020');
+// export const baseURL = state('https://api.yourstatus.app');
+export const baseURL = state('http://192.168.0.4:3020');
 
 interface RequestOptions {
 	headers?: any;

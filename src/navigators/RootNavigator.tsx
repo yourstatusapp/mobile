@@ -6,7 +6,7 @@ import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { useLinking } from '../hooks';
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { AuthView, MagicView, NewStatus, Settings } from '../screens';
+import { AuthView, EditProfile, MagicView, NewStatus, Settings } from '../screens';
 import { PreloaderView } from '../screens/Preloader';
 import { NewProject } from '../screens/NewProject';
 
@@ -52,6 +52,7 @@ export const RootNavigator = () => {
 						// cardOverlayEnabled: true,
 					}}
 				/>
+				<RootStack.Screen name="edit_profile" component={EditProfile} options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }} />
 				<RootStack.Screen name="settings" component={Settings} options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }} />
 			</RootStack.Navigator>
 		);

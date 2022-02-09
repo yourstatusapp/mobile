@@ -11,3 +11,4 @@ export * from './Layout';
 export * from './Input';
 
 export { Status } from './Status';
+export { ModalHeader } from './ModalHeader';

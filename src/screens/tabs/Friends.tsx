@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { request } from '@core';
-import { Avatar, Block, HeadingBlurOverlay, Row, Spacer, Status, Text } from '@parts';
-import { FlatList, ListRenderItemInfo, MaskedViewBase, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Avatar, Block, Status, Text } from '@parts';
+import { FlatList, ListRenderItemInfo, ScrollView, TouchableOpacity } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -13,7 +13,7 @@ interface FriendItem {
 		id: string;
 		type: number;
 		account_id: string;
-		data: any;
+		content: string;
 		taps: number;
 		taped?: boolean;
 	};

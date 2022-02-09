@@ -1,5 +1,5 @@
 import React from 'react';
-import { Block, Button, Fill, Icon, Spacer, Text } from '@parts';
+import { Block, Button, Fill, Icon, ModalHeader, Spacer, Text } from '@parts';
 import { TouchableOpacity } from 'react-native';
 import { useTheme, withTheme } from 'styled-components/native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -8,16 +8,10 @@ export const Settings = () => {
 	const { colors, theme } = useTheme();
 	return (
 		<>
-			<Block row flex={0} style={{ height: 50, padding: 10 }} vCenter color="red">
-				<Text bold size={24} center>
-					Settings
-				</Text>
-			</Block>
+			<ModalHeader title="Settings" />
 			<Block paddingHorizontal={20}>
-				<Spacer size={20} />
-				<SettingItem text="Account" />
-				<SettingItem text="Appearance" />
-				<SettingItem text="Notifications" />
+				<Spacer size={25} />
+				<Text>Coming More Soon</Text>
 			</Block>
 		</>
 	);
