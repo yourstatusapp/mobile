@@ -1,4 +1,4 @@
-import { ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 
 export interface AccountType {
 	id: string;
@@ -18,7 +18,28 @@ export interface ProfileType {
 	status?: any;
 }
 
-export interface BlockType {
+export interface StatusType {
+	id: string;
+	type: number;
+	content: string;
+	expires_at: string;
+}
+
+export interface PaddingType {
+	paddingTop?: number;
+	paddingBottom?: number;
+	paddingLeft?: number;
+	paddingRight?: number;
+}
+
+export interface MarginType {
+	marginTop?: number;
+	marginBottom?: number;
+	marginLeft?: number;
+	marginRight?: number;
+}
+
+export interface BlockType extends PaddingType, MarginType {
 	vCenter?: boolean;
 	hCenter?: boolean;
 	color?: string;
@@ -36,16 +57,9 @@ export interface TextType {
 	color?: string;
 	size?: number;
 	weight?: '500' | '600' | '700' | '800' | '900';
-	style?: ViewStyle;
+	style?: TextStyle;
 	center?: boolean;
 	italic?: boolean;
 	bold?: boolean;
 	textAlign?: string;
-}
-
-export interface PaddingStyle {
-	paddingTop?: number;
-	paddingBottom?: number;
-	paddingLeft?: number;
-	paddingRight?: number;
 }

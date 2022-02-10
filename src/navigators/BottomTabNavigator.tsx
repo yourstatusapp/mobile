@@ -3,11 +3,10 @@ import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import styled, { useTheme } from 'styled-components/native';
-import { Block, Icon, IconButton } from '@parts';
-import FastImage from 'react-native-fast-image';
+import { Avatar, Block, Icon, IconButton } from '@parts';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
-import { Account, Friends, Projects, Profile, NewStatus } from '../screens';
+import { Account, Friends, Projects, Profile } from '../screens';
 import { BlurView } from '@react-native-community/blur';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
@@ -42,10 +41,7 @@ const CustomNavBar = () => {
 	const [Current, setCurrent] = useState(3);
 	const sh = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 80, width: '100%', zIndex: 10, opacity: 1 }]);
 
-	const tabs = [
-		// { name: 'Projects', path: 'projects', icon: 'map' },
-		{ name: 'Friends', path: 'friends', icon: 'friends' },
-	];
+	const tabs = [{ name: 'Friends', path: 'friends', icon: 'friends' }];
 
 	const navigate = (name: string, s: number) => {
 		setCurrent(s + 1);
@@ -107,14 +103,11 @@ const DimmingOverlay = styled.View<{ height: number }>`
 	top: 0;
 	left: 0;
 	right: 0;
-	/* background-color: rgba(0, 0, 0, 0.44); */
 	background-color: rgba(0, 0, 0, 1);
 	border-top-color: ${({ theme }) => theme.colors.white20}px;
 	border-top-width: 1px;
 	opacity: 1;
 	height: ${props => props.height}px;
-	/* border-top-left-radius: 15px; */
-	/* border-top-right-radius: 15px; */
 `;
 
 const CustomTabBarBody = styled.View<{ isIphoneX?: boolean }>`
@@ -145,25 +138,14 @@ const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 
 	return (
 		<AvatarBody active={c.active}>
-			{!!acc?.id || !!profile?.avatar ? (
-				<Avatar source={{ uri: `https://cdn.yourstatus.app/profile/${acc?.id}/${profile?.avatar}`, cache: 'cacheOnly' }} />
-			) : (
-				<Icon name="person" size={14} color={c.active ? theme.primary : '#000000'} />
-			)}
+			<Avatar src={[acc?.id, profile?.avatar]} size={33} />
 		</AvatarBody>
 	);
 };
 
-const Avatar = styled(FastImage)`
-	height: 33px;
-	width: 33px;
-	border-radius: 50px;
-`;
-
 const AvatarBody = styled.View<{ active: boolean }>`
 	border-radius: 50px;
-	background-color: ${({ active, theme }) => (active ? theme.colors.white80 : theme.colors.white20)};
-	/* border: solid 1px white; */
+	background-color: ${({ active, theme }) => (active ? theme.colors.white : theme.colors.white20)};
 	height: 35px;
 	width: 35px;
 	align-items: center;

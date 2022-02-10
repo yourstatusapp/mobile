@@ -2,7 +2,28 @@ import React from 'react';
 import { BlockType } from '@core';
 import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-export const Block: React.FC<BlockType> = ({ scroll, children, vCenter, hCenter, color, safe, paddingHorizontal, style, row, flex, press, onPress }) => {
+export const Block: React.FC<BlockType> = ({
+	scroll,
+	children,
+	vCenter,
+	hCenter,
+	color,
+	safe,
+	paddingHorizontal,
+	style,
+	row,
+	flex,
+	press,
+	onPress,
+	marginBottom,
+	marginLeft,
+	marginRight,
+	marginTop,
+	paddingBottom,
+	paddingLeft,
+	paddingRight,
+	paddingTop,
+}) => {
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
 		!!paddingHorizontal && { paddingHorizontal },
 		{ backgroundColor: color ?? 'hsl(0, 0%, 0%)' },
@@ -10,6 +31,14 @@ export const Block: React.FC<BlockType> = ({ scroll, children, vCenter, hCenter,
 		!!vCenter && { justifyContent: 'center' },
 		!!hCenter && { alignItems: 'center' },
 		!!row && { flexDirection: 'row' },
+		{ marginBottom },
+		{ marginLeft },
+		{ marginRight },
+		{ marginTop },
+		{ paddingBottom },
+		{ paddingLeft },
+		{ paddingRight },
+		{ paddingTop },
 		style,
 	]);
 

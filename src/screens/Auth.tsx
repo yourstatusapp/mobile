@@ -1,6 +1,6 @@
-import styled, { useTheme } from 'styled-components/native';
+import { useTheme } from 'styled-components/native';
 import React, { useState } from 'react';
-import { Block, Button, Fill, Icon, Input, Row, Spacer, Text } from '@parts';
+import { Block, Button, Icon, Input, Spacer, Text } from '@parts';
 import core, { request } from '@core';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -12,16 +12,23 @@ export const AuthView: React.FC = () => {
 	const { colors } = useTheme();
 	const loggedin = usePulse(core.account.state.logged_in);
 	const [Email, SetEmail] = useState('');
+	const [Error, SetError] = useState('');
 	const [Loading, SetLoading] = useState(false);
 
 	const login = async () => {
 		SetLoading(true);
-		await request('post', '/auth/magic', {
+		SetError('');
+		const res = await request('post', '/auth/magic', {
 			data: {
 				email: Email?.trimStart()?.trimEnd(),
 			},
 		});
 		SetLoading(false);
+		if (res.data === false) {
+			SetError(res?.message || '');
+		} else {
+			SetEmail('');
+		}
 		// core.app.event.notification.emit({ title: 'Magic link has been send', success: true, desc: 'Click on the link in your inbox' });
 	};
 	return (
@@ -30,15 +37,20 @@ export const AuthView: React.FC = () => {
 				YourStatus
 			</Text>
 			<Spacer size={30} />
+			{!!Error && (
+				<Text color="red" size={14} bold>
+					{Error}
+				</Text>
+			)}
+			<Spacer size={10} />
 			<Input placeholder="Email" onChange={SetEmail} textContentType={'email'} />
 			<Spacer size={15} />
 			<Button text="Login" onPress={() => login()} disabled={Email === '' || Loading} />
-			<Spacer size={5} />
-			<Block row vCenter flex={0}>
-				<Text center italic color={colors.white40} bold>
+			<Block row vCenter flex={0} marginTop={20}>
+				<Icon name={'sparkle'} size={15} color={'#5e37c9'} style={{ paddingRight: 5, paddingBottom: 5 }} />
+				<Text center color={colors.white80} weight="600" size={12}>
 					We use magic links
 				</Text>
-				<Icon name={'sparkle'} size={15} color={'#5e37c9'} style={{ paddingLeft: 5, paddingBottom: 5 }} />
 			</Block>
 			<Spacer size={20} />
 

@@ -8,6 +8,7 @@ import { useTheme } from 'styled-components/native';
 
 export const NewStatus = () => {
 	const [StatusTxt, SetStatusTxt] = useState('');
+	const [Error, SetError] = useState('');
 	const [Loading, SetLoading] = useState(false);
 	const nav = useNavigation();
 	const { colors } = useTheme();
@@ -18,10 +19,14 @@ export const NewStatus = () => {
 			SetLoading(false);
 			return;
 		}
-		const res = await request('post', '/status/new', { data: { data: { title: StatusTxt } } });
-		SetLoading(false);
+		const res = await request('post', '/status/new', { data: { type: 'DEFAULT', title: StatusTxt } });
+
 		if (res.data) {
+			SetStatusTxt('');
 			nav.goBack();
+		} else {
+			SetLoading(false);
+			SetError(res?.message || '');
 		}
 	};
 
@@ -33,11 +38,17 @@ export const NewStatus = () => {
 					Create new Status
 				</Text>
 				<Spacer size={20} />
-				<Status status={{ id: '', data: { title: StatusTxt } }} />
+				<Status status={{ id: '', content: StatusTxt, type: 0 }} />
 				<Spacer size={20} />
+				{!!Error && (
+					<Text color="red" size={14}>
+						{Error}
+					</Text>
+				)}
+				<Spacer size={8} />
 				<Input value={StatusTxt} onChange={v => SetStatusTxt(v)} />
 				<Spacer size={2 * 20} />
-				<Button text="Create" disabled={StatusTxt === ''} onPress={createStatus} />
+				<Button text="Create" disabled={StatusTxt === '' || Loading} onPress={createStatus} />
 				<Fill />
 				<TextButton text="Go back" textColor={colors.white80} onPress={() => nav.goBack()} />
 			</KeyboardAvoidingView>

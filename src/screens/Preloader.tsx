@@ -18,6 +18,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		const res = await request<{ account: any; profile: any }>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
 		loaded();
+		console.log(res.data);
 
 		if (!res.success) {
 			core.account.state.account.reset();
@@ -31,7 +32,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 	};
 
 	useEffect(() => {
-		// console.log('preloader');
+		console.log('preloader');
 		getAccount();
 	}, []);
 

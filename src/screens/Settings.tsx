@@ -1,6 +1,6 @@
 import React from 'react';
-import { Block, Button, Fill, Icon, ModalHeader, Spacer, Text } from '@parts';
-import { TouchableOpacity } from 'react-native';
+import { Block, Button, Fill, Icon, ModalHeader, Row, Spacer, Text } from '@parts';
+import { Linking, TouchableOpacity } from 'react-native';
 import { useTheme, withTheme } from 'styled-components/native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
@@ -12,6 +12,16 @@ export const Settings = () => {
 			<Block paddingHorizontal={20}>
 				<Spacer size={25} />
 				<Text>Coming More Soon</Text>
+				<Spacer size={20} />
+				<Row>
+					<Block flex={0} vCenter hCenter row press onPress={() => Linking.openURL('https://twitter.com/yourstatusapp')}>
+						<Icon name="twitter" size={25} color="#1C9BF0" />
+						<Spacer size={5} h />
+						<Text color="#1C9BF0" bold>
+							@YourStatus
+						</Text>
+					</Block>
+				</Row>
 			</Block>
 		</>
 	);

@@ -4,7 +4,7 @@ import FastImage, { ImageStyle } from 'react-native-fast-image';
 import { useTheme } from 'styled-components/native';
 
 interface AvatarProps {
-	src: [string, string];
+	src: [string?, string?];
 	style?: ImageStyle;
 	size?: number;
 }
@@ -16,5 +16,5 @@ export const Avatar = ({ src, style, size }: AvatarProps) => {
 
 	const image_src = `https://cdn.yourstatus.app/profile/${src[0]}/${src[1]}`;
 
-	return defaultImg ? <View style={s} /> : <FastImage source={{ uri: image_src ?? '', cache: 'cacheOnly' }} style={s} />;
+	return defaultImg ? <View style={s} /> : <FastImage source={{ uri: image_src ?? '' }} style={s} />;
 };

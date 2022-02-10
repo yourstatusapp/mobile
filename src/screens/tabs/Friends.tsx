@@ -57,7 +57,7 @@ export const Friends = () => {
 	return (
 		<Block>
 			<ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: 50, paddingBottom: 120 }}>
-				{!!MyStatus?.data && (
+				{!!MyStatus && (
 					<Block style={{ padding: 20 }} row hCenter>
 						<Text bold style={{ paddingRight: 3 }}>
 							My status:{' '}

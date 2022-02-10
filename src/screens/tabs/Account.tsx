@@ -24,7 +24,7 @@ export const Account = () => {
 			</Block>
 			<Spacer size={20} />
 			<Block row flex={0}>
-				{profile?.account_id && <Avatar src={[profile.account_id, profile?.avatar]} size={120} />}
+				<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
 				<Spacer size={20} h />
 				<IconButton
 					name="pencil"
