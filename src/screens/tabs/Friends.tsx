@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { request } from '@core';
+import { request, StatusType } from '@core';
 import { Avatar, Block, IconButton, Status, Text, TextButton } from '@parts';
 import { Animated, Easing, FlatList, ListRenderItemInfo, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
@@ -25,9 +25,9 @@ type FriendItemType = ListRenderItemInfo<FriendItem>;
 const FRIEND_ITEM_HEIGHT = 88;
 
 export const Friends = () => {
-	const { colors } = useTheme();
+	const { colors, theme } = useTheme();
 	const nav = useNavigation();
-	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 90, width: '100%', zIndex: 10, opacity: 1 }]);
+	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 100, width: '100%', zIndex: 10, opacity: 1 }]);
 
 	const scrolling = useRef(new Animated.Value(0)).current;
 	const iR = [60, 115];
@@ -46,21 +46,24 @@ export const Friends = () => {
 	useEffect(() => {}, [scrolling]);
 
 	const [D, SetD] = useState<any[]>([]);
+	const [FriendRList, SetFriendRList] = useState<any[]>([]);
+
 	const [Loading, SetLoading] = useState(false);
 
 	const getFriends = async () => {
 		SetLoading(true);
-		const a = await request('get', '/friends');
+		const a = await request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends');
 		if (!a.data) {
 		} else {
 			// @ts-ignore
 			SetD(a.data.friends);
+			SetFriendRList(a.data.incoming_pending);
 		}
 		SetLoading(false);
 		// if (a.da) SetD(a.data.friends);
 	};
 
-	const [MyStatus, setMyStatus] = useState();
+	const [MyStatus, setMyStatus] = useState<boolean | StatusType>(false);
 	const getMyStatus = async () => {
 		const res = await request<any>('get', '/status');
 		setMyStatus(res.data);
@@ -94,10 +97,10 @@ export const Friends = () => {
 					],
 					{ useNativeDriver: true },
 				)}>
-				{!!MyStatus && (
+				{MyStatus?.id && (
 					<Block style={{ padding: 20 }} row hCenter>
 						<Text bold style={{ paddingRight: 3 }}>
-							My status:{' '}
+							My status:{`  `}
 						</Text>
 						<Status status={MyStatus} />
 					</Block>
@@ -129,13 +132,12 @@ export const Friends = () => {
 			</Animated.ScrollView>
 			<Animated.View
 				style={{
-					height: 90,
+					height: 101,
 					transform: [{ translateY: translation }],
-					borderBottomWidth: 2,
-					borderBottomColor: colors.white40,
+					borderBottomWidth: 1,
+					borderBottomColor: colors.white20,
 					flexDirection: 'row',
 					alignItems: 'center',
-					// paddingHorizontal: 20,
 					width: '100%',
 					zIndex: 10,
 					position: 'absolute',
@@ -143,13 +145,26 @@ export const Friends = () => {
 				<BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} />
 				<Block animate row style={{ zIndex: 10, backgroundColor: 'transparent', height: 100, opacity: FadeOpacity }} paddingTop={50} paddingHorizontal={20}>
 					<IconButton
-						name="user-add"
+						name="search"
 						size={23}
-						iconSize={17}
+						iconSize={14}
 						color={colors.white}
 						backgroundColor={colors.white40}
 						onPress={() => nav.navigate('SearchFriend' as never)}
+						style={{ marginRight: 15 }}
 					/>
+					{!!FriendRList.length && (
+						<IconButton
+							name="user-add"
+							size={23}
+							iconSize={15}
+							color={colors.black}
+							backgroundColor={colors.white}
+							onPress={() => nav.navigate('FriendRequests' as never, FriendRList as never)}
+							style={{ marginRight: 15 }}
+						/>
+					)}
+					{/* <Text>{JSON.stringify(FriendRList)}</Text> */}
 				</Block>
 			</Animated.View>
 		</Block>

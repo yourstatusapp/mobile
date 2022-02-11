@@ -1,5 +1,6 @@
 import { AppAlert, request } from '@core';
 import { Avatar, Block, Fill, IconButton, Input, Spacer, Text } from '@parts';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { useTheme } from 'styled-components/native';
@@ -14,6 +15,7 @@ interface ProfileSearchItem {
 }
 
 export const SearchFriend = () => {
+	const nav = useNavigation();
 	const { colors } = useTheme();
 	const [Username, SetUsername] = useState('');
 	const [Results, SetResults] = useState<ProfileSearchItem[]>([]);
@@ -54,7 +56,9 @@ export const SearchFriend = () => {
 	const renderItem: ListRenderItem<ProfileSearchItem> = ({ item, index }) => {
 		return (
 			<Block flex={0} key={index} row style={{ height: 70 }} hCenter>
-				<Avatar src={[item.id, item.avatar]} size={45} />
+				<Block flex={0} style={{ width: 'unset' }} press onPress={() => nav.navigate('profile' as never, { username: item.username } as never)}>
+					<Avatar src={[item.account_id, item.avatar]} size={45} />
+				</Block>
 				<Spacer size={15} h />
 				<Text bold style={{ maxWidth: 200 }}>
 					{item.username}

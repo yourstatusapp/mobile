@@ -25,7 +25,7 @@ export const EditProfile = () => {
 		} else {
 			SetErrorMessage(res.message);
 		}
-	}, [Username]);
+	}, [Username, nav]);
 
 	const usernameCheck = async (username: string) => {
 		SetErrorMessage('');
@@ -85,7 +85,12 @@ export const EditProfile = () => {
 				/>
 
 				<Fill />
-				<Button text={'Save'} onPress={() => saveInformation()} disabled={Username === profile.username || Username === '' || !Loaded || !Available} />
+				<Button
+					text={'Save'}
+					onPress={() => saveInformation()}
+					disabled={Username === profile.username || Username === '' || !Loaded || !Available}
+					style={{ marginHorizontal: 20 }}
+				/>
 			</KeyboardAvoidingView>
 		</Block>
 	);

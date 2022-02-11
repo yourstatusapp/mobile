@@ -20,10 +20,10 @@ export const Button: React.FC<ButtonType> = ({ text, onPress, disabled, style })
 			onPress={onPress}
 			disabled={disabled}
 			style={({ pressed }) => [
+				sh,
 				{
 					opacity: pressed ? 0.7 : disabled ? 0.5 : 1,
 				},
-				sh,
 			]}>
 			<Text center size={16} weight="700" color={colors.white}>
 				{text}

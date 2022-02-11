@@ -10,3 +10,4 @@ export { Settings } from './Settings';
 export { NewStatus } from './NewStatus';
 export { EditProfile } from './EditProfile';
 export { SearchFriend } from './SearchFriend';
+export { FriendRequests } from './FriendRequests';
