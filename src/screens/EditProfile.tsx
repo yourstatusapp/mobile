@@ -1,87 +1,102 @@
 import core, { request } from '@core';
-import { Block, ModalHeader, Spacer, Text } from '@parts';
+import { Block, Button, Fill, ModalHeader, Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { TextInput } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 
-let timeout_id: NodeJS.Timeout;
+let timeoutID: NodeJS.Timeout;
 
 export const EditProfile = () => {
+	const nav = useNavigation();
 	const { colors } = useTheme();
-	const [Username, SetUsername] = useState('');
-	const [Bio, SetBio] = useState('');
 	const profile = usePulse(core.profile.state.profile);
 
-	const updateProfile = async () => {
-		const res = await request('patch', '/profile', { data: {} });
-	};
-
-	const [NewUsrNameAvailable, SetNewUsrNameAvailable] = useState(false);
+	const [Username, setUsername] = useState('');
+	const [Available, setAvailable] = useState(false);
+	const [Loaded, setLoaded] = useState(false);
 	const [ErrorMessage, SetErrorMessage] = useState('');
-	const [NewUsrName, SetNewUsrName] = useState('');
-	const [NewUsernameLoaded, SetNewUsernameLoaded] = useState(false);
 
-	const checkUsernameAvailable = useCallback(async () => {
-		SetErrorMessage('');
-		SetNewUsrNameAvailable(false);
-		SetNewUsernameLoaded(false);
-
-		if (!Username) {
-			SetErrorMessage('Use a valid username');
-			SetNewUsernameLoaded(true);
-			return;
+	const saveInformation = useCallback(async () => {
+		const res = await request('patch', '/profile', { data: { username: Username } });
+		if (res.data) {
+			nav.goBack();
+		} else {
+			SetErrorMessage(res.message);
 		}
-		const res = await request('get', '/profile/username/check', { data: { username: Username } });
-		SetNewUsernameLoaded(true);
+	}, [Username]);
+
+	const usernameCheck = async (username: string) => {
+		SetErrorMessage('');
+		const res = await request<boolean>('post', '/profile/username/check', { data: { username } });
+
 		if (res.data === false) {
 			SetErrorMessage(res.message);
-			// res.message explains reason
-		} else if (res.data === true) {
-			SetNewUsrNameAvailable(true);
+			setAvailable(false);
+		} else {
+			setAvailable(true);
 		}
+		setLoaded(true);
+		// if (!a.data) SetErrorMessage(a?.message || '');
+		// setLoaded(true);
+		// setAvailable(a?.data);
+	};
+
+	useEffect(() => {
+		setLoaded(false);
+		clearTimeout(timeoutID);
+
+		timeoutID = setTimeout(() => {
+			usernameCheck(Username);
+		}, 500);
 	}, [Username]);
 
 	useEffect(() => {
-		if (timeout_id) clearTimeout(timeout_id);
-		timeout_id = setTimeout(() => {
-			checkUsernameAvailable();
-		}, 1000);
-	}, [Username]);
-
-	useEffect(() => {
-		if (profile.account_id) {
-			SetUsername(profile.username);
-			SetBio(profile.bio);
-		}
-	}, []);
+		if (!profile) return;
+		setUsername(profile.username);
+	}, [profile]);
 
 	return (
-		<Block>
-			<ModalHeader title="Edit Profile" />
-			<Spacer size={25} />
-			<Text size={12} color="red">
-				{ErrorMessage}
-			</Text>
-			<CustomEditInput
-				placeholder="username"
-				placeholderTextColor={colors.white20}
-				value={Username}
-				onChangeText={v => SetUsername(v)}
-				autoCapitalize="none"
-				autoCorrect={false}
-				autoCompleteType="off"
-				style={{ borderBottomColor: !NewUsernameLoaded ? 'orange' : Username === profile.username ? 'gray' : NewUsrNameAvailable ? 'green' : 'orange' }}
-			/>
-			<CustomEditInput value={Bio} onChangeText={v => SetBio(v)} />
-			<CustomEditInput value={profile.location} />
+		<Block safe flex={1}>
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={70}>
+				<ModalHeader title="Edit Profile" />
+				<Spacer size={25} />
+				<Text size={14} color="#D53F3F" paddingLeft={10} paddingBottom={10}>
+					{ErrorMessage}
+				</Text>
+				<Text size={14} color={colors.white60} paddingLeft={10}>
+					Username
+				</Text>
+				<CustomEditInput
+					placeholder="username"
+					placeholderTextColor={colors.white20}
+					value={Username}
+					onChangeText={v => {
+						setUsername(v?.trimStart()?.trimEnd());
+					}}
+					autoCapitalize="none"
+					autoCorrect={false}
+					autoCompleteType="off"
+					style={{
+						borderBottomColor:
+							Username === '' ? '#D53F3F' : Username === profile?.username ? colors.white40 : !Loaded ? 'gray' : Available ? 'green' : '#D53F3F',
+					}}
+				/>
+
+				<Fill />
+				<Button text={'Save'} onPress={() => saveInformation()} disabled={Username === profile.username || Username === '' || !Loaded || !Available} />
+			</KeyboardAvoidingView>
 		</Block>
 	);
 };
 
 const CustomEditInput = styled.TextInput.attrs({ autoCapitalize: 'none', autoCorrect: false, autoCompleType: 'off' })`
 	color: white;
-	padding: 10px;
+	/* background-color: red; */
+	height: 29px;
+	padding-left: 10px;
+	/* padding: 10px; */
 	border-bottom-color: ${({ theme }) => theme.colors.white40};
 	border-bottom-width: 1px;
 	margin-bottom: 10px;

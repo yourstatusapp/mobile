@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { request } from '@core';
-import { Avatar, Block, Status, Text } from '@parts';
-import { FlatList, ListRenderItemInfo, ScrollView, TouchableOpacity } from 'react-native';
+import { Avatar, Block, IconButton, Status, Text, TextButton } from '@parts';
+import { Animated, Easing, FlatList, ListRenderItemInfo, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
+import { BlurView } from '@react-native-community/blur';
 
 interface FriendItem {
 	username: string;
@@ -24,6 +25,26 @@ type FriendItemType = ListRenderItemInfo<FriendItem>;
 const FRIEND_ITEM_HEIGHT = 88;
 
 export const Friends = () => {
+	const { colors } = useTheme();
+	const nav = useNavigation();
+	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 90, width: '100%', zIndex: 10, opacity: 1 }]);
+
+	const scrolling = useRef(new Animated.Value(0)).current;
+	const iR = [60, 115];
+	const FadeOpacity = scrolling.interpolate({
+		inputRange: iR,
+		outputRange: [1, 0],
+		extrapolate: 'clamp',
+	});
+
+	const translation = scrolling.interpolate({
+		inputRange: iR,
+		outputRange: [0, -50],
+		extrapolate: 'clamp',
+	});
+
+	useEffect(() => {}, [scrolling]);
+
 	const [D, SetD] = useState<any[]>([]);
 	const [Loading, SetLoading] = useState(false);
 
@@ -56,7 +77,23 @@ export const Friends = () => {
 
 	return (
 		<Block>
-			<ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: 50, paddingBottom: 120 }}>
+			<Animated.ScrollView
+				scrollEnabled={true}
+				style={{ flex: 1 }}
+				contentContainerStyle={{ paddingTop: 100, paddingBottom: 120 }}
+				scrollEventThrottle={1}
+				onScroll={Animated.event(
+					[
+						{
+							nativeEvent: {
+								contentOffset: {
+									y: scrolling,
+								},
+							},
+						},
+					],
+					{ useNativeDriver: true },
+				)}>
 				{!!MyStatus && (
 					<Block style={{ padding: 20 }} row hCenter>
 						<Text bold style={{ paddingRight: 3 }}>
@@ -66,10 +103,21 @@ export const Friends = () => {
 					</Block>
 				)}
 
+				{/* style={{
+						position: 'absolute',
+						top: 0,
+						left: 0,
+						right: 0,
+						height: 80,
+						backgroundColor: 'tomato',
+						transform: [{ translateX: translation }],
+					}} */}
 				{React.useMemo(() => {
 					return (
-						<FlatList
+						<Animated.FlatList
 							data={D}
+							scrollEnabled={false}
+							// scrollEventThrottle={20}
 							renderItem={renderItem}
 							initialNumToRender={20}
 							showsVerticalScrollIndicator={false}
@@ -78,7 +126,32 @@ export const Friends = () => {
 						/>
 					);
 				}, [D])}
-			</ScrollView>
+			</Animated.ScrollView>
+			<Animated.View
+				style={{
+					height: 90,
+					transform: [{ translateY: translation }],
+					borderBottomWidth: 2,
+					borderBottomColor: colors.white40,
+					flexDirection: 'row',
+					alignItems: 'center',
+					// paddingHorizontal: 20,
+					width: '100%',
+					zIndex: 10,
+					position: 'absolute',
+				}}>
+				<BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} />
+				<Block animate row style={{ zIndex: 10, backgroundColor: 'transparent', height: 100, opacity: FadeOpacity }} paddingTop={50} paddingHorizontal={20}>
+					<IconButton
+						name="user-add"
+						size={23}
+						iconSize={17}
+						color={colors.white}
+						backgroundColor={colors.white40}
+						onPress={() => nav.navigate('SearchFriend' as never)}
+					/>
+				</Block>
+			</Animated.View>
 		</Block>
 	);
 };

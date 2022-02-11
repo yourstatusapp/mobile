@@ -1,4 +1,4 @@
-import core from '@core';
+import core, { AlertDataType } from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 import { navigationRef } from '../navigators/RootNavigator';
@@ -14,7 +14,7 @@ interface RequestOptions {
 
 interface ReturnRequestType<T> {
 	data?: T;
-	message?: string;
+	message: string;
 	success: boolean;
 }
 
@@ -54,4 +54,8 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 
 export const snow2time = (snow: string): Date => {
 	return new Date(Number(snow) / 8388608 + 1627845526000);
+};
+
+export const AppAlert = (success: boolean, title: string, desc?: string) => {
+	core.app.event.notification.emit({ success, title, desc });
 };

@@ -36,6 +36,8 @@ export const Account = () => {
 				/>
 			</Block>
 			<Spacer size={20} />
+			<Button text="open friends" onPress={() => nav.navigate('')} />
+			<Spacer size={15} />
 			<Text>
 				<Text bold>Email: </Text>
 				{account?.email}

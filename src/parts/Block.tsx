@@ -1,6 +1,6 @@
 import React from 'react';
 import { BlockType } from '@core';
-import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Animated, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 export const Block: React.FC<BlockType> = ({
 	scroll,
@@ -23,6 +23,7 @@ export const Block: React.FC<BlockType> = ({
 	paddingLeft,
 	paddingRight,
 	paddingTop,
+	animate,
 }) => {
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
 		!!paddingHorizontal && { paddingHorizontal },
@@ -61,6 +62,10 @@ export const Block: React.FC<BlockType> = ({
 			</ScrollView>
 		);
 	} else {
-		return <View style={blockStyle}>{children}</View>;
+		if (animate) {
+			return <Animated.View style={blockStyle}>{children}</Animated.View>;
+		} else {
+			return <View style={blockStyle}>{children}</View>;
+		}
 	}
 };

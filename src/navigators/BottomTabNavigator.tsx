@@ -6,7 +6,7 @@ import styled, { useTheme } from 'styled-components/native';
 import { Avatar, Block, Icon, IconButton } from '@parts';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
-import { Account, Friends, Projects, Profile } from '../screens';
+import { Account, Friends, Projects, Profile, SearchFriend } from '../screens';
 import { BlurView } from '@react-native-community/blur';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
@@ -26,8 +26,10 @@ export const BottomTabNavigator: React.FC = () => {
 				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
 				<TabsStackNavigator.Screen name="projects" component={Projects} options={o} />
 				<TabsStackNavigator.Screen name="profile" component={Profile} options={{ gestureEnabled: true }} />
+				{/* <TabsStackNavigator.Screen name="ManageFriends" component={Profile} options={{ gestureEnabled: true }} /> */}
+				<TabsStackNavigator.Screen name="SearchFriend" component={SearchFriend} options={{ gestureEnabled: true }} />
 			</TabsStackNavigator.Navigator>
-			<BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} />
+			{/* <BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} /> */}
 
 			<CustomNavBar />
 		</Block>

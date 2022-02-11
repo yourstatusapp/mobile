@@ -46,6 +46,7 @@ export interface BlockType extends PaddingType, MarginType {
 	safe?: boolean;
 	press?: boolean;
 	scroll?: boolean;
+	animate?: boolean;
 	onPress?: () => void;
 	paddingHorizontal?: number;
 	style?: ViewStyle;
@@ -53,7 +54,7 @@ export interface BlockType extends PaddingType, MarginType {
 	flex?: 1 | 0;
 }
 
-export interface TextType {
+export interface TextType extends PaddingType, MarginType {
 	color?: string;
 	size?: number;
 	weight?: '500' | '600' | '700' | '800' | '900';
@@ -62,4 +63,10 @@ export interface TextType {
 	italic?: boolean;
 	bold?: boolean;
 	textAlign?: string;
+}
+
+export interface AlertDataType {
+	title: string;
+	success: boolean;
+	desc?: string;
 }

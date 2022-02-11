@@ -8,6 +8,8 @@ import styled, { ThemeProvider } from 'styled-components/native';
 import core from '@core';
 import { RootNavigator } from './navigators/RootNavigator';
 import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'react-native';
+import { CustomAlert } from './parts/components/Alert';
 
 instance.setStorage({
 	async: true,
@@ -25,7 +27,7 @@ globalThis.AsyncStorage = AsyncStorage; // @ts-ignore
 globalThis.core = core;
 
 // @ts-ignore
-console.log(`hermers ${!!global.HermesInternal}`);
+// console.log(`hermers ${!!global.HermesInternal}`);
 
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);
@@ -33,6 +35,8 @@ export const App: React.FC = () => {
 	return (
 		<NavigationContainer>
 			<AppBody>
+				<CustomAlert />
+				<StatusBar barStyle={'light-content'} />
 				<ThemeProvider theme={theme}>
 					<RootNavigator />
 				</ThemeProvider>

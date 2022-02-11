@@ -2,7 +2,25 @@ import React from 'react';
 import { StyleSheet, TextStyle, Text } from 'react-native';
 import { TextType } from '@core';
 
-export const TextCustom: React.FC<TextType> = ({ style, color, size, weight, children, center, italic, bold, ...props }) => {
+export const TextCustom: React.FC<TextType> = ({
+	style,
+	color,
+	size,
+	weight,
+	children,
+	center,
+	italic,
+	bold,
+	marginBottom,
+	marginLeft,
+	marginRight,
+	marginTop,
+	paddingBottom,
+	paddingLeft,
+	paddingRight,
+	paddingTop,
+	...props
+}) => {
 	const StyleH = StyleSheet.flatten<TextStyle>([
 		style,
 		{ color: color ?? 'white' },
@@ -11,6 +29,14 @@ export const TextCustom: React.FC<TextType> = ({ style, color, size, weight, chi
 		!!weight && { fontWeight: weight },
 		!!size && { fontSize: size },
 		!!center && { textAlign: 'center' },
+		{ marginBottom },
+		{ marginLeft },
+		{ marginRight },
+		{ marginTop },
+		{ paddingBottom },
+		{ paddingLeft },
+		{ paddingRight },
+		{ paddingTop },
 	]);
 
 	return (

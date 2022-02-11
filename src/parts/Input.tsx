@@ -49,7 +49,7 @@ const PlaceholderBox = styled.View`
 	left: 25px;
 	top: -10px;
 	position: absolute;
-	background-color: #0a0a18;
+	background-color: ${({ theme }) => 'black'};
 	padding: 2px 5px;
 	border-radius: 4px;
 	z-index: 10;
