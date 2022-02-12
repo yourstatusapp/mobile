@@ -19,7 +19,7 @@ export const NewStatus = () => {
 			SetLoading(false);
 			return;
 		}
-		const res = await request('post', '/status/new', { data: { type: 'DEFAULT', title: StatusTxt } });
+		const res = await request('post', '/status/new', { data: { type: 'DEFAULT', content: StatusTxt } });
 
 		if (res.data) {
 			SetStatusTxt('');

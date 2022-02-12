@@ -30,7 +30,7 @@ export const Account = () => {
 			</Block>
 			<Spacer size={20} />
 			<Block row flex={0}>
-				<MenuView
+				{/* <MenuView
 					title="Upload new avatar"
 					onPressAction={({ nativeEvent }) => {
 						if (nativeEvent.event == '1') {
@@ -52,7 +52,8 @@ export const Account = () => {
 						},
 					]}>
 					<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
-				</MenuView>
+				</MenuView> */}
+				<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
 				<Spacer size={20} h />
 				<IconButton
 					name="pencil"
