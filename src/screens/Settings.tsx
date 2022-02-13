@@ -9,7 +9,7 @@ const SettingsStack = createNativeStackNavigator();
 
 const settingSections = [
 	{ text: 'Notifications', route: 'settingsNotifications' },
-	{ text: 'Notifications', route: 'settingsNotifications' },
+	// { text: 'Notifications', route: 'settingsNotifications' },
 ];
 
 const MainScreen = () => {

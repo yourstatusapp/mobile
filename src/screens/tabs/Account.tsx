@@ -8,14 +8,14 @@ import { MenuView } from '@react-native-menu/menu';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import { Platform } from 'react-native';
-import { PushNotificationIOS } from '../../utils/PushNotification';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 export const Account = () => {
 	const nav = useNavigation();
 	const { colors } = useTheme();
 	const account = usePulse(core.account.state.account);
 	const profile = usePulse(core.profile.state.profile);
-	const dToken = usePulse(core.account.collection.devices.selectors.current);
+	const dToken = usePulse(core.app.state.device_push_token);
 
 	const selectAvatar = async () => {
 		const result = await launchImageLibrary({ mediaType: 'photo' });
@@ -99,8 +99,12 @@ export const Account = () => {
 			</Text>
 			<Spacer size={20} />
 			<Text>{JSON.stringify(dToken)}</Text>
-			<TextButton onPress={() => PushNotificationIOS.requestPermissions({ alert: true, badge: true, lockScreen: true, sound: true, notificationCenter: true })}>
+
+			<TextButton onPress={() => PushNotificationIOS.requestPermissions()} style={{ paddingTop: 15 }}>
 				PushNotificationIOS
+			</TextButton>
+			<TextButton onPress={() => PushNotificationIOS.checkPermissions(v => AppAlert(true, JSON.stringify(v)))} style={{ paddingTop: 15 }}>
+				check perms
 			</TextButton>
 			<Spacer size={20} />
 			<Fill />

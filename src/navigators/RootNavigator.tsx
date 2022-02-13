@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
-import core from '@core';
+import core, { AppAlert } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { useLinking } from '../hooks';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import { AuthView, EditProfile, MagicView, NewStatus, Settings } from '../screens';
 import { PreloaderView } from '../screens/Preloader';
 import { NewProject } from '../screens/NewProject';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PushNotificationIOS, { PushNotification as PushNotificationType } from '@react-native-community/push-notification-ios';
 
 export const navigationRef = createNavigationContainerRef();
 const RootStack = createNativeStackNavigator();
@@ -33,10 +33,31 @@ export const RootNavigator = () => {
 	// 	}
 	// }, [loggedIn]);
 
+	const onRegister = (d: string) => {
+		AppAlert(true, d);
+		if (d) core.app.state.device_push_token.set(d);
+	};
+
+	const onNotification = (a: PushNotificationType) => {
+		AppAlert(true, a.getActionIdentifier() || '');
+	};
+
+	const onRegisterError = (error: { message: string; code: number; details: any }) => {
+		AppAlert(true, error.message, error.code + ' - ' + error.details);
+	};
+
 	useEffect(() => {
 		if (loggedIn === true && PreloaderReady === true && pushNotifyPerm === 0) {
-			PushNotificationIOS.requestPermissions();
+			// PushNotificationIOS.requestPermissions();
+			PushNotificationIOS.addEventListener('register', onRegister);
+			PushNotificationIOS.addEventListener('notification', onNotification);
+			PushNotificationIOS.addEventListener('registrationError', onRegisterError);
 		}
+
+		return () => {
+			PushNotificationIOS.removeEventListener('register');
+			PushNotificationIOS.removeEventListener('notification');
+		};
 	}, [PreloaderReady, loggedIn, pushNotifyPerm]);
 
 	// Wait for the preloader and logged_in compute state

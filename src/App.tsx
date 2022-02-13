@@ -11,6 +11,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import { CustomAlert } from './parts/components/Alert';
 import { PushNotifications } from './utils/PushNotification';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 instance.setStorage({
 	async: true,
@@ -32,6 +33,7 @@ globalThis.core = core;
 
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);
+	// PushNotifications;
 
 	return (
 		<>

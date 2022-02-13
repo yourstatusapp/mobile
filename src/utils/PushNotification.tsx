@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import PushNotificationIOS, { PushNotification as PushNotificationType } from '@react-native-community/push-notification-ios';
 import core, { AppAlert, request } from '@core';
 
-export { PushNotificationIOS };
 export const PushNotifications = () => {
 	const onRegisterDevice = async (deviceToken: string) => {
+		AppAlert(true, 'onRegisterDevice');
 		AppAlert(true, deviceToken);
 		if (!deviceToken) return;
 
@@ -28,6 +28,18 @@ export const PushNotifications = () => {
 		console.log(error);
 	};
 
+	useEffect(() => {
+		PushNotificationIOS.addEventListener('notification', onRemoteNotification);
+		PushNotificationIOS.addEventListener('register', onRegisterDevice);
+		PushNotificationIOS.addEventListener('registrationError', onRegisterError);
+
+		return () => {
+			PushNotificationIOS.removeEventListener('notification');
+			PushNotificationIOS.removeEventListener('register');
+			PushNotificationIOS.removeEventListener('registrationError');
+		};
+	});
+
 	const onRemoteNotification = async (notification: PushNotificationType) => {
 		const isClicked = notification.getData().userInteraction === 1;
 		const data = notification.getData();
@@ -43,12 +55,4 @@ export const PushNotifications = () => {
 			// Do something else with push notification
 		}
 	};
-
-	useEffect(() => {
-		PushNotificationIOS.addEventListener('notification', onRemoteNotification);
-		PushNotificationIOS.addEventListener('register', onRegisterDevice);
-		PushNotificationIOS.addEventListener('registrationError', onRegisterError);
-	}, []);
-
-	return <></>;
 };

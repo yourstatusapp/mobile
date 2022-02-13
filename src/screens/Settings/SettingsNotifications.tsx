@@ -33,6 +33,7 @@ export const SettingsNotifications: React.FC = () => {
 			<Text bold size={26}>
 				Notifications
 			</Text>
+			<Spacer size={20} />
 			{/* <Text>{a}</Text> */}
 			{notificationsEnabled === 2 ? (
 				<Block flex={0}>
