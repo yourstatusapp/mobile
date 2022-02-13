@@ -1,15 +1,39 @@
 import React from 'react';
-import { Block, Button, Fill, Icon, ModalHeader, Row, Spacer, Text } from '@parts';
-import { Linking, TouchableOpacity } from 'react-native';
-import { useTheme, withTheme } from 'styled-components/native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Block, Fill, Icon, ModalHeader, Spacer, Text } from '@parts';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useTheme } from 'styled-components/native';
+import { SettingsNotifications } from './Settings/index';
+import { useNavigation } from '@react-navigation/native';
+
+const SettingsStack = createNativeStackNavigator();
+
+const settingSections = [
+	{ text: 'Notifications', route: 'settingsNotifications' },
+	{ text: 'Notifications', route: 'settingsNotifications' },
+];
+
+const MainScreen = () => {
+	const nav = useNavigation();
+	return (
+		<Block paddingHorizontal={20}>
+			<Spacer size={20} />
+			{settingSections.map((item, index) => (
+				<SettingItem key={index} text={item.text} onPress={() => nav.navigate(item.route as never)} />
+			))}
+		</Block>
+	);
+};
 
 export const Settings = () => {
 	const { colors, theme } = useTheme();
 	return (
 		<>
 			<ModalHeader title="Settings" />
-			<Block paddingHorizontal={20}>
+			<SettingsStack.Navigator initialRouteName="settingsMain" screenOptions={{ headerShown: false, animation: 'slide_from_left' }}>
+				<SettingsStack.Screen name="settingsMain" component={MainScreen} />
+				<SettingsStack.Screen name="settingsNotifications" component={SettingsNotifications} />
+			</SettingsStack.Navigator>
+			{/* <Block paddingHorizontal={20}>
 				<Spacer size={25} />
 				<Text>Coming More Soon</Text>
 				<Spacer size={20} />
@@ -22,15 +46,23 @@ export const Settings = () => {
 						</Text>
 					</Block>
 				</Row>
-			</Block>
+			</Block> */}
 		</>
 	);
 };
 
-const SettingItem = ({ text }: { text: string }) => {
+export const SettingItem = ({ text, onPress }: { text: string; onPress: () => void }) => {
 	const { colors, theme } = useTheme();
+
 	return (
-		<Block flex={0} press row style={{ paddingVertical: 15, marginBottom: 10, paddingHorizontal: 15, borderRadius: 12 }} hCenter color={colors.white10}>
+		<Block
+			style={{ paddingVertical: 15, marginBottom: 10, paddingHorizontal: 15, borderRadius: 12 }}
+			flex={0}
+			onPress={onPress}
+			color={colors.white10}
+			hCenter
+			press
+			row>
 			<Icon name="bell" size={20} color={colors.white} />
 			<Spacer size={15} h />
 			<Text color={colors.white} weight="600">

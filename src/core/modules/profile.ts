@@ -2,7 +2,7 @@ import { collection, state } from '@pulsejs/core';
 import { ProfileType } from '../types';
 
 const ProfileState = {
-	profile: state<ProfileType | false>(false).persist('profile'),
+	profile: state<ProfileType>(null as never).persist('profile'),
 };
 
 const ProfileCollection = collection<ProfileType>({ primaryKey: 'account_id' }).createGroup('friends').createGroup('requests').createGroup('mine');

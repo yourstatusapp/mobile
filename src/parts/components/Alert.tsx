@@ -71,10 +71,11 @@ export const CustomAlert = () => {
 
 const CustomAlertBody = styled(Animated.View)<AlertDataType>`
 	position: absolute;
+	top: 0;
 	height: ${({ desc }) => (!desc ? 80 : 100)}px;
 	width: 100%;
 	background: ${({ success }) => (success ? '#579c63' : '#f35b5b')};
 	padding: 0px 20px;
 	padding-top: 45px;
-	z-index: 1;
+	z-index: 91;
 `;

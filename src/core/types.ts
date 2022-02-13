@@ -11,6 +11,7 @@ export interface ProfileType {
 	username: string;
 	gender: string;
 	avatar: string;
+	banner: string;
 	bio: string;
 	location: string;
 	date_of_birth: string;
@@ -69,4 +70,12 @@ export interface AlertDataType {
 	title: string;
 	success: boolean;
 	desc?: string;
+}
+
+export interface DeviceType {
+	id: string;
+	notifications: boolean;
+	ip: string;
+	device_type: string;
+	deleted_at: string;
 }

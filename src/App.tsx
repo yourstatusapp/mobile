@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 /* eslint-disable no-undef */
 import { instance, usePulse } from '@pulsejs/react';
@@ -33,18 +33,18 @@ globalThis.core = core;
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);
 
-	PushNotifications;
-
 	return (
-		<NavigationContainer>
-			<AppBody>
-				<CustomAlert />
-				<StatusBar barStyle={'light-content'} />
-				<ThemeProvider theme={theme}>
-					<RootNavigator />
-				</ThemeProvider>
-			</AppBody>
-		</NavigationContainer>
+		<>
+			<CustomAlert />
+			<NavigationContainer>
+				<AppBody>
+					<StatusBar barStyle={'light-content'} />
+					<ThemeProvider theme={theme}>
+						<RootNavigator />
+					</ThemeProvider>
+				</AppBody>
+			</NavigationContainer>
+		</>
 	);
 };
 

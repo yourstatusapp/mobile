@@ -9,6 +9,7 @@ import { createNavigationContainerRef } from '@react-navigation/native';
 import { AuthView, EditProfile, MagicView, NewStatus, Settings } from '../screens';
 import { PreloaderView } from '../screens/Preloader';
 import { NewProject } from '../screens/NewProject';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 export const navigationRef = createNavigationContainerRef();
 const RootStack = createNativeStackNavigator();
@@ -18,6 +19,7 @@ export const RootNavigator = () => {
 	const loggedIn = usePulse(core.account.state.logged_in);
 	const [Loaded, SetLoaded] = useState(false);
 	const [PreloaderReady, setPreloaderReady] = useState(false);
+	const pushNotifyPerm = usePulse(core.app.state.notification_permission);
 
 	const mounted = () => setTimeout(() => SetLoaded(true));
 
@@ -30,6 +32,12 @@ export const RootNavigator = () => {
 	// 		SetLoaded(true);
 	// 	}
 	// }, [loggedIn]);
+
+	useEffect(() => {
+		if (loggedIn === true && PreloaderReady === true && pushNotifyPerm === 0) {
+			PushNotificationIOS.requestPermissions();
+		}
+	}, [PreloaderReady, loggedIn, pushNotifyPerm]);
 
 	// Wait for the preloader and logged_in compute state
 	if (PreloaderReady === false) {

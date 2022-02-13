@@ -1,4 +1,4 @@
-import core, { request } from '@core';
+import core, { AppAlert, request } from '@core';
 import { Block, Button, Fill, ModalHeader, Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
@@ -13,38 +13,69 @@ export const EditProfile = () => {
 	const { colors } = useTheme();
 	const profile = usePulse(core.profile.state.profile);
 
-	const [Username, setUsername] = useState('');
-	const [Available, setAvailable] = useState(false);
-	const [Loaded, setLoaded] = useState(false);
+	const [HasChanged, SetHasChanged] = useState(false);
+
+	const [Location, SetLocation] = useState('');
+	const [Bio, SetBio] = useState('');
+
+	const [Username, SetUsername] = useState('');
+	const [Available, SetAvailable] = useState(false);
+	const [Loaded, SetLoaded] = useState(false);
 	const [ErrorMessage, SetErrorMessage] = useState('');
 
 	const saveInformation = useCallback(async () => {
-		const res = await request('patch', '/profile', { data: { username: Username } });
+		if (!profile) return;
+
+		let newData: { username: string; bio: string; location: string } = {};
+
+		if (Username.toLocaleLowerCase() !== profile?.username?.toLocaleLowerCase()) {
+			newData.username = Username;
+		}
+
+		if (Location !== profile.location) {
+			newData.location = Location;
+		}
+
+		if (Bio !== profile.bio) {
+			newData.bio = Bio;
+		}
+
+		const res = await request('patch', '/profile', { data: newData });
 		if (res.data) {
+			AppAlert(trye, 'Successfull', 'Profile has been updated');
 			nav.goBack();
 		} else {
 			SetErrorMessage(res.message);
 		}
-	}, [Username, nav]);
+	}, [Username, nav, profile, Location, Bio]);
 
 	const usernameCheck = async (username: string) => {
+		if (!profile) return;
+
+		if (username.toLocaleLowerCase() === profile?.username?.toLocaleLowerCase()) {
+			SetErrorMessage('');
+			SetAvailable(false);
+			SetLoaded(true);
+			return;
+		}
+
 		SetErrorMessage('');
 		const res = await request<boolean>('post', '/profile/username/check', { data: { username } });
 
 		if (res.data === false) {
 			SetErrorMessage(res.message);
-			setAvailable(false);
+			SetAvailable(false);
 		} else {
-			setAvailable(true);
+			SetAvailable(true);
 		}
-		setLoaded(true);
+		SetLoaded(true);
 		// if (!a.data) SetErrorMessage(a?.message || '');
 		// setLoaded(true);
 		// setAvailable(a?.data);
 	};
 
 	useEffect(() => {
-		setLoaded(false);
+		SetLoaded(false);
 		clearTimeout(timeoutID);
 
 		timeoutID = setTimeout(() => {
@@ -54,8 +85,20 @@ export const EditProfile = () => {
 
 	useEffect(() => {
 		if (!profile) return;
-		setUsername(profile.username);
+		SetUsername(profile.username);
+		SetLocation(profile.location);
+		SetBio(profile.bio);
 	}, [profile]);
+
+	useEffect(() => {
+		if (!profile) return;
+
+		if (Username != profile.username) SetHasChanged(false);
+		else if (Bio != profile.bio) SetHasChanged(false);
+		else if (Location != profile.location) SetHasChanged(false);
+		else if (Available === false) SetHasChanged(false);
+		else SetHasChanged(true);
+	}, [Username, Location, Bio, profile, Available]);
 
 	return (
 		<Block safe flex={1}>
@@ -65,7 +108,7 @@ export const EditProfile = () => {
 				<Text size={14} color="#D53F3F" paddingLeft={10} paddingBottom={10}>
 					{ErrorMessage}
 				</Text>
-				<Text size={14} color={colors.white60} paddingLeft={10}>
+				<Text size={14} color={colors.white60} paddingLeft={10} weight="600">
 					Username
 				</Text>
 				<CustomEditInput
@@ -73,24 +116,69 @@ export const EditProfile = () => {
 					placeholderTextColor={colors.white20}
 					value={Username}
 					onChangeText={v => {
-						setUsername(v?.trimStart()?.trimEnd());
+						SetUsername(v?.trimStart()?.trimEnd());
 					}}
 					autoCapitalize="none"
 					autoCorrect={false}
 					autoCompleteType="off"
 					style={{
 						borderBottomColor:
-							Username === '' ? '#D53F3F' : Username === profile?.username ? colors.white40 : !Loaded ? 'gray' : Available ? 'green' : '#D53F3F',
+							Username === ''
+								? '#D53F3F'
+								: Username.toLowerCase() === profile?.username.toLowerCase()
+								? colors.white40
+								: !Loaded
+								? 'gray'
+								: Available
+								? '#62CB4E'
+								: '#D53F3F',
+					}}
+				/>
+
+				<Spacer size={20} />
+
+				<Text size={14} color={colors.white60} paddingLeft={10} weight="600">
+					Location
+				</Text>
+				<CustomEditInput
+					placeholder="Location"
+					placeholderTextColor={colors.white20}
+					value={Location}
+					onChangeText={v => {
+						SetLocation(v?.trimStart()?.trimEnd());
+					}}
+					autoCapitalize="none"
+					autoCorrect={false}
+					autoCompleteType="off"
+					style={{
+						borderBottomColor: Location === profile.location ? colors.white40 : '#62CB4E',
+					}}
+				/>
+
+				<Spacer size={20} />
+
+				<Text size={14} color={colors.white60} paddingLeft={10} weight="600">
+					Bio
+				</Text>
+				<CustomEditInput
+					placeholder="About yourself"
+					placeholderTextColor={colors.white20}
+					value={Bio}
+					onChangeText={v => {
+						SetBio(v?.trimStart()?.trimEnd());
+					}}
+					autoCapitalize="none"
+					autoCorrect={false}
+					autoCompleteType="off"
+					style={{
+						borderBottomColor: Bio === profile.bio ? colors.white40 : '#62CB4E',
 					}}
 				/>
 
 				<Fill />
-				<Button
-					text={'Save'}
-					onPress={() => saveInformation()}
-					disabled={Username === profile.username || Username === '' || !Loaded || !Available}
-					style={{ marginHorizontal: 20 }}
-				/>
+				<Block flex={0} paddingHorizontal={10}>
+					<Button text={'Save'} onPress={() => saveInformation()} disabled={!HasChanged} style={{ marginHorizontal: 20 }} />
+				</Block>
 			</KeyboardAvoidingView>
 		</Block>
 	);

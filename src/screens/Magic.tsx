@@ -1,4 +1,4 @@
-import { request } from '@core';
+import core, { request } from '@core';
 import { Spacer, Text, Block } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
@@ -17,6 +17,8 @@ interface MagicProps {
 
 interface IAccountRequestProps {
 	account: any;
+	device: any;
+	profile: any;
 }
 
 export const MagicView: React.FC<MagicProps> = ({ route }) => {
@@ -35,9 +37,13 @@ export const MagicView: React.FC<MagicProps> = ({ route }) => {
 			return;
 		}
 
-		// @ts-ignore
-		core.account.state.account.set(res.data.account); // @ts-ignore
-		core.profile.state.profile.set(res.data.profile);
+		if (res.data?.account) core.account.state.account.set(res.data.account); // @ts-ignore
+		if (res.data?.profile) core.profile.state.profile.set(res.data.profile);
+
+		if (res.data?.device) {
+			core.account.collection.devices.collect(res.data.device, 'mine');
+			core.account.collection.devices.selectors.current.select(res.data.device.id);
+		}
 
 		if (!new_account) {
 			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });

@@ -5,6 +5,7 @@ import { Animated, Easing, FlatList, ListRenderItemInfo, ScrollView, StyleSheet,
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from '@react-native-community/blur';
+import { hasNotch } from 'react-native-device-info';
 
 interface FriendItem {
 	username: string;
@@ -27,7 +28,7 @@ const FRIEND_ITEM_HEIGHT = 88;
 export const Friends = () => {
 	const { colors, theme } = useTheme();
 	const nav = useNavigation();
-	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 100, width: '100%', zIndex: 10, opacity: 1 }]);
+	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: hasNotch() ? 100 : 70, width: '100%', zIndex: 10, opacity: 1 }]);
 
 	const scrolling = useRef(new Animated.Value(0)).current;
 	const iR = [60, 115];
@@ -132,18 +133,24 @@ export const Friends = () => {
 			</Animated.ScrollView>
 			<Animated.View
 				style={{
-					height: 101,
+					height: hasNotch() ? 101 : 71,
 					transform: [{ translateY: translation }],
 					borderBottomWidth: 1,
 					borderBottomColor: colors.white20,
 					flexDirection: 'row',
-					alignItems: 'center',
+					alignItems: 'flex-end',
 					width: '100%',
 					zIndex: 10,
 					position: 'absolute',
 				}}>
 				<BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} />
-				<Block animate row style={{ zIndex: 10, backgroundColor: 'transparent', height: 100, opacity: FadeOpacity }} paddingTop={50} paddingHorizontal={20}>
+				<Block
+					animate
+					row
+					hCenter
+					style={{ zIndex: 10, backgroundColor: 'transparent', height: (hasNotch() ? 100 : 70) - 20, opacity: FadeOpacity }}
+					// paddingTop={50}
+					paddingHorizontal={20}>
 					<IconButton
 						name="search"
 						size={23}
@@ -181,6 +188,7 @@ const FriendComp: React.FC<FriendItemType> = props => {
 	React.useEffect(() => {
 		console.log('friend render ' + item.username);
 	}, []);
+
 	return (
 		<FriendCompBody key={index}>
 			<Block row paddingHorizontal={20}>
@@ -208,7 +216,7 @@ const FriendCompBody = styled.View`
 	//margin-bottom: 20px;
 	/* margin: 0px 20px 0px 20px; */
 	padding: 20px 0px;
-	height: 88px;
+	/* height: 88px; */
 
 	border-bottom-color: #111111;
 	border-bottom-style: solid;

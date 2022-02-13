@@ -12,3 +12,4 @@ export * from './Input';
 
 export { Status } from './Status';
 export { ModalHeader } from './ModalHeader';
+export { Line } from './Line';

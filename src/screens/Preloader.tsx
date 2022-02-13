@@ -15,7 +15,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 	const getAccount = async () => {
 		setTimeout(() => setTakingTooLong(true), 20 * 1000);
 
-		const res = await request<{ account: any; profile: any }>('get', '/account');
+		const res = await request<{ account: any; profile: any; device: any }>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
 		loaded();
 		console.log(res.data);
@@ -23,9 +23,14 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		if (!res.success) {
 			core.account.state.account.reset();
 			core.profile.state.profile.reset();
+			core.account.collection.devices.reset();
 		} else {
 			if (res.data?.account) core.account.state.account.set(res.data?.account);
 			if (res.data?.profile) core.profile.state.profile.set(res.data?.profile);
+			if (res.data?.device) {
+				core.account.collection.devices.collect(res.data.device, 'mine');
+				core.account.collection.devices.selectors.current.select(res.data.device.id);
+			}
 		}
 
 		setTimeout(() => loaded(), 10);

@@ -1,8 +1,8 @@
-import { state } from '@pulsejs/core';
-import { AccountType } from '../types';
+import { collection, state } from '@pulsejs/core';
+import { AccountType, DeviceType } from '../types';
 
 export const AccountState = {
-	account: state<Partial<AccountType>>({}).persist('account'),
+	account: state<AccountType>(null as never).persist('account'),
 };
 
 export const AccountComputedState = {
@@ -11,4 +11,6 @@ export const AccountComputedState = {
 	}),
 };
 
-export const account = { state: { ...AccountState, ...AccountComputedState } };
+const Devices = collection<DeviceType>().createGroup('mine').createSelector('current');
+
+export const account = { state: { ...AccountState, ...AccountComputedState }, collection: { devices: Devices } };

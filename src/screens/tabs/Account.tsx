@@ -2,19 +2,48 @@ import React from 'react';
 import { useTheme } from 'styled-components/native';
 import { Avatar, Block, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
 import { useNavigation } from '@react-navigation/native';
-import core from '@core';
+import core, { AppAlert, request } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { MenuView } from '@react-native-menu/menu';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
+import { Platform } from 'react-native';
+import { PushNotificationIOS } from '../../utils/PushNotification';
 
 export const Account = () => {
 	const nav = useNavigation();
 	const { colors } = useTheme();
 	const account = usePulse(core.account.state.account);
 	const profile = usePulse(core.profile.state.profile);
+	const dToken = usePulse(core.account.collection.devices.selectors.current);
 
 	const selectAvatar = async () => {
-		launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 }, v => {});
+		const result = await launchImageLibrary({ mediaType: 'photo' });
+		if (result.didCancel) return;
+		if (!result?.assets?.length) return;
+
+		const ImageFile = result?.assets[0];
+		if (!ImageFile.uri) return;
+
+		const fd = new FormData();
+		fd.append('file', {
+			name: ImageFile.uri.split('/').pop(),
+			type: 'image/' + ImageFile.type,
+			uri: Platform.OS === 'android' ? ImageFile.uri : ImageFile.uri.replace('file://', ''),
+		});
+
+		const res = await request('post', '/profile/avatar', {
+			headers: {
+				'content-type': 'multipart/form-data;',
+			},
+			data: fd,
+		});
+
+		if (!res.data) {
+			AppAlert(false, 'Failed', res.message);
+		} else {
+			AppAlert(true, 'Success', 'avatar has been uploaded');
+		}
 	};
 
 	return (
@@ -30,7 +59,7 @@ export const Account = () => {
 			</Block>
 			<Spacer size={20} />
 			<Block row flex={0}>
-				{/* <MenuView
+				<MenuView
 					title="Upload new avatar"
 					onPressAction={({ nativeEvent }) => {
 						if (nativeEvent.event == '1') {
@@ -52,8 +81,7 @@ export const Account = () => {
 						},
 					]}>
 					<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
-				</MenuView> */}
-				<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
+				</MenuView>
 				<Spacer size={20} h />
 				<IconButton
 					name="pencil"
@@ -70,7 +98,10 @@ export const Account = () => {
 				{account?.email}
 			</Text>
 			<Spacer size={20} />
-
+			<Text>{JSON.stringify(dToken)}</Text>
+			<TextButton onPress={() => PushNotificationIOS.requestPermissions({ alert: true, badge: true, lockScreen: true, sound: true, notificationCenter: true })}>
+				PushNotificationIOS
+			</TextButton>
 			<Spacer size={20} />
 			<Fill />
 			<TextButton

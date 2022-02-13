@@ -11,13 +11,13 @@ interface TextButtonProps {
 	disabled?: boolean;
 }
 
-export const TextButton = ({ text, onPress, style, disabled, textColor, textSize }: TextButtonProps) => {
-	const sh = StyleSheet.flatten([style]);
+export const TextButton: React.FC<TextButtonProps> = ({ text, onPress, style, disabled, textColor, textSize, children }) => {
+	const sh = StyleSheet.flatten<ViewStyle>([style, { alignSelf: 'flex-start' }]);
 
 	return (
 		<TouchableOpacity style={sh} onPress={onPress} disabled={disabled}>
 			<Text bold color={textColor} size={textSize}>
-				{text}
+				{text || children}
 			</Text>
 		</TouchableOpacity>
 	);

@@ -22,7 +22,8 @@ export const Status = React.memo(({ status }: StatusType) => {
 
 const StatusBody = styled.View`
 	background-color: #0c1b37;
-	padding: 2px 5px;
+	/* padding: 2px 5px; */
+	padding: 4px 7px;
 	align-self: flex-start;
 	border-radius: 4px;
 	justify-content: center;

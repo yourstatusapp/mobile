@@ -3,7 +3,8 @@ import { event, state } from '@pulsejs/core';
 
 export const AppStats = {
 	// 0 = need to ask  | 1 = granted | 2 = denied
-	notifications_enabled: state<0 | 1 | 2>(0).persist('notification_enabled'),
+	notification_permission: state<0 | 1 | 2>(0).persist('notification_enabled'),
+	device_push_token: state<string>('').persist('device_pust_token'),
 };
 
 export const AppEvents = {
