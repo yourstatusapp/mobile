@@ -1,9 +1,10 @@
 import * as React from 'react';
 import core, { AppAlert, request } from '@core';
-import { Block, Fill, Spacer, Text, TextButton } from '@parts';
+import { Block, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { Switch } from 'react-native';
 import { useTheme } from 'styled-components/native';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 export const SettingsNotifications: React.FC = () => {
 	const { colors } = useTheme();
@@ -20,8 +21,9 @@ export const SettingsNotifications: React.FC = () => {
 			AppAlert(false, 'Faild', 'no device id found');
 			return;
 		}
+
 		await request('patch', '/account/devices/' + device.id, {
-			data: { notifications, push_token: notifications ? core.app.state.device_push_token.value : null },
+			data: { notifications, push_token: notifications ? core.app.state.device_push_token.value : '' },
 		});
 
 		core.account.collection.devices.update(device.id, { notifications });
@@ -33,35 +35,22 @@ export const SettingsNotifications: React.FC = () => {
 			<Text bold size={26}>
 				Notifications
 			</Text>
-			<Spacer size={20} />
-			{/* <Text>{a}</Text> */}
-			{notificationsEnabled === 2 ? (
-				<Block flex={0}>
-					<Text color="white" weight="700" size={18}>
-						Notifications are disabled
+			{notificationsEnabled === 2 && (
+				<Block flex={0} color="#FF6666" style={{ padding: 10, borderRadius: 8 }}>
+					<Text color={colors.black} weight="600" size={14}>
+						Note that you have disabled notifications
 					</Text>
-					<Spacer size={20} />
-					<Block flex={0} row>
-						<TextButton text="Enable" textColor="white" onPress={() => enableNotifications()} />
-						<Fill />
-					</Block>
+					<Spacer size={15} />
+					<TextButton textSize={12} textColor={colors.white} style={{ backgroundColor: '#00000032', padding: 6, borderRadius: 4 }}>
+						Allow notifications
+					</TextButton>
 				</Block>
-			) : (
-				notificationsEnabled === 1 && (
-					<Block flex={0}>
-						<Text color="white" weight="700" size={18}>
-							Notifications are disabled
-						</Text>
-						<Spacer size={20} />
-						<Block flex={0} row>
-							<TextButton text="Enable" textColor="white" onPress={() => enableNotifications()} />
-							<Fill />
-						</Block>
-					</Block>
-				)
+			)}
+			{notificationsEnabled === 0 && (
+				<TextButton onPress={() => PushNotificationIOS.requestPermissions({ alert: true, badge: true, sound: true })}>Allow Notifications</TextButton>
 			)}
 
-			<Block flex={0} row>
+			<Block flex={0} row paddingTop={40}>
 				<Block>
 					<Text size={14} weight="600">
 						Enable Notifications

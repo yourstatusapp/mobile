@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
-import core, { AppAlert } from '@core';
+import core, { AppAlert, request } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { useLinking } from '../hooks';
 import { createNavigationContainerRef } from '@react-navigation/native';
@@ -20,6 +20,7 @@ export const RootNavigator = () => {
 	const [Loaded, SetLoaded] = useState(false);
 	const [PreloaderReady, setPreloaderReady] = useState(false);
 	const pushNotifyPerm = usePulse(core.app.state.notification_permission);
+	const device = usePulse(core.account.collection.devices.selectors.current);
 
 	const mounted = () => setTimeout(() => SetLoaded(true));
 
@@ -33,9 +34,16 @@ export const RootNavigator = () => {
 	// 	}
 	// }, [loggedIn]);
 
-	const onRegister = (d: string) => {
-		AppAlert(true, d);
-		if (d) core.app.state.device_push_token.set(d);
+	const onRegister = async (deviceToken: string) => {
+		core.app.state.notification_permission.set(1);
+		core.app.state.device_push_token.set(deviceToken);
+
+		AppAlert(true, deviceToken);
+		if (deviceToken && loggedIn) {
+			await request('patch', '/account/devices/' + device.id, {
+				data: { notifications: true, push_token: deviceToken },
+			});
+		}
 	};
 
 	const onNotification = (a: PushNotificationType) => {
@@ -43,6 +51,7 @@ export const RootNavigator = () => {
 	};
 
 	const onRegisterError = (error: { message: string; code: number; details: any }) => {
+		core.app.state.notification_permission.set(2);
 		AppAlert(true, error.message, error.code + ' - ' + error.details);
 	};
 

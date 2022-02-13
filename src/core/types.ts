@@ -52,6 +52,7 @@ export interface BlockType extends PaddingType, MarginType {
 	paddingHorizontal?: number;
 	style?: ViewStyle;
 	row?: boolean;
+	opacity?: number;
 	flex?: 1 | 0;
 }
 

@@ -8,7 +8,6 @@ import { MenuView } from '@react-native-menu/menu';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import { Platform } from 'react-native';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 export const Account = () => {
 	const nav = useNavigation();
@@ -18,6 +17,35 @@ export const Account = () => {
 	const dToken = usePulse(core.app.state.device_push_token);
 
 	const selectAvatar = async () => {
+		const result = await launchImageLibrary({ mediaType: 'photo' });
+		if (result.didCancel) return;
+		if (!result?.assets?.length) return;
+
+		const ImageFile = result?.assets[0];
+		if (!ImageFile.uri) return;
+
+		const fd = new FormData();
+		fd.append('file', {
+			name: ImageFile.uri.split('/').pop(),
+			type: 'image/' + ImageFile.type,
+			uri: Platform.OS === 'android' ? ImageFile.uri : ImageFile.uri.replace('file://', ''),
+		});
+
+		const res = await request('post', '/profile/avatar', {
+			headers: {
+				'content-type': 'multipart/form-data;',
+			},
+			data: fd,
+		});
+
+		if (!res.data) {
+			AppAlert(false, 'Failed', res.message);
+		} else {
+			AppAlert(true, 'Success', 'avatar has been uploaded');
+		}
+	};
+
+	const selectBanner = async () => {
 		const result = await launchImageLibrary({ mediaType: 'photo' });
 		if (result.didCancel) return;
 		if (!result?.assets?.length) return;
@@ -60,12 +88,15 @@ export const Account = () => {
 			<Spacer size={20} />
 			<Block row flex={0}>
 				<MenuView
-					title="Upload new avatar"
+					title="Upload Avatar/Banner"
 					onPressAction={({ nativeEvent }) => {
 						if (nativeEvent.event == '1') {
 							selectAvatar();
 						}
-						if (nativeEvent.event == 2) {
+						if (nativeEvent.event === '2') {
+						}
+						if (nativeEvent.event === '3') {
+							selectBanner();
 						}
 					}}
 					actions={[
@@ -78,6 +109,11 @@ export const Account = () => {
 							id: '2',
 							title: 'Make a photo',
 							image: 'camera',
+						},
+						{
+							id: '3',
+							title: 'Upload banner',
+							image: 'photo',
 						},
 					]}>
 					<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
@@ -98,16 +134,7 @@ export const Account = () => {
 				{account?.email}
 			</Text>
 			<Spacer size={20} />
-			<Text>{JSON.stringify(dToken)}</Text>
 
-			<TextButton onPress={() => PushNotificationIOS.requestPermissions()} style={{ paddingTop: 15 }}>
-				PushNotificationIOS
-			</TextButton>
-			<TextButton onPress={() => PushNotificationIOS.checkPermissions(v => AppAlert(true, JSON.stringify(v)))} style={{ paddingTop: 15 }}>
-				check perms
-			</TextButton>
-			<Spacer size={20} />
-			<Fill />
 			<TextButton
 				text="Logout"
 				textColor={'#ff6b6b'}
