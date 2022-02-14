@@ -33,7 +33,9 @@ globalThis.core = core;
 
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.state.ThemeObject);
-	// PushNotifications;
+	useEffect(() => {
+		PushNotificationIOS.setApplicationIconBadgeNumber(0);
+	}, []);
 
 	return (
 		<>

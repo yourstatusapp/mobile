@@ -9,6 +9,7 @@ export interface AccountType {
 export interface ProfileType {
 	account_id: string;
 	username: string;
+	display_name: string;
 	gender: string;
 	avatar: string;
 	banner: string;

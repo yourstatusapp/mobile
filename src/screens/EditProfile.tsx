@@ -32,17 +32,17 @@ export const EditProfile = () => {
 			newData.username = Username;
 		}
 
-		if (Location !== profile.location) {
+		if (Location !== (profile.location || '')) {
 			newData.location = Location;
 		}
 
-		if (Bio !== profile.bio) {
+		if (Bio !== (profile.bio || '')) {
 			newData.bio = Bio;
 		}
 
 		const res = await request('patch', '/profile', { data: newData });
 		if (res.data) {
-			AppAlert(trye, 'Successfull', 'Profile has been updated');
+			AppAlert(true, 'Successfull', 'Profile has been updated');
 			nav.goBack();
 		} else {
 			SetErrorMessage(res.message);
@@ -85,20 +85,23 @@ export const EditProfile = () => {
 
 	useEffect(() => {
 		if (!profile) return;
-		SetUsername(profile.username);
-		SetLocation(profile.location);
-		SetBio(profile.bio);
+		SetUsername(profile.username || '');
+		SetLocation(profile.location || '');
+		SetBio(profile.bio || '');
 	}, [profile]);
 
 	useEffect(() => {
-		if (!profile) return;
-
-		if (Username != profile.username) SetHasChanged(false);
-		else if (Bio != profile.bio) SetHasChanged(false);
-		else if (Location != profile.location) SetHasChanged(false);
-		else if (Available === false) SetHasChanged(false);
-		else SetHasChanged(true);
-	}, [Username, Location, Bio, profile, Available]);
+		SetHasChanged(false);
+		if ((profile.username || '') !== Username) {
+			SetHasChanged(true);
+		}
+		if ((profile.location || '') !== Location) {
+			SetHasChanged(true);
+		}
+		if ((profile.bio || '') !== Bio) {
+			SetHasChanged(true);
+		}
+	}, [Username, Location, Bio, Available, profile]);
 
 	return (
 		<Block safe flex={1}>
@@ -116,7 +119,7 @@ export const EditProfile = () => {
 					placeholderTextColor={colors.white20}
 					value={Username}
 					onChangeText={v => {
-						SetUsername(v?.trimStart()?.trimEnd());
+						SetUsername(v);
 					}}
 					autoCapitalize="none"
 					autoCorrect={false}
@@ -140,23 +143,23 @@ export const EditProfile = () => {
 				<Text size={14} color={colors.white60} paddingLeft={10} weight="600">
 					Location
 				</Text>
+
 				<CustomEditInput
 					placeholder="Location"
 					placeholderTextColor={colors.white20}
 					value={Location}
 					onChangeText={v => {
-						SetLocation(v?.trimStart()?.trimEnd());
+						SetLocation(v);
 					}}
 					autoCapitalize="none"
 					autoCorrect={false}
 					autoCompleteType="off"
 					style={{
-						borderBottomColor: Location === profile.location ? colors.white40 : '#62CB4E',
+						borderBottomColor: (profile.location || '') == Location ? colors.white40 : '#62CB4E',
 					}}
 				/>
 
 				<Spacer size={20} />
-
 				<Text size={14} color={colors.white60} paddingLeft={10} weight="600">
 					Bio
 				</Text>
@@ -165,19 +168,19 @@ export const EditProfile = () => {
 					placeholderTextColor={colors.white20}
 					value={Bio}
 					onChangeText={v => {
-						SetBio(v?.trimStart()?.trimEnd());
+						SetBio(v);
 					}}
 					autoCapitalize="none"
 					autoCorrect={false}
 					autoCompleteType="off"
 					style={{
-						borderBottomColor: Bio === profile.bio ? colors.white40 : '#62CB4E',
+						borderBottomColor: (profile.bio || '') == Bio ? colors.white40 : '#62CB4E',
 					}}
 				/>
 
 				<Fill />
 				<Block flex={0} paddingHorizontal={10}>
-					<Button text={'Save'} onPress={() => saveInformation()} disabled={!HasChanged} style={{ marginHorizontal: 20 }} />
+					<Button text={'Save'} onPress={() => saveInformation()} disabled={HasChanged === false} style={{ marginHorizontal: 20 }} />
 				</Block>
 			</KeyboardAvoidingView>
 		</Block>

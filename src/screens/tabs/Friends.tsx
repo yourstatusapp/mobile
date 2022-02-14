@@ -25,7 +25,7 @@ type FriendItemType = ListRenderItemInfo<FriendItem>;
 
 const FRIEND_ITEM_HEIGHT = 88;
 
-export const Friends = () => {
+export const Friends = React.memo(() => {
 	const { colors, theme } = useTheme();
 	const nav = useNavigation();
 	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: hasNotch() ? 100 : 70, width: '100%', zIndex: 10, opacity: 1 }]);
@@ -176,7 +176,7 @@ export const Friends = () => {
 			</Animated.View>
 		</Block>
 	);
-};
+});
 
 const FriendComp: React.FC<FriendItemType> = props => {
 	const { item, index } = props;
@@ -197,7 +197,7 @@ const FriendComp: React.FC<FriendItemType> = props => {
 				</TouchableOpacity>
 				<Block style={{ paddingLeft: 20 }}>
 					<Text weight="700" size={16}>
-						{item.username.charAt(0).toUpperCase() + item.username.slice(1, item.username.length + 1)}
+						{item.username ? item.username.charAt(0).toUpperCase() + item.username.slice(1, item.username.length + 1) : '-'}
 					</Text>
 					{item?.status && (
 						<Block style={{ flexWrap: 'wrap', paddingTop: 6 }}>

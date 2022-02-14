@@ -9,10 +9,12 @@ import { usePulse } from '@pulsejs/react';
 import { Account, Friends, Projects, Profile, SearchFriend, FriendRequests } from '../screens';
 import { BlurView } from '@react-native-community/blur';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const TabsStackNavigator = createNativeStackNavigator();
 
 export const BottomTabNavigator: React.FC = () => {
+	console.log('re-rendering ComponentImWorkingOn!');
 	const o: NativeStackNavigationOptions = {
 		gestureEnabled: false,
 		animation: 'none',
@@ -49,6 +51,7 @@ const CustomNavBar = () => {
 	const navigate = (name: string, s: number) => {
 		setCurrent(s + 1);
 		nav.navigate(name as never);
+		// nav.reset({ index: 0, routes: [{ name: name as never }] });
 	};
 
 	useEffect(() => {
@@ -76,7 +79,8 @@ const CustomNavBar = () => {
 				<IconTabBtnBody
 					onPress={() => {
 						setCurrent(3);
-						nav.navigate('account' as never);
+						// nav.navigate('account' as never);
+						nav.reset({ index: 1, routes: [{ name: 'account' as never }] });
 					}}>
 					<AvatarTabBtn active={Current === 3} account={acc} />
 				</IconTabBtnBody>

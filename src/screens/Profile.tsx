@@ -55,7 +55,13 @@ export const Profile = () => {
 	} else {
 		return (
 			<Block color="black">
-				<BannerArea>{!ProfileData?.banner ? <BannerPlaceholder /> : <Banner source={{ uri: ProfileData?.banner }} />}</BannerArea>
+				<BannerArea>
+					{!ProfileData?.banner ? (
+						<BannerPlaceholder />
+					) : (
+						<Banner source={{ uri: `https://cdn.yourstatus.app/profile/${ProfileData?.account_id}/${ProfileData?.banner}` }} />
+					)}
+				</BannerArea>
 				<Block scroll color="transparent" style={{ zIndex: 6 }} paddingTop={100}>
 					<LinearGradient
 						colors={['transparent', '#0000008a', 'black']}

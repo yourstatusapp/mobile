@@ -4,6 +4,7 @@ import Svg, { G, Path } from 'react-native-svg';
 import styled from 'styled-components/native';
 import core, { request } from '@core';
 import { Spacer, Text } from '@parts';
+import { usePulse } from '@pulsejs/react';
 
 interface PreloaderProps {
 	loaded: () => void;
@@ -11,6 +12,7 @@ interface PreloaderProps {
 
 export const PreloaderView = ({ loaded }: PreloaderProps) => {
 	const [TakingTooLong, setTakingTooLong] = useState(false);
+	const logged_in = usePulse(core.account.state.logged_in);
 
 	const getAccount = async () => {
 		setTimeout(() => setTakingTooLong(true), 20 * 1000);
@@ -38,7 +40,8 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 
 	useEffect(() => {
 		console.log('preloader');
-		getAccount();
+		if (logged_in) getAccount();
+		else setTimeout(() => loaded(), 10);
 	}, []);
 
 	return (

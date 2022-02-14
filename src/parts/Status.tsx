@@ -1,6 +1,7 @@
-import { Text } from '@parts';
+import { Press, Text } from '@parts';
 import React from 'react';
 import styled from 'styled-components/native';
+import { Button } from './Buttons';
 
 interface StatusType {
 	status: {
@@ -12,11 +13,13 @@ interface StatusType {
 
 export const Status = React.memo(({ status }: StatusType) => {
 	return (
+		// <Press >
 		<StatusBody>
 			<Text weight="600" size={13} color="#3D60FF">
 				{status.content}
 			</Text>
 		</StatusBody>
+		// </Press>
 	);
 });
 

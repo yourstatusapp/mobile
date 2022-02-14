@@ -6,7 +6,8 @@ export { Icon } from './icons/Icon';
 export { HeadingBlurOverlay } from './HeadingBlurOverlay';
 export { TextButton } from './TextButton';
 
-export * from './IconButton';
+export { IconButton } from './IconButton';
+export { Press } from './Press';
 export * from './Layout';
 export * from './Input';
 
