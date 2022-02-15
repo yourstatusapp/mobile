@@ -55,7 +55,7 @@ export const CustomAlert = () => {
 	return (
 		<CustomAlertBody {...AlertData} style={{ transform: [{ translateY: alertHeight }] }}>
 			<TouchableOpacity activeOpacity={0.8} onPress={forceClose}>
-				<Text weight="600" color="black" size={16}>
+				<Text weight="600" color="white" size={16}>
 					{AlertData.title}
 				</Text>
 				<Spacer size={2} />

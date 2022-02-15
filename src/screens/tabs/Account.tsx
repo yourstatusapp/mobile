@@ -2,11 +2,13 @@ import React, { useCallback, useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
 import { Avatar, Block, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
 import { useNavigation } from '@react-navigation/native';
-import core, { AppAlert, request } from '@core';
+import core, { AppAlert, ProfileType, request } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { MenuView } from '@react-native-menu/menu';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
+import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import PushNotifications from '@react-native-community/push-notification-ios';
 
 import { Platform } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -16,10 +18,11 @@ const BANNER_HEIGHT = 250;
 export const Account = () => {
 	const nav = useNavigation();
 	const { colors } = useTheme();
-	const [UploadProgress, SetUploadProgress] = useState('');
+	const uploadProgress = usePulse(core.app.state.upload_progress);
 	const account = usePulse(core.account.state.account);
 	const profile = usePulse(core.profile.state.profile);
 	const dToken = usePulse(core.app.state.device_push_token);
+	const [MenuOpen, SetMenuOpen] = useState(false);
 
 	const selectAvatar = async () => {
 		const result = await launchImageLibrary({ mediaType: 'photo' });
@@ -42,14 +45,17 @@ export const Account = () => {
 			},
 			data: fd,
 			onUploadProgress: v => {
-				SetUploadProgress(JSON.stringify(v));
+				core.app.state.upload_progress.set(v);
 			},
 		});
+
+		// core.app.state.upload_progress.set(false);
 
 		if (!res.data) {
 			AppAlert(false, 'Failed', res.message);
 		} else {
 			AppAlert(true, 'Success', 'avatar has been uploaded');
+			await syncAccount();
 		}
 	};
 
@@ -74,14 +80,24 @@ export const Account = () => {
 			},
 			data: fd,
 			onUploadProgress: v => {
-				SetUploadProgress(JSON.stringify(v || ''));
+				core.app.state.upload_progress.set(v);
 			},
 		});
+
+		core.app.state.upload_progress.set(false);
 
 		if (!res.data) {
 			AppAlert(false, 'Failed', res.message);
 		} else {
 			AppAlert(true, 'Success', 'banner has been uploaded');
+			await syncAccount();
+		}
+	};
+
+	const syncAccount = async () => {
+		const pRes = await request<{ profile: ProfileType }>('get', '/account');
+		if (pRes.data) {
+			core.profile.state.profile.set(pRes.data.profile);
 		}
 	};
 
@@ -105,7 +121,7 @@ export const Account = () => {
 					<IconButton name="cog" size={25} color={colors.white} onPress={() => nav.navigate('settings' as never)} />
 				</Block>
 				<Spacer size={20} />
-				<Text>{UploadProgress}</Text>
+				{/* <Text>{JSON.stringify(uploadProgress) || 'no upload in progress'}</Text> */}
 				<Block row flex={0} color="transparent">
 					<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
 
@@ -119,7 +135,33 @@ export const Account = () => {
 							backgroundColor={colors.white40}
 							onPress={() => nav.navigate('edit_profile' as never)}
 						/>
-						<MenuView
+						<IconButton name="image" color={colors.white} size={25} iconSize={16} backgroundColor={colors.white40} onPress={() => SetMenuOpen(true)} />
+						<Menu opened={MenuOpen} onBackdropPress={() => SetMenuOpen(false)} style={{ borderRadius: 5 }}>
+							<MenuTrigger text="" />
+							<MenuOptions
+								customStyles={{
+									optionsContainer: { borderRadius: 5 },
+									optionsWrapper: { borderRadius: 5 },
+									optionWrapper: { backgroundColor: colors.black60, height: 35, justifyContent: 'center' },
+									optionText: { color: 'white', fontWeight: '700' },
+								}}>
+								<MenuOption
+									onSelect={() => {
+										SetMenuOpen(false);
+										selectAvatar();
+									}}
+									text="Upload avatar"
+								/>
+								<MenuOption
+									onSelect={() => {
+										SetMenuOpen(false);
+										selectBanner();
+									}}
+									text="Upload banner"
+								/>
+							</MenuOptions>
+						</Menu>
+						{/* <MenuView
 							title="Upload Avatar/Banner"
 							onPressAction={({ nativeEvent }) => {
 								if (nativeEvent.event == '1') {
@@ -151,7 +193,7 @@ export const Account = () => {
 								backgroundColor={colors.white40}
 								onPress={() => nav.navigate('edit_profile' as never)}
 							/>
-						</MenuView>
+						</MenuView> */}
 					</Block>
 				</Block>
 				<Text bold size={18} paddingTop={30} paddingBottom={10}>
@@ -160,19 +202,20 @@ export const Account = () => {
 				<Text paddingBottom={10} color={profile.display_name ? colors.white : colors.white40}>
 					{profile.display_name || 'No display name'}
 				</Text>
-				<Text>
-					<Text bold>Email: </Text>
-					{account?.email}
-				</Text>
-				<Text paddingBottom={20}>{JSON.stringify(profile)}</Text>
 
+				<Spacer size={50} />
 				<TextButton
 					text="Logout"
 					textColor={'#ff6b6b'}
 					style={{ padding: 4 }}
 					onPress={() => {
+						PushNotifications.abandonPermissions();
 						nav.reset({ index: 1, routes: [{ name: 'auth' as never }] });
 						core.account.state.account.reset();
+						core.account.collection.devices.reset();
+						core.profile.state.profile.reset();
+						core.app.state.device_push_token.reset();
+						core.app.state.notification_permission.reset();
 					}}
 				/>
 				<Spacer size={90} />

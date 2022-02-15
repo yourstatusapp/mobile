@@ -1,4 +1,4 @@
-import { AlertDataType } from '@core';
+import { AlertDataType, UploadProgressEventType } from '@core';
 import { event, state } from '@pulsejs/core';
 
 export const AppStats = {
@@ -6,7 +6,7 @@ export const AppStats = {
 	notification_permission: state<0 | 1 | 2>(0).persist('notification_enabled'),
 	device_push_token: state<string>('').persist('device_pust_token'),
 
-	upload_progress: state<string | boolean>(false),
+	upload_progress: state<UploadProgressEventType | boolean>(false),
 };
 
 export const AppEvents = {

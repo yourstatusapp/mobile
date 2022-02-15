@@ -12,18 +12,24 @@ const BANNER_HEIGHT = 250;
 
 export const Profile = () => {
 	const scrolling = useRef(new Animated.Value(0)).current;
-	const iR = [60, 115];
+	const iR = [0, 200];
 	// const FadeOpacity = scrolling.interpolate({
 	// 	inputRange: iR,
 	// 	outputRange: [1, 0],
 	// 	extrapolate: 'clamp',
 	// });
 
-	// const translation = scrolling.interpolate({
-	// 	inputRange: iR,
-	// 	outputRange: [0, -50],
-	// 	extrapolate: 'clamp',
-	// });
+	const IMAGE_HEIGHT = scrolling.interpolate({
+		inputRange: [0, 300],
+		outputRange: [1, 2],
+		extrapolate: 'clamp',
+	});
+
+	const IMAGE_HEIGHT2 = scrolling.interpolate({
+		inputRange: [-50, 0],
+		outputRange: [0, 0],
+		extrapolate: 'clamp',
+	});
 
 	const { params } = useRoute();
 	const { colors } = useTheme();
@@ -55,20 +61,34 @@ export const Profile = () => {
 	} else {
 		return (
 			<Block color="black">
-				<BannerArea>
+				<BannerArea style={{ transform: [{ scale: IMAGE_HEIGHT }, { translateY: IMAGE_HEIGHT2 }] }}>
 					{!ProfileData?.banner ? (
 						<BannerPlaceholder />
 					) : (
 						<Banner source={{ uri: `https://cdn.yourstatus.app/profile/${ProfileData?.account_id}/${ProfileData?.banner}` }} />
 					)}
 				</BannerArea>
-				<Block scroll color="transparent" style={{ zIndex: 6 }} paddingTop={100}>
+				<Animated.ScrollView
+					style={{ backgroundColor: 'transparent', zIndex: 6, paddingTop: 100, flex: 1 }}
+					onScroll={Animated.event(
+						[
+							{
+								nativeEvent: {
+									contentOffset: {
+										y: scrolling,
+									},
+								},
+							},
+						],
+						{ useNativeDriver: true },
+					)}>
+					{/* <Block scroll color="transparent" style={{ zIndex: 6 }} paddingTop={100}> */}
 					<LinearGradient
 						colors={['transparent', '#0000008a', 'black']}
 						style={{ position: 'absolute', top: -100, zIndex: 12, width: '100%', height: BANNER_HEIGHT }}></LinearGradient>
 					<Avatar src={[ProfileData.account_id, ProfileData.avatar]} size={130} style={{ zIndex: 17, marginLeft: 20 }} />
 
-					<Block color="black" style={{ zIndex: 7 }} paddingHorizontal={20} paddingTop={20}>
+					<Block color="black" style={{ zIndex: 7, height: 500 }} paddingHorizontal={20} paddingTop={20}>
 						<Text bold size={40} paddingTop={0}>
 							{ProfileData.username}
 						</Text>
@@ -92,7 +112,8 @@ export const Profile = () => {
 							</>
 						)}
 					</Block>
-				</Block>
+				</Animated.ScrollView>
+				{/* </Block> */}
 			</Block>
 		);
 	}
@@ -100,7 +121,8 @@ export const Profile = () => {
 
 const Banner = styled(FastImage)`
 	width: 100%;
-	height: ${BANNER_HEIGHT}px;
+
+	height: 100%;
 `;
 
 const BannerPlaceholder = styled.View`
@@ -109,8 +131,8 @@ const BannerPlaceholder = styled.View`
 	height: ${BANNER_HEIGHT}px;
 `;
 
-const BannerArea = styled.View`
-	height: ${BANNER_HEIGHT}px;
+const BannerArea = styled(Animated.View)`
+	height: ${BANNER_HEIGHT};
 	position: absolute;
 	width: 100%;
 	z-index: 1;

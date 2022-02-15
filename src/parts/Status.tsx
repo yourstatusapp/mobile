@@ -11,11 +11,37 @@ interface StatusType {
 	};
 }
 
+enum StatusEventTypes {
+	DEFAULT,
+	STORIES_COLLECTION,
+}
+
+interface StatusTypesColors {
+	[index: string]: {
+		key_name: string;
+		color: string;
+		backColor: string;
+	};
+}
+
+const colors: StatusTypesColors = {
+	0: {
+		key_name: 'DEFAULT',
+		color: '#3D60FF',
+		backColor: '#0c1b37',
+	},
+	1: {
+		key_name: 'STORIES_COLLECTION',
+		color: '#3D60FF',
+		backColor: '#0c1b37',
+	},
+};
+
 export const Status = React.memo(({ status }: StatusType) => {
 	return (
 		// <Press >
-		<StatusBody>
-			<Text weight="600" size={13} color="#3D60FF">
+		<StatusBody backColor={colors[status.type].backColor}>
+			<Text weight="600" size={13} color={colors[status.type].color}>
 				{status.content}
 			</Text>
 		</StatusBody>
@@ -23,9 +49,8 @@ export const Status = React.memo(({ status }: StatusType) => {
 	);
 });
 
-const StatusBody = styled.View`
-	background-color: #0c1b37;
-	/* padding: 2px 5px; */
+const StatusBody = styled.View<{ backColor: string }>`
+	background-color: ${({ backColor }) => backColor};
 	padding: 4px 7px;
 	align-self: flex-start;
 	border-radius: 4px;

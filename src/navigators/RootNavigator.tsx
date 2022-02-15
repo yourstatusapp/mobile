@@ -17,34 +17,25 @@ const RootStack = createNativeStackNavigator();
 export const RootNavigator = () => {
 	useLinking();
 	const loggedIn = usePulse(core.account.state.logged_in);
-	const [Loaded, SetLoaded] = useState(false);
 	const [PreloaderReady, setPreloaderReady] = useState(false);
 	const pushNotifyPerm = usePulse(core.app.state.notification_permission);
 	const device = usePulse(core.account.collection.devices.selectors.current);
 
-	const mounted = () => setTimeout(() => SetLoaded(true));
+	const onRegister = React.useCallback(
+		async (deviceToken: string) => {
+			core.app.state.notification_permission.set(1);
+			core.app.state.device_push_token.set(deviceToken);
 
-	// useEffect(() => {
-	// 	// mounted();
-	// }, []);
-
-	// useEffect(() => {
-	// 	if (loggedIn) {
-	// 		SetLoaded(true);
-	// 	}
-	// }, [loggedIn]);
-
-	const onRegister = async (deviceToken: string) => {
-		core.app.state.notification_permission.set(1);
-		core.app.state.device_push_token.set(deviceToken);
-
-		AppAlert(true, deviceToken);
-		if (deviceToken && loggedIn) {
-			await request('patch', '/account/devices/' + device.id, {
-				data: { notifications: true, push_token: deviceToken },
-			});
-		}
-	};
+			AppAlert(true, deviceToken);
+			if (deviceToken && loggedIn) {
+				await request('patch', '/account/devices/' + device.id, {
+					data: { notifications: true, push_token: deviceToken },
+				});
+				core.account.collection.devices.update(device.id, { notifications: true });
+			}
+		},
+		[loggedIn],
+	);
 
 	const onNotification = (a: PushNotificationType) => {
 		AppAlert(true, a.getActionIdentifier() || '');
@@ -56,18 +47,21 @@ export const RootNavigator = () => {
 	};
 
 	useEffect(() => {
-		if (loggedIn === true && PreloaderReady === true && pushNotifyPerm === 0) {
-			// PushNotificationIOS.requestPermissions();
-			PushNotificationIOS.addEventListener('register', onRegister);
-			PushNotificationIOS.addEventListener('notification', onNotification);
-			PushNotificationIOS.addEventListener('registrationError', onRegisterError);
+		if (loggedIn === true && pushNotifyPerm === 0) {
+			PushNotificationIOS.requestPermissions();
 		}
+	}, [loggedIn]);
 
+	useEffect(() => {
+		PushNotificationIOS.addEventListener('register', onRegister);
+		PushNotificationIOS.addEventListener('notification', onNotification);
+		PushNotificationIOS.addEventListener('registrationError', onRegisterError);
 		return () => {
 			PushNotificationIOS.removeEventListener('register');
 			PushNotificationIOS.removeEventListener('notification');
+			PushNotificationIOS.removeEventListener('registrationError');
 		};
-	}, [PreloaderReady, loggedIn, pushNotifyPerm]);
+	}, []);
 
 	// Wait for the preloader and logged_in compute state
 	if (PreloaderReady === false) {
@@ -86,8 +80,6 @@ export const RootNavigator = () => {
 						headerShown: false,
 						gestureEnabled: true,
 						animationTypeForReplace: 'push',
-						// gestureResponseDistance: { vertical: 150 },
-						// cardOverlayEnabled: true,
 					}}
 				/>
 				<RootStack.Screen name="edit_profile" component={EditProfile} options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }} />

@@ -10,7 +10,7 @@ import { RootNavigator } from './navigators/RootNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import { CustomAlert } from './parts/components/Alert';
-import { PushNotifications } from './utils/PushNotification';
+import { MenuProvider } from 'react-native-popup-menu';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 instance.setStorage({
@@ -42,10 +42,12 @@ export const App: React.FC = () => {
 			<CustomAlert />
 			<NavigationContainer>
 				<AppBody>
-					<StatusBar barStyle={'light-content'} />
-					<ThemeProvider theme={theme}>
-						<RootNavigator />
-					</ThemeProvider>
+					<MenuProvider>
+						<StatusBar barStyle={'light-content'} />
+						<ThemeProvider theme={theme}>
+							<RootNavigator />
+						</ThemeProvider>
+					</MenuProvider>
 				</AppBody>
 			</NavigationContainer>
 		</>

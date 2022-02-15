@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import Svg, { G, Path } from 'react-native-svg';
 import styled from 'styled-components/native';
-import core, { request } from '@core';
+import core, { AppAlert, request } from '@core';
 import { Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 
@@ -13,13 +13,15 @@ interface PreloaderProps {
 export const PreloaderView = ({ loaded }: PreloaderProps) => {
 	const [TakingTooLong, setTakingTooLong] = useState(false);
 	const logged_in = usePulse(core.account.state.logged_in);
+	const [Loading, SetLoading] = useState(false);
 
 	const getAccount = async () => {
+		SetLoading(true);
 		setTimeout(() => setTakingTooLong(true), 20 * 1000);
 
 		const res = await request<{ account: any; profile: any; device: any }>('get', '/account');
 		console.log('ACCOUNT_DATA retrieved', res);
-		loaded();
+
 		console.log(res.data);
 
 		if (!res.success) {
@@ -30,19 +32,41 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 			if (res.data?.account) core.account.state.account.set(res.data?.account);
 			if (res.data?.profile) core.profile.state.profile.set(res.data?.profile);
 			if (res.data?.device) {
+				AppAlert(true, JSON.stringify(res.data.device));
 				core.account.collection.devices.collect(res.data.device, 'mine');
 				core.account.collection.devices.selectors.current.select(res.data.device.id);
 			}
 		}
-
 		setTimeout(() => loaded(), 10);
 	};
 
 	useEffect(() => {
-		console.log('preloader');
-		if (logged_in) getAccount();
-		else setTimeout(() => loaded(), 10);
+		core.account.state.logged_in.onNext(v => {
+			AppAlert(true, 'logged_in state received', JSON.stringify(v));
+			if (Loading) return;
+			if (v) {
+				getAccount();
+			} else {
+			}
+			// AppAlert(true, 'logged_in state received', JSON.stringify(v));
+			// setTimeout(() => {
+			// 	console.log('preloader');
+			// 	if (v)
+			// 	else setTimeout(() => loaded(), 10);
+			// }, 100);
+		});
+		setTimeout(() => !logged_in && loaded(), 200);
 	}, []);
+
+	// useEffect(() => {
+	// 	AppAlert(true, JSON.stringify(logged_in), 'logged in');
+	// 	// setTimeout(() => {
+	// 	// 	console.log('preloader');
+	// 	// 	AppAlert(true, JSON.stringify(logged_in), 'logged in');
+	// 	// 	if (logged_in) getAccount();
+	// 	// 	else setTimeout(() => loaded(), 10);
+	// 	// }, 2300);
+	// }, []);
 
 	return (
 		<PreloaderBody>

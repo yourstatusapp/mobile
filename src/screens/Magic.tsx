@@ -1,4 +1,4 @@
-import core, { request } from '@core';
+import core, { AppAlert, request } from '@core';
 import { Spacer, Text, Block } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
@@ -27,13 +27,9 @@ export const MagicView: React.FC<MagicProps> = ({ route }) => {
 	const magicAuth = async (code: string, new_account: boolean) => {
 		const res = await request<IAccountRequestProps>('post', '/auth/magic/verify', { data: { code } });
 
-		if (!res) {
-			// core.app.event.notification.emit({
-			// 	title: 'Failed to verify magic link',
-			// 	success: false,
-			// 	desc: 'Send a dm to @yourstatusapp on Twitter',
-			// });
-			setTimeout(() => nav.goBack(), 1000);
+		if (!res.data) {
+			AppAlert(false, 'Failed', res.message);
+			setTimeout(() => nav.goBack(), 1500);
 			return;
 		}
 
@@ -48,16 +44,13 @@ export const MagicView: React.FC<MagicProps> = ({ route }) => {
 		if (!new_account) {
 			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });
 		} else {
-			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });
-			setTimeout(() => {
-				// nav.navigate('NewUser' as never);
-			}, 1000);
+			nav.reset({ index: 0, routes: [{ name: 'tabs' as never, params: { new_account: true } }] });
 		}
 	};
 
 	useEffect(() => {
 		magicAuth(route?.params?.code, route?.params?.new_account);
-	});
+	}, []);
 
 	return (
 		<MagicBody>

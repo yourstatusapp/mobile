@@ -81,3 +81,10 @@ export interface DeviceType {
 	device_type: string;
 	deleted_at: string;
 }
+
+export interface UploadProgressEventType {
+	isTrusted: boolean;
+	lengthComputable: boolean;
+	loaded: number;
+	total: number;
+}

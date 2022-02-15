@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { request, StatusType } from '@core';
 import { Avatar, Block, IconButton, Status, Text, TextButton } from '@parts';
-import { Animated, Easing, FlatList, ListRenderItemInfo, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Animated, Dimensions, Easing, FlatList, ListRenderItemInfo, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from '@react-native-community/blur';
@@ -148,7 +148,7 @@ export const Friends = React.memo(() => {
 					animate
 					row
 					hCenter
-					style={{ zIndex: 10, backgroundColor: 'transparent', height: (hasNotch() ? 100 : 70) - 20, opacity: FadeOpacity }}
+					style={{ zIndex: 10, backgroundColor: 'transparent', height: 100 - (hasNotch() ? 44 : 0), opacity: FadeOpacity }}
 					// paddingTop={50}
 					paddingHorizontal={20}>
 					<IconButton
