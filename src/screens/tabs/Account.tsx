@@ -161,39 +161,6 @@ export const Account = () => {
 								/>
 							</MenuOptions>
 						</Menu>
-						{/* <MenuView
-							title="Upload Avatar/Banner"
-							onPressAction={({ nativeEvent }) => {
-								if (nativeEvent.event == '1') {
-									selectAvatar();
-								}
-
-								if (nativeEvent.event === '2') {
-									selectBanner();
-								}
-								return;
-							}}
-							actions={[
-								{
-									id: '1',
-									title: `Choose from photo's`,
-									image: 'photo',
-								},
-								{
-									id: '2',
-									title: 'Upload banner',
-									image: 'photo',
-								},
-							]}>
-							<IconButton
-								name="image"
-								color={colors.white}
-								size={25}
-								iconSize={16}
-								backgroundColor={colors.white40}
-								onPress={() => nav.navigate('edit_profile' as never)}
-							/>
-						</MenuView> */}
 					</Block>
 				</Block>
 				<Text bold size={18} paddingTop={30} paddingBottom={10}>
@@ -202,7 +169,21 @@ export const Account = () => {
 				<Text paddingBottom={10} color={profile.display_name ? colors.white : colors.white40}>
 					{profile.display_name || 'No display name'}
 				</Text>
-
+				<Spacer size={20} />
+				<TextButton
+					text="camera"
+					textColor={'#6b93ff'}
+					style={{ padding: 4 }}
+					onPress={() => {
+						// nav.reset({ index: 1, routes: [{ name: 'camera' as never }] });
+						nav.navigate(
+							'camera' as never,
+							{
+								moment: true,
+							} as never,
+						);
+					}}
+				/>
 				<Spacer size={50} />
 				<TextButton
 					text="Logout"

@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
 
-export const AuthView: React.FC = () => {
+export const Auth: React.FC = () => {
 	const nav = useNavigation();
 	const { colors } = useTheme();
 	const loggedin = usePulse(core.account.state.logged_in);

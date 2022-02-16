@@ -1,5 +1,5 @@
-export { AuthView } from './Auth';
-export { MagicView } from './Magic';
+export { Auth } from './Auth';
+export { Magic } from './Magic';
 export { PreloaderView } from './Preloader';
 
 export { Account } from './tabs/Account';
@@ -11,3 +11,5 @@ export { NewStatus } from './NewStatus';
 export { EditProfile } from './EditProfile';
 export { SearchFriend } from './SearchFriend';
 export { FriendRequests } from './FriendRequests';
+export { Camera } from './Camera';
+export { NewMoment } from './NewMoment';

@@ -21,7 +21,7 @@ interface IAccountRequestProps {
 	profile: any;
 }
 
-export const MagicView: React.FC<MagicProps> = ({ route }) => {
+export const Magic: React.FC<MagicProps> = ({ route }) => {
 	const nav = useNavigation();
 
 	const magicAuth = async (code: string, new_account: boolean) => {

@@ -6,8 +6,7 @@ import core, { AppAlert, request } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { useLinking } from '../hooks';
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { AuthView, EditProfile, MagicView, NewStatus, Settings } from '../screens';
-import { PreloaderView } from '../screens/Preloader';
+import { Auth, Camera, EditProfile, Magic, NewStatus, Settings, NewMoment, PreloaderView } from '../screens';
 import { NewProject } from '../screens/NewProject';
 import PushNotificationIOS, { PushNotification as PushNotificationType } from '@react-native-community/push-notification-ios';
 
@@ -70,8 +69,10 @@ export const RootNavigator = () => {
 		return (
 			<RootStack.Navigator initialRouteName={loggedIn ? 'tabs' : 'auth'} screenOptions={{ headerShown: false }}>
 				<RootStack.Screen name="tabs" component={BottomTabNavigator} />
-				<RootStack.Screen name="auth" component={AuthView} />
-				<RootStack.Screen name="magic" component={MagicView} />
+				<RootStack.Screen name="auth" component={Auth} />
+				<RootStack.Screen name="magic" component={Magic} />
+				<RootStack.Screen name="new_moment" component={NewMoment} options={{ animation: 'fade' }} />
+				<RootStack.Screen name="camera" component={Camera} options={{ animation: 'fade' }} />
 				<RootStack.Screen name="create_status" component={NewStatus} options={{ gestureEnabled: true }} />
 				<RootStack.Screen
 					name="newproject"

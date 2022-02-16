@@ -20,9 +20,6 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		setTimeout(() => setTakingTooLong(true), 20 * 1000);
 
 		const res = await request<{ account: any; profile: any; device: any }>('get', '/account');
-		console.log('ACCOUNT_DATA retrieved', res);
-
-		console.log(res.data);
 
 		if (!res.success) {
 			core.account.state.account.reset();
@@ -32,7 +29,6 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 			if (res.data?.account) core.account.state.account.set(res.data?.account);
 			if (res.data?.profile) core.profile.state.profile.set(res.data?.profile);
 			if (res.data?.device) {
-				AppAlert(true, JSON.stringify(res.data.device));
 				core.account.collection.devices.collect(res.data.device, 'mine');
 				core.account.collection.devices.selectors.current.select(res.data.device.id);
 			}
@@ -42,7 +38,6 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 
 	useEffect(() => {
 		core.account.state.logged_in.onNext(v => {
-			AppAlert(true, 'logged_in state received', JSON.stringify(v));
 			if (Loading) return;
 			if (v) {
 				getAccount();
