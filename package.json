@@ -63,7 +63,7 @@
 	"resolutions": {
 		"@types/react": "^17",
 		"styled-components": "^5",
-		"react-devtools-core": "4.14.0"
+		"react-devtools-core": "4.13.0"
 	},
 	"jest": {
 		"preset": "react-native",

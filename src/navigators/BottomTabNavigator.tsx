@@ -6,7 +6,7 @@ import styled, { useTheme } from 'styled-components/native';
 import { Avatar, Block, Icon, IconButton } from '@parts';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
-import { Account, Friends, Projects, Profile, SearchFriend, FriendRequests } from '../screens';
+import { Account, Friends, Projects, Profile, SearchFriend, FriendRequests, Moments } from '../screens';
 import { BlurView } from '@react-native-community/blur';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -26,7 +26,7 @@ export const BottomTabNavigator: React.FC = () => {
 			<TabsStackNavigator.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_left' }} initialRouteName="account">
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
 				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
-				<TabsStackNavigator.Screen name="projects" component={Projects} options={o} />
+				<TabsStackNavigator.Screen name="moments" component={Moments} options={o} />
 				<TabsStackNavigator.Screen name="profile" component={Profile} options={{ gestureEnabled: true }} />
 				{/* <TabsStackNavigator.Screen name="ManageFriends" component={Profile} options={{ gestureEnabled: true }} /> */}
 				<TabsStackNavigator.Screen name="SearchFriend" component={SearchFriend} options={{ gestureEnabled: true }} />
@@ -46,7 +46,10 @@ const CustomNavBar = () => {
 	const [Current, setCurrent] = useState(3);
 	const sh = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 80, width: '100%', zIndex: 10, opacity: 1 }]);
 
-	const tabs = [{ name: 'Friends', path: 'friends', icon: 'friends' }];
+	const tabs = [
+		{ name: 'Friends', path: 'friends', icon: 'friends' },
+		{ name: 'moments', path: 'moments', icon: 'map' },
+	];
 
 	const navigate = (name: string, s: number) => {
 		setCurrent(s + 1);

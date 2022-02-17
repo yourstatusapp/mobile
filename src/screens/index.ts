@@ -13,3 +13,4 @@ export { SearchFriend } from './SearchFriend';
 export { FriendRequests } from './FriendRequests';
 export { Camera } from './Camera';
 export { NewMoment } from './NewMoment';
+export { Moments } from './Moments';

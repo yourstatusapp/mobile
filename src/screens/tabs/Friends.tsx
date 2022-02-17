@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { request, StatusType } from '@core';
-import { Avatar, Block, IconButton, Status, Text, TextButton } from '@parts';
-import { Animated, Dimensions, Easing, FlatList, ListRenderItemInfo, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Avatar, Block, IconButton, Status, Text } from '@parts';
+import { Animated, ListRenderItemInfo, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from '@react-native-community/blur';
@@ -107,15 +107,6 @@ export const Friends = React.memo(() => {
 					</Block>
 				)}
 
-				{/* style={{
-						position: 'absolute',
-						top: 0,
-						left: 0,
-						right: 0,
-						height: 80,
-						backgroundColor: 'tomato',
-						transform: [{ translateX: translation }],
-					}} */}
 				{React.useMemo(() => {
 					return (
 						<Animated.FlatList
@@ -149,7 +140,6 @@ export const Friends = React.memo(() => {
 					row
 					hCenter
 					style={{ zIndex: 10, backgroundColor: 'transparent', height: 100 - (hasNotch() ? 44 : 0), opacity: FadeOpacity }}
-					// paddingTop={50}
 					paddingHorizontal={20}>
 					<IconButton
 						name="search"
@@ -171,7 +161,6 @@ export const Friends = React.memo(() => {
 							style={{ marginRight: 15 }}
 						/>
 					)}
-					{/* <Text>{JSON.stringify(FriendRList)}</Text> */}
 				</Block>
 			</Animated.View>
 		</Block>
@@ -206,18 +195,12 @@ const FriendComp: React.FC<FriendItemType> = props => {
 					)}
 				</Block>
 			</Block>
-
-			{/*<Text>{item?.status?.data.title}</Text>*/}
 		</FriendCompBody>
 	);
 };
 
 const FriendCompBody = styled.View`
-	//margin-bottom: 20px;
-	/* margin: 0px 20px 0px 20px; */
 	padding: 20px 0px;
-	/* height: 88px; */
-
 	border-bottom-color: #111111;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
