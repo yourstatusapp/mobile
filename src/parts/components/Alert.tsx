@@ -16,7 +16,7 @@ export const CustomAlert = () => {
 	const alertHeight = useRef(new Animated.Value(-100)).current;
 	const [AlertData, setAlertData] = useState<AlertDataType>();
 
-	useEvent(core.app.event.notification, v => {
+	useEvent(core.events.notification, v => {
 		console.log(v);
 		openAlert(v);
 	});
@@ -55,7 +55,7 @@ export const CustomAlert = () => {
 	return (
 		<CustomAlertBody {...AlertData} style={{ transform: [{ translateY: alertHeight }] }}>
 			<TouchableOpacity activeOpacity={0.8} onPress={forceClose}>
-				<Text weight="600" color="white" size={16}>
+				<Text weight="700" color="white" size={16}>
 					{AlertData.title}
 				</Text>
 				<Spacer size={2} />

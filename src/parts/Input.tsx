@@ -20,7 +20,7 @@ export const Input: React.FC<InputProps> = ({ onChange, placeholder, value, styl
 		<InputBox>
 			{placeholder && (
 				<PlaceholderBox>
-					<Text size={14} weight="500" color="#b8b8b8">
+					<Text size={13} weight="600" color="#6e6e6e">
 						{placeholder}
 					</Text>
 				</PlaceholderBox>

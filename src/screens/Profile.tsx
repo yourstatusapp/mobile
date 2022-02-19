@@ -85,7 +85,8 @@ export const Profile = () => {
 					{/* <Block scroll color="transparent" style={{ zIndex: 6 }} paddingTop={100}> */}
 					<LinearGradient
 						colors={['transparent', '#0000008a', 'black']}
-						style={{ position: 'absolute', top: -100, zIndex: 12, width: '100%', height: BANNER_HEIGHT }}></LinearGradient>
+						style={{ position: 'absolute', top: -100, zIndex: 12, width: '100%', height: BANNER_HEIGHT }}
+					/>
 					<Avatar src={[ProfileData.account_id, ProfileData.avatar]} size={130} style={{ zIndex: 17, marginLeft: 20 }} />
 
 					<Block color="black" style={{ zIndex: 7, height: 500 }} paddingHorizontal={20} paddingTop={20}>

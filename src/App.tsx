@@ -32,7 +32,7 @@ globalThis.core = core;
 // console.log(`hermers ${!!global.HermesInternal}`);
 
 export const App: React.FC = () => {
-	const theme = usePulse(core.ui.state.ThemeObject);
+	const theme = usePulse(core.ui.ThemeObject);
 	useEffect(() => {
 		PushNotificationIOS.setApplicationIconBadgeNumber(0);
 	}, []);

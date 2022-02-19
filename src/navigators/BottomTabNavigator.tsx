@@ -26,7 +26,7 @@ export const BottomTabNavigator: React.FC = () => {
 			<TabsStackNavigator.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_left' }} initialRouteName="account">
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
 				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
-				<TabsStackNavigator.Screen name="moments" component={Moments} options={o} />
+				{/* <TabsStackNavigator.Screen name="moments" component={Moments} options={o} /> */}
 				<TabsStackNavigator.Screen name="profile" component={Profile} options={{ gestureEnabled: true }} />
 				{/* <TabsStackNavigator.Screen name="ManageFriends" component={Profile} options={{ gestureEnabled: true }} /> */}
 				<TabsStackNavigator.Screen name="SearchFriend" component={SearchFriend} options={{ gestureEnabled: true }} />
@@ -40,7 +40,7 @@ export const BottomTabNavigator: React.FC = () => {
 };
 
 const CustomNavBar = () => {
-	const acc = usePulse(core.account.state.account);
+	const acc = usePulse(core.account.account);
 	const nav = useNavigation();
 	const { colors, theme } = useTheme();
 	const [Current, setCurrent] = useState(3);
@@ -48,7 +48,7 @@ const CustomNavBar = () => {
 
 	const tabs = [
 		{ name: 'Friends', path: 'friends', icon: 'friends' },
-		{ name: 'moments', path: 'moments', icon: 'map' },
+		// { name: 'moments', path: 'moments', icon: 'map' },
 	];
 
 	const navigate = (name: string, s: number) => {
@@ -142,8 +142,8 @@ const TabContainer = styled.View`
 `;
 
 const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
-	const acc = usePulse(core.account.state.account);
-	const profile = usePulse(core.profile.state.profile);
+	const acc = usePulse(core.account.account);
+	const profile = usePulse(core.profile.profile);
 	const { theme } = useTheme();
 
 	return (

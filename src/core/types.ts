@@ -88,3 +88,21 @@ export interface UploadProgressEventType {
 	loaded: number;
 	total: number;
 }
+
+export interface FriendItemType {
+	id: string;
+	account_id: string;
+	bio: string;
+	username: string;
+	location: string;
+	avatar: string;
+	status: {
+		id: string;
+		type: number;
+		account_id: string;
+		deleted_at: null;
+		content: string;
+		taps: number;
+		taped?: boolean;
+	};
+}

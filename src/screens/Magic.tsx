@@ -33,12 +33,12 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 			return;
 		}
 
-		if (res.data?.account) core.account.state.account.set(res.data.account); // @ts-ignore
-		if (res.data?.profile) core.profile.state.profile.set(res.data.profile);
+		if (res.data?.account) core.account.account.set(res.data.account); // @ts-ignore
+		if (res.data?.profile) core.profile.profile.set(res.data.profile);
 
 		if (res.data?.device) {
-			core.account.collection.devices.collect(res.data.device, 'mine');
-			core.account.collection.devices.selectors.current.select(res.data.device.id);
+			core.collections.devices.collect(res.data.device, 'mine');
+			core.collections.devices.selectors.current.select(res.data.device.id);
 		}
 
 		if (!new_account) {

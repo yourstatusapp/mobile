@@ -8,9 +8,9 @@ export const PushNotifications = () => {
 		AppAlert(true, deviceToken);
 		if (!deviceToken) return;
 
-		core.app.state.device_push_token.set(deviceToken);
+		core.app.device_push_token.set(deviceToken);
 
-		const current_device = core.account.collection.devices.selectors.current;
+		const current_device = core.collections.devices.selectors.current;
 
 		// Update the sessions token and notification on true
 		await request('patch', '/account/devices/' + current_device.id, {
@@ -20,7 +20,7 @@ export const PushNotifications = () => {
 			},
 		});
 
-		core.account.collection.devices.update(current_device.id, { notifications: true });
+		core.collections.devices.update(current_device.id, { notifications: true });
 	};
 
 	const onRegisterError = (error: { message: string; code: number; details: any }) => {

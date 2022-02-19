@@ -15,22 +15,21 @@ const RootStack = createNativeStackNavigator();
 
 export const RootNavigator = () => {
 	useLinking();
-	const loggedIn = usePulse(core.account.state.logged_in);
+	const loggedIn = usePulse(core.account.logged_in);
 	const [PreloaderReady, setPreloaderReady] = useState(false);
-	const pushNotifyPerm = usePulse(core.app.state.notification_permission);
-	const device = usePulse(core.account.collection.devices.selectors.current);
+	const pushNotifyPerm = usePulse(core.app.notification_permission);
+	const device = usePulse(core.collections.devices.selectors.current);
 
 	const onRegister = React.useCallback(
 		async (deviceToken: string) => {
-			core.app.state.notification_permission.set(1);
-			core.app.state.device_push_token.set(deviceToken);
+			core.app.notification_permission.set(1);
+			core.app.device_push_token.set(deviceToken);
 
-			AppAlert(true, deviceToken);
 			if (deviceToken && loggedIn) {
 				await request('patch', '/account/devices/' + device.id, {
 					data: { notifications: true, push_token: deviceToken },
 				});
-				core.account.collection.devices.update(device.id, { notifications: true });
+				core.collections.devices.update(device.id, { notifications: true });
 			}
 		},
 		[loggedIn],
@@ -41,8 +40,8 @@ export const RootNavigator = () => {
 	};
 
 	const onRegisterError = (error: { message: string; code: number; details: any }) => {
-		core.app.state.notification_permission.set(2);
-		AppAlert(true, error.message, error.code + ' - ' + error.details);
+		core.app.notification_permission.set(2);
+		AppAlert(false, error.message, error.code + ' - ' + error.details);
 	};
 
 	useEffect(() => {

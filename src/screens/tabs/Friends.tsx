@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { request, StatusType } from '@core';
+import core, { request, StatusType } from '@core';
 import { Avatar, Block, IconButton, Status, Text } from '@parts';
 import { Animated, ListRenderItemInfo, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from '@react-native-community/blur';
 import { hasNotch } from 'react-native-device-info';
+import { usePulse } from '@pulsejs/react';
 
 interface FriendItem {
 	username: string;
@@ -44,20 +45,19 @@ export const Friends = React.memo(() => {
 		extrapolate: 'clamp',
 	});
 
-	useEffect(() => {}, [scrolling]);
-
-	const [D, SetD] = useState<any[]>([]);
+	const friends = usePulse(core.collections.friends.groups.friends);
 	const [FriendRList, SetFriendRList] = useState<any[]>([]);
 
 	const [Loading, SetLoading] = useState(false);
 
 	const getFriends = async () => {
 		SetLoading(true);
-		const a = await request<{ friends: any[]; incoming_pending: any[] }>('get', '/friends');
+		const a = await request<{ friends: FriendItemType[]; incoming_pending: any[] }>('get', '/friends');
 		if (!a.data) {
 		} else {
 			// @ts-ignore
-			SetD(a.data.friends);
+			core.collections.friends.collect(a.data.friends, 'friends');
+			// SetD(a.data.friends);
 			SetFriendRList(a.data.incoming_pending);
 		}
 		SetLoading(false);
@@ -106,21 +106,17 @@ export const Friends = React.memo(() => {
 						<Status status={MyStatus} />
 					</Block>
 				)}
-
-				{React.useMemo(() => {
-					return (
-						<Animated.FlatList
-							data={D}
-							scrollEnabled={false}
-							// scrollEventThrottle={20}
-							renderItem={renderItem}
-							initialNumToRender={20}
-							showsVerticalScrollIndicator={false}
-							keyExtractor={item => item.account_id}
-							getItemLayout={(data, index) => ({ length: FRIEND_ITEM_HEIGHT, offset: FRIEND_ITEM_HEIGHT * index, index })}
-						/>
-					);
-				}, [D])}
+				<Animated.FlatList
+					data={friends}
+					// extraData={friends}
+					scrollEnabled={false}
+					scrollEventThrottle={20}
+					renderItem={renderItem}
+					initialNumToRender={20}
+					showsVerticalScrollIndicator={false}
+					keyExtractor={item => item.account_id}
+					getItemLayout={(data, index) => ({ length: FRIEND_ITEM_HEIGHT, offset: FRIEND_ITEM_HEIGHT * index, index })}
+				/>
 			</Animated.ScrollView>
 			<Animated.View
 				style={{
@@ -173,6 +169,14 @@ const FriendComp: React.FC<FriendItemType> = props => {
 	const nav = useNavigation();
 
 	const openProfile = () => nav.navigate('profile' as never, { username: item.username } as never);
+	const tapStatus = async () => {
+		core.collections.friends.update(item.account_id, { status: { taps: item.status?.taps || 0 + 1, taped: true } }, { deep: true });
+		const res = await request('post', `/status/${item.status?.id}/tap`);
+		if (res.data) {
+			// core.collections.friends.update(item.account_id, { status: { taps: item.status?.taps || 0 + 1, taped: true } }, { deep: true });
+		} else {
+		}
+	};
 
 	React.useEffect(() => {
 		console.log('friend render ' + item.username);
@@ -190,7 +194,12 @@ const FriendComp: React.FC<FriendItemType> = props => {
 					</Text>
 					{item?.status && (
 						<Block style={{ flexWrap: 'wrap', paddingTop: 6 }}>
-							<Status status={item.status} />
+							<Status
+								status={item.status}
+								onPress={() => {
+									tapStatus();
+								}}
+							/>
 						</Block>
 					)}
 				</Block>

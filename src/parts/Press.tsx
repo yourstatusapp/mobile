@@ -1,8 +1,6 @@
-import { Text } from '@parts';
-import React, { ReactNode, useEffect, useRef } from 'react';
-import styled, { useTheme } from 'styled-components/native';
-import { StyleSheet, ViewStyle } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import React from 'react';
+import { Pressable, StyleSheet, ViewStyle } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 interface ButtonType {
 	onPress?: () => void;
@@ -12,7 +10,7 @@ interface ButtonType {
 
 export const Press: React.FC<ButtonType> = ({ onPress, disabled, style, children }) => {
 	const opacityValue = useSharedValue(1);
-	const { colors } = useTheme();
+
 	const sh = StyleSheet.flatten([style]);
 
 	const animatedStyle = useAnimatedStyle(() => {
@@ -23,7 +21,7 @@ export const Press: React.FC<ButtonType> = ({ onPress, disabled, style, children
 
 	return (
 		<Animated.View style={[animatedStyle]}>
-			<ButtonBody
+			<Pressable
 				onPress={onPress}
 				disabled={disabled}
 				style={({ pressed }) => [
@@ -33,9 +31,7 @@ export const Press: React.FC<ButtonType> = ({ onPress, disabled, style, children
 					},
 				]}>
 				{children}
-			</ButtonBody>
+			</Pressable>
 		</Animated.View>
 	);
 };
-
-const ButtonBody = styled.Pressable``;

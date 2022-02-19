@@ -1,5 +1,5 @@
-import { AlertDataType, UploadProgressEventType } from '@core';
-import { event, state } from '@pulsejs/core';
+import { UploadProgressEventType } from '@core';
+import { state } from '@pulsejs/core';
 
 export const AppStats = {
 	// 0 = need to ask  | 1 = granted | 2 = denied
@@ -9,8 +9,4 @@ export const AppStats = {
 	upload_progress: state<UploadProgressEventType | boolean>(false),
 };
 
-export const AppEvents = {
-	notification: event<AlertDataType>({}),
-};
-
-export const app = { event: AppEvents, state: AppStats };
+export const app = { ...AppStats };

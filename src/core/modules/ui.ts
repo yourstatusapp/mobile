@@ -22,4 +22,4 @@ export const UiComputedState = {
 	}),
 };
 
-export const ui = { state: { ...UiComputedState, ...UiState } };
+export const ui = { ...UiComputedState, ...UiState };

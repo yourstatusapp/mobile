@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import Svg, { G, Path } from 'react-native-svg';
 import styled from 'styled-components/native';
-import core, { AppAlert, request } from '@core';
+import core, { request } from '@core';
 import { Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 
@@ -12,7 +12,7 @@ interface PreloaderProps {
 
 export const PreloaderView = ({ loaded }: PreloaderProps) => {
 	const [TakingTooLong, setTakingTooLong] = useState(false);
-	const logged_in = usePulse(core.account.state.logged_in);
+	const logged_in = usePulse(core.account.logged_in);
 	const [Loading, SetLoading] = useState(false);
 
 	const getAccount = async () => {
@@ -22,22 +22,22 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		const res = await request<{ account: any; profile: any; device: any }>('get', '/account');
 
 		if (!res.success) {
-			core.account.state.account.reset();
-			core.profile.state.profile.reset();
-			core.account.collection.devices.reset();
+			core.account.account.reset();
+			core.profile.profile.reset();
+			core.collections.devices.reset();
 		} else {
-			if (res.data?.account) core.account.state.account.set(res.data?.account);
-			if (res.data?.profile) core.profile.state.profile.set(res.data?.profile);
+			if (res.data?.account) core.account.account.set(res.data?.account);
+			if (res.data?.profile) core.profile.profile.set(res.data?.profile);
 			if (res.data?.device) {
-				core.account.collection.devices.collect(res.data.device, 'mine');
-				core.account.collection.devices.selectors.current.select(res.data.device.id);
+				core.collections.devices.collect(res.data.device, 'mine');
+				core.collections.devices.selectors.current.select(res.data.device.id);
 			}
 		}
 		setTimeout(() => loaded(), 10);
 	};
 
 	useEffect(() => {
-		core.account.state.logged_in.onNext(v => {
+		core.account.logged_in.onNext(v => {
 			if (Loading) return;
 			if (v) {
 				getAccount();

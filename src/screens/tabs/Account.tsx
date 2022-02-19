@@ -18,10 +18,10 @@ const BANNER_HEIGHT = 250;
 export const Account = () => {
 	const nav = useNavigation();
 	const { colors } = useTheme();
-	const uploadProgress = usePulse(core.app.state.upload_progress);
-	const account = usePulse(core.account.state.account);
-	const profile = usePulse(core.profile.state.profile);
-	const dToken = usePulse(core.app.state.device_push_token);
+	const uploadProgress = usePulse(core.app.upload_progress);
+	const account = usePulse(core.account.account);
+	const profile = usePulse(core.profile.profile);
+	const dToken = usePulse(core.app.device_push_token);
 	const [MenuOpen, SetMenuOpen] = useState(false);
 
 	const selectAvatar = async () => {
@@ -45,7 +45,7 @@ export const Account = () => {
 			},
 			data: fd,
 			onUploadProgress: v => {
-				core.app.state.upload_progress.set(v);
+				core.app.upload_progress.set(v);
 			},
 		});
 
@@ -80,11 +80,11 @@ export const Account = () => {
 			},
 			data: fd,
 			onUploadProgress: v => {
-				core.app.state.upload_progress.set(v);
+				core.app.upload_progress.set(v);
 			},
 		});
 
-		core.app.state.upload_progress.set(false);
+		core.app.upload_progress.set(false);
 
 		if (!res.data) {
 			AppAlert(false, 'Failed', res.message);
@@ -97,7 +97,7 @@ export const Account = () => {
 	const syncAccount = async () => {
 		const pRes = await request<{ profile: ProfileType }>('get', '/account');
 		if (pRes.data) {
-			core.profile.state.profile.set(pRes.data.profile);
+			core.profile.profile.set(pRes.data.profile);
 		}
 	};
 
@@ -108,7 +108,8 @@ export const Account = () => {
 			</BannerArea>
 			<LinearGradient
 				colors={['transparent', '#0000008a', 'black']}
-				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}></LinearGradient>
+				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
+			/>
 
 			<Block scroll style={{ zIndex: 6 }} paddingHorizontal={20} color="transparent">
 				<Spacer size={20} />
@@ -169,7 +170,7 @@ export const Account = () => {
 				<Text paddingBottom={10} color={profile.display_name ? colors.white : colors.white40}>
 					{profile.display_name || 'No display name'}
 				</Text>
-				<Spacer size={20} />
+				{/* <Spacer size={20} />
 				<TextButton
 					text="camera"
 					textColor={'#6b93ff'}
@@ -183,7 +184,7 @@ export const Account = () => {
 							} as never,
 						);
 					}}
-				/>
+				/> */}
 				<Spacer size={50} />
 				<TextButton
 					text="Logout"
@@ -192,11 +193,11 @@ export const Account = () => {
 					onPress={() => {
 						PushNotifications.abandonPermissions();
 						nav.reset({ index: 1, routes: [{ name: 'auth' as never }] });
-						core.account.state.account.reset();
-						core.account.collection.devices.reset();
-						core.profile.state.profile.reset();
-						core.app.state.device_push_token.reset();
-						core.app.state.notification_permission.reset();
+						core.account.account.reset();
+						core.collections.devices.reset();
+						core.profile.profile.reset();
+						core.app.device_push_token.reset();
+						core.app.notification_permission.reset();
 					}}
 				/>
 				<Spacer size={90} />

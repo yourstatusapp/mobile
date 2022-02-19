@@ -19,7 +19,7 @@ export const FriendRequests = () => {
 	const { params }: { params?: FriendRequestItemType[] } = useRoute();
 	const { colors } = useTheme();
 	const nav = useNavigation();
-	const acc = usePulse(core.account.state.account);
+	const acc = usePulse(core.account.account);
 	const [FList, SetFList] = useState([]);
 
 	const replyRequest = useCallback(
