@@ -194,7 +194,7 @@ export const Account = () => {
 						PushNotifications.abandonPermissions();
 						nav.reset({ index: 1, routes: [{ name: 'auth' as never }] });
 						core.account.account.reset();
-						core.collections.devices.reset();
+						core.lists.devices.reset();
 						core.profile.profile.reset();
 						core.app.device_push_token.reset();
 						core.app.notification_permission.reset();

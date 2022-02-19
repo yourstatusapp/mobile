@@ -45,7 +45,7 @@ export const Friends = React.memo(() => {
 		extrapolate: 'clamp',
 	});
 
-	const friends = usePulse(core.collections.friends.groups.friends);
+	const friends = usePulse(core.lists.friends.groups.friends);
 	const [FriendRList, SetFriendRList] = useState<any[]>([]);
 
 	const [Loading, SetLoading] = useState(false);
@@ -56,7 +56,7 @@ export const Friends = React.memo(() => {
 		if (!a.data) {
 		} else {
 			// @ts-ignore
-			core.collections.friends.collect(a.data.friends, 'friends');
+			core.lists.friends.collect(a.data.friends, 'friends');
 			// SetD(a.data.friends);
 			SetFriendRList(a.data.incoming_pending);
 		}
@@ -170,10 +170,10 @@ const FriendComp: React.FC<FriendItemType> = props => {
 
 	const openProfile = () => nav.navigate('profile' as never, { username: item.username } as never);
 	const tapStatus = async () => {
-		core.collections.friends.update(item.account_id, { status: { taps: item.status?.taps || 0 + 1, taped: true } }, { deep: true });
+		core.lists.friends.update(item.account_id, { status: { taps: item.status?.taps || 0 + 1, taped: true } }, { deep: true });
 		const res = await request('post', `/status/${item.status?.id}/tap`);
 		if (res.data) {
-			// core.collections.friends.update(item.account_id, { status: { taps: item.status?.taps || 0 + 1, taped: true } }, { deep: true });
+			// core.lists.friends.update(item.account_id, { status: { taps: item.status?.taps || 0 + 1, taped: true } }, { deep: true });
 		} else {
 		}
 	};

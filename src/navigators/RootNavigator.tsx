@@ -18,7 +18,7 @@ export const RootNavigator = () => {
 	const loggedIn = usePulse(core.account.logged_in);
 	const [PreloaderReady, setPreloaderReady] = useState(false);
 	const pushNotifyPerm = usePulse(core.app.notification_permission);
-	const device = usePulse(core.collections.devices.selectors.current);
+	const device = usePulse(core.lists.devices.selectors.current);
 
 	const onRegister = React.useCallback(
 		async (deviceToken: string) => {
@@ -29,7 +29,7 @@ export const RootNavigator = () => {
 				await request('patch', '/account/devices/' + device.id, {
 					data: { notifications: true, push_token: deviceToken },
 				});
-				core.collections.devices.update(device.id, { notifications: true });
+				core.lists.devices.update(device.id, { notifications: true });
 			}
 		},
 		[loggedIn],

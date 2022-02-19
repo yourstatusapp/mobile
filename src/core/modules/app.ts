@@ -7,6 +7,8 @@ export const AppStats = {
 	device_push_token: state<string>('').persist('device_pust_token'),
 
 	upload_progress: state<UploadProgressEventType | boolean>(false),
+
+	TAB_STATE: state<{ state: number; path_name: string }>({ state: 3, path_name: 'account' }).persist('tab_state'),
 };
 
-export const app = { ...AppStats };
+export const app = AppStats;

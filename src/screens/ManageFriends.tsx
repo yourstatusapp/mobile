@@ -25,12 +25,13 @@ export const ManageFriends = () => {
 		);
 	};
 
-	useEffect(() => getIncomingRequests, []);
+	useEffect(() => {
+		getIncomingRequests();
+	}, []);
 
 	return (
 		<Block safe>
 			<ModalHeader title="Manage Friends" />
-			<Spacer size={25} />
 			<Text>Edit Profile</Text>
 
 			<FlatList data={Requests} renderItem={renderItem} />

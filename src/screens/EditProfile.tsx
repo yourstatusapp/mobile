@@ -56,6 +56,10 @@ export const EditProfile = () => {
 	}, [Username, nav, profile, Location, Bio, UsernameValid]);
 
 	const usernameCheck = async (usernameInput: string) => {
+		SetUsernameValid(false);
+		SetUsernameErrMsg('');
+		SetUsernameLoading(true);
+
 		if (timeout) clearTimeout(timeout);
 
 		timeout = setTimeout(async () => {
@@ -69,8 +73,6 @@ export const EditProfile = () => {
 	};
 
 	useEffect(() => {
-		SetUsernameErrMsg('');
-		SetUsernameLoading(true);
 		usernameCheck(Username);
 	}, [Username]);
 
@@ -117,10 +119,18 @@ export const EditProfile = () => {
 						autoCorrect={false}
 						autoCompleteType="off"
 						style={{
-							borderBottomColor: UsernameValid ? '#62CB4E' : !!UsernameErrMsg ? '#FF6161' : colors.white40,
+							borderBottomColor: UsernameLoading
+								? colors.white40
+								: (profile.username || '') === Username
+								? colors.white40
+								: UsernameValid
+								? '#62CB4E'
+								: '#FF6161',
 						}}
 					/>
-					{UsernameLoading && <ActivityIndicator color={colors.white60} style={{ position: 'absolute', right: 20, paddingBottom: 20 }} />}
+					{(profile.username || '') != Username && UsernameLoading && (
+						<ActivityIndicator color={colors.white60} style={{ position: 'absolute', right: 20, paddingBottom: 20 }} />
+					)}
 				</Block>
 				{!!UsernameErrMsg && (
 					<Text color="#FF6161" size={12} marginTop={5} marginLeft={20}>

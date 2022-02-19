@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
-
 import { useNavigation } from '@react-navigation/native';
 import styled, { useTheme } from 'styled-components/native';
+import { usePulse } from '@pulsejs/react';
+import { Account, Friends, Profile, SearchFriend, FriendRequests } from '../screens';
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { BlurView } from '@react-native-community/blur';
+
 import { Avatar, Block, Icon, IconButton } from '@parts';
 import core from '@core';
-import { usePulse } from '@pulsejs/react';
-import { Account, Friends, Projects, Profile, SearchFriend, FriendRequests, Moments } from '../screens';
-import { BlurView } from '@react-native-community/blur';
-import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const TabsStackNavigator = createNativeStackNavigator();
 
 export const BottomTabNavigator: React.FC = () => {
-	console.log('re-rendering ComponentImWorkingOn!');
+	const current_tab_state = usePulse(core.app.TAB_STATE);
+
 	const o: NativeStackNavigationOptions = {
 		gestureEnabled: false,
 		animation: 'none',
 	};
-	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 50, width: '100%', zIndex: 10, opacity: 1 }]);
+	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', bottom: 0, height: 80, width: '100%', zIndex: 0, opacity: 1 }]);
 
 	return (
-		<Block color="black">
-			<TabsStackNavigator.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_left' }} initialRouteName="account">
+		<Block color="transparent">
+			<TabsStackNavigator.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_left' }} initialRouteName={current_tab_state.path_name}>
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
 				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
 				{/* <TabsStackNavigator.Screen name="moments" component={Moments} options={o} /> */}
@@ -32,7 +32,8 @@ export const BottomTabNavigator: React.FC = () => {
 				<TabsStackNavigator.Screen name="SearchFriend" component={SearchFriend} options={{ gestureEnabled: true }} />
 				<TabsStackNavigator.Screen name="FriendRequests" component={FriendRequests} options={{ gestureEnabled: true }} />
 			</TabsStackNavigator.Navigator>
-			{/* <BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} /> */}
+
+			<BlurView style={sh2} blurType="extraDark" blurAmount={5} blurRadius={10} />
 
 			<CustomNavBar />
 		</Block>
@@ -43,7 +44,8 @@ const CustomNavBar = () => {
 	const acc = usePulse(core.account.account);
 	const nav = useNavigation();
 	const { colors, theme } = useTheme();
-	const [Current, setCurrent] = useState(3);
+	const current_tab_state = usePulse(core.app.TAB_STATE);
+
 	const sh = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 80, width: '100%', zIndex: 10, opacity: 1 }]);
 
 	const tabs = [
@@ -52,14 +54,10 @@ const CustomNavBar = () => {
 	];
 
 	const navigate = (name: string, s: number) => {
-		setCurrent(s + 1);
+		core.app.TAB_STATE.set({ state: s + 1, path_name: name });
 		nav.navigate(name as never);
 		// nav.reset({ index: 0, routes: [{ name: name as never }] });
 	};
-
-	useEffect(() => {
-		console.log(Current);
-	}, [Current]);
 
 	useEffect(() => {
 		console.log('render');
@@ -73,7 +71,7 @@ const CustomNavBar = () => {
 						key={index}
 						icon={item.icon}
 						route={item.path}
-						active={index + 1 === Current}
+						active={index + 1 === current_tab_state.state}
 						onPress={() => navigate(item.path, index)}
 						name={item.name}
 					/>
@@ -81,11 +79,11 @@ const CustomNavBar = () => {
 
 				<IconTabBtnBody
 					onPress={() => {
-						setCurrent(3);
+						core.app.TAB_STATE.set(3);
 						// nav.navigate('account' as never);
 						nav.reset({ index: 1, routes: [{ name: 'account' as never }] });
 					}}>
-					<AvatarTabBtn active={Current === 3} account={acc} />
+					<AvatarTabBtn active={current_tab_state.state === 3} account={acc} />
 				</IconTabBtnBody>
 			</TabContainer>
 			<DimmingOverlay height={80} />
@@ -113,7 +111,7 @@ const DimmingOverlay = styled.View<{ height: number }>`
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: rgba(0, 0, 0, 1);
+	background-color: rgba(0, 0, 0, 0.65);
 	border-top-color: ${({ theme }) => theme.colors.white20}px;
 	border-top-width: 1px;
 	opacity: 1;

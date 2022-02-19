@@ -4,7 +4,6 @@ import { Animated, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View,
 
 export const Block: React.FC<BlockType> = ({
 	scroll,
-
 	children,
 	vCenter,
 	hCenter,

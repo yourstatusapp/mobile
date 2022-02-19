@@ -9,7 +9,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 export const SettingsNotifications: React.FC = () => {
 	const { colors } = useTheme();
 	const notificationsEnabled = usePulse(core.app.notification_permission);
-	const CURRENT_DEVICE = usePulse(core.collections.devices.selectors.current);
+	const CURRENT_DEVICE = usePulse(core.lists.devices.selectors.current);
 
 	const enableNotifications = async () => {
 		// configureNotifications();
@@ -25,7 +25,7 @@ export const SettingsNotifications: React.FC = () => {
 			data: { notifications, push_token: notifications ? core.app.device_push_token.value : '' },
 		});
 
-		core.collections.devices.update(CURRENT_DEVICE.id, { notifications });
+		core.lists.devices.update(CURRENT_DEVICE.id, { notifications });
 	};
 
 	return (

@@ -10,7 +10,7 @@ export const PushNotifications = () => {
 
 		core.app.device_push_token.set(deviceToken);
 
-		const current_device = core.collections.devices.selectors.current;
+		const current_device = core.lists.devices.selectors.current;
 
 		// Update the sessions token and notification on true
 		await request('patch', '/account/devices/' + current_device.id, {
@@ -20,7 +20,7 @@ export const PushNotifications = () => {
 			},
 		});
 
-		core.collections.devices.update(current_device.id, { notifications: true });
+		core.lists.devices.update(current_device.id, { notifications: true });
 	};
 
 	const onRegisterError = (error: { message: string; code: number; details: any }) => {

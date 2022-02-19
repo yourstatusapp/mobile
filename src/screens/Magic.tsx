@@ -37,8 +37,8 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 		if (res.data?.profile) core.profile.profile.set(res.data.profile);
 
 		if (res.data?.device) {
-			core.collections.devices.collect(res.data.device, 'mine');
-			core.collections.devices.selectors.current.select(res.data.device.id);
+			core.lists.devices.collect(res.data.device, 'mine');
+			core.lists.devices.selectors.current.select(res.data.device.id);
 		}
 
 		if (!new_account) {

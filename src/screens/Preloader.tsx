@@ -24,13 +24,13 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		if (!res.success) {
 			core.account.account.reset();
 			core.profile.profile.reset();
-			core.collections.devices.reset();
+			core.lists.devices.reset();
 		} else {
 			if (res.data?.account) core.account.account.set(res.data?.account);
 			if (res.data?.profile) core.profile.profile.set(res.data?.profile);
 			if (res.data?.device) {
-				core.collections.devices.collect(res.data.device, 'mine');
-				core.collections.devices.selectors.current.select(res.data.device.id);
+				core.lists.devices.collect(res.data.device, 'mine');
+				core.lists.devices.selectors.current.select(res.data.device.id);
 			}
 		}
 		setTimeout(() => loaded(), 10);
