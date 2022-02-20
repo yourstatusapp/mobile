@@ -1,6 +1,7 @@
 import React from 'react';
 import { BlockType } from '@core';
 import { Animated, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { useTheme } from 'styled-components/native';
 
 export const Block: React.FC<BlockType> = ({
 	scroll,
@@ -26,9 +27,10 @@ export const Block: React.FC<BlockType> = ({
 	paddingTop,
 	animate,
 }) => {
+	const { colors } = useTheme();
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
 		!!paddingHorizontal && { paddingHorizontal },
-		{ backgroundColor: color ?? 'hsl(0, 0%, 0%)' },
+		{ backgroundColor: color ?? colors.black },
 		{ flex: flex ?? 1, width: '100%', flexDirection: 'column' },
 		!!vCenter && { justifyContent: 'center' },
 		!!hCenter && { alignItems: 'center' },

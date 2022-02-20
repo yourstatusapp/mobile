@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
-import { ScrollView } from 'react-native-gesture-handler';
 
 let timeout: NodeJS.Timeout;
 

@@ -4,7 +4,7 @@ import { AppAlert, request } from '@core';
 import { FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useTheme } from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 interface MomentTypeItem {
 	id: string;

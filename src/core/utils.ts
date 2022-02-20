@@ -1,10 +1,9 @@
-import core, { AlertDataType, UploadProgressEventType } from '@core';
+import core, { UploadProgressEventType } from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
-import { navigationRef } from '../navigators/RootNavigator';
 
-// export const baseURL = state('https://api.yourstatus.app');
-export const baseURL = state('http://192.168.0.4:3020');
+export const baseURL = state('https://api.yourstatus.app');
+// export const baseURL = state('http://192.168.0.4:3020');
 // export const baseURL = state('http://localhost:3020');
 
 interface RequestOptions {
@@ -13,7 +12,7 @@ interface RequestOptions {
 	onUploadProgress?: (progressEvent: UploadProgressEventType) => void;
 }
 
-interface ReturnRequestType<T> {
+export interface ReturnRequestType<T> {
 	data?: T;
 	message: string;
 	success: boolean;
@@ -58,5 +57,5 @@ export const snow2time = (snow: string): Date => {
 };
 
 export const AppAlert = (success: boolean, title: string, desc?: string) => {
-	core.app.event.notification.emit({ success, title, desc });
+	core.events.notification.emit({ success, title, desc });
 };

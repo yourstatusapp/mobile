@@ -1,9 +1,11 @@
 import React from 'react';
-import { Block, Fill, Icon, ModalHeader, Spacer, Text } from '@parts';
+import { Block, Fill, Icon, ModalHeader, Spacer, Text, TextButton } from '@parts';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'styled-components/native';
 import { SettingsNotifications } from './Settings/index';
 import { useNavigation } from '@react-navigation/native';
+import core from '@core';
+import { usePulse } from '@pulsejs/react';
 
 const SettingsStack = createNativeStackNavigator();
 
@@ -13,6 +15,12 @@ const settingSections = [
 ];
 
 const MainScreen = () => {
+	const theme_name = usePulse(core.ui.current_theme);
+
+	const toggleTheme = () => {
+		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
+	};
+
 	const nav = useNavigation();
 	return (
 		<Block paddingHorizontal={20}>
@@ -20,6 +28,8 @@ const MainScreen = () => {
 			{settingSections.map((item, index) => (
 				<SettingItem key={index} text={item.text} onPress={() => nav.navigate(item.route as never)} />
 			))}
+			{/* <Text>{theme_name}</Text> */}
+			{/* <TextButton onPress={toggleTheme}>toggle theme</TextButton> */}
 		</Block>
 	);
 };

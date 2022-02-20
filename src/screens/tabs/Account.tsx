@@ -1,16 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
 import { Avatar, Block, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
 import { useNavigation } from '@react-navigation/native';
-import core, { AppAlert, ProfileType, request } from '@core';
+import core from '@core';
 import { usePulse } from '@pulsejs/react';
-import { MenuView } from '@react-native-menu/menu';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import PushNotifications from '@react-native-community/push-notification-ios';
 
-import { Platform } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 const BANNER_HEIGHT = 250;
@@ -18,88 +15,8 @@ const BANNER_HEIGHT = 250;
 export const Account = () => {
 	const nav = useNavigation();
 	const { colors } = useTheme();
-	const uploadProgress = usePulse(core.app.upload_progress);
-	const account = usePulse(core.account.account);
 	const profile = usePulse(core.profile.profile);
-	const dToken = usePulse(core.app.device_push_token);
 	const [MenuOpen, SetMenuOpen] = useState(false);
-
-	const selectAvatar = async () => {
-		const result = await launchImageLibrary({ mediaType: 'photo' });
-		if (result.didCancel) return;
-		if (!result?.assets?.length) return;
-
-		const ImageFile = result?.assets[0];
-		if (!ImageFile.uri) return;
-
-		const fd = new FormData();
-		fd.append('file', {
-			name: ImageFile.uri.split('/').pop(),
-			type: ImageFile.type,
-			uri: Platform.OS === 'android' ? ImageFile.uri : ImageFile.uri.replace('file://', ''),
-		});
-
-		const res = await request('post', '/profile/avatar', {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-			data: fd,
-			onUploadProgress: v => {
-				core.app.upload_progress.set(v);
-			},
-		});
-
-		// core.app.state.upload_progress.set(false);
-
-		if (!res.data) {
-			AppAlert(false, 'Failed', res.message);
-		} else {
-			AppAlert(true, 'Success', 'avatar has been uploaded');
-			await syncAccount();
-		}
-	};
-
-	const selectBanner = async () => {
-		const result = await launchImageLibrary({ mediaType: 'photo' });
-		if (result.didCancel) return;
-		if (!result?.assets?.length) return;
-
-		const ImageFile = result?.assets[0];
-		if (!ImageFile.uri) return;
-
-		const fd = new FormData();
-		fd.append('file', {
-			name: ImageFile.uri.split('/').pop(),
-			type: ImageFile.type,
-			uri: Platform.OS === 'android' ? ImageFile.uri : ImageFile.uri.replace('file://', ''),
-		});
-
-		const res = await request('post', '/profile/banner', {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-			data: fd,
-			onUploadProgress: v => {
-				core.app.upload_progress.set(v);
-			},
-		});
-
-		core.app.upload_progress.set(false);
-
-		if (!res.data) {
-			AppAlert(false, 'Failed', res.message);
-		} else {
-			AppAlert(true, 'Success', 'banner has been uploaded');
-			await syncAccount();
-		}
-	};
-
-	const syncAccount = async () => {
-		const pRes = await request<{ profile: ProfileType }>('get', '/account');
-		if (pRes.data) {
-			core.profile.profile.set(pRes.data.profile);
-		}
-	};
 
 	return (
 		<Block color="black" style={{ zIndex: 1 }}>
@@ -149,14 +66,24 @@ export const Account = () => {
 								<MenuOption
 									onSelect={() => {
 										SetMenuOpen(false);
-										selectAvatar();
+										nav.navigate(
+											'camera' as never,
+											{
+												uploadMethod: 'avatar',
+											} as never,
+										);
 									}}
 									text="Upload avatar"
 								/>
 								<MenuOption
 									onSelect={() => {
 										SetMenuOpen(false);
-										selectBanner();
+										nav.navigate(
+											'camera' as never,
+											{
+												uploadMethod: 'banner',
+											} as never,
+										);
 									}}
 									text="Upload banner"
 								/>
@@ -176,7 +103,6 @@ export const Account = () => {
 					textColor={'#6b93ff'}
 					style={{ padding: 4 }}
 					onPress={() => {
-						// nav.reset({ index: 1, routes: [{ name: 'camera' as never }] });
 						nav.navigate(
 							'camera' as never,
 							{

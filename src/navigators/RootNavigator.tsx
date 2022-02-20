@@ -71,7 +71,7 @@ export const RootNavigator = () => {
 				<RootStack.Screen name="auth" component={Auth} />
 				<RootStack.Screen name="magic" component={Magic} />
 				<RootStack.Screen name="new_moment" component={NewMoment} options={{ animation: 'fade' }} />
-				<RootStack.Screen name="camera" component={Camera} options={{ animation: 'fade' }} />
+				<RootStack.Screen name="camera" component={Camera} options={{ animation: 'fade', gestureEnabled: false }} />
 				<RootStack.Screen name="create_status" component={NewStatus} options={{ gestureEnabled: true }} />
 				<RootStack.Screen
 					name="newproject"

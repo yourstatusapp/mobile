@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextStyle, Text } from 'react-native';
 import { TextType } from '@core';
+import { useTheme } from 'styled-components/native';
 
 export const TextCustom: React.FC<TextType> = ({
 	style,
@@ -21,9 +22,10 @@ export const TextCustom: React.FC<TextType> = ({
 	paddingTop,
 	...props
 }) => {
+	const { colors } = useTheme();
 	const StyleH = StyleSheet.flatten<TextStyle>([
 		style,
-		{ color: color ?? 'white' },
+		{ color: color ?? colors.white },
 		!!bold && { fontWeight: 'bold' },
 		!!italic && { fontStyle: 'italic' },
 		!!weight && { fontWeight: weight },

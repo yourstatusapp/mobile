@@ -25,6 +25,8 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>ys_logo_dev</string>
 			<key>CFBundleURLName</key>
 			<string>yourstatus</string>
 			<key>CFBundleURLSchemes</key>
@@ -51,7 +53,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs access to your Camera.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>$(PRODUCT_NAME) needs access to your location</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>$(PRODUCT_NAME) needs access to your photo library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>we like to have your permissions :)</string>
 	<key>UIBackgroundModes</key>

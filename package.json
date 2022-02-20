@@ -26,6 +26,7 @@
 		"axios": "^0.24.0",
 		"expo": ">=44.0.0-0 <45.0.0",
 		"expo-linear-gradient": "^11.0.3",
+		"expo-media-library": "^14.0.1",
 		"react": "17.0.2",
 		"react-native": "0.67.2",
 		"react-native-device-info": "8.4.8",
@@ -77,5 +78,10 @@
 			"json",
 			"node"
 		]
+	},
+	"expo": {
+    "autolinking": {
+      "exclude": ["expo-font", "expo-keep-awake", "expo-constants", "expo-application"]
+    }
 	}
 }
