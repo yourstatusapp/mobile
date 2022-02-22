@@ -7,14 +7,15 @@ import { Camera as CameraComp, PhotoFile, useCameraDevices, CameraPosition } fro
 import styled, { useTheme } from 'styled-components/native';
 import * as MediaLibrary from 'expo-media-library';
 
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import LinearGradient from 'react-native-linear-gradient';
+import { AppAlert } from '@core';
 
 const CAMERA_BORDER_RADIUS = 23;
 type CameraProps = {
 	Camera: {
-		uploadMethod: 'avatar' | 'banner' | 'collection';
+		uploadMethod: 'avatar' | 'banner' | 'collection' | 'storie';
 	};
 };
 
@@ -89,6 +90,14 @@ export const Camera = () => {
 	};
 
 	const getCameraRollAssets = async () => {
+		const perm = await MediaLibrary.getPermissionsAsync();
+
+		if (!perm.granted) {
+			AppAlert(false, 'failed to get access to photos');
+			await MediaLibrary.requestPermissionsAsync();
+			// return;
+		}
+
 		let asset = await MediaLibrary.getAssetsAsync({ mediaType: 'photo' });
 		let list: string[] = [];
 
@@ -108,7 +117,6 @@ export const Camera = () => {
 		getCameraRollAssets();
 	}, []);
 
-	const PADDING_WIDTH = 5;
 	const imageWidth = Dimensions.get('screen').width / 3 - 3.5;
 	const imageHeight = (1920 / 1080) * imageWidth;
 
@@ -143,7 +151,7 @@ export const Camera = () => {
 						<TouchableOpacity activeOpacity={0.6} onPress={() => navigateToPreview(item)}>
 							<FastImage
 								key={index}
-								source={{ uri: item || '', cache: 'cacheOnly' }}
+								source={{ uri: item || '' }}
 								style={{
 									height: imageHeight,
 									width: imageWidth,

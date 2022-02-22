@@ -12,7 +12,7 @@ interface TextButtonProps {
 }
 
 export const TextButton: React.FC<TextButtonProps> = ({ text, onPress, style, disabled, textColor, textSize, children }) => {
-	const sh = StyleSheet.flatten<ViewStyle>([style, { alignSelf: 'flex-start' }]);
+	const sh = StyleSheet.flatten<ViewStyle>([{ alignSelf: 'flex-start' }, style]);
 
 	return (
 		<TouchableOpacity style={sh} onPress={onPress} disabled={disabled}>

@@ -1,6 +1,6 @@
 import { useTheme } from 'styled-components/native';
 import React, { useState } from 'react';
-import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text } from '@parts';
+import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text, TextButton } from '@parts';
 import core, { AppAlert, request } from '@core';
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -74,12 +74,7 @@ export const Auth: React.FC = () => {
 
 	return (
 		<Block>
-			<LinearGradient
-				pointerEvents="none"
-				// colors={['rgba(56,89,253,0.1) 100%)', 'transparent']}
-				colors={['black', 'transparent']}
-				style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 350 }}
-			/>
+			<LinearGradient pointerEvents="none" colors={['black', 'transparent']} style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 350 }} />
 			<KeyboardAvoidingView style={{ flex: 1, justifyContent: 'center' }} behavior="padding" keyboardVerticalOffset={-(Dimensions.get('window').height / 4)}>
 				<Block flex={0} style={{ zIndex: 20 }} paddingHorizontal={20}>
 					<Fill />

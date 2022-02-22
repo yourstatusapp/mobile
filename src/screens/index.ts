@@ -14,3 +14,5 @@ export { FriendRequests } from './FriendRequests';
 export { Camera } from './Camera';
 export { NewMoment } from './NewMoment';
 export { Moments } from './Moments';
+export { StorieViewer } from './StorieViewer';
+export { VerifyAccount } from './VerifyAccount';

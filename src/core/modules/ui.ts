@@ -3,7 +3,7 @@ import { InternalThemes } from '../../utils/theme';
 import { DefaultTheme } from 'styled-components/native';
 
 export const UiState = {
-	current_theme: state<'light' | 'dark'>('light').persist('theme_name'),
+	current_theme: state<'light' | 'dark'>('dark').persist('theme_name'),
 	use_system_theme: state<boolean>(false),
 };
 

@@ -28,10 +28,22 @@
 			<key>CFBundleURLIconFile</key>
 			<string>ys_logo_dev</string>
 			<key>CFBundleURLName</key>
-			<string>yourstatus</string>
+			<string>mobile.yourstatus.app</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>yourstatus</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>ys_logo_dev</string>
+			<key>CFBundleURLName</key>
+			<string>dev.mobile.yourstatus.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>yourstatusdev</string>
 			</array>
 		</dict>
 	</array>
@@ -60,6 +72,7 @@
 	<string>we like to have your permissions :)</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

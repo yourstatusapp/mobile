@@ -55,6 +55,7 @@ export interface BlockType extends PaddingType, MarginType {
 	row?: boolean;
 	opacity?: number;
 	flex?: 1 | 0;
+	activeOpacity?: number;
 }
 
 export interface TextType extends PaddingType, MarginType {
@@ -105,4 +106,15 @@ export interface FriendItemType {
 		taps: number;
 		taped?: boolean;
 	};
+}
+
+export interface StorieType {
+	account_id: string;
+	username: string;
+	avatar: string;
+	stories: {
+		id: string;
+		picture: string;
+		account_id: string;
+	}[];
 }

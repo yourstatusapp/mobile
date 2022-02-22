@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 /* eslint-disable no-undef */
-import { instance, usePulse } from '@pulsejs/react';
+import { instance, useEvent, usePulse } from '@pulsejs/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import styled, { ThemeProvider } from 'styled-components/native';
-import core from '@core';
+import core, { AppAlert, StorieType } from '@core';
 import { RootNavigator } from './navigators/RootNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import { CustomAlert } from './parts/components/Alert';
 import { MenuProvider } from 'react-native-popup-menu';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { StorieViewer } from './screens';
 
 instance.setStorage({
 	async: true,
@@ -33,24 +34,52 @@ globalThis.core = core;
 
 export const App: React.FC = () => {
 	const theme = usePulse(core.ui.ThemeObject);
+
+	const [L, SetL] = useState<StorieType>();
+	const [ShowStorie, SetShowStorie] = useState<boolean>(false);
+	const [ClikedAtIndex, SetClikedAtIndex] = useState<number>(0);
+
+	const onStorieViewHandler = React.useCallback(
+		v => {
+			if (v.stories) {
+				SetL(v.stories);
+				SetClikedAtIndex(v.clicked_at_index);
+				SetShowStorie(true);
+			} else {
+				SetL(false);
+			}
+		},
+		[ShowStorie, L],
+	);
+
 	useEffect(() => {
+		core.events.storie_viewer.on(v => {
+			onStorieViewHandler(v);
+		});
 		PushNotificationIOS.setApplicationIconBadgeNumber(0);
 	}, []);
 
 	return (
-		<>
+		<ThemeProvider theme={theme}>
 			<CustomAlert />
+			{ShowStorie && (
+				<StorieViewer
+					list={L}
+					onClose={() => {
+						SetShowStorie(false);
+					}}
+					clickedAtIndex={ClikedAtIndex}
+				/>
+			)}
 			<NavigationContainer>
 				<AppBody>
 					<MenuProvider>
 						<StatusBar barStyle={'light-content'} />
-						<ThemeProvider theme={theme}>
-							<RootNavigator />
-						</ThemeProvider>
+						<RootNavigator />
 					</MenuProvider>
 				</AppBody>
 			</NavigationContainer>
-		</>
+		</ThemeProvider>
 	);
 };
 

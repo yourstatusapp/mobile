@@ -34,24 +34,13 @@ export const useLinking = () => {
 	const { processing, url } = useInitialURL();
 	const nav = useNavigation();
 
-	// const verifyAccount = async (code: string) => {
-	// 	const a = await request('post', '/account/verify', { data: { code } });
-	// };
-
 	React.useEffect(() => {
-		// if (url) {
-		// 	Alert.alert(url);
-		// }
-
 		if (url?.includes('/verify')) {
-			// @ts-ignore
-			nav.navigate('verify', { code: url.split('/verify?code=')[1] });
+			nav.navigate('verify_account' as never, { code: url.split('/verify?code=')[1] } as never);
 		}
 
 		if (url?.includes('/magic')) {
-			// @ts-ignore
-			nav.navigate('magic', { code: url.split('magic?code=')[1]?.split('&')[0], new_account: url.split('magic?code=')[1]?.split('&')[1] });
+			nav.navigate('magic' as never, { code: url.split('magic?code=')[1]?.split('&')[0], new_account: url.split('magic?code=')[1]?.split('&')[1] } as never);
 		}
-		// console.log(url, processing);
 	}, [url, processing, nav]);
 };
