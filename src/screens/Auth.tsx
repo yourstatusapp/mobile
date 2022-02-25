@@ -1,12 +1,13 @@
 import { useTheme } from 'styled-components/native';
 import React, { useState } from 'react';
-import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text, TextButton } from '@parts';
+import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text } from '@parts';
 import core, { AppAlert, request } from '@core';
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
+import { useClipboard } from '@react-native-clipboard/clipboard';
 
 let timeout: NodeJS.Timeout;
 
@@ -63,6 +64,21 @@ export const Auth: React.FC = () => {
 				if (!res.data?.valid) SetUsernameErrMsg(res.message);
 			}
 		}, 1000);
+	};
+
+	const [ClipboardData, setString] = useClipboard();
+
+	const magicLinkLogin = async () => {
+		const a = ClipboardData;
+
+		if (!a) {
+			AppAlert(false, 'no link has been detected');
+			return;
+		}
+
+		if (a?.includes('magic?code=')) {
+			nav.navigate('magic' as never, { code: a?.split('code=')[1]?.split('&')[0], new_account: !!a?.includes('new_account') } as never);
+		}
 	};
 
 	const usernameCheck = (v: string) => {
@@ -160,6 +176,7 @@ export const Auth: React.FC = () => {
 						</TouchableOpacity>
 					)}
 					<Spacer size={20} />
+					{ShowBuildNumber && <Button text="magic link pase" onPress={magicLinkLogin} />}
 					{ShowBuildNumber && (
 						<Text center color={colors.white40} weight="600">
 							Build: {DeviceInfo?.getBuildNumber()}

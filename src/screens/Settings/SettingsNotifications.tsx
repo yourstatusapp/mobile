@@ -4,7 +4,7 @@ import { Block, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { Switch } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { requestPermissions } from '../../utils/PushNotification';
 
 export const SettingsNotifications: React.FC = () => {
 	const { colors } = useTheme();
@@ -45,9 +45,7 @@ export const SettingsNotifications: React.FC = () => {
 					</TextButton>
 				</Block>
 			)}
-			{notificationsEnabled === 0 && (
-				<TextButton onPress={() => PushNotificationIOS.requestPermissions({ alert: true, badge: true, sound: true })}>Allow Notifications</TextButton>
-			)}
+			{notificationsEnabled === 0 && <TextButton onPress={() => requestPermissions()}>Allow Notifications</TextButton>}
 
 			<Block flex={0} row paddingTop={40}>
 				<Block>

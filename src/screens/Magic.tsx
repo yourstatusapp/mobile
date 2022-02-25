@@ -49,7 +49,7 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 	};
 
 	useEffect(() => {
-		magicAuth(route?.params?.code, route?.params?.new_account);
+		magicAuth(route?.params?.code?.split('&')[0], route?.params?.new_account);
 	}, []);
 
 	return (

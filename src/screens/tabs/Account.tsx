@@ -6,9 +6,9 @@ import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import LinearGradient from 'react-native-linear-gradient';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
-import PushNotifications from '@react-native-community/push-notification-ios';
 
 import FastImage from 'react-native-fast-image';
+import { removeNotificationPermissions } from '../../utils/PushNotification';
 
 const BANNER_HEIGHT = 250;
 
@@ -117,7 +117,7 @@ export const Account = () => {
 					textColor={'#ff6b6b'}
 					style={{ padding: 4 }}
 					onPress={() => {
-						PushNotifications.abandonPermissions();
+						removeNotificationPermissions();
 						nav.reset({ index: 1, routes: [{ name: 'auth' as never }] });
 						core.account.account.reset();
 						core.lists.devices.reset();

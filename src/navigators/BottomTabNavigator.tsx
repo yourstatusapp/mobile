@@ -5,7 +5,7 @@ import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import { Account, Friends, Profile, SearchFriend, FriendRequests } from '../screens';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { BlurView } from '@react-native-community/blur';
+import { BlurView } from 'expo-blur';
 
 import { Avatar, Block, Icon, IconButton } from '@parts';
 import core from '@core';
@@ -33,8 +33,8 @@ export const BottomTabNavigator: React.FC = () => {
 				<TabsStackNavigator.Screen name="FriendRequests" component={FriendRequests} options={{ gestureEnabled: true }} />
 			</TabsStackNavigator.Navigator>
 
-			<BlurView style={sh2} blurType="extraDark" blurAmount={5} blurRadius={10} />
-
+			{/* <BlurView style={sh2} blurType="extraDark" blurAmount={5} blurRadius={10} /> */}
+			<BlurView style={sh2} intensity={80} tint="dark" />
 			<CustomNavBar />
 		</Block>
 	);
@@ -79,14 +79,15 @@ const CustomNavBar = () => {
 
 				<IconTabBtnBody
 					onPress={() => {
-						core.app.TAB_STATE.set(3);
-						// nav.navigate('account' as never);
+						core.app.TAB_STATE.set({ path_name: 'account', state: 3 });
 						nav.reset({ index: 1, routes: [{ name: 'account' as never }] });
 					}}>
 					<AvatarTabBtn active={current_tab_state.state === 3} account={acc} />
 				</IconTabBtnBody>
 			</TabContainer>
+
 			<DimmingOverlay height={80} />
+
 			<FloatingPostBtn
 				name="plus"
 				size={30}

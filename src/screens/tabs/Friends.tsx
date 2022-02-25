@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import core, { AppAlert, request, StatusType } from '@core';
-import { Avatar, Block, Fill, Icon, IconButton, Status, Text } from '@parts';
+import { Avatar, Block, Fill, IconButton, Status, Text } from '@parts';
 import { Animated, ListRenderItemInfo, StyleSheet, TouchableOpacity, ViewStyle, ScrollView } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import { BlurView } from '@react-native-community/blur';
+import { BlurView } from 'expo-blur';
 import { hasNotch } from 'react-native-device-info';
 import { usePulse } from '@pulsejs/react';
 import FastImage from 'react-native-fast-image';
@@ -161,7 +161,7 @@ export const Friends = React.memo(() => {
 							)}
 							{!!myStories[0]?.stories?.length && (
 								<Block row marginLeft={15} marginTop={15}>
-									<ScrollView horizontal={true} scrollEnabled={true}>
+									<ScrollView horizontal={true} scrollEnabled={true} showsHorizontalScrollIndicator={false}>
 										{myStories[0].stories.map((item2, index2) => (
 											<Block style={{ position: 'relative' }}>
 												<TouchableOpacity
@@ -217,7 +217,8 @@ export const Friends = React.memo(() => {
 						zIndex: 10,
 						position: 'absolute',
 					}}>
-					<BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} />
+					{/* <BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} /> */}
+					<BlurView style={sh2} tint="dark" intensity={340} />
 					<Block
 						animate
 						row

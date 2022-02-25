@@ -8,7 +8,7 @@ import styled, { ThemeProvider } from 'styled-components/native';
 import core, { AppAlert, StorieType } from '@core';
 import { RootNavigator } from './navigators/RootNavigator';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { CustomAlert } from './parts/components/Alert';
 import { MenuProvider } from 'react-native-popup-menu';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
@@ -56,7 +56,9 @@ export const App: React.FC = () => {
 		core.events.storie_viewer.on(v => {
 			onStorieViewHandler(v);
 		});
-		PushNotificationIOS.setApplicationIconBadgeNumber(0);
+		if (Platform.OS === 'ios') {
+			PushNotificationIOS.setApplicationIconBadgeNumber(0);
+		}
 	}, []);
 
 	return (
