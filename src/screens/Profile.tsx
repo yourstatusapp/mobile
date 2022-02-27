@@ -20,14 +20,14 @@ export const Profile = () => {
 	// });
 
 	const IMAGE_HEIGHT = scrolling.interpolate({
-		inputRange: [0, 300],
-		outputRange: [1, 2],
+		inputRange: [-150, 0],
+		outputRange: [1.4, 1],
 		extrapolate: 'clamp',
 	});
 
 	const IMAGE_HEIGHT2 = scrolling.interpolate({
-		inputRange: [-50, 0],
-		outputRange: [0, 0],
+		inputRange: [-150, 0],
+		outputRange: [1.4, 1],
 		extrapolate: 'clamp',
 	});
 
@@ -54,14 +54,14 @@ export const Profile = () => {
 
 	if (!ProfileData) {
 		return (
-			<Block safe>
+			<Block safe color="black">
 				<Text>{Loaded ? 'Failed to load profile' : 'Loading profile data'}</Text>
 			</Block>
 		);
 	} else {
 		return (
 			<Block color="black">
-				<BannerArea style={{ transform: [{ scale: IMAGE_HEIGHT }, { translateY: IMAGE_HEIGHT2 }] }}>
+				<BannerArea style={{ transform: [{ scale: IMAGE_HEIGHT }] }}>
 					{!ProfileData?.banner ? (
 						<BannerPlaceholder />
 					) : (
@@ -122,7 +122,6 @@ export const Profile = () => {
 
 const Banner = styled(FastImage)`
 	width: 100%;
-
 	height: 100%;
 `;
 

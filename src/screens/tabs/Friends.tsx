@@ -122,7 +122,7 @@ export const Friends = React.memo(() => {
 
 	return (
 		<>
-			<Block>
+			<Block color={colors.black}>
 				<Animated.ScrollView
 					scrollEnabled={true}
 					style={{ flex: 1 }}

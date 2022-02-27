@@ -31,8 +31,9 @@ export const Block: React.FC<BlockType> = ({
 	const { colors } = useTheme();
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
 		!!paddingHorizontal && { paddingHorizontal },
-		{ backgroundColor: color ?? colors.black },
+		// { backgroundColor: color ?? colors.black },
 		{ flex: flex ?? 1, width: '100%', flexDirection: 'column' },
+		!!color && { backgroundColor: color },
 		!!vCenter && { justifyContent: 'center' },
 		!!hCenter && { alignItems: 'center' },
 		!!row && { flexDirection: 'row' },

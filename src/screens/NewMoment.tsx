@@ -1,7 +1,8 @@
 import core, { AppAlert, ProfileType, request, ReturnRequestType } from '@core';
 import { Block, IconButton, Text } from '@parts';
+import { usePulse } from '@pulsejs/react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';

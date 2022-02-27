@@ -18,11 +18,12 @@ export const BottomTabNavigator: React.FC = () => {
 	const o: NativeStackNavigationOptions = {
 		gestureEnabled: false,
 		animation: 'none',
+		contentStyle: { backgroundColor: 'black' },
 	};
 	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', bottom: 0, height: 80, width: '100%', zIndex: 0, opacity: 1 }]);
 
 	return (
-		<Block color="transparent">
+		<Block color="black">
 			<TabsStackNavigator.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_left' }} initialRouteName={current_tab_state.path_name}>
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
 				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />

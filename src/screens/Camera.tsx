@@ -1,7 +1,7 @@
-import { Block, IconButton } from '@parts';
+import { Block, IconButton, Text } from '@parts';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Dimensions, FlatList, GestureResponderEvent, StyleSheet, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Camera as CameraComp, PhotoFile, useCameraDevices, CameraPosition } from 'react-native-vision-camera';
 import styled, { useTheme } from 'styled-components/native';
@@ -10,7 +10,8 @@ import * as MediaLibrary from 'expo-media-library';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import LinearGradient from 'react-native-linear-gradient';
-import { AppAlert } from '@core';
+import core, { AppAlert, TimeFormatter } from '@core';
+import { usePulse } from '@pulsejs/react';
 
 const CAMERA_BORDER_RADIUS = 23;
 type CameraProps = {
@@ -18,6 +19,9 @@ type CameraProps = {
 		uploadMethod: 'avatar' | 'banner' | 'collection' | 'storie';
 	};
 };
+interface AlbumAssetType {
+	path: string;
+}
 
 export const Camera = () => {
 	const { colors } = useTheme();
@@ -30,10 +34,23 @@ export const Camera = () => {
 	const CameraStyle = StyleSheet.flatten([{ height: '100%', width: '100%', flex: 1, borderRadius: CAMERA_BORDER_RADIUS }]);
 
 	const [PhotoData, SetPhotoData] = useState<PhotoFile | false>(false);
+	const [CameraZoom, SetCameraZoom] = useState('');
 	const [Flash, SetFlash] = useState<boolean>(false);
-	const [AlbumAssets, SetAlbumAssets] = useState<string[]>([]);
+	const [AlbumAssets, SetAlbumAssets] = useState<AlbumAssetType[]>([]);
 	const [CamerDevice, SetCameraDevice] = useState<CameraPosition>('back');
 	const [PhotosLibraryOpen, SetPhotosLibraryOpen] = useState(false);
+
+	const opacityDot = useSharedValue(0);
+	const opacityDotY = useSharedValue(0);
+	const opacityDotX = useSharedValue(0);
+	const PressFocus = useAnimatedStyle(() => {
+		return {
+			opacity: opacityDot.value,
+			left: opacityDotX.value,
+			top: opacityDotY.value - 50,
+		};
+	});
+
 	const offset = useSharedValue(0);
 	const height = useSharedValue(0);
 
@@ -58,6 +75,18 @@ export const Camera = () => {
 			SetPhotosLibraryOpen(true);
 		}
 	}, [PhotosLibraryOpen]);
+
+	const focusCamera = async (e: GestureResponderEvent) => {
+		if (!camera.current) return;
+		opacityDotY.value = withTiming(e.nativeEvent.pageY);
+		opacityDotX.value = withTiming(e.nativeEvent.pageX);
+		opacityDot.value = withTiming(0.4, { duration: 400 });
+		setTimeout(() => {
+			opacityDot.value = withTiming(0, { duration: 250 });
+		}, 400);
+
+		await camera.current.focus({ x: e.nativeEvent.pageX, y: e.nativeEvent.pageY });
+	};
 
 	const takePhoto = async () => {
 		if (!camera.current) return;
@@ -99,14 +128,14 @@ export const Camera = () => {
 		}
 
 		let asset = await MediaLibrary.getAssetsAsync({ mediaType: 'photo' });
-		let list: string[] = [];
+		let list: AlbumAssetType[] = [];
 
 		// asset.assets = asset.assets.slice(0, 5);
 
 		for await (let item of asset.assets) {
 			const a = await MediaLibrary.getAssetInfoAsync(item.id);
 			if (a?.localUri) {
-				list.push(a.localUri);
+				list.push({ path: a?.localUri || '' });
 			}
 		}
 
@@ -119,6 +148,14 @@ export const Camera = () => {
 
 	const imageWidth = Dimensions.get('screen').width / 3 - 3.5;
 	const imageHeight = (1920 / 1080) * imageWidth;
+
+	const t = usePulse(core.app.ONBOARDING_TIPS);
+
+	useEffect(() => {
+		if (t.REALTIME_STORIES) {
+			nav.navigate('explanation' as never, { type: 'REALTIME_STORIES' } as never);
+		}
+	}, []);
 
 	return (
 		<Block>
@@ -140,18 +177,20 @@ export const Camera = () => {
 				<LinearGradient
 					pointerEvents="none"
 					colors={['black', 'transparent']}
-					style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 150 }}
+					style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 70 }}
 				/>
 				<FlatList
 					numColumns={3}
 					data={AlbumAssets}
 					horizontal={false}
 					style={{ borderRadius: CAMERA_BORDER_RADIUS }}
+					contentContainerStyle={{ paddingTop: 70 }}
+					showsVerticalScrollIndicator={false}
 					renderItem={({ item, index }) => (
-						<TouchableOpacity activeOpacity={0.6} onPress={() => navigateToPreview(item)}>
+						<TouchableOpacity activeOpacity={0.6} onPress={() => navigateToPreview(item.path)}>
 							<FastImage
 								key={index}
-								source={{ uri: item || '' }}
+								source={{ uri: item?.path || '' }}
 								style={{
 									height: imageHeight,
 									width: imageWidth,
@@ -190,6 +229,7 @@ export const Camera = () => {
 					color="white"
 					style={{ right: 15, top: 10, position: 'absolute', zIndex: 20 }}
 					onPress={() => SetFlash(!Flash)}
+					disabled={CamerDevice === 'front'}
 				/>
 
 				{/* <LinearGradient
@@ -201,16 +241,19 @@ export const Camera = () => {
 
 				<Block style={{ position: 'relative' }}>
 					{device != null && (
-						<CameraComp
-							ref={camera}
-							style={CameraStyle}
-							device={devices[CamerDevice]}
-							isActive={true}
-							photo={true}
-							focusable={true}
-							torch={Flash ? 'on' : 'off'}
-							enableZoomGesture
-						/>
+						<TouchableOpacity onPress={e => focusCamera(e)} style={{ flex: 1, position: 'relative' }} activeOpacity={1}>
+							<CameraComp
+								ref={camera}
+								style={CameraStyle}
+								device={devices[CamerDevice]}
+								isActive={true}
+								photo={true}
+								focusable={true}
+								torch={Flash ? 'on' : 'off'}
+								enableZoomGesture
+							/>
+							<Animated.View style={[{ borderRadius: 50, height: 40, width: 40, backgroundColor: 'white', zIndex: 40, position: 'absolute' }, PressFocus]} />
+						</TouchableOpacity>
 					)}
 					{/* <AlbumPreviewPictures style={PhotosLibraryPreviewstyle}>
 						<LinearGradient
@@ -240,15 +283,20 @@ export const Camera = () => {
 				</Block>
 
 				<Block flex={0} style={{ height: 75, justifyContent: 'space-between' }} hCenter row paddingHorizontal={20}>
-					<IconButton name="camera-flip" size={30} color="white" onPress={() => SetCameraDevice(CamerDevice === 'back' ? 'front' : 'back')} />
+					<IconButton
+						name={CamerDevice === 'back' ? 'camera-flip2' : 'camera-flip'}
+						size={30}
+						color="white"
+						onPress={() => SetCameraDevice(CamerDevice === 'back' ? 'front' : 'back')}
+					/>
 
 					<CameraBtn flex={0} press onPress={() => takePhoto()} />
 
 					<TouchableOpacity
 						onPress={() => toggleOpenPhotos()}
 						activeOpacity={0.6}
-						style={{ borderRadius: 7, backgroundColor: colors.white20, height: 40, width: 40 }}>
-						{!!AlbumAssets.length && <FastImage source={{ uri: AlbumAssets[0] }} style={{ height: 40, width: 40, borderRadius: 7 }} />}
+						style={{ borderRadius: 7, backgroundColor: colors.white20, height: 50, width: 50 }}>
+						{!!AlbumAssets.length && <FastImage source={{ uri: AlbumAssets[0].path }} style={{ height: 50, width: 50, borderRadius: 7 }} />}
 					</TouchableOpacity>
 				</Block>
 			</Block>

@@ -26,7 +26,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLIconFile</key>
-			<string>ys_logo_dev</string>
+			<string></string>
 			<key>CFBundleURLName</key>
 			<string>mobile.yourstatus.app</string>
 			<key>CFBundleURLSchemes</key>
@@ -38,7 +38,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLIconFile</key>
-			<string>ys_logo_dev</string>
+			<string></string>
 			<key>CFBundleURLName</key>
 			<string>dev.mobile.yourstatus.app</string>
 			<key>CFBundleURLSchemes</key>

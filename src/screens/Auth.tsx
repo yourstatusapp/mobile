@@ -89,7 +89,7 @@ export const Auth: React.FC = () => {
 	};
 
 	return (
-		<Block>
+		<Block color="black">
 			<LinearGradient pointerEvents="none" colors={['black', 'transparent']} style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 350 }} />
 			<KeyboardAvoidingView style={{ flex: 1, justifyContent: 'center' }} behavior="padding" keyboardVerticalOffset={-(Dimensions.get('window').height / 4)}>
 				<Block flex={0} style={{ zIndex: 20 }} paddingHorizontal={20}>

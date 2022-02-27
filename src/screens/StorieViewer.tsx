@@ -44,7 +44,7 @@ export const StorieViewer = ({ list, onClose, clickedAtIndex }: { list: StorieTy
 					style={{ height: '100%', width: Dimensions.get('screen').width - 10, borderRadius: 25 }}
 				/>
 				<Block flex={0} color={'transparent'} style={{ position: 'absolute', bottom: 10 }} row vCenter>
-					<Block flex={0} style={{ width: 'auto', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }}>
+					<Block flex={0} style={{ width: 'auto', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }} color="black">
 						<Text bold>{TimeFormatter(list.stories[clickedAtIndex].id)} ago</Text>
 					</Block>
 				</Block>

@@ -6,12 +6,13 @@ import { SettingsNotifications } from './Settings/index';
 import { useNavigation } from '@react-navigation/native';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
+import { SettingsSessions } from './Settings/SettingsSessions';
 
 const SettingsStack = createNativeStackNavigator();
 
 const settingSections = [
 	{ text: 'Notifications', route: 'settingsNotifications' },
-	// { text: 'Notifications', route: 'settingsNotifications' },
+	{ text: 'Sessions', route: 'settingsSessions' },
 ];
 
 const MainScreen = () => {
@@ -42,6 +43,7 @@ export const Settings = () => {
 			<SettingsStack.Navigator initialRouteName="settingsMain" screenOptions={{ headerShown: false, animation: 'slide_from_left' }}>
 				<SettingsStack.Screen name="settingsMain" component={MainScreen} />
 				<SettingsStack.Screen name="settingsNotifications" component={SettingsNotifications} />
+				<SettingsStack.Screen name="settingsSessions" component={SettingsSessions} options={{ gestureEnabled: true }} />
 			</SettingsStack.Navigator>
 			{/* <Block paddingHorizontal={20}>
 				<Spacer size={25} />

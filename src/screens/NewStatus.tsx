@@ -31,7 +31,7 @@ export const NewStatus = () => {
 	};
 
 	return (
-		<Block safe paddingHorizontal={20}>
+		<Block safe paddingHorizontal={20} color="black">
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={60}>
 				<Spacer size={20} />
 				<Text size={30} weight="700">

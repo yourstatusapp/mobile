@@ -118,3 +118,8 @@ export interface StorieType {
 		account_id: string;
 	}[];
 }
+
+export interface OnboardingTipsConfig {
+	GLOBAL: boolean;
+	REALTIME_STORIES: boolean;
+}
