@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { SettingsSessions } from './Settings/SettingsSessions';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const SettingsStack = createNativeStackNavigator();
 
@@ -24,7 +25,7 @@ const MainScreen = () => {
 
 	const nav = useNavigation();
 	return (
-		<Block paddingHorizontal={20}>
+		<Block paddingHorizontal={20} color={Colors.black}>
 			<Spacer size={20} />
 			{settingSections.map((item, index) => (
 				<SettingItem key={index} text={item.text} onPress={() => nav.navigate(item.route as never)} />

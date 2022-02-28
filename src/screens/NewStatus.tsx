@@ -2,14 +2,14 @@ import { request } from '@core';
 import { Block, Button, Fill, Input, Spacer, Status, Text, TextButton } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { KeyboardAvoidingView, Switch } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 export const NewStatus = () => {
 	const [StatusTxt, SetStatusTxt] = useState('');
 	const [Error, SetError] = useState('');
 	const [Loading, SetLoading] = useState(false);
+	const [Expire, SetExpire] = useState(false);
 	const nav = useNavigation();
 	const { colors } = useTheme();
 
@@ -47,7 +47,14 @@ export const NewStatus = () => {
 				)}
 				<Spacer size={8} />
 				<Input value={StatusTxt} onChange={v => SetStatusTxt(v)} />
-				<Spacer size={2 * 20} />
+				<Spacer size={10} />
+				<Block flex={0} row hCenter>
+					<Switch onValueChange={v => SetExpire(v)} />
+					<Spacer size={20} h />
+					<Text>expire</Text>
+				</Block>
+				{Expire && <Block></Block>}
+				<Spacer size={30} />
 				<Button text="Create" disabled={StatusTxt === '' || Loading} onPress={createStatus} />
 				<Fill />
 				<TextButton text="Go back" textColor={colors.white80} onPress={() => nav.goBack()} />

@@ -2,6 +2,7 @@ import { Block, Fill, IconButton, Text } from '@parts';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
+import { useTheme } from 'styled-components';
 
 interface DayObject {
 	date: string;
@@ -20,6 +21,7 @@ const WEEK_DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
 export const RealtimeMomentHistory = () => {
 	const nav = useNavigation();
+	const { colors } = useTheme();
 	const [List, SetList] = useState<Week[]>([]);
 
 	const renderList = () => {
@@ -38,7 +40,14 @@ export const RealtimeMomentHistory = () => {
 			// generate the week by looping 7 days to build an array list of 7 items
 			for (let DayIndex = 0; DayIndex <= 6; DayIndex++) {
 				// TODO: Check if we need to fill up the array with empty spots from the previous month
-				if (newMonth) {
+				if (newMonth && emptyStartDays !== 0) {
+					w.week.push({ empty: true, date: '' });
+					if (emptyStartDays === 1) {
+						newMonth = false;
+					}
+					emptyStartDays = emptyStartDays - 1;
+
+					continue;
 				}
 
 				// if its the first week of the month, we check if we need to insert a empty
@@ -87,7 +96,7 @@ export const RealtimeMomentHistory = () => {
 		<Block color="black">
 			<Text>calander test</Text>
 			<IconButton name="plus" size={25} color="white" backgroundColor="red" onPress={() => nav.goBack()} />
-			<Block row flex={0} vCenter>
+			<Block row flex={0} vCenter style={{ borderBottomColor: colors.white40, borderBottomWidth: 1 }}>
 				{WEEK_DAYS.map((item, index) => (
 					<Block flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
 						<Text size={18} bold>
@@ -109,7 +118,7 @@ export const RealtimeMomentHistory = () => {
 
 						<Block key={index.toString()} row color="#191919" style={{ alignItems: 'flex-start' }} vCenter>
 							{item.week.map((item2, index2) => (
-								<Block flex={0} vCenter hCenter style={{ width: 45, height: 45 }} color="red">
+								<Block flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
 									{!item2.empty && (
 										<Text key={index2} size={18} bold>
 											{item2.date}
