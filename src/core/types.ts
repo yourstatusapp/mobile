@@ -123,3 +123,21 @@ export interface OnboardingTipsConfig {
 	GLOBAL: boolean;
 	REALTIME_STORIES: boolean;
 }
+
+export interface GuildInvite {
+	code: string;
+	type: number;
+	expires_at: string;
+	welcome_screen: {
+		description: string;
+	};
+	guild: {
+		icon: string;
+		description: string;
+		banner: string;
+		splash: string;
+		id: string;
+		// something we need
+		name: string;
+	};
+}

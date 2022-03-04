@@ -1,5 +1,5 @@
 import { AppAlert, request } from '@core';
-import { Press, Text } from '@parts';
+import { Icon, Press, Text } from '@parts';
 import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
 
@@ -40,9 +40,9 @@ const StatusColors: StatusTypesColors = {
 		backColor: '#0c1b37',
 	},
 	1: {
-		key_name: 'STORIES_COLLECTION',
-		color: '#3D60FF',
-		backColor: '#0c1b37',
+		key_name: 'DISCORD_GUILD',
+		color: '#738BD7',
+		backColor: '#1E2846',
 	},
 };
 
@@ -97,6 +97,7 @@ export const Status = React.memo(({ status, style, demo, onPress }: StatusType) 
 
 	const StatusRender = (
 		<StatusBody style={{ zIndex: zIndex.value }} backColor={StatusColors[status.type].backColor}>
+			{status.type === 1 && <Icon name="discord" size={18} color={StatusColors[status.type].color} style={{ marginRight: 4 }} />}
 			<Text weight="600" size={13} color={StatusColors[status.type].color}>
 				{status.content}
 			</Text>
@@ -136,4 +137,6 @@ const StatusBody = styled.View<{ backColor: string }>`
 	align-self: flex-start;
 	border-radius: 4px;
 	justify-content: center;
+	flex-direction: row;
+	align-items: center;
 `;

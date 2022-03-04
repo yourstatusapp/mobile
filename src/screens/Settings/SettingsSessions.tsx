@@ -32,10 +32,9 @@ export const SettingsSessions: React.FC = () => {
 
 	const sessionRenderItem = ({ item, index }: ListRenderItemInfo<DeviceType>) => (
 		<Block key={index} marginBottom={20} color={colors.white20} style={{ padding: 13, borderRadius: 8 }}>
-			<Text>{item.ip}</Text>
 			<Text>{item.device_type}</Text>
 			<Text>{TimeFormatter(item.id)}</Text>
-			<Text>Notifications: {JSON.stringify(item.notifications)}</Text>
+			{/* <Text>Notifications: {JSON.stringify(item.notifications)}</Text> */}
 			<Block row color="transparent" marginTop={10}>
 				<IconButton
 					name="plus"
@@ -61,7 +60,7 @@ export const SettingsSessions: React.FC = () => {
 	);
 
 	return (
-		<Block>
+		<Block color={colors.black}>
 			<LinearGradient pointerEvents="none" colors={['black', 'transparent']} style={{ position: 'absolute', top: 0, zIndex: 9, width: '100%', height: 150 }} />
 
 			<Text bold size={30} marginTop={15} marginLeft={10} style={{ zIndex: 10, position: 'absolute' }}>
