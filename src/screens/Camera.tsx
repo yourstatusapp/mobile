@@ -151,11 +151,11 @@ export const Camera = () => {
 
 	const t = usePulse(core.app.ONBOARDING_TIPS);
 
-	useEffect(() => {
-		if (t.REALTIME_STORIES) {
-			nav.navigate('explanation' as never, { type: 'REALTIME_STORIES' } as never);
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (t.REALTIME_STORIES) {
+	// 		nav.navigate('explanation' as never, { type: 'REALTIME_STORIES' } as never);
+	// 	}
+	// }, []);
 
 	return (
 		<Block>

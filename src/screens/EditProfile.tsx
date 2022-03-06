@@ -97,7 +97,7 @@ export const EditProfile = () => {
 	}, [Username, Location, Bio, Available, profile]);
 
 	return (
-		<Block safe flex={1}>
+		<Block safe flex={1} color={colors.black}>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={70}>
 				<ModalHeader title="Edit Profile" />
 				<Spacer size={25} />

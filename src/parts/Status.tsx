@@ -104,24 +104,19 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 
 	const onStatusPress = async () => {
 		// let newList = core.lists.friends.getData(status.account_id).value.status.map(item => {
-		// 	// item.taps = 20;
 		// 	item.taps = 1 + item.taps;
+		// 	item.taped = true;
 		// 	return item;
 		// });
-		// core.lists.friends.groups.friends.patch({ account_id: status.account_id, status: newList }, { deep: true });
+		// core.lists.friends.update(status.account_id, { status: newList });
+		// core.lists.profiles.groups.friends.remove(status.account_id);
+		// core.lists.friends.groups.friends.patch({ account_id: status.account_id, status: [] }, { deep: false });
 		// core.lists.friends.rebuildGroupsThatInclude('friends');
 		// core.lists.friends.groups.friends.rebuildOne(status.account_id);
-		// core.lists.friends.getData(status.account_id).patch({ status: newList }, { deep: true });
+		// core.lists.friends.getData(status.account_id).patch({ status: [] }, { deep: true });
 		// const res = await request('post', `/status/${status?.id}/tap`);
 		// if (res.data) {
-		// 	let newList = core.lists.friends.getData(status.account_id).value.status.map(item => {
-		// 		if (item.id === status.id) {
-		// 			item.taps = item.taps + 1;
-		// 			item.taped = true;
-		// 		}
-		// 		return item;
-		// 	});
-		// 	core.lists.friends.update(status.account_id, { status: newList }, { deep: true });
+		// 	core.lists.status.getData(status.id).patch({ taped: true });
 		// } else {
 		// 	AppAlert(false, res.message);
 		// }
@@ -151,7 +146,7 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 	return (
 		<Animated.View style={wrapperStyle}>
 			<Pressable
-				disabled={status?.taped}
+				disabled={true}
 				style={({ pressed }) => [
 					{
 						opacity: pressed ? 0.6 : 1,

@@ -5,7 +5,7 @@ import { ProfileType, request } from '@core';
 
 import styled, { useTheme } from 'styled-components/native';
 import FastImage from 'react-native-fast-image';
-import { Animated } from 'react-native';
+import { Animated, FlatList } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const BANNER_HEIGHT = 250;
@@ -94,7 +94,13 @@ export const Profile = () => {
 							{ProfileData.username}
 						</Text>
 						<Spacer size={5} />
-						{ProfileData.status && <Status status={ProfileData.status} />}
+
+						{ProfileData.status?.length &&
+							ProfileData.status.map((ItemData, ItemIndex) => (
+								<Block flex={0} key={ItemIndex} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
+									<Status status={ItemData} />
+								</Block>
+							))}
 
 						{ProfileData?.location && (
 							<Block row flex={0} hCenter paddingTop={12}>

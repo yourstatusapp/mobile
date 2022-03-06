@@ -111,7 +111,7 @@ export const Account = () => {
 						);
 					}}
 				/> */}
-				<TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} />
+				{/* <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} /> */}
 				<Spacer size={50} />
 				<TextButton
 					text="Logout"

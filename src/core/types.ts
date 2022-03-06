@@ -17,14 +17,17 @@ export interface ProfileType {
 	location: string;
 	date_of_birth: string;
 	// collections?: Collection[];
-	status?: any;
+	status?: StatusType[];
 }
 
 export interface StatusType {
 	id: string;
 	type: number;
-	content: string;
+	account_id: string;
+	data: any;
 	expires_at: string;
+	taped?: boolean;
+	taps?: number;
 }
 
 export interface PaddingType {
