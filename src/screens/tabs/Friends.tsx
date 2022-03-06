@@ -68,7 +68,7 @@ export const Friends = React.memo(() => {
 		// if (a.da) SetD(a.data.friends);
 	};
 
-	const [MyStatus, setMyStatus] = useState<boolean | StatusType[]>(false);
+	const [MyStatus, setMyStatus] = useState<StatusType[]>([]);
 	const getMyStatus = async () => {
 		const res = await request<any>('get', '/status');
 		setMyStatus(res.data);
@@ -139,8 +139,20 @@ export const Friends = React.memo(() => {
 						],
 						{ useNativeDriver: true },
 					)}>
-					{(!!MyStatus?.id || !!myStories?.length) && (
+					{(!!MyStatus.length || !!myStories?.length) && (
 						<Block flex={0} marginBottom={30}>
+							{!!MyStatus.length && (
+								<FlatList
+									data={MyStatus}
+									initialNumToRender={MyStatus.length}
+									style={{ marginTop: 10, marginLeft: 15 }}
+									renderItem={({ item, index }) => (
+										<Block key={index} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
+											<Status status={item} />
+										</Block>
+									)}
+								/>
+							)}
 							{!!myStories[0]?.stories?.length && (
 								<Block row marginLeft={15} marginTop={15}>
 									<ScrollView horizontal={true} scrollEnabled={true} showsHorizontalScrollIndicator={false}>

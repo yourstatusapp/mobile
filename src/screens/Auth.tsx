@@ -68,7 +68,7 @@ export const Auth: React.FC = () => {
 
 	const [ClipboardData, setString] = useClipboard();
 
-	const magicLinkLogin = async () => {
+	const magicLinkLogin = React.useCallback(async () => {
 		const a = ClipboardData;
 
 		if (!a) {
@@ -79,7 +79,7 @@ export const Auth: React.FC = () => {
 		if (a?.includes('magic?code=')) {
 			nav.navigate('magic' as never, { code: a?.split('code=')[1]?.split('&')[0], new_account: !!a?.includes('new_account') } as never);
 		}
-	};
+	}, [ClipboardData, nav]);
 
 	const usernameCheck = (v: string) => {
 		SetUsernameLoading(true);
@@ -176,7 +176,7 @@ export const Auth: React.FC = () => {
 						</TouchableOpacity>
 					)}
 					<Spacer size={20} />
-					{ShowBuildNumber && <Button text="magic link pase" onPress={magicLinkLogin} />}
+					{ShowBuildNumber && <Button text="Paste clipboard" onPress={magicLinkLogin} style={{ marginBottom: 5 }} />}
 					{ShowBuildNumber && (
 						<Text center color={colors.white40} weight="600">
 							Build: {DeviceInfo?.getBuildNumber()}

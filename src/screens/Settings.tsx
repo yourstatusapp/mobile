@@ -72,17 +72,17 @@ export const SettingItem = ({ text, onPress }: { text: string; onPress: () => vo
 			style={{ paddingVertical: 15, marginBottom: 10, paddingHorizontal: 15, borderRadius: 12 }}
 			flex={0}
 			onPress={onPress}
-			color={colors.white10}
+			color={colors.white20}
 			hCenter
 			press
 			row>
-			<Icon name="bell" size={20} color={colors.white} />
-			<Spacer size={15} h />
-			<Text color={colors.white} weight="600">
+			{/* <Icon name="bell" size={20} color={colors.white} /> */}
+			{/* <Spacer size={15} h /> */}
+			<Text color={colors.white} weight="700" size={12}>
 				{text}
 			</Text>
 			<Fill />
-			<Icon name="chevron" size={15} color={colors.white60} style={{ transform: [{ rotate: '180deg' }] }} />
+			<Icon name="chevron" size={15} color={colors.white80} style={{ transform: [{ rotate: '180deg' }] }} />
 		</Block>
 	);
 };

@@ -147,7 +147,7 @@ export const NewStatus = () => {
 				)}
 
 				{SelectedType === 'DISCORD_GUILD' && (
-					<Block marginTop={30}>
+					<Block marginTop={30} flex={0}>
 						{GuildResults?.guild?.id && <Status status={{ id: '543', data: { name: GuildResults?.guild?.name, invite_code: GuildResults?.code }, type: 1 }} />}
 						<Spacer size={20} />
 
