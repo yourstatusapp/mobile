@@ -96,12 +96,12 @@ export const Auth: React.FC = () => {
 					<Fill />
 					<Status
 						demo
-						status={{ content: 'Just about out and chill 😎', type: 0, taps: 12, taped: false, id: '' }}
+						status={{ data: { message: 'Just about out and chill 😎' }, type: 0, taps: 12, taped: false, id: '', account_id: '' }}
 						style={{ right: 33, top: -100, position: 'absolute', transform: [{ rotate: '8deg' }] }}
 					/>
 					<Status
 						demo
-						status={{ content: 'Anyone wanna hangout?', type: 0, taps: 12, taped: false, id: '' }}
+						status={{ data: { message: 'Anyone wanna hangout?' }, type: 0, taps: 42, taped: false, id: '', account_id: '' }}
 						style={{ left: 25, top: -60, position: 'absolute', transform: [{ rotate: '-5deg' }] }}
 					/>
 					<Block flex={0} press onPress={() => SetShowBuildNumber(!ShowBuildNumber)}>

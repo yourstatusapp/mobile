@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Avatar, Block, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
+import { Avatar, Block, Fill, IconButton, Spacer, Status, Text, TextButton } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';

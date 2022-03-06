@@ -1,11 +1,9 @@
 import { AppAlert, GuildInvite, request } from '@core';
-import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text, TextButton } from '@parts';
+import { Block, Button, Fill, Icon, Input, Spacer, Status, Text, TextButton } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Switch } from 'react-native';
-import DatePicker from 'react-native-date-picker';
+import { ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Animated, { SlideInDown } from 'react-native-reanimated';
 import { useTheme } from 'styled-components/native';
 
 export enum StatusTypes {
@@ -24,8 +22,16 @@ export const NewStatus = () => {
 	const nav = useNavigation();
 	const { colors } = useTheme();
 
+	const [SelectedType, SetSelectedType] = useState<keyof typeof StatusTypes>('DEFAULT');
+	const [NewValidated, SetNewValidated] = useState(false);
+	const [ValidateLoading, SetValidateLoading] = useState(false);
+	const [GuildCode, SetGuildCode] = useState('');
+	const [GuildResults, SetGuildResults] = useState<GuildInvite | null>();
+
 	const createStatus = async () => {
 		SetLoading(true);
+		SetError('');
+
 		if (!StatusTxt) {
 			SetLoading(false);
 			return;
@@ -41,47 +47,55 @@ export const NewStatus = () => {
 			}
 		}
 
-		const res = await request('post', '/status/new', { data: { type: 'DEFAULT', content: StatusTxt } });
+		const res = await request('post', '/status/new', { data: { type: StatusTypes[SelectedType], content: StatusTxt?.trimStart()?.trimEnd() } });
+		SetLoading(false);
 
 		if (res.data) {
-			SetStatusTxt('');
+			AppAlert(true, res.message);
 			nav.goBack();
 		} else {
-			SetLoading(false);
 			SetError(res?.message || '');
 		}
 	};
 
-	const [SelectedType, SetSelectedType] = useState<keyof typeof StatusTypes>('DEFAULT');
+	const newGuildStatus = async () => {
+		SetLoading(true);
+		SetError('');
 
-	const [NewValidated, SetNewValidated] = useState(false);
-	const [ValidateLoading, SetValidateLoading] = useState(false);
-	const [GuildCode, SetGuildCode] = useState('');
-	const [GuildResults, SetGuildResults] = useState<GuildInvite | null>(null);
-
-	const validateNewStatus = async (type: keyof typeof StatusTypes, data: any) => {
-		SetValidateLoading(true);
-		const res = await request('post', '/status/validate', { data: { type, data } });
-		if (!res.data) {
-			SetNewValidated(false);
-			SetValidateLoading(true);
-			SetGuildResults(null);
-			return false;
+		const res = await request('post', '/status/new', { data: { type: 'DISCORD_GUILD', content: GuildResults?.code } });
+		SetLoading(false);
+		if (res.data) {
+			AppAlert(true, res.message);
+			nav.goBack();
+		} else {
+			SetError(res?.message || '');
 		}
+	};
 
-		SetNewValidated(true);
+	const validateNewStatus = async (type: keyof typeof StatusTypes, data: any): Promise<void> => {
 		SetValidateLoading(true);
-		return res.data;
+		SetNewValidated(false);
+
+		if (timerID2) clearTimeout(timerID2);
+
+		timerID2 = setTimeout(async () => {
+			const res = await request<{ guild: GuildInvite }>('post', '/status/validate', { data: { type, data } });
+
+			SetValidateLoading(false);
+
+			if (res?.data) {
+				SetNewValidated(true);
+				SetGuildResults(res.data.guild);
+			} else {
+				SetGuildResults(null);
+				return null;
+			}
+		}, 1500);
 	};
 
 	useEffect(() => {
-		if (timerID2) clearTimeout(timerID2);
-		console.log(GuildCode);
-
-		timerID2 = setTimeout(async () => {
-			let a = await validateNewStatus('DISCORD_GUILD', GuildCode);
-			SetGuildResults(a.guild);
-		}, 1500);
+		if (!GuildCode) return;
+		validateNewStatus('DISCORD_GUILD', GuildCode);
 	}, [GuildCode]);
 
 	return (
@@ -111,7 +125,7 @@ export const NewStatus = () => {
 					))}
 				</Block>
 
-				<Block flex={0} row hCenter marginBottom={30}>
+				{/* <Block flex={0} row hCenter marginBottom={30}>
 					<Fill />
 					<Block flex={0} row press style={{ width: 'auto' }} hCenter>
 						<Text size={12} paddingRight={5}>
@@ -119,11 +133,11 @@ export const NewStatus = () => {
 						</Text>
 						<Icon name="info" color="white" size={12} />
 					</Block>
-				</Block>
+				</Block> */}
 
 				{SelectedType === 'DEFAULT' && (
-					<Block>
-						<Status status={{ id: '', content: StatusTxt, type: 0 }} />
+					<Block marginTop={30} flex={0}>
+						<Status status={{ id: '', data: { message: StatusTxt }, type: 0, taped: true }} />
 						<Spacer size={20} />
 						<Input placeholder="Message" value={StatusTxt} onChange={v => SetStatusTxt(v)} />
 
@@ -133,8 +147,8 @@ export const NewStatus = () => {
 				)}
 
 				{SelectedType === 'DISCORD_GUILD' && (
-					<Block>
-						{GuildResults !== null && GuildResults?.guild.name && <Status status={{ id: '', content: GuildResults?.guild.name, type: 1 }} />}
+					<Block marginTop={30}>
+						{GuildResults?.guild?.id && <Status status={{ id: '543', data: { name: GuildResults?.guild?.name, invite_code: GuildResults?.code }, type: 1 }} />}
 						<Spacer size={20} />
 
 						<Input
@@ -143,19 +157,33 @@ export const NewStatus = () => {
 							onChange={SetGuildCode}
 							style={{ borderColor: NewValidated ? '#62CB4E' : colors.white40, borderWidth: 1 }}
 						/>
-						{ValidateLoading === false && NewValidated && (
-							<FastImage
-								source={{ uri: `https://cdn.discordapp.com/icons/${GuildResults.id}/${GuildResults.icon}.webp?size=64` }}
-								style={{ height: 80, width: 80, borderRadius: 100 }}
-							/>
+						{ValidateLoading && (
+							<Block vCenter hCenter marginTop={35}>
+								<ActivityIndicator />
+							</Block>
 						)}
 						<Spacer size={20} />
+						{NewValidated === true && (
+							<Block row hCenter flex={0}>
+								<Text bold marginRight={10}>
+									Found:
+								</Text>
+								<Text marginRight={10} color={colors.white60} weight="600">
+									{GuildResults?.guild.name}
+								</Text>
+								<FastImage
+									source={{ uri: `https://cdn.discordapp.com/icons/${GuildResults?.guild.id}/${GuildResults?.guild.icon}.webp?size=64` }}
+									style={{ height: 35, width: 35, borderRadius: 100 }}
+								/>
+							</Block>
+						)}
+						<Spacer size={4} />
 						{GuildResults !== null && GuildResults?.expires_at && (
-							<Text bold>!This status will expire on {new Date(GuildResults?.expires_at).toDateString()}</Text>
+							<Text color="#D35A5A">This status will expire on {new Date(GuildResults?.expires_at).toDateString()}</Text>
 						)}
 
 						<Spacer size={30} />
-						<Button text="Create" disabled={ValidateLoading === true || NewValidated === false} onPress={createStatus} />
+						<Button text="Create" disabled={Loading || ValidateLoading === true || NewValidated === false} onPress={newGuildStatus} />
 					</Block>
 				)}
 

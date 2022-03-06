@@ -102,10 +102,10 @@ export interface FriendItemType {
 		type: number;
 		account_id: string;
 		deleted_at: null;
-		content: string;
+		data: any;
 		taps: number;
 		taped?: boolean;
-	};
+	}[];
 }
 
 export interface StorieType {
@@ -128,16 +128,15 @@ export interface GuildInvite {
 	code: string;
 	type: number;
 	expires_at: string;
-	welcome_screen: {
-		description: string;
-	};
 	guild: {
 		icon: string;
 		description: string;
 		banner: string;
 		splash: string;
 		id: string;
-		// something we need
 		name: string;
+	};
+	welcome_screen: {
+		description: string;
 	};
 }

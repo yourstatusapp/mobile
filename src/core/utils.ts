@@ -3,7 +3,7 @@ import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
 // export const baseURL = state('https://api.yourstatus.app');
-export const baseURL = state('http://192.168.1.8:3020');
+export const baseURL = state('http://192.168.1.2:3020');
 // export const baseURL = state('http://localhost:3020');
 
 interface RequestOptions {

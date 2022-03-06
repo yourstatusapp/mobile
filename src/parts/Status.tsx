@@ -1,28 +1,28 @@
-import { AppAlert, request } from '@core';
+import core, { AppAlert, request } from '@core';
 import { Icon, Press, Text } from '@parts';
 import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
 
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { Pressable, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import { Linking, Pressable, StyleSheet, View, ViewStyle } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface StatusType {
 	style?: ViewStyle;
 	demo?: boolean;
 	status: {
 		id: string;
-		content: string;
+		account_id: string;
+		data: any;
 		type: number;
-		taps: number;
+		taps?: number;
 		taped?: boolean;
 	};
-
-	onPress?: () => void;
 }
 
 enum StatusEventTypes {
 	DEFAULT,
-	STORIES_COLLECTION,
+	DISCORD_GUILD,
 }
 
 interface StatusTypesColors {
@@ -46,7 +46,7 @@ const StatusColors: StatusTypesColors = {
 	},
 };
 
-export const Status = React.memo(({ status, style, demo, onPress }: StatusType) => {
+export const Status = React.memo(({ status, style, demo }: StatusType) => {
 	const { colors } = useTheme();
 
 	const wrapperStyle = StyleSheet.flatten([style]);
@@ -69,66 +69,134 @@ export const Status = React.memo(({ status, style, demo, onPress }: StatusType) 
 		};
 	});
 
-	const tapStatus = async () => {
-		if (demo) {
-			offset.value = withSpring(-20);
-			setTimeout(() => {
-				offset.value = withSpring(0);
-			}, 500);
-			return;
-		}
+	// const tapStatus = async () => {
+	// 	if (demo) {
+	// 		offset.value = withSpring(-20);
+	// 		setTimeout(() => {
+	// 			offset.value = withSpring(0);
+	// 		}, 500);
+	// 		return;
+	// 	}
 
-		const res = await request('post', `/status/${status.id}/tap`);
-		if (res.data) {
-			offset.value = withSpring(-20);
-			setTimeout(() => {
-				offset.value = withSpring(0);
-			}, 500);
-		} else {
-		}
-	};
+	// if (status.type === 0) {
+	// 	const res = await request('post', `/status/${status.id}/tap`);
+	// 	if (res.data) {
+	// 		offset.value = withSpring(-20);
+	// 		setTimeout(() => {
+	// 			offset.value = withSpring(0);
+	// 		}, 500);
+	// 	} else {
+	// 		AppAlert(false, res.message);
+	// 	}
+	// }
 
-	const animate = async () => {
+	// 	// if (status.type === 1) {
+	// 	// 	Linking.canOpenURL(`https://discord.gg/${status?.content?.invite_code}`);
+	// 	// }
+	// };
+
+	const animate = async (countedUp?: boolean) => {
 		offset.value = withSpring(-20);
 		setTimeout(() => {
 			offset.value = withSpring(0);
-		}, 500);
+		}, 380 + (countedUp ? 450 : 0));
+	};
+
+	const onStatusPress = async () => {
+		// let newList = core.lists.friends.getData(status.account_id).value.status.map(item => {
+		// 	// item.taps = 20;
+		// 	item.taps = 1 + item.taps;
+		// 	return item;
+		// });
+		// core.lists.friends.groups.friends.patch({ account_id: status.account_id, status: newList }, { deep: true });
+		// core.lists.friends.rebuildGroupsThatInclude('friends');
+		// core.lists.friends.groups.friends.rebuildOne(status.account_id);
+		// core.lists.friends.getData(status.account_id).patch({ status: newList }, { deep: true });
+		// const res = await request('post', `/status/${status?.id}/tap`);
+		// if (res.data) {
+		// 	let newList = core.lists.friends.getData(status.account_id).value.status.map(item => {
+		// 		if (item.id === status.id) {
+		// 			item.taps = item.taps + 1;
+		// 			item.taped = true;
+		// 		}
+		// 		return item;
+		// 	});
+		// 	core.lists.friends.update(status.account_id, { status: newList }, { deep: true });
+		// } else {
+		// 	AppAlert(false, res.message);
+		// }
 	};
 
 	const StatusRender = (
 		<StatusBody style={{ zIndex: zIndex.value }} backColor={StatusColors[status.type].backColor}>
 			{status.type === 1 && <Icon name="discord" size={18} color={StatusColors[status.type].color} style={{ marginRight: 4 }} />}
 			<Text weight="600" size={13} color={StatusColors[status.type].color}>
-				{status.content}
+				{status.data?.name || status.data?.message}
 			</Text>
 		</StatusBody>
 	);
 
-	if (!!onPress && status.type === 0 && status.taped === false) {
+	if (status?.type === 1) {
 		return (
-			<Animated.View style={wrapperStyle}>
-				<Pressable
-					style={({ pressed }) => [
-						{
-							opacity: pressed ? 0.6 : 1,
-						},
-					]}
-					onPress={() => {
-						animate();
-						onPress();
-					}}>
-					<Animated.View style={animatedStyles}>
-						<Text center marginLeft={10} size={12} bold color={colors.white}>
-							{status.taps}
-						</Text>
-					</Animated.View>
-					{StatusRender}
-				</Pressable>
-			</Animated.View>
+			<TouchableOpacity
+				activeOpacity={0.7}
+				onPress={() => {
+					Linking.openURL('https://discord.gg/' + status?.data?.code);
+				}}>
+				{StatusRender}
+			</TouchableOpacity>
 		);
 	}
 
-	return <View style={wrapperStyle}>{StatusRender}</View>;
+	return (
+		<Animated.View style={wrapperStyle}>
+			<Pressable
+				disabled={status?.taped}
+				style={({ pressed }) => [
+					{
+						opacity: pressed ? 0.6 : 1,
+					},
+				]}
+				onPress={() => {
+					animate(!status?.taped);
+					onStatusPress();
+					// if (status.taped === false) onStatusPress();
+				}}>
+				{/* <Animated.View style={animatedStyles}>
+					<Text center marginLeft={10} size={12} bold color={colors.white}>
+						{status.taps}
+					</Text>
+				</Animated.View> */}
+				{StatusRender}
+			</Pressable>
+		</Animated.View>
+	);
+
+	// if (!!onPress && status.type === 0 && status.taped === false) {
+	// 	return (
+	// 		<Animated.View style={wrapperStyle}>
+	// 			<Pressable
+	// 				style={({ pressed }) => [
+	// 					{
+	// 						opacity: pressed ? 0.6 : 1,
+	// 					},
+	// 				]}
+	// 				onPress={() => {
+	// 					animate();
+	// 					onPress();
+	// 				}}>
+	// 				<Animated.View style={animatedStyles}>
+	// 					<Text center marginLeft={10} size={12} bold color={colors.white}>
+	// 						{status.taps}
+	// 					</Text>
+	// 				</Animated.View>
+	// 				{StatusRender}
+	// 			</Pressable>
+	// 		</Animated.View>
+	// 	);
+	// } else {
+	// 	return <View style={wrapperStyle}>{StatusRender}</View>;
+	// }
 });
 
 const StatusBody = styled.View<{ backColor: string }>`

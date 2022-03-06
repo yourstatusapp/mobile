@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
-import core, { AppAlert, request, StatusType } from '@core';
+import core, { AppAlert, FriendItemType, request, StatusType } from '@core';
 import { Avatar, Block, Fill, IconButton, Status, Text } from '@parts';
-import { Animated, ListRenderItemInfo, StyleSheet, TouchableOpacity, ViewStyle, ScrollView } from 'react-native';
+import { Animated, ListRenderItemInfo, StyleSheet, TouchableOpacity, ViewStyle, ScrollView, FlatList } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
@@ -17,13 +17,13 @@ interface FriendItem {
 		id: string;
 		type: number;
 		account_id: string;
-		content: string;
+		data: any;
 		taps: number;
 		taped?: boolean;
-	};
+	}[];
 }
 
-type FriendItemType = ListRenderItemInfo<FriendItem>;
+type FriendItemRenderType = ListRenderItemInfo<FriendItem>;
 
 const FRIEND_ITEM_HEIGHT = 88;
 
@@ -51,7 +51,7 @@ export const Friends = React.memo(() => {
 		extrapolate: 'clamp',
 	});
 
-	const [FriendRList, SetFriendRList] = useState<any[]>([]);
+	const [FriendsRequests, SetFriendsRequests] = useState<any[]>([]);
 
 	const [Loading, SetLoading] = useState(false);
 
@@ -60,16 +60,15 @@ export const Friends = React.memo(() => {
 		const a = await request<{ friends: FriendItemType[]; incoming_pending: any[] }>('get', '/friends');
 		if (!a.data) {
 		} else {
-			// @ts-ignore
 			core.lists.friends.collect(a.data.friends, 'friends');
-			// SetD(a.data.friends);
-			SetFriendRList(a.data.incoming_pending);
+
+			SetFriendsRequests(a.data.incoming_pending);
 		}
 		SetLoading(false);
 		// if (a.da) SetD(a.data.friends);
 	};
 
-	const [MyStatus, setMyStatus] = useState<boolean | StatusType>(false);
+	const [MyStatus, setMyStatus] = useState<boolean | StatusType[]>(false);
 	const getMyStatus = async () => {
 		const res = await request<any>('get', '/status');
 		setMyStatus(res.data);
@@ -118,7 +117,7 @@ export const Friends = React.memo(() => {
 		}, 400);
 	}, []);
 
-	const renderItem = (p: FriendItemType) => <FriendComp {...p} />;
+	const renderItem = (p: FriendItemRenderType) => <FriendComp {...p} />;
 
 	return (
 		<>
@@ -142,23 +141,6 @@ export const Friends = React.memo(() => {
 					)}>
 					{(!!MyStatus?.id || !!myStories?.length) && (
 						<Block flex={0} marginBottom={30}>
-							{!!MyStatus?.id && (
-								<Block style={{ padding: 20 }} row hCenter>
-									<Text bold style={{ paddingRight: 3 }}>
-										My status:{`  `}
-									</Text>
-									<Status status={MyStatus} />
-									<IconButton
-										name="plus"
-										color={colors.black}
-										backgroundColor={colors.white40}
-										iconSize={14}
-										size={12}
-										style={{ transform: [{ rotate: '45deg' }], marginLeft: 5 }}
-										onPress={() => removeStatus(MyStatus.id)}
-									/>
-								</Block>
-							)}
 							{!!myStories[0]?.stories?.length && (
 								<Block row marginLeft={15} marginTop={15}>
 									<ScrollView horizontal={true} scrollEnabled={true} showsHorizontalScrollIndicator={false}>
@@ -234,14 +216,14 @@ export const Friends = React.memo(() => {
 							onPress={() => nav.navigate('SearchFriend' as never)}
 							style={{ marginRight: 15 }}
 						/>
-						{!!FriendRList.length && (
+						{!!FriendsRequests.length && (
 							<IconButton
 								name="user-add"
 								size={23}
 								iconSize={15}
 								color={colors.black}
 								backgroundColor={colors.white}
-								onPress={() => nav.navigate('FriendRequests' as never, FriendRList as never)}
+								onPress={() => nav.navigate('FriendRequests' as never, FriendsRequests as never)}
 								style={{ marginRight: 15 }}
 							/>
 						)}
@@ -261,39 +243,27 @@ export const Friends = React.memo(() => {
 	);
 });
 
-const FriendComp: React.FC<FriendItemType> = props => {
-	const { item, index } = props;
+const FriendComp: React.FC<FriendItemRenderType> = props => {
 	const { colors } = useTheme();
+	const username = props.item.username;
 	const nav = useNavigation();
 	const bb = usePulse(core.lists.stories.groups.all);
 
-	const userStories = React.useMemo(() => bb.filter(v => v.account_id === item.account_id)[0], [item.account_id, bb]);
+	const userStories = React.useMemo(() => bb.filter(v => v.account_id === props.item.account_id)[0], [props.item.account_id, bb]);
 
-	const openProfile = () => nav.navigate('profile' as never, { username: item.username } as never);
-	const tapStatus = async () => {
-		core.lists.friends.update(item.account_id, { status: { taps: item.status?.taps || 0 + 1, taped: true } }, { deep: true });
-		const res = await request('post', `/status/${item.status?.id}/tap`);
-		if (res.data) {
-			// core.lists.friends.update(item.account_id, { status: { taps: item.status?.taps || 0 + 1, taped: true } }, { deep: true });
-		} else {
-		}
-	};
-
-	React.useEffect(() => {
-		console.log('friend render ' + item.username);
-	}, []);
+	const openProfile = () => nav.navigate('profile' as never, { username: props.item.username } as never);
 
 	return (
-		<FriendCompBody key={index}>
+		<FriendCompBody key={props.index}>
 			<Block row paddingHorizontal={20}>
 				<TouchableOpacity activeOpacity={0.6} onPress={openProfile}>
-					<Avatar src={[item.account_id, item.avatar]} size={45} />
+					<Avatar src={[props.item.account_id, props.item.avatar]} size={45} />
 				</TouchableOpacity>
 				<Block style={{ paddingLeft: 20 }}>
 					<Text weight="700" size={16}>
-						{item.username ? item.username.charAt(0).toUpperCase() + item.username.slice(1, item.username.length + 1) : '-'}
+						{props.item.username ? props.item.username.charAt(0).toUpperCase() + username.slice(1, username.length + 1) : '-'}
 					</Text>
-					{item?.status && (
+					{/* {item?.status && item?.status.(
 						<Block style={{ flexWrap: 'wrap', paddingTop: 6 }}>
 							<Status
 								status={item.status}
@@ -302,6 +272,17 @@ const FriendComp: React.FC<FriendItemType> = props => {
 								}}
 							/>
 						</Block>
+					)} */}
+					{!!props.item?.status?.length && (
+						<FlatList
+							data={props.item?.status}
+							initialNumToRender={props.item.status.length}
+							renderItem={({ item, index }) => (
+								<Block key={index} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
+									<Status status={item} />
+								</Block>
+							)}
+						/>
 					)}
 				</Block>
 			</Block>
