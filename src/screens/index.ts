@@ -17,3 +17,4 @@ export { Moments } from './Moments';
 export { StorieViewer } from './StorieViewer';
 export { VerifyAccount } from './VerifyAccount';
 export { Explanation } from './Explanation';
+export { ManageStatus } from './ManageStatus';

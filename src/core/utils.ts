@@ -35,20 +35,7 @@ export const request = async <T extends any>(method: 'post' | 'get' | 'delete' |
 		return a.data;
 	} catch (error: any) {
 		console.log(error);
-
-		// if (error?.response?.status === 401) {
-		// 	navigationRef.reset({ routes: [{ name: 'auth' }] });
-		// 	core.account.state.account.reset();
-		// }
 		return { success: false, message: error.response.data.message };
-		// // if no auth, reset the accout
-
-		// // alert({ title: error.response.message });
-
-		// console.log('request error', error);
-		// // throw {};
-		// return false;
-		// // console.log(error);
 	}
 };
 

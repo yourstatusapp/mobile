@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
-import core, { AppAlert, request } from '@core';
+import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { useLinking } from '../hooks';
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { Auth, Camera, EditProfile, Magic, NewStatus, Settings, NewMoment, PreloaderView, VerifyAccount, Explanation } from '../screens';
+import { Auth, Camera, EditProfile, Magic, NewStatus, Settings, NewMoment, PreloaderView, VerifyAccount, Explanation, ManageStatus } from '../screens';
 import { NewProject } from '../screens/NewProject';
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
 
@@ -17,49 +17,6 @@ export const RootNavigator = () => {
 	useLinking();
 	const loggedIn = usePulse(core.account.logged_in);
 	const [PreloaderReady, setPreloaderReady] = useState(false);
-	const pushNotifyPerm = usePulse(core.app.notification_permission);
-	const device = usePulse(core.lists.devices.selectors.current);
-
-	// const onRegister = React.useCallback(
-	// 	async (deviceToken: string) => {
-	// 		core.app.notification_permission.set(1);
-	// 		core.app.device_push_token.set(deviceToken);
-
-	// 		if (deviceToken && loggedIn) {
-	// 			await request('patch', '/account/devices/' + device.id, {
-	// 				data: { notifications: true, push_token: deviceToken },
-	// 			});
-	// 			core.lists.devices.update(device.id, { notifications: true });
-	// 		}
-	// 	},
-	// 	[loggedIn],
-	// );
-
-	// const onNotification = (a: PushNotificationType) => {
-	// 	AppAlert(true, a.getActionIdentifier() || '');
-	// };
-
-	// const onRegisterError = (error: { message: string; code: number; details: any }) => {
-	// 	core.app.notification_permission.set(2);
-	// 	AppAlert(false, error.message, error.code + ' - ' + error.details);
-	// };
-
-	// useEffect(() => {
-	// 	if (loggedIn === true && pushNotifyPerm === 0) {
-	// 		PushNotificationIOS.requestPermissions();
-	// 	}
-	// }, [loggedIn]);
-
-	// useEffect(() => {
-	// 	PushNotificationIOS.addEventListener('register', onRegister);
-	// 	PushNotificationIOS.addEventListener('notification', onNotification);
-	// 	PushNotificationIOS.addEventListener('registrationError', onRegisterError);
-	// 	return () => {
-	// 		PushNotificationIOS.removeEventListener('register');
-	// 		PushNotificationIOS.removeEventListener('notification');
-	// 		PushNotificationIOS.removeEventListener('registrationError');
-	// 	};
-	// }, []);
 
 	// Wait for the preloader and logged_in compute state
 	if (PreloaderReady === false) {
@@ -84,6 +41,7 @@ export const RootNavigator = () => {
 				/>
 				<RootStack.Screen name="edit_profile" component={EditProfile} options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }} />
 				<RootStack.Screen name="settings" component={Settings} options={{ gestureEnabled: false, animation: 'default', presentation: 'modal' }} />
+				<RootStack.Screen name="manage_status" component={ManageStatus} options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }} />
 				<RootStack.Screen name="explanation" component={Explanation} options={{ gestureEnabled: false, animation: 'default', presentation: 'modal' }} />
 				<RootStack.Screen
 					name="realtime_history"

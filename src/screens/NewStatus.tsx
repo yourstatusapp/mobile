@@ -47,7 +47,7 @@ export const NewStatus = () => {
 			}
 		}
 
-		const res = await request('post', '/status/new', { data: { type: StatusTypes[SelectedType], content: StatusTxt?.trimStart()?.trimEnd() } });
+		const res = await request('post', '/status/new', { data: { type: 'DEFAULT', content: StatusTxt?.trimStart()?.trimEnd() } });
 		SetLoading(false);
 
 		if (res.data) {

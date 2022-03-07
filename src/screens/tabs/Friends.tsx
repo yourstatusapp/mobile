@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import core, { AppAlert, FriendItemType, request, StatusType } from '@core';
-import { Avatar, Block, Fill, IconButton, Status, Text } from '@parts';
+import { Avatar, Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
 import { Animated, ListRenderItemInfo, StyleSheet, TouchableOpacity, ViewStyle, ScrollView, FlatList } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -72,6 +72,7 @@ export const Friends = React.memo(() => {
 	const getMyStatus = async () => {
 		const res = await request<any>('get', '/status');
 		setMyStatus(res.data);
+		core.lists.status.collect(res.data, 'mine');
 	};
 
 	const profile = usePulse(core.profile.profile);
@@ -142,16 +143,21 @@ export const Friends = React.memo(() => {
 					{(!!MyStatus.length || !!myStories?.length) && (
 						<Block flex={0} marginBottom={30}>
 							{!!MyStatus.length && (
-								<FlatList
-									data={MyStatus}
-									initialNumToRender={MyStatus.length}
-									style={{ marginTop: 10, marginLeft: 15 }}
-									renderItem={({ item, index }) => (
-										<Block key={index} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
-											<Status status={item} />
-										</Block>
-									)}
-								/>
+								<Block row>
+									<FlatList
+										data={MyStatus}
+										initialNumToRender={MyStatus.length}
+										style={{ marginTop: 10, marginLeft: 15 }}
+										renderItem={({ item, index }) => (
+											<Block key={index} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
+												<Status status={item} />
+											</Block>
+										)}
+									/>
+									<Block flex={0} style={{ width: null }}>
+										<TextButton text="Manage status" style={{ marginTop: 15, marginRight: 15 }} onPress={() => nav.navigate('manage_status' as never)} />
+									</Block>
+								</Block>
 							)}
 							{!!myStories[0]?.stories?.length && (
 								<Block row marginLeft={15} marginTop={15}>
