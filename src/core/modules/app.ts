@@ -11,6 +11,9 @@ export const AppStats = {
 	TAB_STATE: state<{ state: number; path_name: string }>({ state: 3, path_name: 'account' }).persist('tab_state'),
 
 	ONBOARDING_TIPS: state<OnboardingTipsConfig>({ GLOBAL: true, REALTIME_STORIES: true }).persist('ONBOARDING_TIPS'),
+
+	SOCKET_CONNECT: state<boolean>(false),
+	SOCKET_TOKEN: state<string>(''),
 };
 
 export const app = AppStats;

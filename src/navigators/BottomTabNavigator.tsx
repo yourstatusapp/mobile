@@ -14,12 +14,13 @@ const TabsStackNavigator = createNativeStackNavigator();
 
 export const BottomTabNavigator: React.FC = () => {
 	const current_tab_state = usePulse(core.app.TAB_STATE);
-
+	const isDarkMode = usePulse(core.ui.isDarkMode);
 	const o: NativeStackNavigationOptions = {
 		gestureEnabled: false,
 		animation: 'none',
 		contentStyle: { backgroundColor: 'black' },
 	};
+
 	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', bottom: 0, height: 80, width: '100%', zIndex: 0, opacity: 1 }]);
 
 	return (
@@ -35,7 +36,7 @@ export const BottomTabNavigator: React.FC = () => {
 			</TabsStackNavigator.Navigator>
 
 			{/* <BlurView style={sh2} blurType="extraDark" blurAmount={5} blurRadius={10} /> */}
-			<BlurView style={sh2} intensity={80} tint="dark" />
+			<BlurView style={sh2} intensity={80} tint={isDarkMode ? 'dark' : 'light'} />
 			<CustomNavBar />
 		</Block>
 	);
@@ -46,6 +47,7 @@ const CustomNavBar = () => {
 	const nav = useNavigation();
 	const { colors, theme } = useTheme();
 	const current_tab_state = usePulse(core.app.TAB_STATE);
+	const isDarkMode = usePulse(core.ui.isDarkMode);
 
 	const sh = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 80, width: '100%', zIndex: 10, opacity: 1 }]);
 
@@ -58,6 +60,12 @@ const CustomNavBar = () => {
 		core.app.TAB_STATE.set({ state: s + 1, path_name: name });
 		nav.navigate(name as never);
 		// nav.reset({ index: 0, routes: [{ name: name as never }] });
+	};
+
+	const theme_name = usePulse(core.ui.current_theme);
+
+	const toggleTheme = () => {
+		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
 	};
 
 	useEffect(() => {
@@ -92,10 +100,11 @@ const CustomNavBar = () => {
 			<FloatingPostBtn
 				name="plus"
 				size={30}
-				color={colors.white80}
-				backgroundColor={colors.white20}
+				color={colors.backgroundDarker}
+				backgroundColor={colors.darker2}
 				iconSize={20}
 				onPress={() => nav.navigate('create_status' as never)}
+				// onPress={() => toggleTheme()}
 			/>
 			{/* <BlurView style={sh} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} /> */}
 		</CustomTabBarBody>
@@ -113,9 +122,11 @@ const DimmingOverlay = styled.View<{ height: number }>`
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: rgba(0, 0, 0, 0.65);
-	border-top-color: ${({ theme }) => theme.colors.white20}px;
-	border-top-width: 1px;
+	/* background-color: rgba(0, 0, 0, 0.65); */
+	background-color: rgba(0, 0, 0, 0.05);
+	// todo: fix this for light and dark mode
+	/* border-top-color: ${({ theme }) => theme.colors.text}; */
+	/* border-top-width: 1px; */
 	opacity: 1;
 	height: ${props => props.height}px;
 `;
@@ -155,7 +166,7 @@ const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 
 const AvatarBody = styled.View<{ active: boolean }>`
 	border-radius: 50px;
-	background-color: ${({ active, theme }) => (active ? theme.colors.white : theme.colors.white20)};
+	background-color: ${({ active, theme }) => (active ? theme.colors.text : theme.colors.textFade)};
 	height: 35px;
 	width: 35px;
 	align-items: center;
@@ -167,7 +178,7 @@ const IconTabBtn: React.FC<{ route: string; icon: string; active?: boolean; onPr
 
 	return (
 		<IconTabBtnBody onPress={c.onPress}>
-			<Icon name={c.icon} size={22} color={c.active ? colors.white : '#ffffff22'} />
+			<Icon name={c.icon} size={22} color={c.active ? colors.text : colors.textFade} />
 		</IconTabBtnBody>
 	);
 };

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import Svg, { G, Path } from 'react-native-svg';
 import styled from 'styled-components/native';
-import core, { request } from '@core';
+import core, { AppAlert, request } from '@core';
 import { Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
+import { connectToSocket } from '../utils/Socket';
 
 interface PreloaderProps {
 	loaded: () => void;
@@ -33,7 +34,10 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 				core.lists.devices.selectors.current.select(res.data.device.id);
 			}
 		}
-		setTimeout(() => loaded(), 10);
+		setTimeout(() => {
+			loaded();
+			connectToSocket();
+		}, 10);
 	};
 
 	useEffect(() => {
@@ -50,6 +54,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 			// 	else setTimeout(() => loaded(), 10);
 			// }, 100);
 		});
+
 		setTimeout(() => !logged_in && loaded(), 200);
 	}, []);
 

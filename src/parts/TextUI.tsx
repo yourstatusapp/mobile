@@ -25,7 +25,7 @@ export const TextCustom: React.FC<TextType> = ({
 	const { colors } = useTheme();
 	const StyleH = StyleSheet.flatten<TextStyle>([
 		style,
-		{ color: color ?? colors.white },
+		{ color: color ?? colors.text },
 		!!bold && { fontWeight: 'bold' },
 		!!italic && { fontStyle: 'italic' },
 		!!weight && { fontWeight: weight },

@@ -38,8 +38,8 @@ export const ManageStatus = () => {
 								name="plus"
 								iconSize={16}
 								size={20}
-								color={colors.white80}
-								backgroundColor={colors.white20}
+								color={colors.textFadeLight}
+								backgroundColor={colors.darker}
 								style={{ transform: [{ rotate: '45deg' }] }}
 								onPress={() => removeStatus(item.id)}
 							/>
@@ -57,5 +57,5 @@ const Line = styled.View`
 	border-radius: 20px;
 	width: 100%;
 	margin-top: 20px;
-	background-color: ${({ theme }) => theme.colors.white20};
+	background-color: ${({ theme }) => theme.colors.backgroundDarker};
 `;

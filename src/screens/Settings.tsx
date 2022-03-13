@@ -1,5 +1,5 @@
 import React from 'react';
-import { Block, Fill, Icon, ModalHeader, Spacer, Text, TextButton } from '@parts';
+import { Block, Fill, Icon, IconButton, ModalHeader, Spacer, Text, TextButton } from '@parts';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'styled-components/native';
 import { SettingsNotifications } from './Settings/index';
@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { SettingsSessions } from './Settings/SettingsSessions';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { StyleSheet } from 'react-native';
 
 const SettingsStack = createNativeStackNavigator();
 
@@ -17,15 +17,11 @@ const settingSections = [
 ];
 
 const MainScreen = () => {
-	const theme_name = usePulse(core.ui.current_theme);
-
-	const toggleTheme = () => {
-		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
-	};
-
+	const { colors, theme } = useTheme();
 	const nav = useNavigation();
+
 	return (
-		<Block paddingHorizontal={20} color={Colors.black}>
+		<Block paddingHorizontal={20} color={colors.background}>
 			<Spacer size={20} />
 			{settingSections.map((item, index) => (
 				<SettingItem key={index} text={item.text} onPress={() => nav.navigate(item.route as never)} />
@@ -38,9 +34,39 @@ const MainScreen = () => {
 
 export const Settings = () => {
 	const { colors, theme } = useTheme();
+	const theme_name = usePulse(core.ui.current_theme);
+	const nav = useNavigation();
+
+	const toggleTheme = () => {
+		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
+	};
+	const sh = StyleSheet.flatten([{ height: 50, paddingHorizontal: 10, borderBottomColor: colors.darker, borderBottomWidth: 1 }]);
+
 	return (
 		<>
-			<ModalHeader title="Settings" />
+			<Block row flex={0} style={sh} color={colors.backgroundDarker} hCenter vCenter>
+				{/* <IconButton
+					name="arrow-big"
+					size={22}
+					iconSize={14}
+					color={colors.textFadeLight}
+					style={{ transform: [{ rotate: '180deg' }], left: 10 }}
+					backgroundColor={colors.darker}
+					onPress={() => nav.goBack()}
+				/> */}
+				<TextButton text="Back" />
+				<Fill />
+
+				<Text bold size={16} center>
+					Settings
+				</Text>
+				<Fill />
+
+				<IconButton name="moon" size={22} iconSize={14} color={colors.text} backgroundColor={colors.darker1} onPress={() => toggleTheme()} />
+			</Block>
+			{/* <Block color="black" flex={0}>
+				<IconButton name="arrow-big" size={25} color="white" onPress={() => toggleTheme()} />
+			</Block> */}
 			<SettingsStack.Navigator initialRouteName="settingsMain" screenOptions={{ headerShown: false, animation: 'slide_from_left' }}>
 				<SettingsStack.Screen name="settingsMain" component={MainScreen} />
 				<SettingsStack.Screen name="settingsNotifications" component={SettingsNotifications} />
@@ -72,17 +98,15 @@ export const SettingItem = ({ text, onPress }: { text: string; onPress: () => vo
 			style={{ paddingVertical: 15, marginBottom: 10, paddingHorizontal: 15, borderRadius: 12 }}
 			flex={0}
 			onPress={onPress}
-			color={colors.white20}
+			color={colors.backgroundDarker}
 			hCenter
 			press
 			row>
-			{/* <Icon name="bell" size={20} color={colors.white} /> */}
-			{/* <Spacer size={15} h /> */}
-			<Text color={colors.white} weight="700" size={12}>
+			<Text color={colors.textFade} weight="600" size={14}>
 				{text}
 			</Text>
 			<Fill />
-			<Icon name="chevron" size={15} color={colors.white80} style={{ transform: [{ rotate: '180deg' }] }} />
+			<Icon name="chevron" size={15} color={colors.textFadeLight} style={{ transform: [{ rotate: '180deg' }] }} />
 		</Block>
 	);
 };

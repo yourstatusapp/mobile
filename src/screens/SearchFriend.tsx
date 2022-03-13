@@ -85,7 +85,7 @@ export const SearchFriend = () => {
 	};
 
 	return (
-		<Block safe color={colors.black}>
+		<Block safe color={colors.background}>
 			<Block color="transparent" paddingHorizontal={20} flex={0} row marginTop={15} paddingBottom={10} style={{ position: 'absolute', zIndex: 6 }}>
 				<IconButton
 					name="arrow-big"

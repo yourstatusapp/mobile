@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text } from '@parts';
 import { ViewStyle } from 'react-native';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 
 interface InputProps {
 	value?: string;
@@ -16,11 +16,12 @@ interface InputProps {
 }
 
 export const Input: React.FC<InputProps> = ({ onChange, placeholder, value, style, disabled, textContentType, autoFocus }) => {
+	const { colors } = useTheme();
 	return (
 		<InputBox>
 			{placeholder && (
 				<PlaceholderBox>
-					<Text size={13} weight="600" color="#6e6e6e">
+					<Text size={13} weight="600" color={colors.text}>
 						{placeholder}
 					</Text>
 				</PlaceholderBox>
@@ -49,7 +50,7 @@ const PlaceholderBox = styled.View`
 	left: 25px;
 	top: -10px;
 	position: absolute;
-	background-color: ${({ theme }) => 'black'};
+	background-color: ${({ theme }) => theme.colors.background};
 	padding: 2px 5px;
 	border-radius: 4px;
 	z-index: 10;
@@ -61,5 +62,5 @@ const InputBody = styled.TextInput<{ disabled: boolean }>`
 	color: white;
 	z-index: 9;
 	border-radius: 100px;
-	border: solid 1px #292929;
+	border: solid 1px ${({ theme }) => theme.colors.darker1};
 `;

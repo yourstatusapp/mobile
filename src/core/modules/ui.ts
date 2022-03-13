@@ -2,7 +2,7 @@ import { state } from '@pulsejs/core';
 import { InternalThemes } from '../../utils/theme';
 import { DefaultTheme } from 'styled-components/native';
 
-export const UiState = {
+export const UIState = {
 	current_theme: state<'light' | 'dark'>('dark').persist('theme_name'),
 	use_system_theme: state<boolean>(false),
 };
@@ -18,8 +18,11 @@ export const UiState = {
 
 export const UiComputedState = {
 	ThemeObject: state<DefaultTheme>(() => {
-		return InternalThemes[UiState.current_theme.value];
+		return InternalThemes[UIState.current_theme.value];
+	}),
+	isDarkMode: state<boolean>(() => {
+		return !!UIState.use_system_theme.value || UIState.current_theme.value === 'dark';
 	}),
 };
 
-export const ui = { ...UiComputedState, ...UiState };
+export const ui = { ...UiComputedState, ...UIState };

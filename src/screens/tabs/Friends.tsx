@@ -31,6 +31,7 @@ export const Friends = React.memo(() => {
 	const { colors, theme } = useTheme();
 	const nav = useNavigation();
 
+	const isDarkMode = usePulse(core.ui.isDarkMode);
 	const friends = usePulse(core.lists.friends.groups.friends);
 	const myStories = usePulse(core.lists.stories.groups.mine);
 
@@ -122,7 +123,7 @@ export const Friends = React.memo(() => {
 
 	return (
 		<>
-			<Block color={colors.black}>
+			<Block color={colors.background}>
 				<Animated.ScrollView
 					scrollEnabled={true}
 					style={{ flex: 1 }}
@@ -175,7 +176,7 @@ export const Friends = React.memo(() => {
 															name="plus"
 															size={18}
 															iconSize={14}
-															color={colors.white}
+															color={colors.text}
 															backgroundColor={colors.black80}
 															style={{ position: 'absolute', top: 5, right: 5, zIndex: 50, transform: [{ rotate: '45deg' }] }}
 															onPress={() => deleteStorie(item2.id)}
@@ -210,7 +211,7 @@ export const Friends = React.memo(() => {
 						height: hasNotch() ? 101 : 71,
 						transform: [{ translateY: translation }],
 						borderBottomWidth: 1,
-						borderBottomColor: colors.white20,
+						borderBottomColor: colors.backgroundDarker,
 						flexDirection: 'row',
 						alignItems: 'flex-end',
 						width: '100%',
@@ -218,7 +219,9 @@ export const Friends = React.memo(() => {
 						position: 'absolute',
 					}}>
 					{/* <BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} /> */}
-					<BlurView style={sh2} tint="dark" intensity={340} />
+
+					<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={340} />
+
 					<Block
 						animate
 						row
@@ -229,8 +232,8 @@ export const Friends = React.memo(() => {
 							name="search"
 							size={23}
 							iconSize={14}
-							color={colors.white}
-							backgroundColor={colors.white40}
+							color={colors.textFade}
+							backgroundColor={colors.darker}
 							onPress={() => nav.navigate('SearchFriend' as never)}
 							style={{ marginRight: 15 }}
 						/>
@@ -239,8 +242,8 @@ export const Friends = React.memo(() => {
 								name="user-add"
 								size={23}
 								iconSize={15}
-								color={colors.black}
-								backgroundColor={colors.white}
+								color={colors.text}
+								backgroundColor={colors.textFade}
 								onPress={() => nav.navigate('FriendRequests' as never, FriendsRequests as never)}
 								style={{ marginRight: 15 }}
 							/>
@@ -248,10 +251,10 @@ export const Friends = React.memo(() => {
 						<Fill />
 						<IconButton
 							name="camera"
-							color={colors.black}
-							backgroundColor={colors.white}
+							color={colors.background}
+							backgroundColor={colors.textFade}
 							size={23}
-							iconSize={15}
+							iconSize={14}
 							onPress={() => nav.navigate('camera' as never, { uploadMethod: 'storie' } as never)}
 						/>
 					</Block>
@@ -325,7 +328,8 @@ const FriendComp: React.FC<FriendItemRenderType> = props => {
 
 const FriendCompBody = styled.View`
 	padding: 20px 0px;
-	border-bottom-color: #111111;
+	/* border-bottom-color: #111111; */
+	border-bottom-color: ${({ theme }) => theme.colors.backgroundDarker};
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 `;

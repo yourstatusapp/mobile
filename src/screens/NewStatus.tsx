@@ -99,7 +99,7 @@ export const NewStatus = () => {
 	}, [GuildCode]);
 
 	return (
-		<Block safe paddingHorizontal={20} color="black">
+		<Block safe paddingHorizontal={20} color={colors.background}>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={60}>
 				<Spacer size={20} />
 				<Text size={30} weight="700">
@@ -115,12 +115,16 @@ export const NewStatus = () => {
 							onPress={() => SetSelectedType(StatusTypes[index])}
 							style={{ width: 50, height: 50, borderRadius: 12 }}
 							key={index}
-							color={SelectedType === StatusTypes[index] ? colors.white40 : colors.white20}
+							color={SelectedType === StatusTypes[index] ? colors.darker1 : colors.darker}
 							flex={0}
 							marginRight={5}
 							vCenter
 							hCenter>
-							<Icon name={item.icon} size={20 + (item?.iconExtraSpace || 0)} color={SelectedType === StatusTypes[index] ? colors.white : colors.white40} />
+							<Icon
+								name={item.icon}
+								size={20 + (item?.iconExtraSpace || 0)}
+								color={SelectedType === StatusTypes[index] ? colors.textFade : colors.textFadeLight}
+							/>
 						</Block>
 					))}
 				</Block>
@@ -155,7 +159,7 @@ export const NewStatus = () => {
 							placeholder="Invitation Link/Code"
 							value={GuildCode}
 							onChange={SetGuildCode}
-							style={{ borderColor: NewValidated ? '#62CB4E' : colors.white40, borderWidth: 1 }}
+							style={{ borderColor: NewValidated ? '#62CB4E' : colors.darker1, borderWidth: 1 }}
 						/>
 						{ValidateLoading && (
 							<Block vCenter hCenter marginTop={35}>
@@ -168,7 +172,7 @@ export const NewStatus = () => {
 								<Text bold marginRight={10}>
 									Found:
 								</Text>
-								<Text marginRight={10} color={colors.white60} weight="600">
+								<Text marginRight={10} color={colors.textFade} weight="600">
 									{GuildResults?.guild.name}
 								</Text>
 								<FastImage
@@ -216,7 +220,7 @@ export const NewStatus = () => {
 				)} */}
 
 				<Fill />
-				<TextButton text="Go back" textColor={colors.white80} onPress={() => nav.goBack()} />
+				<TextButton text="Go back" textColor={colors.textFade} onPress={() => nav.goBack()} />
 			</KeyboardAvoidingView>
 		</Block>
 	);

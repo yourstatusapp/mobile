@@ -19,24 +19,25 @@ export const Account = () => {
 	const [MenuOpen, SetMenuOpen] = useState(false);
 
 	return (
-		<Block color="black" style={{ zIndex: 1 }}>
+		<Block color={colors.background} style={{ zIndex: 1 }}>
 			<BannerArea>
 				{profile?.banner ? <Banner source={{ uri: `https://cdn.yourstatus.app/profile/${profile.account_id}/${profile.banner}` }} /> : <BannerPlaceholder />}
 			</BannerArea>
-			<LinearGradient
+			{/* <LinearGradient
 				colors={['transparent', '#0000008a', 'black']}
 				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
-			/>
+			/> */}
+			<LinearGradient colors={['transparent', colors.background]} style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }} />
 
 			<Block scroll style={{ zIndex: 6 }} paddingHorizontal={20} color="transparent">
 				<Spacer size={20} />
 				<Spacer size={50} />
 				<Block row flex={0} color="transparent">
-					<Text size={28} bold color={colors.white}>
+					<Text size={28} bold color={colors.text}>
 						Account
 					</Text>
 					<Fill />
-					<IconButton name="cog" size={25} color={colors.white} onPress={() => nav.navigate('settings' as never)} />
+					<IconButton name="cog" size={25} color={colors.text} onPress={() => nav.navigate('settings' as never)} />
 				</Block>
 				<Spacer size={20} />
 				{/* <Text>{JSON.stringify(uploadProgress) || 'no upload in progress'}</Text> */}

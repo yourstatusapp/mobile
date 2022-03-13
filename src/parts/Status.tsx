@@ -6,6 +6,7 @@ import styled, { useTheme } from 'styled-components/native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Linking, Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { usePulse } from '@pulsejs/react';
 
 interface StatusType {
 	style?: ViewStyle;
@@ -33,16 +34,30 @@ interface StatusTypesColors {
 	};
 }
 
-const StatusColors: StatusTypesColors = {
-	0: {
-		key_name: 'DEFAULT',
-		color: '#3D60FF',
-		backColor: '#0c1b37',
+const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
+	light: {
+		0: {
+			key_name: 'DEFAULT',
+			color: '#1E2B68',
+			backColor: '#A9C6FE',
+		},
+		1: {
+			key_name: 'DISCORD_GUILD',
+			color: '#363B74',
+			backColor: '#7C86F8',
+		},
 	},
-	1: {
-		key_name: 'DISCORD_GUILD',
-		color: '#738BD7',
-		backColor: '#1E2846',
+	dark: {
+		0: {
+			key_name: 'DEFAULT',
+			color: '#3D60FD',
+			backColor: '#0B1B37',
+		},
+		1: {
+			key_name: 'DISCORD_GUILD',
+			color: '#738BD7',
+			backColor: '#1E2846',
+		},
 	},
 };
 
@@ -121,11 +136,11 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 		// 	AppAlert(false, res.message);
 		// }
 	};
-
+	const theme_name = usePulse(core.ui.current_theme);
 	const StatusRender = (
-		<StatusBody style={{ zIndex: zIndex.value }} backColor={StatusColors[status.type].backColor}>
-			{status.type === 1 && <Icon name="discord" size={18} color={StatusColors[status.type].color} style={{ marginRight: 4 }} />}
-			<Text weight="600" size={13} color={StatusColors[status.type].color}>
+		<StatusBody style={{ zIndex: zIndex.value }} backColor={StatusColors[theme_name][status.type].backColor}>
+			{status.type === 1 && <Icon name="discord" size={18} color={StatusColors[theme_name][status.type].color} style={{ marginRight: 4 }} />}
+			<Text weight="600" size={13} color={StatusColors[theme_name][status.type].color}>
 				{status.data?.name || status.data?.message}
 			</Text>
 		</StatusBody>
@@ -198,7 +213,7 @@ const StatusBody = styled.View<{ backColor: string }>`
 	background-color: ${({ backColor }) => backColor};
 	padding: 4px 7px;
 	align-self: flex-start;
-	border-radius: 4px;
+	border-radius: 6px;
 	justify-content: center;
 	flex-direction: row;
 	align-items: center;

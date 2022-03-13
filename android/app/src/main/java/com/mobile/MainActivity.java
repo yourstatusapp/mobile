@@ -1,4 +1,4 @@
-package com.mobile;
+package mobile.yourstatus.app;
 import expo.modules.ReactActivityDelegateWrapper;
 import com.facebook.react.ReactActivityDelegate;
 

@@ -94,7 +94,7 @@ export const RealtimeMomentHistory = () => {
 
 	return (
 		<Block color="black">
-			<Text>calander test</Text>
+			<Text>Calendar Test</Text>
 			<IconButton name="plus" size={25} color="white" backgroundColor="red" onPress={() => nav.goBack()} />
 			<Block row flex={0} vCenter style={{ borderBottomColor: colors.white40, borderBottomWidth: 1 }}>
 				{WEEK_DAYS.map((item, index) => (

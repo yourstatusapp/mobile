@@ -1,8 +1,8 @@
 import { useTheme } from 'styled-components/native';
 import React, { useState } from 'react';
-import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text } from '@parts';
+import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text, TextButton } from '@parts';
 import core, { AppAlert, request } from '@core';
-import { ActivityIndicator, Dimensions, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
@@ -91,7 +91,10 @@ export const Auth: React.FC = () => {
 	return (
 		<Block color="black">
 			<LinearGradient pointerEvents="none" colors={['black', 'transparent']} style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 350 }} />
-			<KeyboardAvoidingView style={{ flex: 1, justifyContent: 'center' }} behavior="padding" keyboardVerticalOffset={-(Dimensions.get('window').height / 4)}>
+			<KeyboardAvoidingView
+				style={{ flex: 1, justifyContent: 'center' }}
+				behavior={Platform.os === 'ios' ? 'padding' : 'height'}
+				keyboardVerticalOffset={-(Dimensions.get('window').height / 4)}>
 				<Block flex={0} style={{ zIndex: 20 }} paddingHorizontal={20}>
 					<Fill />
 					<Status
@@ -175,6 +178,7 @@ export const Auth: React.FC = () => {
 							</Text>
 						</TouchableOpacity>
 					)}
+
 					<Spacer size={20} />
 					{ShowBuildNumber && <Button text="Paste clipboard" onPress={magicLinkLogin} style={{ marginBottom: 5 }} />}
 					{ShowBuildNumber && (

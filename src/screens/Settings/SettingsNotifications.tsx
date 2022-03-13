@@ -22,10 +22,11 @@ export const SettingsNotifications: React.FC = () => {
 		}
 
 		await request('patch', '/account/devices/' + CURRENT_DEVICE.id, {
-			data: { notifications, push_token: notifications ? core.app.device_push_token.value : '' },
+			data: { notifications, push_token: notifications ? core.app.device_push_token?.value : '' },
 		});
 
 		core.lists.devices.update(CURRENT_DEVICE.id, { notifications });
+		core.lists.devices.rebuildGroupsThatInclude(CURRENT_DEVICE.id);
 	};
 
 	return (
@@ -45,7 +46,7 @@ export const SettingsNotifications: React.FC = () => {
 					</TextButton>
 				</Block>
 			)}
-			{notificationsEnabled === 0 && <TextButton onPress={() => requestPermissions()}>Allow Notifications</TextButton>}
+			{/* {notificationsEnabled === 0 && <TextButton onPress={() => requestPermissions()}>Allow Notifications</TextButton>} */}
 
 			<Block flex={0} row paddingTop={40}>
 				<Block>

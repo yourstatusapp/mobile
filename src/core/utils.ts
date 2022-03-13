@@ -2,8 +2,8 @@ import core, { UploadProgressEventType } from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
-export const baseURL = state('https://api.yourstatus.app');
-// export const baseURL = state('http://192.168.1.2:3020');
+// export const baseURL = state('https://api.yourstatus.app');
+export const baseURL = state('http://192.168.1.5:3020');
 // export const baseURL = state('http://localhost:3020');
 
 interface RequestOptions {
@@ -64,5 +64,5 @@ export const TimeFormatter = (snowflake_id: string, shortName?: boolean) => {
 };
 
 export const AppAlert = (success: boolean, title: string, desc?: string) => {
-	core.events.notification.emit({ success, title: !!desc ? title : success ? 'Success' : 'Failed', desc });
+	core.events.notification.emit({ success, title: !desc ? title : success ? 'Success' : 'Failed', desc });
 };
