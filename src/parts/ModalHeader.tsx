@@ -13,18 +13,18 @@ interface ModalHeaderType {
 
 export const ModalHeader = ({ title, RightComponent }: ModalHeaderType) => {
 	const nav = useNavigation();
-	const { colors } = useTheme();
+	const theme = useTheme();
 
-	const sh = StyleSheet.flatten([{ height: 50, padding: 10, borderBottomColor: colors.darker, borderBottomWidth: 1 }]);
+	const sh = StyleSheet.flatten([{ height: 50, padding: 10, borderBottomColor: theme.darker, borderBottomWidth: 1 }]);
 	return (
-		<Block row flex={0} style={sh} vCenter color={colors.backgroundDarker} hCenter>
+		<Block row flex={0} style={sh} vCenter color={theme.backgroundDarker} hCenter>
 			<IconButton
 				name="arrow-big"
 				size={22}
 				iconSize={14}
-				color={colors.text}
+				color={theme.text}
 				style={{ transform: [{ rotate: '180deg' }], position: 'absolute', left: 10 }}
-				backgroundColor={colors.background}
+				backgroundColor={theme.background}
 				onPress={() => nav.goBack()}
 			/>
 

@@ -7,7 +7,7 @@ import { useTheme } from 'styled-components';
 import styled from 'styled-components/native';
 
 export const ManageStatus = () => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const status = usePulse(core.lists.status.groups.mine);
 
 	const removeStatus = async (statusId: string) => {
@@ -20,7 +20,7 @@ export const ManageStatus = () => {
 	};
 
 	return (
-		<Block safe color={colors.black}>
+		<Block safe color={theme.background}>
 			<Text size={30} bold paddingLeft={20} paddingTop={20}>
 				Manage Status
 			</Text>
@@ -38,8 +38,8 @@ export const ManageStatus = () => {
 								name="plus"
 								iconSize={16}
 								size={20}
-								color={colors.textFadeLight}
-								backgroundColor={colors.darker}
+								color={theme.textFadeLight}
+								backgroundColor={theme.darker}
 								style={{ transform: [{ rotate: '45deg' }] }}
 								onPress={() => removeStatus(item.id)}
 							/>
@@ -57,5 +57,5 @@ const Line = styled.View`
 	border-radius: 20px;
 	width: 100%;
 	margin-top: 20px;
-	background-color: ${({ theme }) => theme.colors.backgroundDarker};
+	background-color: ${({ theme }) => theme.theme.backgroundDarker};
 `;

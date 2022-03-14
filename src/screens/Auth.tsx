@@ -8,12 +8,13 @@ import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { useClipboard } from '@react-native-clipboard/clipboard';
+import { color } from 'react-native-reanimated';
 
 let timeout: NodeJS.Timeout;
 
 export const Auth: React.FC = () => {
 	const nav = useNavigation();
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const loggedin = usePulse(core.account.logged_in);
 	const [Email, SetEmail] = useState('');
 	const [Error, SetError] = useState('');
@@ -88,14 +89,25 @@ export const Auth: React.FC = () => {
 		usernameChecking(v);
 	};
 
+	const theme_name = usePulse(core.ui.current_theme);
+	const isDarkMode = usePulse(core.ui.isDarkMode);
+
+	const toggleTheme = () => {
+		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
+	};
+
 	return (
-		<Block color="black">
-			<LinearGradient pointerEvents="none" colors={['black', 'transparent']} style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 350 }} />
+		<Block color={theme.background}>
+			<LinearGradient
+				pointerEvents="none"
+				colors={[theme.background, isDarkMode ? '#00000000' : '#ffffff00']}
+				style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 350 }}
+			/>
 			<KeyboardAvoidingView
 				style={{ flex: 1, justifyContent: 'center' }}
-				behavior={Platform.os === 'ios' ? 'padding' : 'height'}
+				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 				keyboardVerticalOffset={-(Dimensions.get('window').height / 4)}>
-				<Block flex={0} style={{ zIndex: 20 }} paddingHorizontal={20}>
+				<Block flex={0} style={{ zIndex: 220, position: 'absolute' }} paddingHorizontal={20}>
 					<Fill />
 					<Status
 						demo
@@ -108,7 +120,7 @@ export const Auth: React.FC = () => {
 						style={{ left: 25, top: -60, position: 'absolute', transform: [{ rotate: '-5deg' }] }}
 					/>
 					<Block flex={0} press onPress={() => SetShowBuildNumber(!ShowBuildNumber)}>
-						<Text center weight="800" size={45} color={colors.white}>
+						<Text center weight="800" size={45} color={theme.text}>
 							YourStatus
 						</Text>
 					</Block>
@@ -134,7 +146,7 @@ export const Auth: React.FC = () => {
 								textContentType={'none'}
 								style={{ borderColor: UsernameValid ? '#62CB4E' : !!UsernameErrMsg ? '#FF6161' : '#292929', opacity: UsernameLoading ? 0.5 : 1 }}
 							/>
-							{UsernameLoading && <ActivityIndicator color={colors.white60} style={{ position: 'absolute', right: 20, paddingTop: 10 }} />}
+							{UsernameLoading && <ActivityIndicator color={theme.textFade} style={{ position: 'absolute', right: 20, paddingTop: 10 }} />}
 						</Block>
 					)}
 					{!!UsernameErrMsg && (
@@ -146,12 +158,12 @@ export const Auth: React.FC = () => {
 					<Block flex={0} row hCenter>
 						{NewAccount && (
 							<IconButton
-								name="arrow-big"
+								name="plus"
 								size={22}
-								iconSize={17}
-								color="black"
+								iconSize={14}
+								color={theme.background}
 								backgroundColor="#e66565"
-								style={{ transform: [{ rotate: '180deg' }], marginRight: 15 }}
+								style={{ transform: [{ rotate: '45deg' }], marginRight: 10 }}
 								onPress={() => SetNewAccount(false)}
 							/>
 						)}
@@ -163,9 +175,9 @@ export const Auth: React.FC = () => {
 						/>
 					</Block>
 
-					<Block row vCenter flex={0} marginTop={13} press>
+					<Block row vCenter flex={0} marginTop={13} press onPress={toggleTheme}>
 						<Icon name={'sparkle'} size={14} color={'#5e37ca9e'} style={{ paddingRight: 5, paddingBottom: 5 }} />
-						<Text center color={colors.white60} weight="500" size={12}>
+						<Text center color={theme.textFade} weight="500" size={12}>
 							We make use of magic links
 						</Text>
 					</Block>
@@ -182,7 +194,7 @@ export const Auth: React.FC = () => {
 					<Spacer size={20} />
 					{ShowBuildNumber && <Button text="Paste clipboard" onPress={magicLinkLogin} style={{ marginBottom: 5 }} />}
 					{ShowBuildNumber && (
-						<Text center color={colors.white40} weight="600">
+						<Text center color={theme.textFadeLight} weight="600">
 							Build: {DeviceInfo?.getBuildNumber()}
 						</Text>
 					)}

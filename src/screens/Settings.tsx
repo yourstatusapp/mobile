@@ -1,5 +1,5 @@
 import React from 'react';
-import { Block, Fill, Icon, IconButton, ModalHeader, Spacer, Text, TextButton } from '@parts';
+import { Block, Fill, Icon, IconButton, Spacer, Text, TextButton } from '@parts';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'styled-components/native';
 import { SettingsNotifications } from './Settings/index';
@@ -17,11 +17,11 @@ const settingSections = [
 ];
 
 const MainScreen = () => {
-	const { colors, theme } = useTheme();
+	const theme = useTheme();
 	const nav = useNavigation();
 
 	return (
-		<Block paddingHorizontal={20} color={colors.background}>
+		<Block paddingHorizontal={20} color={theme.background}>
 			<Spacer size={20} />
 			{settingSections.map((item, index) => (
 				<SettingItem key={index} text={item.text} onPress={() => nav.navigate(item.route as never)} />
@@ -33,28 +33,21 @@ const MainScreen = () => {
 };
 
 export const Settings = () => {
-	const { colors, theme } = useTheme();
+	const theme = useTheme();
 	const theme_name = usePulse(core.ui.current_theme);
 	const nav = useNavigation();
 
 	const toggleTheme = () => {
 		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
 	};
-	const sh = StyleSheet.flatten([{ height: 50, paddingHorizontal: 10, borderBottomColor: colors.darker, borderBottomWidth: 1 }]);
+	const sh = StyleSheet.flatten([{ height: 50, paddingHorizontal: 20, borderBottomColor: theme.darker, borderBottomWidth: 1 }]);
 
 	return (
 		<>
-			<Block row flex={0} style={sh} color={colors.backgroundDarker} hCenter vCenter>
-				{/* <IconButton
-					name="arrow-big"
-					size={22}
-					iconSize={14}
-					color={colors.textFadeLight}
-					style={{ transform: [{ rotate: '180deg' }], left: 10 }}
-					backgroundColor={colors.darker}
-					onPress={() => nav.goBack()}
-				/> */}
-				<TextButton text="Back" />
+			<Block row flex={0} style={sh} color={theme.backgroundDarker} hCenter vCenter>
+				<Block flex={1}>
+					<TextButton text={'Close'} onPress={() => nav.goBack()} />
+				</Block>
 				<Fill />
 
 				<Text bold size={16} center>
@@ -62,7 +55,7 @@ export const Settings = () => {
 				</Text>
 				<Fill />
 
-				<IconButton name="moon" size={22} iconSize={14} color={colors.text} backgroundColor={colors.darker1} onPress={() => toggleTheme()} />
+				<IconButton name="moon" size={22} iconSize={14} color={theme.text} backgroundColor={theme.darker1} onPress={() => toggleTheme()} />
 			</Block>
 			{/* <Block color="black" flex={0}>
 				<IconButton name="arrow-big" size={25} color="white" onPress={() => toggleTheme()} />
@@ -91,22 +84,23 @@ export const Settings = () => {
 };
 
 export const SettingItem = ({ text, onPress }: { text: string; onPress: () => void }) => {
-	const { colors, theme } = useTheme();
+	const theme = useTheme();
 
 	return (
 		<Block
 			style={{ paddingVertical: 15, marginBottom: 10, paddingHorizontal: 15, borderRadius: 12 }}
 			flex={0}
 			onPress={onPress}
-			color={colors.backgroundDarker}
+			color={theme.backgroundDarker}
 			hCenter
 			press
 			row>
-			<Text color={colors.textFade} weight="600" size={14}>
+			<Text color={theme.textFade} weight="600" size={14}>
 				{text}
 			</Text>
+
 			<Fill />
-			<Icon name="chevron" size={15} color={colors.textFadeLight} style={{ transform: [{ rotate: '180deg' }] }} />
+			<Icon name="chevron" size={15} color={theme.textFadeLight} style={{ transform: [{ rotate: '180deg' }] }} />
 		</Block>
 	);
 };

@@ -17,7 +17,7 @@ interface ProfileSearchItem {
 
 export const SearchFriend = () => {
 	const nav = useNavigation();
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const [Username, SetUsername] = useState('');
 	const [Results, SetResults] = useState<ProfileSearchItem[]>([]);
 	const [Loading, SetLoading] = useState(false);
@@ -72,10 +72,10 @@ export const SearchFriend = () => {
 				{item?.friend_status < 2 && (
 					<IconButton
 						name="plus"
-						color={colors.white}
+						color={theme.white}
 						size={25}
 						iconSize={15}
-						backgroundColor={colors.black60}
+						backgroundColor={theme.black60}
 						disabled={item.friend_status === 1}
 						onPress={() => sendFriendRequest(item.account_id)}
 					/>
@@ -85,13 +85,13 @@ export const SearchFriend = () => {
 	};
 
 	return (
-		<Block safe color={colors.background}>
+		<Block safe color={theme.background}>
 			<Block color="transparent" paddingHorizontal={20} flex={0} row marginTop={15} paddingBottom={10} style={{ position: 'absolute', zIndex: 6 }}>
 				<IconButton
 					name="arrow-big"
 					size={31}
 					iconSize={15}
-					backgroundColor={colors.white20}
+					backgroundColor={theme.white20}
 					color="white"
 					style={{ transform: [{ rotate: '180deg' }] }}
 					onPress={goBack}
@@ -114,7 +114,7 @@ export const SearchFriend = () => {
 					contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 70 }}
 					ListEmptyComponent={
 						<Block hCenter paddingTop={50}>
-							<Text color={colors.white80}>{Loading ? 'Loading...' : 'No results'}</Text>
+							<Text color={theme.white80}>{Loading ? 'Loading...' : 'No results'}</Text>
 						</Block>
 					}
 				/>
@@ -124,11 +124,11 @@ export const SearchFriend = () => {
 };
 
 const CustomSearchInput = styled.TextInput`
-	border: solid 1px ${({ theme }) => theme.colors.white40};
+	border: solid 1px ${({ theme }) => theme.theme.white40};
 	flex: 1;
 	padding: 0px 15px;
 	height: 40px;
 	color: white;
-	background-color: ${({ theme }) => theme.colors.white20};
+	background-color: ${({ theme }) => theme.theme.white20};
 	border-radius: 30px;
 `;

@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
-import { Account, Friends, Profile, SearchFriend, FriendRequests } from '../screens';
+import { Account, Friends, Profile, SearchFriend, FriendRequests, Conversations, DirectMessage } from '../screens';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { BlurView } from 'expo-blur';
 
@@ -21,22 +21,22 @@ export const BottomTabNavigator: React.FC = () => {
 		contentStyle: { backgroundColor: 'black' },
 	};
 
-	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', bottom: 0, height: 80, width: '100%', zIndex: 0, opacity: 1 }]);
+	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', bottom: 0, height: 80, width: '100%', zIndex: 2, opacity: 1 }]);
 
 	return (
 		<Block color="black">
 			<TabsStackNavigator.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_left' }} initialRouteName={current_tab_state.path_name}>
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
 				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
-				{/* <TabsStackNavigator.Screen name="moments" component={Moments} options={o} /> */}
+				<TabsStackNavigator.Screen name="conversations" component={Conversations} options={o} />
 				<TabsStackNavigator.Screen name="profile" component={Profile} options={{ gestureEnabled: true }} />
-				{/* <TabsStackNavigator.Screen name="ManageFriends" component={Profile} options={{ gestureEnabled: true }} /> */}
+				<TabsStackNavigator.Screen name="directmessage" component={DirectMessage} options={{ gestureEnabled: true }} />
 				<TabsStackNavigator.Screen name="SearchFriend" component={SearchFriend} options={{ gestureEnabled: true }} />
 				<TabsStackNavigator.Screen name="FriendRequests" component={FriendRequests} options={{ gestureEnabled: true }} />
 			</TabsStackNavigator.Navigator>
 
-			{/* <BlurView style={sh2} blurType="extraDark" blurAmount={5} blurRadius={10} /> */}
-			<BlurView style={sh2} intensity={80} tint={isDarkMode ? 'dark' : 'light'} />
+			<BlurView style={sh2} intensity={30} tint={isDarkMode ? 'dark' : 'light'} />
+
 			<CustomNavBar />
 		</Block>
 	);
@@ -45,14 +45,12 @@ export const BottomTabNavigator: React.FC = () => {
 const CustomNavBar = () => {
 	const acc = usePulse(core.account.account);
 	const nav = useNavigation();
-	const { colors, theme } = useTheme();
+	const theme = useTheme();
 	const current_tab_state = usePulse(core.app.TAB_STATE);
-	const isDarkMode = usePulse(core.ui.isDarkMode);
-
-	const sh = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: 80, width: '100%', zIndex: 10, opacity: 1 }]);
 
 	const tabs = [
 		{ name: 'Friends', path: 'friends', icon: 'friends' },
+		{ name: 'Messages', path: 'conversations', icon: 'conversation' },
 		// { name: 'moments', path: 'moments', icon: 'map' },
 	];
 
@@ -62,18 +60,9 @@ const CustomNavBar = () => {
 		// nav.reset({ index: 0, routes: [{ name: name as never }] });
 	};
 
-	const theme_name = usePulse(core.ui.current_theme);
-
-	const toggleTheme = () => {
-		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
-	};
-
-	useEffect(() => {
-		console.log('render');
-	}, []);
-
 	return (
 		<CustomTabBarBody>
+			<DimmingOverlay height={80} />
 			<TabContainer>
 				{tabs.map((item, index) => (
 					<IconTabBtn
@@ -95,18 +84,16 @@ const CustomNavBar = () => {
 				</IconTabBtnBody>
 			</TabContainer>
 
-			<DimmingOverlay height={80} />
-
-			<FloatingPostBtn
-				name="plus"
-				size={30}
-				color={colors.backgroundDarker}
-				backgroundColor={colors.darker2}
-				iconSize={20}
-				onPress={() => nav.navigate('create_status' as never)}
-				// onPress={() => toggleTheme()}
-			/>
-			{/* <BlurView style={sh} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} /> */}
+			{current_tab_state.state !== 2 && (
+				<FloatingPostBtn
+					name="plus"
+					size={30}
+					color={theme.textFadeLight}
+					backgroundColor={theme.darker}
+					iconSize={20}
+					onPress={() => nav.navigate('create_status' as never)}
+				/>
+			)}
 		</CustomTabBarBody>
 	);
 };
@@ -119,16 +106,13 @@ const FloatingPostBtn = styled(IconButton)`
 
 const DimmingOverlay = styled.View<{ height: number }>`
 	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	/* background-color: rgba(0, 0, 0, 0.65); */
-	background-color: rgba(0, 0, 0, 0.05);
-	// todo: fix this for light and dark mode
-	/* border-top-color: ${({ theme }) => theme.colors.text}; */
-	/* border-top-width: 1px; */
-	opacity: 1;
+	z-index: 1;
+	background-color: ${({ theme }) => theme.background};
+	opacity: 0.5;
 	height: ${props => props.height}px;
+	bottom: 0;
+	left: 0;
+	width: 100%;
 `;
 
 const CustomTabBarBody = styled.View<{ isIphoneX?: boolean }>`
@@ -138,6 +122,8 @@ const CustomTabBarBody = styled.View<{ isIphoneX?: boolean }>`
 	position: absolute;
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
+	position: absolute;
+	z-index: 3;
 `;
 
 const TabContainer = styled.View`
@@ -149,14 +135,12 @@ const TabContainer = styled.View`
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
-	/* background-color: rgba(0, 0, 0, 1); */
+	z-index: 20;
 `;
 
 const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 	const acc = usePulse(core.account.account);
 	const profile = usePulse(core.profile.profile);
-	const { theme } = useTheme();
-
 	return (
 		<AvatarBody active={c.active}>
 			<Avatar src={[acc?.id, profile?.avatar]} size={33} />
@@ -166,7 +150,7 @@ const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 
 const AvatarBody = styled.View<{ active: boolean }>`
 	border-radius: 50px;
-	background-color: ${({ active, theme }) => (active ? theme.colors.text : theme.colors.textFade)};
+	background-color: ${({ active, theme }) => (active ? theme.text : theme.textFade)};
 	height: 35px;
 	width: 35px;
 	align-items: center;
@@ -174,11 +158,11 @@ const AvatarBody = styled.View<{ active: boolean }>`
 `;
 
 const IconTabBtn: React.FC<{ route: string; icon: string; active?: boolean; onPress: () => void; name: string }> = c => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 
 	return (
 		<IconTabBtnBody onPress={c.onPress}>
-			<Icon name={c.icon} size={22} color={c.active ? colors.text : colors.textFade} />
+			<Icon name={c.icon} size={22} color={c.active ? theme.text : theme.textFade} />
 		</IconTabBtnBody>
 	);
 };

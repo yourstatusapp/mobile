@@ -17,7 +17,7 @@ type FriendRequestType = ListRenderItemInfo<FriendRequestItemType>;
 
 export const FriendRequests = () => {
 	const { params }: { params?: FriendRequestItemType[] } = useRoute();
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const nav = useNavigation();
 	const acc = usePulse(core.account.account);
 	const [FList, SetFList] = useState([]);
@@ -55,19 +55,19 @@ export const FriendRequests = () => {
 
 			<IconButton
 				name="checkmark"
-				color={colors.white}
+				color={theme.white}
 				size={25}
 				iconSize={15}
-				backgroundColor={colors.black60}
+				backgroundColor={theme.black60}
 				onPress={() => replyRequest(item.id, acc.id, true, index)}
 			/>
 			<Spacer size={10} h />
 			<IconButton
 				name="plus"
-				color={colors.white}
+				color={theme.white}
 				size={25}
 				iconSize={15}
-				backgroundColor={colors.black60}
+				backgroundColor={theme.black60}
 				onPress={() => replyRequest(item.id, acc.id, false, index)}
 				iconStyle={{ transform: [{ rotate: '45deg' }] }}
 			/>

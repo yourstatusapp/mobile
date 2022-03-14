@@ -24,7 +24,7 @@ interface AlbumAssetType {
 }
 
 export const Camera = () => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const nav = useNavigation();
 	const { params } = useRoute<RouteProp<CameraProps, 'Camera'>>();
 	const camera = useRef<CameraComp>(null);
@@ -56,7 +56,7 @@ export const Camera = () => {
 
 	const PhotosLibraryPreviewstyle = useAnimatedStyle(() => {
 		return {
-			// backgroundColor: colors.black80,
+			// backgroundColor: theme.black80,
 			opacity: offset.value,
 
 			// height: height.value + '%',
@@ -204,7 +204,7 @@ export const Camera = () => {
 						name="plus"
 						size={28}
 						iconSize={18}
-						backgroundColor={colors.white40}
+						backgroundColor={theme.white40}
 						color="white"
 						style={{ transform: [{ rotate: '45deg' }] }}
 						onPress={() => toggleOpenPhotos()}
@@ -216,7 +216,7 @@ export const Camera = () => {
 					name="plus"
 					size={28}
 					iconSize={18}
-					backgroundColor={colors.white40}
+					backgroundColor={theme.white40}
 					color="white"
 					style={{ left: 15, top: 10, position: 'absolute', zIndex: 20, transform: [{ rotate: '45deg' }] }}
 					onPress={() => nav.goBack()}
@@ -225,7 +225,7 @@ export const Camera = () => {
 					name="flashlight"
 					size={28}
 					iconSize={18}
-					backgroundColor={colors.white40}
+					backgroundColor={theme.white40}
 					color="white"
 					style={{ right: 15, top: 10, position: 'absolute', zIndex: 20 }}
 					onPress={() => SetFlash(!Flash)}
@@ -295,7 +295,7 @@ export const Camera = () => {
 					<TouchableOpacity
 						onPress={() => toggleOpenPhotos()}
 						activeOpacity={0.6}
-						style={{ borderRadius: 7, backgroundColor: colors.white20, height: 50, width: 50 }}>
+						style={{ borderRadius: 7, backgroundColor: theme.white20, height: 50, width: 50 }}>
 						{!!AlbumAssets.length && <FastImage source={{ uri: AlbumAssets[0].path }} style={{ height: 50, width: 50, borderRadius: 7 }} />}
 					</TouchableOpacity>
 				</Block>

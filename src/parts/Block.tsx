@@ -28,10 +28,10 @@ export const Block: React.FC<BlockType> = ({
 	animate,
 	activeOpacity,
 }) => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
 		!!paddingHorizontal && { paddingHorizontal },
-		// { backgroundColor: color ?? colors.black },
+		// { backgroundColor: color ?? theme.black },
 		{ flex: flex ?? 1, width: '100%', flexDirection: 'column' },
 		!!color && { backgroundColor: color },
 		!!vCenter && { justifyContent: 'center' },

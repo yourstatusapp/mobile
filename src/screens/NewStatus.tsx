@@ -20,7 +20,7 @@ export const NewStatus = () => {
 	const [Loading, SetLoading] = useState(false);
 	const [Expire, SetExpire] = useState(false);
 	const nav = useNavigation();
-	const { colors } = useTheme();
+	const theme = useTheme();
 
 	const [SelectedType, SetSelectedType] = useState<keyof typeof StatusTypes>('DEFAULT');
 	const [NewValidated, SetNewValidated] = useState(false);
@@ -99,7 +99,7 @@ export const NewStatus = () => {
 	}, [GuildCode]);
 
 	return (
-		<Block safe paddingHorizontal={20} color={colors.background}>
+		<Block safe paddingHorizontal={20} color={theme.background}>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={60}>
 				<Spacer size={20} />
 				<Text size={30} weight="700">
@@ -115,7 +115,7 @@ export const NewStatus = () => {
 							onPress={() => SetSelectedType(StatusTypes[index])}
 							style={{ width: 50, height: 50, borderRadius: 12 }}
 							key={index}
-							color={SelectedType === StatusTypes[index] ? colors.darker1 : colors.darker}
+							color={SelectedType === StatusTypes[index] ? theme.darker1 : theme.darker}
 							flex={0}
 							marginRight={5}
 							vCenter
@@ -123,7 +123,7 @@ export const NewStatus = () => {
 							<Icon
 								name={item.icon}
 								size={20 + (item?.iconExtraSpace || 0)}
-								color={SelectedType === StatusTypes[index] ? colors.textFade : colors.textFadeLight}
+								color={SelectedType === StatusTypes[index] ? theme.textFade : theme.textFadeLight}
 							/>
 						</Block>
 					))}
@@ -159,7 +159,7 @@ export const NewStatus = () => {
 							placeholder="Invitation Link/Code"
 							value={GuildCode}
 							onChange={SetGuildCode}
-							style={{ borderColor: NewValidated ? '#62CB4E' : colors.darker1, borderWidth: 1 }}
+							style={{ borderColor: NewValidated ? '#62CB4E' : theme.darker1, borderWidth: 1 }}
 						/>
 						{ValidateLoading && (
 							<Block vCenter hCenter marginTop={35}>
@@ -172,7 +172,7 @@ export const NewStatus = () => {
 								<Text bold marginRight={10}>
 									Found:
 								</Text>
-								<Text marginRight={10} color={colors.textFade} weight="600">
+								<Text marginRight={10} color={theme.textFade} weight="600">
 									{GuildResults?.guild.name}
 								</Text>
 								<FastImage
@@ -215,12 +215,12 @@ export const NewStatus = () => {
 				</Block>
 				{Expire && (
 					<Block>
-						<DatePicker date={new Date()} minimumDate={new Date()} textColor={colors.white} />
+						<DatePicker date={new Date()} minimumDate={new Date()} textColor={theme.white} />
 					</Block>
 				)} */}
 
 				<Fill />
-				<TextButton text="Go back" textColor={colors.textFade} onPress={() => nav.goBack()} />
+				<TextButton text="Go back" textColor={theme.textFade} onPress={() => nav.goBack()} />
 			</KeyboardAvoidingView>
 		</Block>
 	);

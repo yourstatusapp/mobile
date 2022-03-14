@@ -7,7 +7,7 @@ import { useTheme } from 'styled-components/native';
 import { requestPermissions } from '../../utils/PushNotification';
 
 export const SettingsNotifications: React.FC = () => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const notificationsEnabled = usePulse(core.app.notification_permission);
 	const CURRENT_DEVICE = usePulse(core.lists.devices.selectors.current);
 
@@ -30,18 +30,18 @@ export const SettingsNotifications: React.FC = () => {
 	};
 
 	return (
-		<Block paddingHorizontal={20} color={colors.black}>
+		<Block paddingHorizontal={20} color={theme.background}>
 			<Spacer size={20} />
 			<Text bold size={26}>
 				Notifications
 			</Text>
 			{notificationsEnabled === 2 && (
 				<Block flex={0} color="#FF6666" style={{ padding: 10, borderRadius: 8 }}>
-					<Text color={colors.black} weight="600" size={14}>
+					<Text color={theme.black} weight="600" size={14}>
 						Note that you have disabled notifications
 					</Text>
 					<Spacer size={15} />
-					<TextButton textSize={12} textColor={colors.white} style={{ backgroundColor: '#00000032', padding: 6, borderRadius: 4 }}>
+					<TextButton textSize={12} textColor={theme.white} style={{ backgroundColor: '#00000032', padding: 6, borderRadius: 4 }}>
 						Allow notifications
 					</TextButton>
 				</Block>
@@ -53,7 +53,7 @@ export const SettingsNotifications: React.FC = () => {
 					<Text size={14} weight="600">
 						Enable Notifications
 					</Text>
-					<Text size={12} color={colors.white60} paddingTop={0}>
+					<Text size={12} color={theme.white60} paddingTop={0}>
 						Getting notified whenever
 					</Text>
 				</Block>

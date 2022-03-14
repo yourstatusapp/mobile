@@ -21,7 +21,7 @@ const WEEK_DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
 export const RealtimeMomentHistory = () => {
 	const nav = useNavigation();
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const [List, SetList] = useState<Week[]>([]);
 
 	const renderList = () => {
@@ -96,7 +96,7 @@ export const RealtimeMomentHistory = () => {
 		<Block color="black">
 			<Text>Calendar Test</Text>
 			<IconButton name="plus" size={25} color="white" backgroundColor="red" onPress={() => nav.goBack()} />
-			<Block row flex={0} vCenter style={{ borderBottomColor: colors.white40, borderBottomWidth: 1 }}>
+			<Block row flex={0} vCenter style={{ borderBottomColor: theme.white40, borderBottomWidth: 1 }}>
 				{WEEK_DAYS.map((item, index) => (
 					<Block flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
 						<Text size={18} bold>

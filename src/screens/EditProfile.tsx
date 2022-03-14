@@ -10,7 +10,7 @@ let timeout: NodeJS.Timeout;
 
 export const EditProfile = () => {
 	const nav = useNavigation();
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const profile = usePulse(core.profile.profile);
 
 	const [HasChanged, SetHasChanged] = useState(false);
@@ -97,20 +97,20 @@ export const EditProfile = () => {
 	}, [Username, Location, Bio, Available, profile]);
 
 	return (
-		<Block safe flex={1} color={colors.black}>
+		<Block safe flex={1} color={theme.background}>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={70}>
 				<ModalHeader title="Edit Profile" />
 				<Spacer size={25} />
 				<Text size={14} color="#D53F3F" paddingLeft={10} paddingBottom={10}>
 					{ErrorMessage}
 				</Text>
-				<Text size={14} color={colors.white60} paddingLeft={10} weight="600">
+				<Text size={14} color={theme.text} paddingLeft={10} weight="600">
 					Username
 				</Text>
 				<Block flex={0} vCenter style={{ position: 'relative' }}>
 					<CustomEditInput
 						placeholder="username"
-						placeholderTextColor={colors.white20}
+						placeholderTextColor={theme.textFade}
 						value={Username}
 						onChangeText={v => {
 							SetUsername(v);
@@ -120,16 +120,16 @@ export const EditProfile = () => {
 						autoCompleteType="off"
 						style={{
 							borderBottomColor: UsernameLoading
-								? colors.white40
+								? theme.darker1
 								: (profile.username || '') === Username
-								? colors.white40
+								? theme.darker1
 								: UsernameValid
 								? '#62CB4E'
 								: '#FF6161',
 						}}
 					/>
 					{(profile.username || '') != Username && UsernameLoading && (
-						<ActivityIndicator color={colors.white60} style={{ position: 'absolute', right: 20, paddingBottom: 20 }} />
+						<ActivityIndicator color={theme.textFadeLight} style={{ position: 'absolute', right: 20, paddingBottom: 20 }} />
 					)}
 				</Block>
 				{!!UsernameErrMsg && (
@@ -140,13 +140,13 @@ export const EditProfile = () => {
 
 				<Spacer size={20} />
 
-				<Text size={14} color={colors.white60} paddingLeft={10} weight="600">
+				<Text size={14} color={theme.text} paddingLeft={10} weight="600">
 					Location
 				</Text>
 
 				<CustomEditInput
 					placeholder="Location"
-					placeholderTextColor={colors.white20}
+					placeholderTextColor={theme.textFadeLight}
 					value={Location}
 					onChangeText={v => {
 						SetLocation(v);
@@ -155,17 +155,17 @@ export const EditProfile = () => {
 					autoCorrect={false}
 					autoCompleteType="off"
 					style={{
-						borderBottomColor: (profile.location || '') == Location ? colors.white40 : '#62CB4E',
+						borderBottomColor: (profile.location || '') == Location ? theme.darker1 : '#62CB4E',
 					}}
 				/>
 
 				<Spacer size={20} />
-				<Text size={14} color={colors.white60} paddingLeft={10} weight="600">
+				<Text size={14} color={theme.textFade} paddingLeft={10} weight="600">
 					Bio
 				</Text>
 				<CustomEditInput
 					placeholder="About yourself"
-					placeholderTextColor={colors.white20}
+					placeholderTextColor={theme.textFadeLight}
 					value={Bio}
 					onChangeText={v => {
 						SetBio(v);
@@ -174,7 +174,7 @@ export const EditProfile = () => {
 					autoCorrect={false}
 					autoCompleteType="off"
 					style={{
-						borderBottomColor: (profile.bio || '') == Bio ? colors.white40 : '#62CB4E',
+						borderBottomColor: (profile.bio || '') == Bio ? theme.darker1 : '#62CB4E',
 					}}
 				/>
 
@@ -193,7 +193,7 @@ const CustomEditInput = styled.TextInput.attrs({ autoCapitalize: 'none', autoCor
 	height: 29px;
 	padding-left: 10px;
 	/* padding: 10px; */
-	border-bottom-color: ${({ theme }) => theme.colors.white40};
+	border-bottom-color: ${({ theme }) => theme.theme.textFadeLight};
 	border-bottom-width: 1px;
 	margin-bottom: 10px;
 	/* border-bottom */

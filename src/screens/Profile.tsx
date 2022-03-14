@@ -34,7 +34,7 @@ export const Profile = () => {
 	});
 
 	const { params } = useRoute();
-	const { colors } = useTheme();
+	const theme = useTheme();
 	// @ts-ignore
 	const usr_name = params.username;
 	const [ProfileData, SetProfile] = useState<ProfileType>();
@@ -56,13 +56,13 @@ export const Profile = () => {
 
 	if (!ProfileData) {
 		return (
-			<Block safe color={colors.background}>
+			<Block safe color={theme.background}>
 				<Text>{Loaded ? 'Failed to load profile' : 'Loading profile data'}</Text>
 			</Block>
 		);
 	} else {
 		return (
-			<Block color={colors.background}>
+			<Block color={theme.background}>
 				<BannerArea style={{ transform: [{ scale: IMAGE_HEIGHT }] }}>
 					{!ProfileData?.banner ? (
 						<BannerPlaceholder />
@@ -71,18 +71,15 @@ export const Profile = () => {
 						// <Banner source={{ uri: `https://blog-www.pods.com/wp-content/uploads/2019/04/MG_1_1_New_York_City-1.jpg` }} resizeMode="center" />
 					)}
 				</BannerArea>
-				<LinearGradient
-					colors={['transparent', colors.background]}
-					style={{ position: 'absolute', top: 0, zIndex: 12, width: '100%', height: BANNER_HEIGHT }}
-				/>
+				<LinearGradient colors={['transparent', theme.background]} style={{ position: 'absolute', top: 0, zIndex: 12, width: '100%', height: BANNER_HEIGHT }} />
 				{/* <IconButton
 					name="arrow-big"
 					size={25}
 					iconSize={15}
 					style={{ position: 'absolute', left: 20, top: 40, zIndex: 95352, transform: [{ rotate: '180deg' }] }}
 					onPress={() => nav.goBack()}
-					color={colors.box}
-					backgroundColor={colors.box}
+					color={theme.box}
+					backgroundColor={theme.box}
 				/> */}
 
 				<Animated.ScrollView
@@ -107,7 +104,7 @@ export const Profile = () => {
 
 					<Avatar src={[ProfileData.account_id, ProfileData.avatar]} size={130} style={{ zIndex: 17, marginLeft: 20, marginBottom: 0 }} />
 
-					<Block color={colors.background} style={{ zIndex: 7, height: 500 }} paddingHorizontal={20} paddingTop={50}>
+					<Block color={theme.background} style={{ zIndex: 7, height: 500 }} paddingHorizontal={20} paddingTop={50}>
 						<Text bold size={40} paddingTop={0}>
 							{ProfileData.username}
 						</Text>
@@ -122,16 +119,16 @@ export const Profile = () => {
 
 						{ProfileData?.location && (
 							<Block row flex={0} hCenter paddingTop={12}>
-								<Icon name="map-marker" size={15} color={colors.text} style={{ paddingRight: 5 }} />
-								<Text weight="600" size={12} color={colors.text}>
+								<Icon name="map-marker" size={15} color={theme.text} style={{ paddingRight: 5 }} />
+								<Text weight="600" size={12} color={theme.text}>
 									{ProfileData.location}
 								</Text>
 							</Block>
 						)}
 						{ProfileData.bio && (
 							<>
-								<Line size={3} color={colors.box} spacing={12} />
-								<Text size={14} color={colors.textFade}>
+								<Line size={3} color={theme.box} spacing={12} />
+								<Text size={14} color={theme.textFade}>
 									{ProfileData.bio}
 								</Text>
 							</>
@@ -170,7 +167,7 @@ const Banner = styled(FastImage)`
 
 const BannerPlaceholder = styled.View`
 	width: 100%;
-	background-color: ${({ theme }) => theme.colors.text};
+	background-color: ${({ theme }) => theme.theme.text};
 	height: ${BANNER_HEIGHT}px;
 `;
 

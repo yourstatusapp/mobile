@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 type DeviceItem = ListRenderItemInfo<DeviceType>;
 
 export const SettingsSessions: React.FC = () => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const nav = useNavigation();
 
 	const devices = usePulse(core.lists.devices.groups.mine);
@@ -50,9 +50,9 @@ export const SettingsSessions: React.FC = () => {
 	}, []);
 
 	const sessionRenderItem = ({ item, index }: ListRenderItemInfo<DeviceType>) => (
-		<Block key={index} marginBottom={20} color={colors.white20} style={{ padding: 13, borderRadius: 8 }}>
-			<Text bold color={colors.white80}>
-				Created <Text color={colors.white}>{TimeFormatter(item.id)}</Text> ago
+		<Block key={index} marginBottom={20} color={theme.background} style={{ padding: 13, borderRadius: 8 }}>
+			<Text bold color={theme.textFade}>
+				Created <Text color={theme.text}>{TimeFormatter(item.id)}</Text> ago
 			</Text>
 			{current_device?.id === item.id && (
 				<Block row hCenter flex={0} marginTop={5}>
@@ -66,7 +66,7 @@ export const SettingsSessions: React.FC = () => {
 				{/* <IconButton
 					name="plus"
 					color="white"
-					backgroundColor={colors.white40}
+					backgroundColor={theme.white40}
 					size={20}
 					iconSize={17}
 					style={{ transform: [{ rotate: '45deg' }] }}
@@ -87,7 +87,7 @@ export const SettingsSessions: React.FC = () => {
 	);
 
 	return (
-		<Block color={colors.black}>
+		<Block color={theme.background}>
 			<LinearGradient pointerEvents="none" colors={['black', 'transparent']} style={{ position: 'absolute', top: 0, zIndex: 9, width: '100%', height: 150 }} />
 
 			<Text bold size={30} marginTop={15} marginLeft={10} style={{ zIndex: 10, position: 'absolute' }}>

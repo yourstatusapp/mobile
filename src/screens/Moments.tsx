@@ -16,7 +16,7 @@ interface MomentTypeItem {
 
 export const Moments = () => {
 	const nav = useNavigation();
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const [List, SetList] = useState<MomentTypeItem[]>();
 
 	const getMoments = async () => {
@@ -38,7 +38,7 @@ export const Moments = () => {
 	const renderItem: ListRenderItem<MomentTypeItem> = ({ item, index }) => {
 		const openProfile = () => nav.navigate('profile' as never, { username: item.username } as never);
 		return (
-			<Block key={index} flex={0} marginBottom={40} style={{ borderTopColor: colors.white20, borderTopWidth: 1 }}>
+			<Block key={index} flex={0} marginBottom={40} style={{ borderTopColor: theme.white20, borderTopWidth: 1 }}>
 				<Block row flex={0} style={{ padding: 10 }} hCenter>
 					<TouchableOpacity activeOpacity={0.6} onPress={openProfile}>
 						<Avatar src={[item.account_id, item.avatar]} size={40} />

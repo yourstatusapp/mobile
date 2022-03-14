@@ -62,27 +62,27 @@ const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 };
 
 export const Status = React.memo(({ status, style, demo }: StatusType) => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 
 	const wrapperStyle = StyleSheet.flatten([style]);
 
 	const offset = useSharedValue(0);
 	const zIndex = useSharedValue(wrapperStyle?.zIndex ? 2 - wrapperStyle?.zIndex : -50);
 
-	const animatedStyles = useAnimatedStyle(() => {
-		return {
-			height: '100%',
-			position: 'absolute',
-			backgroundColor: colors.white20,
-			right: offset.value,
-			justifyContent: 'center',
-			alignItems: 'center',
-			borderRadius: 5,
-			flex: 1,
-			width: 30,
-			zIndex: zIndex.value,
-		};
-	});
+	// const animatedStyles = useAnimatedStyle(() => {
+	// 	return {
+	// 		height: '100%',
+	// 		position: 'absolute',
+	// 		backgroundColor: theme.white20,
+	// 		right: offset.value,
+	// 		justifyContent: 'center',
+	// 		alignItems: 'center',
+	// 		borderRadius: 5,
+	// 		flex: 1,
+	// 		width: 30,
+	// 		zIndex: zIndex.value,
+	// 	};
+	// });
 
 	// const tapStatus = async () => {
 	// 	if (demo) {
@@ -173,7 +173,7 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 					// if (status.taped === false) onStatusPress();
 				}}>
 				{/* <Animated.View style={animatedStyles}>
-					<Text center marginLeft={10} size={12} bold color={colors.white}>
+					<Text center marginLeft={10} size={12} bold color={theme.white}>
 						{status.taps}
 					</Text>
 				</Animated.View> */}
@@ -196,7 +196,7 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 	// 					onPress();
 	// 				}}>
 	// 				<Animated.View style={animatedStyles}>
-	// 					<Text center marginLeft={10} size={12} bold color={colors.white}>
+	// 					<Text center marginLeft={10} size={12} bold color={theme.white}>
 	// 						{status.taps}
 	// 					</Text>
 	// 				</Animated.View>

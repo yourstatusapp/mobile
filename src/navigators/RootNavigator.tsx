@@ -40,7 +40,7 @@ export const RootNavigator = () => {
 					}}
 				/>
 				<RootStack.Screen name="edit_profile" component={EditProfile} options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }} />
-				<RootStack.Screen name="settings" component={Settings} options={{ gestureEnabled: false, animation: 'default', presentation: 'modal' }} />
+				<RootStack.Screen name="settings" component={Settings} options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }} />
 				<RootStack.Screen name="manage_status" component={ManageStatus} options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }} />
 				<RootStack.Screen name="explanation" component={Explanation} options={{ gestureEnabled: false, animation: 'default', presentation: 'modal' }} />
 				<RootStack.Screen

@@ -14,12 +14,12 @@ const BANNER_HEIGHT = 250;
 
 export const Account = () => {
 	const nav = useNavigation();
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const profile = usePulse(core.profile.profile);
 	const [MenuOpen, SetMenuOpen] = useState(false);
 
 	return (
-		<Block color={colors.background} style={{ zIndex: 1 }}>
+		<Block color={theme.background} style={{ zIndex: 1 }}>
 			<BannerArea>
 				{profile?.banner ? <Banner source={{ uri: `https://cdn.yourstatus.app/profile/${profile.account_id}/${profile.banner}` }} /> : <BannerPlaceholder />}
 			</BannerArea>
@@ -27,17 +27,17 @@ export const Account = () => {
 				colors={['transparent', '#0000008a', 'black']}
 				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
 			/> */}
-			<LinearGradient colors={['transparent', colors.background]} style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }} />
+			<LinearGradient colors={['transparent', theme.background]} style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }} />
 
 			<Block scroll style={{ zIndex: 6 }} paddingHorizontal={20} color="transparent">
 				<Spacer size={20} />
 				<Spacer size={50} />
 				<Block row flex={0} color="transparent">
-					<Text size={28} bold color={colors.text}>
+					<Text size={28} bold color={theme.text}>
 						Account
 					</Text>
 					<Fill />
-					<IconButton name="cog" size={25} color={colors.text} onPress={() => nav.navigate('settings' as never)} />
+					<IconButton name="cog" size={25} iconSize={15} color={theme.text} backgroundColor={theme.darker} onPress={() => nav.navigate('settings' as never)} />
 				</Block>
 				<Spacer size={20} />
 				{/* <Text>{JSON.stringify(uploadProgress) || 'no upload in progress'}</Text> */}
@@ -47,21 +47,21 @@ export const Account = () => {
 					<Block flex={0} color="transparent" vCenter paddingLeft={15}>
 						<IconButton
 							name="pencil"
-							color={colors.white}
+							color={theme.text}
 							size={25}
 							iconSize={12}
 							style={{ marginBottom: 10 }}
-							backgroundColor={colors.white40}
+							backgroundColor={theme.darker}
 							onPress={() => nav.navigate('edit_profile' as never)}
 						/>
-						<IconButton name="image" color={colors.white} size={25} iconSize={16} backgroundColor={colors.white40} onPress={() => SetMenuOpen(true)} />
+						<IconButton name="image" color={theme.text} size={25} iconSize={16} backgroundColor={theme.darker} onPress={() => SetMenuOpen(true)} />
 						<Menu opened={MenuOpen} onBackdropPress={() => SetMenuOpen(false)} style={{ borderRadius: 5 }}>
 							<MenuTrigger text="" />
 							<MenuOptions
 								customStyles={{
 									optionsContainer: { borderRadius: 5 },
 									optionsWrapper: { borderRadius: 5 },
-									optionWrapper: { backgroundColor: colors.black60, height: 35, justifyContent: 'center' },
+									optionWrapper: { backgroundColor: theme.darker, height: 35, justifyContent: 'center' },
 									optionText: { color: 'white', fontWeight: '700' },
 								}}>
 								<MenuOption
@@ -95,7 +95,7 @@ export const Account = () => {
 				<Text bold size={18} paddingTop={30} paddingBottom={10}>
 					@{profile.username}
 				</Text>
-				<Text paddingBottom={10} color={profile.display_name ? colors.white : colors.white40}>
+				<Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade}>
 					{profile.display_name || 'No display name'}
 				</Text>
 				{/* <Spacer size={20} />
@@ -142,7 +142,7 @@ const Banner = styled(FastImage)`
 
 const BannerPlaceholder = styled.View`
 	width: 100%;
-	background-color: ${({ theme }) => theme.colors.white20};
+	background-color: ${({ theme }) => theme.theme.white20};
 	height: ${BANNER_HEIGHT}px;
 `;
 

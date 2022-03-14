@@ -22,10 +22,10 @@ export const TextCustom: React.FC<TextType> = ({
 	paddingTop,
 	...props
 }) => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const StyleH = StyleSheet.flatten<TextStyle>([
 		style,
-		{ color: color ?? colors.text },
+		{ color: color ?? theme.text },
 		!!bold && { fontWeight: 'bold' },
 		!!italic && { fontStyle: 'italic' },
 		!!weight && { fontWeight: weight },

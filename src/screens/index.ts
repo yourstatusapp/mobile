@@ -18,3 +18,5 @@ export { StorieViewer } from './StorieViewer';
 export { VerifyAccount } from './VerifyAccount';
 export { Explanation } from './Explanation';
 export { ManageStatus } from './ManageStatus';
+export { Conversations } from './Conversations';
+export { DirectMessage } from './DirectMessage';

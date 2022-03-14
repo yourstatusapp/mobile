@@ -16,12 +16,12 @@ interface InputProps {
 }
 
 export const Input: React.FC<InputProps> = ({ onChange, placeholder, value, style, disabled, textContentType, autoFocus }) => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	return (
 		<InputBox>
-			{placeholder && (
+			{!!placeholder && (
 				<PlaceholderBox>
-					<Text size={13} weight="600" color={colors.text}>
+					<Text size={13} weight="600" color={theme.text}>
 						{placeholder}
 					</Text>
 				</PlaceholderBox>
@@ -50,7 +50,7 @@ const PlaceholderBox = styled.View`
 	left: 25px;
 	top: -10px;
 	position: absolute;
-	background-color: ${({ theme }) => theme.colors.background};
+	background-color: ${({ theme }) => theme.theme.background};
 	padding: 2px 5px;
 	border-radius: 4px;
 	z-index: 10;
@@ -59,8 +59,8 @@ const PlaceholderBox = styled.View`
 const InputBody = styled.TextInput<{ disabled: boolean }>`
 	height: 50px;
 	padding: 0px 20px;
-	color: white;
+	color: ${({ theme }) => theme.theme.text};
 	z-index: 9;
 	border-radius: 100px;
-	border: solid 1px ${({ theme }) => theme.colors.darker1};
+	border: solid 1px ${({ theme }) => theme.theme.darker1};
 `;

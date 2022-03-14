@@ -26,7 +26,7 @@ export const NewMoment = () => {
 	});
 
 	const nav = useNavigation();
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const { params } = useRoute<RouteProp<NewMomentProps, 'NewMoment'>>();
 	const { uploadMethod, path } = params;
 	const frame = useSafeAreaFrame();
@@ -113,17 +113,17 @@ export const NewMoment = () => {
 					color="white"
 					size={30}
 					iconSize={18}
-					backgroundColor={colors.black60}
+					backgroundColor={theme.black60}
 					style={{ transform: [{ rotate: '180deg' }] }}
 					onPress={() => nav.goBack()}
 					disabled={Loading}
 				/>
 				<IconButton
 					name="send"
-					color={colors.white}
+					color={theme.white}
 					size={30}
 					iconSize={18}
-					backgroundColor={colors.black60}
+					backgroundColor={theme.black60}
 					iconStyle={{ paddingRight: 2, paddingTop: 2 }}
 					onPress={() => nextAction()}
 					disabled={Loading}
