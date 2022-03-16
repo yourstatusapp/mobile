@@ -161,8 +161,8 @@ export const Friends = React.memo(() => {
 								</Block>
 							)}
 							{!!myStories[0]?.stories?.length && (
-								<Block row marginLeft={15} marginTop={15}>
-									<ScrollView horizontal={true} scrollEnabled={true} showsHorizontalScrollIndicator={false}>
+								<Block row marginLeft={0} marginTop={15}>
+									<ScrollView horizontal={true} scrollEnabled={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 15 }}>
 										{myStories[0].stories.map((item2, index2) => (
 											<Block style={{ position: 'relative' }}>
 												<TouchableOpacity

@@ -50,7 +50,7 @@ export const SettingsSessions: React.FC = () => {
 	}, []);
 
 	const sessionRenderItem = ({ item, index }: ListRenderItemInfo<DeviceType>) => (
-		<Block key={index} marginBottom={20} color={theme.background} style={{ padding: 13, borderRadius: 8 }}>
+		<Block key={index} marginBottom={20} color={theme.backgroundDarker} style={{ padding: 13, borderRadius: 8 }}>
 			<Text bold color={theme.textFade}>
 				Created <Text color={theme.text}>{TimeFormatter(item.id)}</Text> ago
 			</Text>

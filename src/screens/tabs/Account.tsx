@@ -20,14 +20,17 @@ export const Account = () => {
 
 	return (
 		<Block color={theme.background} style={{ zIndex: 1 }}>
-			<BannerArea>
+			{/* <BannerArea>
 				{profile?.banner ? <Banner source={{ uri: `https://cdn.yourstatus.app/profile/${profile.account_id}/${profile.banner}` }} /> : <BannerPlaceholder />}
-			</BannerArea>
+			</BannerArea> */}
 			{/* <LinearGradient
 				colors={['transparent', '#0000008a', 'black']}
 				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
 			/> */}
-			<LinearGradient colors={['transparent', theme.background]} style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }} />
+			{/* <LinearGradient
+				colors={[theme.background, theme.backgroundDarker]}
+				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
+			/> */}
 
 			<Block scroll style={{ zIndex: 6 }} paddingHorizontal={20} color="transparent">
 				<Spacer size={20} />

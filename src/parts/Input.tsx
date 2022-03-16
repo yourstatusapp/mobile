@@ -50,7 +50,7 @@ const PlaceholderBox = styled.View`
 	left: 25px;
 	top: -10px;
 	position: absolute;
-	background-color: ${({ theme }) => theme.theme.background};
+	background-color: ${({ theme }) => theme.background};
 	padding: 2px 5px;
 	border-radius: 4px;
 	z-index: 10;
@@ -59,8 +59,8 @@ const PlaceholderBox = styled.View`
 const InputBody = styled.TextInput<{ disabled: boolean }>`
 	height: 50px;
 	padding: 0px 20px;
-	color: ${({ theme }) => theme.theme.text};
+	color: ${({ theme }) => theme.text};
 	z-index: 9;
 	border-radius: 100px;
-	border: solid 1px ${({ theme }) => theme.theme.darker1};
+	border: solid 1px ${({ theme }) => theme.darker1};
 `;

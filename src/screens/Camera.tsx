@@ -204,7 +204,7 @@ export const Camera = () => {
 						name="plus"
 						size={28}
 						iconSize={18}
-						backgroundColor={theme.white40}
+						backgroundColor={theme.textFade}
 						color="white"
 						style={{ transform: [{ rotate: '45deg' }] }}
 						onPress={() => toggleOpenPhotos()}
@@ -216,7 +216,7 @@ export const Camera = () => {
 					name="plus"
 					size={28}
 					iconSize={18}
-					backgroundColor={theme.white40}
+					backgroundColor="#252525"
 					color="white"
 					style={{ left: 15, top: 10, position: 'absolute', zIndex: 20, transform: [{ rotate: '45deg' }] }}
 					onPress={() => nav.goBack()}
@@ -225,12 +225,23 @@ export const Camera = () => {
 					name="flashlight"
 					size={28}
 					iconSize={18}
-					backgroundColor={theme.white40}
+					backgroundColor="#252525"
 					color="white"
 					style={{ right: 15, top: 10, position: 'absolute', zIndex: 20 }}
 					onPress={() => SetFlash(!Flash)}
 					disabled={CamerDevice === 'front'}
 				/>
+
+				{/* <IconButton
+					name="sparkle"
+					size={28}
+					iconSize={18}
+					backgroundColor="#252525"
+					color="white"
+					style={{ right: 15, top: 60, position: 'absolute', zIndex: 20 }}
+					onPress={() => SetFlash(!Flash)}
+					disabled={CamerDevice === 'front'}
+				/> */}
 
 				{/* <LinearGradient
 							pointerEvents="none"
@@ -250,8 +261,8 @@ export const Camera = () => {
 								photo={true}
 								focusable={true}
 								torch={Flash ? 'on' : 'off'}
-								enableZoomGesture
-							/>
+								enableZoomGesture></CameraComp>
+
 							<Animated.View style={[{ borderRadius: 50, height: 40, width: 40, backgroundColor: 'white', zIndex: 40, position: 'absolute' }, PressFocus]} />
 						</TouchableOpacity>
 					)}

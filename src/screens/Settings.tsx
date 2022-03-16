@@ -45,9 +45,8 @@ export const Settings = () => {
 	return (
 		<>
 			<Block row flex={0} style={sh} color={theme.backgroundDarker} hCenter vCenter>
-				<Block flex={1}>
-					<TextButton text={'Close'} onPress={() => nav.goBack()} />
-				</Block>
+				<TextButton text={'Close'} onPress={() => nav.goBack()} style={{ alignSelf: 'center' }} />
+
 				<Fill />
 
 				<Text bold size={16} center>

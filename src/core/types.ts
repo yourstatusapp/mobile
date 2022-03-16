@@ -143,3 +143,10 @@ export interface GuildInvite {
 		description: string;
 	};
 }
+
+export interface DirectMessageType {
+	id: string;
+	content: string;
+	conversation: string;
+	sender: string;
+}

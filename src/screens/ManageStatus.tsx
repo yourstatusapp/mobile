@@ -57,5 +57,5 @@ const Line = styled.View`
 	border-radius: 20px;
 	width: 100%;
 	margin-top: 20px;
-	background-color: ${({ theme }) => theme.theme.backgroundDarker};
+	background-color: ${({ theme }) => theme.backgroundDarker};
 `;

@@ -108,7 +108,8 @@ const DimmingOverlay = styled.View<{ height: number }>`
 	position: absolute;
 	z-index: 1;
 	background-color: ${({ theme }) => theme.background};
-	opacity: 0.5;
+	opacity: 0.8;
+
 	height: ${props => props.height}px;
 	bottom: 0;
 	left: 0;
@@ -116,14 +117,16 @@ const DimmingOverlay = styled.View<{ height: number }>`
 `;
 
 const CustomTabBarBody = styled.View<{ isIphoneX?: boolean }>`
-	height: 80px;
+	height: 81px;
 	bottom: 0px;
 	align-items: center;
 	position: absolute;
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
+	/* border-top-left-radius: 15px; */
+	/* border-top-right-radius: 15px; */
 	position: absolute;
 	z-index: 3;
+	border-top-color: ${({ theme }) => theme.backgroundDarker};
+	border-top-width: 1px;
 `;
 
 const TabContainer = styled.View`
@@ -150,7 +153,7 @@ const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 
 const AvatarBody = styled.View<{ active: boolean }>`
 	border-radius: 50px;
-	background-color: ${({ active, theme }) => (active ? theme.text : theme.textFade)};
+	background-color: ${({ active, theme }) => (active ? theme.text : theme.darker)};
 	height: 35px;
 	width: 35px;
 	align-items: center;
@@ -162,7 +165,7 @@ const IconTabBtn: React.FC<{ route: string; icon: string; active?: boolean; onPr
 
 	return (
 		<IconTabBtnBody onPress={c.onPress}>
-			<Icon name={c.icon} size={22} color={c.active ? theme.text : theme.textFade} />
+			<Icon name={c.icon} size={22} color={c.active ? theme.text : theme.darker} />
 		</IconTabBtnBody>
 	);
 };

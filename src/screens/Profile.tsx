@@ -127,7 +127,7 @@ export const Profile = () => {
 						)}
 						{ProfileData.bio && (
 							<>
-								<Line size={3} color={theme.box} spacing={12} />
+								<Line size={3} color={theme.backgroundDarker} spacing={12} />
 								<Text size={14} color={theme.textFade}>
 									{ProfileData.bio}
 								</Text>
@@ -167,7 +167,7 @@ const Banner = styled(FastImage)`
 
 const BannerPlaceholder = styled.View`
 	width: 100%;
-	background-color: ${({ theme }) => theme.theme.text};
+	background-color: ${({ theme }) => theme.text};
 	height: ${BANNER_HEIGHT}px;
 `;
 
