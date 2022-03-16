@@ -193,7 +193,7 @@ const CustomEditInput = styled.TextInput.attrs({ autoCapitalize: 'none', autoCor
 	height: 29px;
 	padding-left: 10px;
 	/* padding: 10px; */
-	border-bottom-color: ${({ theme }) => theme.theme.textFadeLight};
+	border-bottom-color: ${({ theme }) => theme.textFadeLight};
 	border-bottom-width: 1px;
 	margin-bottom: 10px;
 	/* border-bottom */

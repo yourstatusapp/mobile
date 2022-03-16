@@ -17,8 +17,11 @@ interface MagicProps {
 
 interface IAccountRequestProps {
 	account: any;
-	device: any;
 	profile: any;
+	device: {
+		id: string;
+		notifications: boolean;
+	};
 }
 
 export const Magic: React.FC<MagicProps> = ({ route }) => {
@@ -36,10 +39,16 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 		if (res.data?.account) core.account.account.set(res.data.account); // @ts-ignore
 		if (res.data?.profile) core.profile.profile.set(res.data.profile);
 
-		if (res.data?.device) {
+		if (res.data?.device?.id) {
 			core.lists.devices.collect(res.data.device, 'mine');
 			core.lists.devices.selectors.current.select(res.data.device.id);
 		}
+
+		// TODO: find out if this is neede
+		core.app.device_id.set(res.data.device.id);
+
+		core.lists.devices.collect(res.data.device, 'mine');
+		core.lists.devices.selectors.current.select(res.data.device.id);
 
 		if (!new_account) {
 			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });

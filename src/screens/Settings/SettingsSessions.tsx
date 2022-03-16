@@ -1,6 +1,6 @@
 import * as React from 'react';
 import core, { AppAlert, DeviceType, request, TimeFormatter } from '@core';
-import { Block, Fill, Icon, IconButton, Spacer, Text } from '@parts';
+import { Block, Fill, GradiantShadow, Icon, IconButton, Spacer, Text } from '@parts';
 import { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import { FlatList, ListRenderItemInfo } from 'react-native';
@@ -88,16 +88,22 @@ export const SettingsSessions: React.FC = () => {
 
 	return (
 		<Block color={theme.background}>
-			<LinearGradient pointerEvents="none" colors={['black', 'transparent']} style={{ position: 'absolute', top: 0, zIndex: 9, width: '100%', height: 150 }} />
+			{/* <LinearGradient
+				pointerEvents="none"
+				colors={[theme.background, theme.name === 'light' ? :]}
+				style={{ position: 'absolute', top: 0, zIndex: 9, width: '100%', height: 150 }}
+			/> */}
+			{/* <Block paddingBottom={20} color={theme.background}></Block> */}
+			<GradiantShadow height={150} style={{ position: 'absolute', top: 0, zIndex: 9 }} />
 
-			<Text bold size={30} marginTop={15} marginLeft={10} style={{ zIndex: 10, position: 'absolute' }}>
+			<Text bold size={30} marginTop={15} marginLeft={20} style={{ zIndex: 10, position: 'absolute' }}>
 				Account Sessions
 			</Text>
 			<FlatList
 				data={devices}
 				renderItem={sessionRenderItem}
 				initialNumToRender={30}
-				contentContainerStyle={{ paddingTop: 150, paddingHorizontal: 10 }}
+				contentContainerStyle={{ paddingTop: 80, paddingHorizontal: 20 }}
 				showsVerticalScrollIndicator={false}
 			/>
 		</Block>

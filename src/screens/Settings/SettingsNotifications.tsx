@@ -4,7 +4,7 @@ import { Block, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { Switch } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import { requestPermissions } from '../../utils/PushNotification';
+import { PushNotifications, requestPermissions } from '../../utils/PushNotification';
 
 export const SettingsNotifications: React.FC = () => {
 	const theme = useTheme();
@@ -12,7 +12,7 @@ export const SettingsNotifications: React.FC = () => {
 	const CURRENT_DEVICE = usePulse(core.lists.devices.selectors.current);
 
 	const enableNotifications = async () => {
-		// configureNotifications();
+		PushNotifications();
 	};
 
 	const UpdateDevice = async (notifications: boolean) => {
@@ -20,13 +20,17 @@ export const SettingsNotifications: React.FC = () => {
 			AppAlert(false, 'Faild', 'no device id found');
 			return;
 		}
+		if (core.app.device_push_token?.value) {
+			return;
+		}
 
-		await request('patch', '/account/devices/' + CURRENT_DEVICE.id, {
+		const res = await request('patch', '/account/devices/' + CURRENT_DEVICE.id, {
 			data: { notifications, push_token: notifications ? core.app.device_push_token?.value : '' },
 		});
-
-		core.lists.devices.update(CURRENT_DEVICE.id, { notifications });
-		core.lists.devices.rebuildGroupsThatInclude(CURRENT_DEVICE.id);
+		if (res.data) {
+			core.lists.devices.update(CURRENT_DEVICE.id, { notifications });
+			core.lists.devices.rebuildGroupsThatInclude(CURRENT_DEVICE.id);
+		}
 	};
 
 	return (
@@ -37,24 +41,26 @@ export const SettingsNotifications: React.FC = () => {
 			</Text>
 			{notificationsEnabled === 2 && (
 				<Block flex={0} color="#FF6666" style={{ padding: 10, borderRadius: 8 }}>
-					<Text color={theme.black} weight="600" size={14}>
+					<Text color={theme.text} weight="600" size={14}>
 						Note that you have disabled notifications
 					</Text>
 					<Spacer size={15} />
-					<TextButton textSize={12} textColor={theme.white} style={{ backgroundColor: '#00000032', padding: 6, borderRadius: 4 }}>
+					<TextButton
+						onPress={() => enableNotifications()}
+						textSize={12}
+						textColor={theme.text}
+						style={{ backgroundColor: '#00000032', padding: 6, borderRadius: 4 }}>
 						Allow notifications
 					</TextButton>
 				</Block>
 			)}
-			{/* {notificationsEnabled === 0 && <TextButton onPress={() => requestPermissions()}>Allow Notifications</TextButton>} */}
+			{notificationsEnabled === 0 && <TextButton onPress={() => requestPermissions()}>Allow Notifications</TextButton>}
+			<Text>{JSON.stringify(core.app.device_push_token.value)}</Text>
 
 			<Block flex={0} row paddingTop={40}>
 				<Block>
-					<Text size={14} weight="600">
+					<Text size={16} bold>
 						Enable Notifications
-					</Text>
-					<Text size={12} color={theme.white60} paddingTop={0}>
-						Getting notified whenever
 					</Text>
 				</Block>
 				<Fill />

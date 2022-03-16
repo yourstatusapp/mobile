@@ -72,10 +72,10 @@ export const SearchFriend = () => {
 				{item?.friend_status < 2 && (
 					<IconButton
 						name="plus"
-						color={theme.white}
+						color={theme.background}
 						size={25}
 						iconSize={15}
-						backgroundColor={theme.black60}
+						backgroundColor={theme.darker}
 						disabled={item.friend_status === 1}
 						onPress={() => sendFriendRequest(item.account_id)}
 					/>
@@ -89,10 +89,10 @@ export const SearchFriend = () => {
 			<Block color="transparent" paddingHorizontal={20} flex={0} row marginTop={15} paddingBottom={10} style={{ position: 'absolute', zIndex: 6 }}>
 				<IconButton
 					name="arrow-big"
-					size={31}
-					iconSize={15}
-					backgroundColor={theme.white20}
-					color="white"
+					size={30}
+					iconSize={17}
+					backgroundColor={theme.darker}
+					color={theme.text}
 					style={{ transform: [{ rotate: '180deg' }] }}
 					onPress={goBack}
 				/>
@@ -106,7 +106,11 @@ export const SearchFriend = () => {
 					placeholder="Username"
 				/>
 			</Block>
-			<LinearGradient pointerEvents="none" colors={['black', 'transparent']} style={{ position: 'absolute', top: 0, zIndex: 5, width: '100%', height: 100 }} />
+			<LinearGradient
+				pointerEvents="none"
+				colors={[theme.background, theme.name === 'dark' ? '#00000000' : '#FFFFFF00']}
+				style={{ position: 'absolute', top: 0, zIndex: 5, width: '100%', height: 100 }}
+			/>
 			<Block>
 				<FlatList
 					data={Results}
@@ -114,7 +118,7 @@ export const SearchFriend = () => {
 					contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 70 }}
 					ListEmptyComponent={
 						<Block hCenter paddingTop={50}>
-							<Text color={theme.white80}>{Loading ? 'Loading...' : 'No results'}</Text>
+							<Text color={theme.textFade}>{Loading ? 'Loading...' : 'No results'}</Text>
 						</Block>
 					}
 				/>
@@ -124,11 +128,11 @@ export const SearchFriend = () => {
 };
 
 const CustomSearchInput = styled.TextInput`
-	border: solid 1px ${({ theme }) => theme.theme.white40};
+	border: solid 1px ${({ theme }) => theme.darker};
 	flex: 1;
 	padding: 0px 15px;
 	height: 40px;
-	color: white;
-	background-color: ${({ theme }) => theme.theme.white20};
+	color: ${({ theme }) => theme.text};
+	background-color: ${({ theme }) => theme.backgroundDarker};
 	border-radius: 30px;
 `;

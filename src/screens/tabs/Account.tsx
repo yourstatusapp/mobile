@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Avatar, Block, Fill, IconButton, Spacer, Status, Text, TextButton } from '@parts';
+import { Avatar, Block, BlockScroll, Fill, IconButton, Spacer, Status, Text, TextButton } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
@@ -9,6 +9,9 @@ import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-m
 
 import FastImage from 'react-native-fast-image';
 import { removeNotificationPermissions } from '../../utils/PushNotification';
+import { BlurView } from 'expo-blur';
+import { StyleSheet, ViewStyle } from 'react-native';
+import { getBuildNumber, getVersion, hasNotch } from 'react-native-device-info';
 
 const BANNER_HEIGHT = 250;
 
@@ -17,6 +20,19 @@ export const Account = () => {
 	const theme = useTheme();
 	const profile = usePulse(core.profile.profile);
 	const [MenuOpen, SetMenuOpen] = useState(false);
+	const isDarkMode = usePulse(core.ui.isDarkMode);
+	const sh2 = StyleSheet.flatten<ViewStyle>([
+		{
+			position: 'absolute',
+			top: 0,
+			height: hasNotch() ? 44 : 40,
+			width: '100%',
+			zIndex: 10,
+			opacity: 1,
+			borderBottomWidth: 1,
+			borderBottomColor: theme.backgroundDarker,
+		},
+	]);
 
 	return (
 		<Block color={theme.background} style={{ zIndex: 1 }}>
@@ -32,22 +48,19 @@ export const Account = () => {
 				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
 			/> */}
 
-			<Block scroll style={{ zIndex: 6 }} paddingHorizontal={20} color="transparent">
-				<Spacer size={20} />
-				<Spacer size={50} />
-				<Block row flex={0} color="transparent">
+			<BlockScroll style={{ zIndex: 6, paddingHorizontal: 40 }} contentContainerStyle={{ flex: 1 }} paddingHorizontal={20}>
+				<Block row flex={0} marginTop={70} marginBottom={20}>
 					<Text size={28} bold color={theme.text}>
 						Account
 					</Text>
 					<Fill />
 					<IconButton name="cog" size={25} iconSize={15} color={theme.text} backgroundColor={theme.darker} onPress={() => nav.navigate('settings' as never)} />
 				</Block>
-				<Spacer size={20} />
 				{/* <Text>{JSON.stringify(uploadProgress) || 'no upload in progress'}</Text> */}
-				<Block row flex={0} color="transparent">
+				<Block row flex={0}>
 					<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
 
-					<Block flex={0} color="transparent" vCenter paddingLeft={15}>
+					<Block flex={0} vCenter paddingLeft={15}>
 						<IconButton
 							name="pencil"
 							color={theme.text}
@@ -98,7 +111,7 @@ export const Account = () => {
 				<Text bold size={18} paddingTop={30} paddingBottom={10}>
 					@{profile.username}
 				</Text>
-				<Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade}>
+				<Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade} marginBottom={50}>
 					{profile.display_name || 'No display name'}
 				</Text>
 				{/* <Spacer size={20} />
@@ -116,7 +129,6 @@ export const Account = () => {
 					}}
 				/> */}
 				{/* <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} /> */}
-				<Spacer size={50} />
 				<TextButton
 					text="Logout"
 					textColor={'#ff6b6b'}
@@ -131,8 +143,13 @@ export const Account = () => {
 						core.app.notification_permission.reset();
 					}}
 				/>
-				<Spacer size={90} />
-			</Block>
+				<Fill />
+				<Text color={theme.darker1} size={12} bold>
+					V{getVersion()}
+					{` `} - {` `} Build {getBuildNumber()}
+				</Text>
+			</BlockScroll>
+			<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={30} />
 		</Block>
 	);
 };

@@ -9,6 +9,20 @@ let socket: Socket;
 
 console.log('socket');
 
+interface IncomingPrivateMessageData {
+	message: {
+		id: string;
+		username: string;
+		content: string;
+		conversation_id: string;
+		account_id: string;
+		avatar: string;
+	};
+}
+
+const SOCKET_URL = 'wss://api.yourstatus.app/';
+// const SOCKET_URL = 'ws://192.168.1.8:3020/';
+
 export const connectToSocket = async () => {
 	// check if we are logged in
 	if (!core.account.logged_in.value) {
@@ -29,12 +43,22 @@ export const connectToSocket = async () => {
 		setTimeout(() => {
 			socket.connect();
 		}, 100);
-		socket = io('ws://192.168.1.5:3020/', { autoConnect: false, query: { key: SOCKET_TOKEN }, auth: { cookie: await CookieManager.get('yourstatus_cookie') } });
+		socket = io(SOCKET_URL, { autoConnect: false, query: { key: SOCKET_TOKEN }, auth: { cookie: await CookieManager.get('yourstatus_cookie') } });
 
 		socket?.on('connect', () => {
 			console.log(socket.connected);
 			core.app.SOCKET_CONNECT.set(true);
 		});
+
+		socket?.on('private_message', (v: IncomingPrivateMessageData) => {
+			AppAlert(true, 'test', JSON.stringify(v));
+			core.lists.messages.collect(v.message, v.message.conversation_id);
+		});
+
+		// socket?.on('user_connected', v => {
+		// 	AppAlert(true, 'user_connected', JSON.stringify(v));
+		// });
+
 		socket?.on('disconnect', () => {
 			// AppAlert(false, 'd');
 			core.app.SOCKET_CONNECT.set(false);

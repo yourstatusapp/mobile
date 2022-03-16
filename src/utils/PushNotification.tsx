@@ -10,9 +10,11 @@ export const removeNotificationPermissions = () => {
 	}
 };
 
-export const requestPermissions = () => {
+export const requestPermissions = async () => {
 	if (Platform.OS === 'ios') {
-		PushNotificationIOS.requestPermissions({ alert: true, badge: true, sound: true });
+		const res = await PushNotificationIOS.requestPermissions({ alert: true, badge: true, sound: true });
+		if (res.authorizationStatus === 2) {
+		}
 	}
 };
 
@@ -22,6 +24,7 @@ export const PushNotifications = () => {
 
 	const onRegisterDevice = async (deviceToken: string) => {
 		if (!deviceToken) return;
+		AppAlert(true, deviceToken);
 
 		core.app.device_push_token.set(deviceToken);
 

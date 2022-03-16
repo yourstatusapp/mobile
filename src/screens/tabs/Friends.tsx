@@ -98,15 +98,6 @@ export const Friends = React.memo(() => {
 		}
 	};
 
-	const removeStatus = async (storieId: string) => {
-		const res = await request('delete', `/status/${storieId}/end`);
-		if (res.data) {
-			setMyStatus(false);
-		} else {
-			AppAlert(false, res.message);
-		}
-	};
-
 	React.useEffect(() => {
 		getFriends();
 
@@ -242,8 +233,8 @@ export const Friends = React.memo(() => {
 								name="user-add"
 								size={23}
 								iconSize={15}
-								color={theme.text}
-								backgroundColor={theme.textFade}
+								color={theme.textFade}
+								backgroundColor={theme.darker}
 								onPress={() => nav.navigate('FriendRequests' as never, FriendsRequests as never)}
 								style={{ marginRight: 15 }}
 							/>

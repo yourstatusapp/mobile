@@ -55,27 +55,27 @@ export const FriendRequests = () => {
 
 			<IconButton
 				name="checkmark"
-				color={theme.white}
+				color={'#69E74A'}
 				size={25}
-				iconSize={15}
-				backgroundColor={theme.black60}
-				onPress={() => replyRequest(item.id, acc.id, true, index)}
+				iconSize={16}
+				backgroundColor={theme.darker}
+				onPress={() => replyRequest(item.id, acc.id, true, index.toString())}
 			/>
 			<Spacer size={10} h />
 			<IconButton
 				name="plus"
-				color={theme.white}
+				color={'#FF4C4C'}
 				size={25}
-				iconSize={15}
-				backgroundColor={theme.black60}
-				onPress={() => replyRequest(item.id, acc.id, false, index)}
+				iconSize={17}
+				backgroundColor={theme.darker}
+				onPress={() => replyRequest(item.id, acc.id, false, index.toString())}
 				iconStyle={{ transform: [{ rotate: '45deg' }] }}
 			/>
 		</Block>
 	);
 
 	return (
-		<Block safe>
+		<Block safe color={theme.background}>
 			<Text bold size={30} paddingLeft={20} paddingBottom={20}>
 				Reply friend requests
 			</Text>

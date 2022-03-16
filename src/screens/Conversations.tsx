@@ -20,7 +20,18 @@ export const Conversations = () => {
 	const [A, SetA] = useState<ConversationType[]>([]);
 	const [NewConversation, SetNewConversation] = useState(false);
 	const isDarkMode = usePulse(core.ui.isDarkMode);
-	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: hasNotch() ? 44 : 40, width: '100%', zIndex: 10, opacity: 1 }]);
+	const sh2 = StyleSheet.flatten<ViewStyle>([
+		{
+			position: 'absolute',
+			top: 0,
+			height: hasNotch() ? 44 : 40,
+			width: '100%',
+			zIndex: 10,
+			opacity: 1,
+			borderBottomWidth: 1,
+			borderBottomColor: theme.backgroundDarker,
+		},
+	]);
 
 	const getFriends = async () => {
 		const res = await request<ConversationType[]>('get', '/conversations');
@@ -40,7 +51,7 @@ export const Conversations = () => {
 				data={A}
 				contentContainerStyle={{ paddingTop: 50 }}
 				ListFooterComponent={() => (
-					<Block row vCenter onPress={() => SetNewConversation(!NewConversation)} press paddingTop={5} paddingBottom={5} marginTop={30}>
+					<Block row vCenter onPress={() => nav.navigate('newconversation' as never)} press paddingTop={5} paddingBottom={5} marginTop={30}>
 						<Text bold paddingRight={12} color={theme.text}>
 							Click to create a new conversation
 						</Text>

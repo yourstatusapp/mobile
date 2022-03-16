@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
-import { Account, Friends, Profile, SearchFriend, FriendRequests, Conversations, DirectMessage } from '../screens';
+import { Account, Friends, Profile, SearchFriend, FriendRequests, Conversations, DirectMessage, NewConversation } from '../screens';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { BlurView } from 'expo-blur';
 
@@ -33,6 +33,7 @@ export const BottomTabNavigator: React.FC = () => {
 				<TabsStackNavigator.Screen name="directmessage" component={DirectMessage} options={{ gestureEnabled: true }} />
 				<TabsStackNavigator.Screen name="SearchFriend" component={SearchFriend} options={{ gestureEnabled: true }} />
 				<TabsStackNavigator.Screen name="FriendRequests" component={FriendRequests} options={{ gestureEnabled: true }} />
+				<TabsStackNavigator.Screen name="newconversation" component={NewConversation} options={{ gestureEnabled: true }} />
 			</TabsStackNavigator.Navigator>
 
 			<BlurView style={sh2} intensity={30} tint={isDarkMode ? 'dark' : 'light'} />

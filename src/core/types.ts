@@ -35,6 +35,7 @@ export interface PaddingType {
 	paddingBottom?: number;
 	paddingLeft?: number;
 	paddingRight?: number;
+	paddingHorizontal?: number;
 }
 
 export interface MarginType {
@@ -81,9 +82,9 @@ export interface AlertDataType {
 export interface DeviceType {
 	id: string;
 	notifications: boolean;
-	ip: string;
-	device_type: string;
-	deleted_at: string;
+	device_type?: string;
+	deleted_at?: string;
+	ip?: string;
 }
 
 export interface UploadProgressEventType {
@@ -147,6 +148,8 @@ export interface GuildInvite {
 export interface DirectMessageType {
 	id: string;
 	content: string;
-	conversation: string;
-	sender: string;
+	username: string;
+	avatar: string;
+	account_id: string;
+	conversation_id: string;
 }

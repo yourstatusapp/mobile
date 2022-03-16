@@ -90,11 +90,11 @@ export const SettingItem = ({ text, onPress }: { text: string; onPress: () => vo
 			style={{ paddingVertical: 15, marginBottom: 10, paddingHorizontal: 15, borderRadius: 12 }}
 			flex={0}
 			onPress={onPress}
-			color={theme.backgroundDarker}
+			color={theme.darker}
 			hCenter
 			press
 			row>
-			<Text color={theme.textFade} weight="600" size={14}>
+			<Text color={theme.text} weight="600" size={14}>
 				{text}
 			</Text>
 
