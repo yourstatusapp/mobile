@@ -36,7 +36,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		}
 		setTimeout(() => {
 			loaded();
-			connectToSocket();
+			// connectToSocket();
 		}, 10);
 	};
 

@@ -37,7 +37,7 @@ export const NewMoment = () => {
 
 	const [Loading, SetLoading] = useState(false);
 
-	const nextAction = async () => {
+	const nextAction = React.useCallback(async () => {
 		SetLoading(true);
 		const fd = new FormData();
 
@@ -58,7 +58,8 @@ export const NewMoment = () => {
 		}
 
 		if (uploadMethod === 'storie') {
-			res = await request<boolean>('post', '/profile/stories/new', {
+			// check if the user wanted high qualit
+			res = await request<boolean>('post', '/profile/stories/new' + (HighQuality === true ? '?high_quality=true' : ''), {
 				data: fd,
 				headers: { 'Content-Type': 'multipart/form-data;' },
 				onUploadProgress: v => {
@@ -85,7 +86,7 @@ export const NewMoment = () => {
 		} else {
 			AppAlert(false, 'Failed', res.message);
 		}
-	};
+	}, [HighQuality, nav, path, percentage, uploadMethod]);
 
 	const IMAGE_PADDING = outframe.top + outframe.top + 60;
 
@@ -97,7 +98,7 @@ export const NewMoment = () => {
 						source={{ uri: params.path }}
 						resizeMode="cover"
 						style={{
-							backgroundColor: 'red',
+							// backgroundColor: 'red',
 							// width: (frame.height - IMAGE_PADDING) / (frame.height / frame.width),
 							// height: frame.height - IMAGE_PADDING,
 							width: frame.width - 20,
@@ -122,7 +123,7 @@ export const NewMoment = () => {
 					disabled={Loading}
 				/>
 				<Block row flex={0} style={{ width: null }} hCenter>
-					<RoundBtn activeOpacity={1} onPress={() => SetHighQuality(!HighQuality)} style={{ opacity: HighQuality ? 1 : 0.5 }}>
+					<RoundBtn activeOpacity={1} onPress={() => SetHighQuality(!HighQuality)} style={{ opacity: HighQuality ? 0.5 : 1 }}>
 						<Text size={12} weight="600" color="white">
 							High Quality
 						</Text>

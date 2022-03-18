@@ -20,8 +20,8 @@ interface IncomingPrivateMessageData {
 	};
 }
 
-const SOCKET_URL = 'wss://api.yourstatus.app/';
-// const SOCKET_URL = 'ws://192.168.1.8:3020/';
+// const SOCKET_URL = 'wss://api.yourstatus.app/websocket';
+const SOCKET_URL = 'ws://192.168.1.2:3020/';
 
 export const connectToSocket = async () => {
 	// check if we are logged in
@@ -52,7 +52,9 @@ export const connectToSocket = async () => {
 
 		socket?.on('private_message', (v: IncomingPrivateMessageData) => {
 			AppAlert(true, 'test', JSON.stringify(v));
-			core.lists.messages.collect(v.message, v.message.conversation_id);
+			AppAlert(true, 'test', JSON.stringify(v.message?.id || 'none'));
+			core.lists.messages.collect(v.message, v.message.conversation_id, { method: 'unshift' });
+			core.lists.conversations.groups.new_messages.add(v.message.id);
 		});
 
 		// socket?.on('user_connected', v => {

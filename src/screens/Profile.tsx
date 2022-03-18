@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Avatar, Block, Icon, IconButton, Line, Spacer, Status, Text } from '@parts';
+import { Avatar, Block, GradiantShadow, Icon, IconButton, Line, Spacer, Status, Text } from '@parts';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import core, { ProfileType, request } from '@core';
 
 import styled, { useTheme } from 'styled-components/native';
 import FastImage from 'react-native-fast-image';
-import { Animated } from 'react-native';
+import { ActivityIndicator, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { usePulse } from '@pulsejs/react';
 
@@ -22,13 +22,13 @@ export const Profile = () => {
 	// });
 
 	const IMAGE_HEIGHT = scrolling.interpolate({
-		inputRange: [0, 300],
-		outputRange: [1, 1],
+		inputRange: [-100, BANNER_HEIGHT],
+		outputRange: [1, 1.5],
 		extrapolate: 'clamp',
 	});
 
 	const IMAGE_HEIGHT2 = scrolling.interpolate({
-		inputRange: [-150, 0],
+		inputRange: [0, 0],
 		outputRange: [1.4, 1],
 		extrapolate: 'clamp',
 	});
@@ -56,34 +56,29 @@ export const Profile = () => {
 
 	if (!ProfileData) {
 		return (
-			<Block safe color={theme.background}>
-				<Text>{Loaded ? 'Failed to load profile' : 'Loading profile data'}</Text>
+			<Block safe color={theme.background} hCenter vCenter>
+				<Block flex={0} hCenter>
+					{!Loaded && <ActivityIndicator />}
+					<Text bold size={18} paddingTop={20}>
+						{Loaded ? 'Failed to load profile' : 'Loading Profile'}
+					</Text>
+				</Block>
 			</Block>
 		);
 	} else {
 		return (
-			<Block color={theme.background}>
+			<Block color={theme.background} style={{ flex: 1 }}>
 				<BannerArea style={{ transform: [{ scale: IMAGE_HEIGHT }] }}>
 					{!ProfileData?.banner ? (
 						<BannerPlaceholder />
 					) : (
 						<Banner source={{ uri: `https://cdn.yourstatus.app/profile/${ProfileData?.account_id}/${ProfileData?.banner}` }} />
-						// <Banner source={{ uri: `https://blog-www.pods.com/wp-content/uploads/2019/04/MG_1_1_New_York_City-1.jpg` }} resizeMode="center" />
 					)}
 				</BannerArea>
-				<LinearGradient colors={['transparent', theme.background]} style={{ position: 'absolute', top: 0, zIndex: 12, width: '100%', height: BANNER_HEIGHT }} />
-				{/* <IconButton
-					name="arrow-big"
-					size={25}
-					iconSize={15}
-					style={{ position: 'absolute', left: 20, top: 40, zIndex: 95352, transform: [{ rotate: '180deg' }] }}
-					onPress={() => nav.goBack()}
-					color={theme.box}
-					backgroundColor={theme.box}
-				/> */}
+				{/* <LinearGradient colors={['transparent', theme.background]} style={{ position: 'absolute', top: 0, zIndex: 12, width: '100%', height: BANNER_HEIGHT }} /> */}
 
 				<Animated.ScrollView
-					style={{ zIndex: 6, marginTop: 300 }}
+					style={{ flex: 1 }}
 					onScroll={Animated.event(
 						[
 							{
@@ -95,62 +90,63 @@ export const Profile = () => {
 							},
 						],
 						{ useNativeDriver: true },
-					)}>
+					)}
+					showsVerticalScrollIndicator={false}>
+					{/* <Spacer size={100} /> */}
 					{/* <Block scroll color="transparent" style={{ zIndex: 6 }} paddingTop={100}> */}
 					{/* <LinearGradient
 						colors={['transparent', '#0000008a', 'black']}
-						style={{ position: 'absolute', top: -100, zIndex: 12, width: '100%', height: BANNER_HEIGHT }}
+						style={{ position: 'absolute', top: 50, zIndex: 0, width: '100%', height: BANNER_HEIGHT }}
 					/> */}
 
-					<Avatar src={[ProfileData.account_id, ProfileData.avatar]} size={130} style={{ zIndex: 17, marginLeft: 20, marginBottom: 0 }} />
+					<Block paddingBottom={150} flex={1}>
+						<IconButton
+							name="arrow-big"
+							size={25}
+							iconSize={13}
+							style={{ position: 'absolute', left: 20, top: 40, zIndex: 95352, transform: [{ rotate: '180deg' }] }}
+							onPress={() => nav.goBack()}
+							color={theme.textFade}
+							backgroundColor={theme.backgroundDarker}
+						/>
+						<GradiantShadow colors={['transparent', theme.background]} height={248 + 50} style={{ position: 'absolute', top: 0, zIndex: 0 }} />
 
-					<Block color={theme.background} style={{ zIndex: 7, height: 500 }} paddingHorizontal={20} paddingTop={50}>
-						<Text bold size={40} paddingTop={0}>
-							{ProfileData.username}
-						</Text>
-						<Spacer size={5} />
+						<Block paddingHorizontal={20}>
+							<Spacer size={120} />
+							<Avatar src={[ProfileData.account_id, ProfileData.avatar]} size={130} />
 
-						{ProfileData.status?.length &&
-							ProfileData.status.map((ItemData, ItemIndex) => (
-								<Block flex={0} key={ItemIndex} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
-									<Status status={ItemData} />
-								</Block>
-							))}
-
-						{ProfileData?.location && (
-							<Block row flex={0} hCenter paddingTop={12}>
-								<Icon name="map-marker" size={15} color={theme.text} style={{ paddingRight: 5 }} />
-								<Text weight="600" size={12} color={theme.text}>
-									{ProfileData.location}
+							<Block row>
+								<Text bold size={40}>
+									{ProfileData.username}
 								</Text>
 							</Block>
-						)}
-						{ProfileData.bio && (
-							<>
-								<Line size={3} color={theme.backgroundDarker} spacing={12} />
-								<Text size={14} color={theme.textFade}>
-									{ProfileData.bio}
-								</Text>
-							</>
-						)}
-						<Block flex={1}>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={50}>texts</Text>
-							<Text paddingBottom={0}>texts</Text>
+						</Block>
+
+						<Block paddingHorizontal={20} paddingTop={20} color={theme.background}>
+							{ProfileData.status?.length &&
+								ProfileData.status.map((ItemData, ItemIndex) => (
+									<Block flex={0} key={ItemIndex} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
+										<Status status={ItemData} />
+									</Block>
+								))}
+
+							{ProfileData?.location && (
+								<Block row flex={0} hCenter paddingTop={12}>
+									<Icon name="map-marker" size={15} color={theme.text} style={{ paddingRight: 5 }} />
+									<Text weight="600" size={12} color={theme.text}>
+										{ProfileData.location}
+									</Text>
+								</Block>
+							)}
+							{ProfileData.bio && (
+								<>
+									<Line size={3} color={theme.backgroundDarker} spacing={12} />
+									<Text size={14} color={theme.textFade}>
+										{ProfileData.bio}
+									</Text>
+								</>
+							)}
+							<Spacer size={300} />
 						</Block>
 					</Block>
 				</Animated.ScrollView>
@@ -176,5 +172,5 @@ const BannerArea = styled(Animated.View)`
 	position: absolute;
 	top: 0;
 	width: 100%;
-	z-index: 1;
+	z-index: 0;
 `;

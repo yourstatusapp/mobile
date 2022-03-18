@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'styled-components/native';
@@ -6,10 +6,19 @@ import { useTheme } from 'styled-components/native';
 interface GradiantShadowProps {
 	height: number;
 	style: ViewStyle;
+	colors?: string[];
 }
-export const GradiantShadow: React.FC<GradiantShadowProps> = ({ height, style }) => {
+export const GradiantShadow: React.FC<GradiantShadowProps> = ({ height, style, colors }) => {
 	const theme = useTheme();
 	const sh = StyleSheet.flatten([{ width: '100%', height }, style]);
 
-	return <LinearGradient pointerEvents="none" colors={[theme.background, theme.name === 'dark' ? '#00000000' : '#FFFFFF00']} style={sh} />;
+	// const c = useMemo(
+	// 	() => (!!colors?.length ? colors : [theme.background, theme.name === 'dark' ? '#00000000' : '#FFFFFF00']),
+	// 	[colors, theme.background, theme.name],
+	// );
+
+	const c = !!colors?.length ? colors : [theme.background, theme.name === 'dark' ? '#00000000' : '#FFFFFF00'];
+
+	// return <LinearGradient pointerEvents="none" colors={[theme.background, theme.name === 'dark' ? '#00000000' : '#FFFFFF00']} style={sh} />;
+	return <LinearGradient pointerEvents="none" colors={c} style={sh} />;
 };

@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Avatar, Block, IconButton, Text } from '@parts';
+import { Avatar, Block, IconButton, Spacer, Text } from '@parts';
 import styled, { useTheme } from 'styled-components/native';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import core, { AppAlert, DirectMessageType, request } from '@core';
+import core, { DirectMessageType, request } from '@core';
 import { FlatList, KeyboardAvoidingView, StyleSheet, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { usePulse } from '@pulsejs/react';
 import { hasNotch } from 'react-native-device-info';
 import { BlurView } from 'expo-blur';
-import { profile } from 'src/core/modules';
 
 type ParamList = {
 	DirectMessage: {
@@ -50,22 +49,16 @@ export const DirectMessage = () => {
 		// @ts-ignore
 		const res = await request<DirectMessageType[]>('get', '/conversations/' + params?.conversation_id);
 		if (res.data) {
-			// res.data;
-			// const a = res.data.map(v => {
-			// 	v['conversation_id'] = params?.conversation_id;
-			// 	return v;
-			// });
-			// AppAlert(true, JSON.stringify(res.data.length));
-			// SetA(res.data);
-			// core.lists.messages.createGroup(params.conversation_id);
-			core.lists.messages.collect(res.data, params.conversation_id);
-			// core.lists.messages.rebuildGroupsThatInclude(params.conversation_id);
+			// check also if we already have data than we need to insert it differently
+			core.lists.messages.collect(res.data, params.conversation_id, { method: !!Messages?.length ? 'unshift' : 'push' });
 		}
 	};
 
 	const sendMessage = useCallback(async () => {
 		SetSendMessLoading(true);
+
 		const res = await request('post', `/conversations/${params.conversation_id}/send`, { data: { message: MessageText, nonce: 'random' } });
+
 		if (res.data) {
 			SetMessageText('');
 			core.lists.messages.collect(
@@ -88,22 +81,31 @@ export const DirectMessage = () => {
 		getMessage();
 	}, []);
 
-	const renderItem = ({ item }) => (
-		<Block key={item.id} row style={{ height: 34 }} hCenter paddingHorizontal={10}>
-			<Avatar src={[item.account_id, item.avatar]} size={25} />
-			<Text color={theme.text} marginLeft={15} bold>
+	const renderItem = ({ item }) => {
+		const isSender = item.account_id === acc.id;
+		return (
+			<Block key={item.id} flex={1} row style={{ minHeight: 34, flexDirection: isSender ? 'row-reverse' : 'row', alignItems: 'flex-start' }} hCenter>
+				<Spacer size={15} h />
+				<Avatar src={[item.account_id, item.avatar]} size={25} />
+				{/* <Text color={theme.text} marginLeft={15} bold>
 				{item.username}:
-			</Text>
-			<Text color={theme.textFadeLight} marginLeft={15}>
-				{item.content}
-			</Text>
-		</Block>
-	);
+			</Text> */}
+				<Block flex={1} paddingTop={3}>
+					{/* <Spacer size={25} h /> */}
+					<Text color={theme.textFade} style={{ flexWrap: 'wrap', textAlign: !isSender ? 'left' : 'right', paddingHorizontal: 10 }}>
+						{item.content}
+					</Text>
+				</Block>
+
+				<Spacer size={15} h />
+			</Block>
+		);
+	};
 
 	return (
 		<Block color={theme.background}>
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={-(55 + bottom - 9)}>
-				<FlatList data={Messages} contentContainerStyle={{}} renderItem={renderItem} inverted />
+				<FlatList data={Messages} contentContainerStyle={{ paddingTop: 10 }} renderItem={renderItem} inverted />
 				<Block
 					style={{ borderTopColor: theme.darker, borderTopWidth: 1, height: 55 }}
 					marginBottom={55 + bottom - 9}

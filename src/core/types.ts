@@ -152,4 +152,13 @@ export interface DirectMessageType {
 	avatar: string;
 	account_id: string;
 	conversation_id: string;
+	nonce?: string;
+}
+
+export interface ConversationType {
+	id: string;
+	account_id: string;
+	username: string;
+	avatar: string;
+	new_message?: boolean;
 }

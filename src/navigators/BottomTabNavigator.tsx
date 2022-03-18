@@ -7,7 +7,7 @@ import { Account, Friends, Profile, SearchFriend, FriendRequests, Conversations,
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { BlurView } from 'expo-blur';
 
-import { Avatar, Block, Icon, IconButton } from '@parts';
+import { Avatar, Block, Icon, IconButton, Text } from '@parts';
 import core from '@core';
 
 const TabsStackNavigator = createNativeStackNavigator();
@@ -48,6 +48,7 @@ const CustomNavBar = () => {
 	const nav = useNavigation();
 	const theme = useTheme();
 	const current_tab_state = usePulse(core.app.TAB_STATE);
+	const newMessage = usePulse(core.lists.conversations.groups.new_messages);
 
 	const tabs = [
 		{ name: 'Friends', path: 'friends', icon: 'friends' },
@@ -65,7 +66,24 @@ const CustomNavBar = () => {
 		<CustomTabBarBody>
 			<DimmingOverlay height={80} />
 			<TabContainer>
-				{tabs.map((item, index) => (
+				<IconTabBtn
+					key={0}
+					icon={'friends'}
+					route={'friends'}
+					active={0 + 1 === current_tab_state.state}
+					onPress={() => navigate('friends', 0)}
+					name={'Friends'}
+				/>
+				{!!newMessage?.length && <Text color="red">new emssage</Text>}
+				<IconTabBtn
+					key={1}
+					icon={'conversation'}
+					route={'conversations'}
+					active={1 + 1 === current_tab_state.state}
+					onPress={() => navigate('conversations', 1)}
+					name={'Messages'}
+				/>
+				{/* {tabs.map((item, index) => (
 					<IconTabBtn
 						key={index}
 						icon={item.icon}
@@ -74,7 +92,7 @@ const CustomNavBar = () => {
 						onPress={() => navigate(item.path, index)}
 						name={item.name}
 					/>
-				))}
+				))} */}
 
 				<IconTabBtnBody
 					onPress={() => {

@@ -134,7 +134,7 @@ export const Friends = React.memo(() => {
 					)}>
 					{(!!MyStatus.length || !!myStories?.length) && (
 						<Block flex={0} marginBottom={30}>
-							{!!MyStatus.length && (
+							{!!MyStatus?.length && (
 								<Block row>
 									<FlatList
 										data={MyStatus}
