@@ -260,8 +260,10 @@ export const Camera = () => {
 								isActive={true}
 								photo={true}
 								focusable={true}
+								preset="high"
 								torch={Flash ? 'on' : 'off'}
-								enableZoomGesture></CameraComp>
+								enableZoomGesture
+							/>
 
 							<Animated.View style={[{ borderRadius: 50, height: 40, width: 40, backgroundColor: 'white', zIndex: 40, position: 'absolute' }, PressFocus]} />
 						</TouchableOpacity>

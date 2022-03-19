@@ -44,12 +44,6 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 			core.lists.devices.selectors.current.select(res.data.device.id);
 		}
 
-		// TODO: find out if this is neede
-		core.app.device_id.set(res.data.device.id);
-
-		core.lists.devices.collect(res.data.device, 'mine');
-		core.lists.devices.selectors.current.select(res.data.device.id);
-
 		if (!new_account) {
 			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });
 		} else {

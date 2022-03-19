@@ -51,8 +51,6 @@ export const connectToSocket = async () => {
 		});
 
 		socket?.on('private_message', (v: IncomingPrivateMessageData) => {
-			AppAlert(true, 'test', JSON.stringify(v));
-			AppAlert(true, 'test', JSON.stringify(v.message?.id || 'none'));
 			core.lists.messages.collect(v.message, v.message.conversation_id, { method: 'unshift' });
 			core.lists.conversations.groups.new_messages.add(v.message.id);
 		});

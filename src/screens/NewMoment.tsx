@@ -3,7 +3,7 @@ import { Block, IconButton, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Pressable, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -123,7 +123,7 @@ export const NewMoment = () => {
 					disabled={Loading}
 				/>
 				<Block row flex={0} style={{ width: null }} hCenter>
-					<RoundBtn activeOpacity={1} onPress={() => SetHighQuality(!HighQuality)} style={{ opacity: HighQuality ? 0.5 : 1 }}>
+					<RoundBtn onPress={() => SetHighQuality(!HighQuality)} style={{ opacity: HighQuality ? 1 : 0.5 }}>
 						<Text size={12} weight="600" color="white">
 							High Quality
 						</Text>
@@ -144,7 +144,7 @@ export const NewMoment = () => {
 	);
 };
 
-const RoundBtn = styled(TouchableOpacity)`
+const RoundBtn = styled(Pressable)`
 	justify-content: center;
 	border-radius: 30px;
 	border: 1px solid white;

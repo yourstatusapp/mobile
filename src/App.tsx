@@ -14,6 +14,7 @@ import { MenuProvider } from 'react-native-popup-menu';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { StorieViewer } from './screens';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { PushNotifications } from './utils/PushNotification';
 
 instance.setStorage({
 	async: true,
@@ -57,14 +58,15 @@ export const App: React.FC = () => {
 		core.events.storie_viewer.on(v => {
 			onStorieViewHandler(v);
 		});
-		// if (Platform.OS === 'ios') {
-		// 	PushNotificationIOS.setApplicationIconBadgeNumber(0);
-		// }
+		if (Platform.OS === 'ios') {
+			PushNotificationIOS.setApplicationIconBadgeNumber(0);
+		}
 	}, []);
 
 	return (
 		<ThemeProvider theme={theme}>
 			<CustomAlert />
+			<PushNotifications />
 			{ShowStorie && (
 				<StorieViewer
 					list={L}

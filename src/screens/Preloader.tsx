@@ -6,6 +6,7 @@ import core, { AppAlert, request } from '@core';
 import { Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { connectToSocket } from '../utils/Socket';
+import { PushNotifications } from '../utils/PushNotification';
 
 interface PreloaderProps {
 	loaded: () => void;
@@ -36,7 +37,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		}
 		setTimeout(() => {
 			loaded();
-			// connectToSocket();
+			connectToSocket();
 		}, 10);
 	};
 

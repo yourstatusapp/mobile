@@ -9,12 +9,14 @@ import { createNavigationContainerRef } from '@react-navigation/native';
 import { Auth, Camera, EditProfile, Magic, NewStatus, Settings, NewMoment, PreloaderView, VerifyAccount, Explanation, ManageStatus } from '../screens';
 import { NewProject } from '../screens/NewProject';
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
+import { PushNotifications } from '../utils/PushNotification';
 
 export const navigationRef = createNavigationContainerRef();
 const RootStack = createNativeStackNavigator();
 
 export const RootNavigator = () => {
 	useLinking();
+
 	const loggedIn = usePulse(core.account.logged_in);
 	const [PreloaderReady, setPreloaderReady] = useState(false);
 

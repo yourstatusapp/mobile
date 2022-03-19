@@ -13,7 +13,9 @@ export const removeNotificationPermissions = () => {
 export const requestPermissions = async () => {
 	if (Platform.OS === 'ios') {
 		const res = await PushNotificationIOS.requestPermissions({ alert: true, badge: true, sound: true });
+
 		if (res.authorizationStatus === 2) {
+			core.app.notification_permission.set(1);
 		}
 	}
 };
@@ -37,7 +39,7 @@ export const PushNotifications = () => {
 
 		const current_device = core.lists.devices.selectors.current;
 
-		if (!current_device.id) {
+		if (!current_device?.id) {
 			return;
 		}
 
@@ -90,4 +92,5 @@ export const PushNotifications = () => {
 			};
 		}
 	}, []);
+	return <></>;
 };
