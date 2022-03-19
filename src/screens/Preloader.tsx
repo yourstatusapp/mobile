@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import Svg, { G, Path } from 'react-native-svg';
 import styled from 'styled-components/native';
-import core, { AppAlert, request } from '@core';
+import core, { request } from '@core';
 import { Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { connectToSocket } from '../utils/Socket';
-import { PushNotifications } from '../utils/PushNotification';
 
 interface PreloaderProps {
 	loaded: () => void;
@@ -37,7 +36,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		}
 		setTimeout(() => {
 			loaded();
-			connectToSocket();
+			// connectToSocket();
 		}, 10);
 	};
 
@@ -48,26 +47,10 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 				getAccount();
 			} else {
 			}
-			// AppAlert(true, 'logged_in state received', JSON.stringify(v));
-			// setTimeout(() => {
-			// 	console.log('preloader');
-			// 	if (v)
-			// 	else setTimeout(() => loaded(), 10);
-			// }, 100);
 		});
 
 		setTimeout(() => !logged_in && loaded(), 200);
 	}, []);
-
-	// useEffect(() => {
-	// 	AppAlert(true, JSON.stringify(logged_in), 'logged in');
-	// 	// setTimeout(() => {
-	// 	// 	console.log('preloader');
-	// 	// 	AppAlert(true, JSON.stringify(logged_in), 'logged in');
-	// 	// 	if (logged_in) getAccount();
-	// 	// 	else setTimeout(() => loaded(), 10);
-	// 	// }, 2300);
-	// }, []);
 
 	return (
 		<PreloaderBody>

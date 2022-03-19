@@ -7,7 +7,7 @@ import { Account, Friends, Profile, SearchFriend, FriendRequests, Conversations,
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { BlurView } from 'expo-blur';
 
-import { Avatar, Block, Icon, IconButton, Text } from '@parts';
+import { Avatar, Block, Icon, IconButton } from '@parts';
 import core from '@core';
 
 const TabsStackNavigator = createNativeStackNavigator();
@@ -74,7 +74,7 @@ const CustomNavBar = () => {
 					onPress={() => navigate('friends', 0)}
 					name={'Friends'}
 				/>
-				{!!newMessage?.length && <Text color="red">new emssage</Text>}
+				{/* {!!newMessage?.length && <Text color="red">new emssage</Text>} */}
 				<IconTabBtn
 					key={1}
 					icon={'conversation'}
@@ -83,16 +83,6 @@ const CustomNavBar = () => {
 					onPress={() => navigate('conversations', 1)}
 					name={'Messages'}
 				/>
-				{/* {tabs.map((item, index) => (
-					<IconTabBtn
-						key={index}
-						icon={item.icon}
-						route={item.path}
-						active={index + 1 === current_tab_state.state}
-						onPress={() => navigate(item.path, index)}
-						name={item.name}
-					/>
-				))} */}
 
 				<IconTabBtnBody
 					onPress={() => {
@@ -140,8 +130,6 @@ const CustomTabBarBody = styled.View<{ isIphoneX?: boolean }>`
 	bottom: 0px;
 	align-items: center;
 	position: absolute;
-	/* border-top-left-radius: 15px; */
-	/* border-top-right-radius: 15px; */
 	position: absolute;
 	z-index: 3;
 	border-top-color: ${({ theme }) => theme.backgroundDarker};

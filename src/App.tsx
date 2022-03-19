@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
 /* eslint-disable no-undef */
-import { instance, useEvent, usePulse } from '@pulsejs/react';
+import { instance, usePulse } from '@pulsejs/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import styled, { ThemeProvider } from 'styled-components/native';
-import core, { AppAlert, StorieType } from '@core';
+import core, { StorieType } from '@core';
 import { RootNavigator } from './navigators/RootNavigator';
 import { NavigationContainer } from '@react-navigation/native';
-import { Platform, StatusBar, Text } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { CustomAlert } from './parts/components/Alert';
 import { MenuProvider } from 'react-native-popup-menu';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { StorieViewer } from './screens';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { PushNotifications } from './utils/PushNotification';
 
 instance.setStorage({

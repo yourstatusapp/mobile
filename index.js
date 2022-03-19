@@ -12,6 +12,6 @@ import { name as appName } from './app.json';
 import { LogBox } from 'react-native';
 
 // Disable the yellow warining box (we only want to show errors)
-LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'RCTBridge']);
+LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'RCTBridge', 'react-native-gesture-handler']);
 
 AppRegistry.registerComponent(appName, () => App);

@@ -1,44 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Avatar, Block, GradiantShadow, Icon, IconButton, Line, Spacer, Status, Text } from '@parts';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import core, { ProfileType, request } from '@core';
-
+import { ProfileType, request } from '@core';
 import styled, { useTheme } from 'styled-components/native';
 import FastImage from 'react-native-fast-image';
 import { ActivityIndicator, Animated } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { usePulse } from '@pulsejs/react';
 
 const BANNER_HEIGHT = 250;
 
 export const Profile = () => {
+	const { params } = useRoute();
+	const theme = useTheme();
 	const nav = useNavigation();
+
+	const [ProfileData, SetProfile] = useState<ProfileType>();
+	const [Loaded, SetLoaded] = useState(false);
 	const scrolling = useRef(new Animated.Value(0)).current;
-	const iR = [0, 200];
-	// const FadeOpacity = scrolling.interpolate({
-	// 	inputRange: iR,
-	// 	outputRange: [1, 0],
-	// 	extrapolate: 'clamp',
-	// });
+
+	// @ts-ignore
+	const usr_name = params.username;
 
 	const IMAGE_HEIGHT = scrolling.interpolate({
 		inputRange: [-100, BANNER_HEIGHT],
 		outputRange: [1, 1.5],
 		extrapolate: 'clamp',
 	});
-
-	const IMAGE_HEIGHT2 = scrolling.interpolate({
-		inputRange: [0, 0],
-		outputRange: [1.4, 1],
-		extrapolate: 'clamp',
-	});
-
-	const { params } = useRoute();
-	const theme = useTheme();
-	// @ts-ignore
-	const usr_name = params.username;
-	const [ProfileData, SetProfile] = useState<ProfileType>();
-	const [Loaded, SetLoaded] = useState(false);
 
 	const getProfile = async () => {
 		const res = await request<ProfileType>('get', '/profile/' + usr_name);
@@ -48,8 +34,6 @@ export const Profile = () => {
 		SetLoaded(true);
 	};
 
-	// const memoizedCB = useCallback(getProfile, [params.username, ]);
-	const isDarkTheme = usePulse(core.ui.isDarkMode);
 	useEffect(() => {
 		getProfile();
 	}, []);
@@ -75,8 +59,6 @@ export const Profile = () => {
 						<Banner source={{ uri: `https://cdn.yourstatus.app/profile/${ProfileData?.account_id}/${ProfileData?.banner}` }} />
 					)}
 				</BannerArea>
-				{/* <LinearGradient colors={['transparent', theme.background]} style={{ position: 'absolute', top: 0, zIndex: 12, width: '100%', height: BANNER_HEIGHT }} /> */}
-
 				<Animated.ScrollView
 					style={{ flex: 1 }}
 					onScroll={Animated.event(
@@ -92,13 +74,6 @@ export const Profile = () => {
 						{ useNativeDriver: true },
 					)}
 					showsVerticalScrollIndicator={false}>
-					{/* <Spacer size={100} /> */}
-					{/* <Block scroll color="transparent" style={{ zIndex: 6 }} paddingTop={100}> */}
-					{/* <LinearGradient
-						colors={['transparent', '#0000008a', 'black']}
-						style={{ position: 'absolute', top: 50, zIndex: 0, width: '100%', height: BANNER_HEIGHT }}
-					/> */}
-
 					<Block paddingBottom={150} flex={1}>
 						<IconButton
 							name="arrow-big"
@@ -131,9 +106,9 @@ export const Profile = () => {
 								))}
 
 							{ProfileData?.location && (
-								<Block row flex={0} hCenter paddingTop={12}>
-									<Icon name="map-marker" size={15} color={theme.text} style={{ paddingRight: 5 }} />
-									<Text weight="600" size={12} color={theme.text}>
+								<Block row flex={0} hCenter paddingTop={15}>
+									<Icon name="map-marker" size={15} color={theme.textFadeLight} style={{ paddingRight: 5 }} />
+									<Text weight="600" size={12} color={theme.textFadeLight}>
 										{ProfileData.location}
 									</Text>
 								</Block>
@@ -150,7 +125,6 @@ export const Profile = () => {
 						</Block>
 					</Block>
 				</Animated.ScrollView>
-				{/* </Block> */}
 			</Block>
 		);
 	}
@@ -163,7 +137,7 @@ const Banner = styled(FastImage)`
 
 const BannerPlaceholder = styled.View`
 	width: 100%;
-	background-color: ${({ theme }) => theme.text};
+	background-color: ${({ theme }) => theme.backgroundDarker};
 	height: ${BANNER_HEIGHT}px;
 `;
 

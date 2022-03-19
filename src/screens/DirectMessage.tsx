@@ -57,22 +57,24 @@ export const DirectMessage = () => {
 	const sendMessage = useCallback(async () => {
 		SetSendMessLoading(true);
 
+		core.lists.messages.collect(
+			{
+				id: (parseInt(params.conversation_id) + 1).toString(),
+				content: MessageText,
+				conversation_id: params.conversation_id,
+				account_id: acc?.id,
+				avatar: profile.avatar,
+				username: profile.username,
+			},
+			params.conversation_id,
+			{ method: 'unshift' },
+		);
+
 		const res = await request('post', `/conversations/${params.conversation_id}/send`, { data: { message: MessageText, nonce: 'random' } });
 
 		if (res.data) {
 			SetMessageText('');
-			core.lists.messages.collect(
-				{
-					id: (parseInt(params.conversation_id) + 1).toString(),
-					content: MessageText,
-					conversation_id: params.conversation_id,
-					account_id: acc?.id,
-					avatar: profile.avatar,
-					username: profile.username,
-				},
-				params.conversation_id,
-				{ method: 'unshift' },
-			);
+			core.lists.messages.update((parseInt(params.conversation_id) + 1).toString(), { id: res.data?.message_id });
 		}
 		SetSendMessLoading(false);
 	}, [params.conversation_id, MessageText, acc?.id, profile.avatar, profile.username]);
