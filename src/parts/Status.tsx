@@ -62,27 +62,30 @@ const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 };
 
 export const Status = React.memo(({ status, style, demo }: StatusType) => {
+	const theme_name = usePulse(core.ui.current_theme);
 	const theme = useTheme();
 
 	const wrapperStyle = StyleSheet.flatten([style]);
 
 	const offset = useSharedValue(0);
+	const opacity = useSharedValue(0);
 	const zIndex = useSharedValue(wrapperStyle?.zIndex ? 2 - wrapperStyle?.zIndex : -50);
 
-	// const animatedStyles = useAnimatedStyle(() => {
-	// 	return {
-	// 		height: '100%',
-	// 		position: 'absolute',
-	// 		backgroundColor: theme.white20,
-	// 		right: offset.value,
-	// 		justifyContent: 'center',
-	// 		alignItems: 'center',
-	// 		borderRadius: 5,
-	// 		flex: 1,
-	// 		width: 30,
-	// 		zIndex: zIndex.value,
-	// 	};
-	// });
+	const animatedStyles = useAnimatedStyle(() => {
+		return {
+			height: '100%',
+			position: 'absolute',
+			backgroundColor: theme.backgroundDarker,
+			right: offset.value,
+			justifyContent: 'center',
+			alignItems: 'center',
+			borderRadius: 5,
+			flex: 1,
+			width: 30,
+			zIndex: zIndex.value,
+			opacity: opacity.value,
+		};
+	});
 
 	// const tapStatus = async () => {
 	// 	if (demo) {
@@ -111,32 +114,40 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 	// };
 
 	const animate = async (countedUp?: boolean) => {
+		opacity.value = 1;
 		offset.value = withSpring(-20);
 		setTimeout(() => {
 			offset.value = withSpring(0);
+
+			setTimeout(() => {
+				opacity.value = 0;
+			}, 380 + (countedUp ? 450 : 0));
 		}, 380 + (countedUp ? 450 : 0));
 	};
 
 	const onStatusPress = async () => {
-		// let newList = core.lists.friends.getData(status.account_id).value.status.map(item => {
-		// 	item.taps = 1 + item.taps;
-		// 	item.taped = true;
-		// 	return item;
-		// });
-		// core.lists.friends.update(status.account_id, { status: newList });
-		// core.lists.profiles.groups.friends.remove(status.account_id);
-		// core.lists.friends.groups.friends.patch({ account_id: status.account_id, status: [] }, { deep: false });
-		// core.lists.friends.rebuildGroupsThatInclude('friends');
-		// core.lists.friends.groups.friends.rebuildOne(status.account_id);
-		// core.lists.friends.getData(status.account_id).patch({ status: [] }, { deep: true });
-		// const res = await request('post', `/status/${status?.id}/tap`);
-		// if (res.data) {
-		// 	core.lists.status.getData(status.id).patch({ taped: true });
-		// } else {
-		// 	AppAlert(false, res.message);
-		// }
+		if (demo) return;
+
+		let newList = core.lists.friends.getData(status.account_id).value.status.map(item => {
+			if (item.type === 0) {
+				item.taps = 1 + item.taps;
+				item.taped = true;
+			}
+
+			return item;
+		});
+
+		core.lists.friends.update(status.account_id, { status: newList });
+		core.lists.friends.rebuildGroupsThatInclude(status.account_id);
+
+		// tap request
+		const res = await request('post', `/status/${status?.id}/tap`);
+		if (res.data) {
+		} else {
+			AppAlert(false, res.message);
+		}
 	};
-	const theme_name = usePulse(core.ui.current_theme);
+
 	const StatusRender = (
 		<StatusBody style={{ zIndex: zIndex.value }} backColor={StatusColors[theme_name][status.type].backColor}>
 			{status.type === 1 && <Icon name="discord" size={18} color={StatusColors[theme_name][status.type].color} style={{ marginRight: 4 }} />}
@@ -155,6 +166,33 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 				}}>
 				{StatusRender}
 			</TouchableOpacity>
+		);
+	}
+
+	if (status?.type === 0) {
+		return (
+			<Animated.View style={wrapperStyle}>
+				<Pressable
+					disabled={status.taped}
+					style={({ pressed }) => [
+						{
+							opacity: pressed ? 0.6 : 1,
+						},
+					]}
+					onPress={() => {
+						if (status.taped === false) {
+							onStatusPress();
+							animate(true);
+						}
+					}}>
+					<Animated.View style={animatedStyles}>
+						<Text center marginLeft={10} size={12} bold color={theme.text}>
+							{status.taps}
+						</Text>
+					</Animated.View>
+					{StatusRender}
+				</Pressable>
+			</Animated.View>
 		);
 	}
 

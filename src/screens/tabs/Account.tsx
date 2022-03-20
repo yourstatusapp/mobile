@@ -144,10 +144,13 @@ export const Account = () => {
 					}}
 				/>
 				<Fill />
-				<Text color={theme.darker1} size={12} bold>
-					V{getVersion()}
-					{` `} - {` `} Build {getBuildNumber()}
-				</Text>
+				<Block row flex={0}>
+					<Text color={theme.darker1}>V{getVersion()}</Text>
+					<Text color={theme.darker1}>
+						{` `} - {` `}
+					</Text>
+					<Text color={theme.darker1}>Build {getBuildNumber()}</Text>
+				</Block>
 			</BlockScroll>
 			<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={30} />
 		</Block>

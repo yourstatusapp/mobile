@@ -4,7 +4,7 @@ import { ConversationType, DirectMessageType, StatusType } from '../types';
 
 export const lists = {
 	devices: collection<DeviceType>().createGroup('mine').createSelector('current'),
-	friends: collection<FriendItemType>().createGroup('friends'),
+	friends: collection<FriendItemType>({ primaryKey: 'account_id' }).createGroup('friends'),
 	profiles: collection<ProfileType>({ primaryKey: 'account_id' }).createGroup('friends').createGroup('requests').createGroup('mine'),
 	stories: collection<StorieType>({ primaryKey: 'account_id' }).createGroup('mine').createGroup('all'),
 	status: collection<StatusType>().createGroup('mine'),

@@ -140,8 +140,10 @@ export const NewStatus = () => {
 				</Block> */}
 
 				{SelectedType === 'DEFAULT' && (
-					<Block marginTop={30} flex={0}>
-						<Status status={{ id: '', data: { message: StatusTxt }, type: 0, taped: true }} />
+					<Block marginTop={30} flex={1}>
+						<Block row flex={1} style={{ minHeight: 50 }}>
+							<Status demo status={{ id: '', data: { message: StatusTxt }, type: 0, taped: true }} />
+						</Block>
 						<Spacer size={20} />
 						<Input placeholder="Message" value={StatusTxt} onChange={v => SetStatusTxt(v)} />
 

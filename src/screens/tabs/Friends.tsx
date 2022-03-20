@@ -183,7 +183,6 @@ export const Friends = React.memo(() => {
 					)}
 					<Animated.FlatList
 						data={friends}
-						// extraData={friends}
 						scrollEnabled={false}
 						scrollEventThrottle={20}
 						renderItem={renderItem}
@@ -192,9 +191,6 @@ export const Friends = React.memo(() => {
 						keyExtractor={item => item.account_id}
 						getItemLayout={(data, index) => ({ length: FRIEND_ITEM_HEIGHT, offset: FRIEND_ITEM_HEIGHT * index, index })}
 					/>
-
-					{/* <Text>{JSON.stringify(stories)}</Text>
-				<Text>{JSON.stringify(myStories)}</Text> */}
 				</Animated.ScrollView>
 
 				<Animated.View
@@ -209,8 +205,6 @@ export const Friends = React.memo(() => {
 						zIndex: 10,
 						position: 'absolute',
 					}}>
-					{/* <BlurView style={sh2} blurType="extraDark" blurAmount={20} overlayColor={'#000000'} /> */}
-
 					<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={340} />
 
 					<Block
