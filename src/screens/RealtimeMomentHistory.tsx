@@ -1,135 +1,295 @@
-import { Block, Fill, IconButton, Text } from '@parts';
-import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { request, snow2time } from '@core';
+import { Block, IconButton, Text } from '@parts';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, ListRenderItem, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'styled-components';
 
+interface StorieType {
+	id: string;
+	picture: string;
+}
+
 interface DayObject {
-	date: string;
-	empty: boolean;
+	date?: string;
+	pictures?: StorieType[];
+	empty?: boolean;
 }
 
 type Week = {
-	week: DayObject[];
-	newMonth: boolean;
-	headingText: string;
+	week?: DayObject[];
+	headingText?: string;
 };
 
-const TOTAL_CAL_TIME_IN_WEEKS = 2 * 52;
+const TOTAL_CAL_TIME_IN_WEEKS = 1 * 52;
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 const WEEK_DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
 export const RealtimeMomentHistory = () => {
 	const nav = useNavigation();
 	const theme = useTheme();
 	const [List, SetList] = useState<Week[]>([]);
+	const [SelectedData, SetSelectedData] = useState<DayObject>();
 
-	const renderList = () => {
+	const getHistory = async () => {
+		const res = await request<StorieType[]>('get', '/profile/stories/history');
+		if (res.data) {
+			renderCalendarData(res.data);
+		}
+	};
+
+	const renderCalendarData = (list: StorieType[]) => {
+		let d = new Date();
+		d.setDate(1);
+		d.setMonth(0);
+		// d.setMonth(new Date().setFullYear(new Date().getFullYear() - 1));
+
+		// console.log('Date' + JSON.stringify(d));
+		// console.log(new Date());
+
 		let tempList: Week[] = [];
+		let emptyDaysBeAdded = 0;
 
-		let d = new Date(new Date().setDate(1));
+		// before we start to generate the list
+		// we need to check what day we start with the current date
+		// console.log(d.getUTCDate());
 
-		let emptyStartDays = 0;
-		let newMonth = false;
+		emptyDaysBeAdded = d.getUTCDate();
 
-		// loop the amount of weeks we set up
+		// we have to create the weeks
 		for (let WeekIndex = 0; WeekIndex < TOTAL_CAL_TIME_IN_WEEKS; WeekIndex++) {
-			// define the week object
-			let w: Week = { week: [], newMonth: false, headingText: '' };
+			let week: DayObject[] = [];
+			let DayIndex = 1;
 
-			// generate the week by looping 7 days to build an array list of 7 items
-			for (let DayIndex = 0; DayIndex <= 6; DayIndex++) {
-				// TODO: Check if we need to fill up the array with empty spots from the previous month
-				if (newMonth && emptyStartDays !== 0) {
-					w.week.push({ empty: true, date: '' });
-					if (emptyStartDays === 1) {
-						newMonth = false;
-					}
-					emptyStartDays = emptyStartDays - 1;
+			// for every week we need to get the lats day of the month to keep track
+			const lastDayofCurrentMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
 
-					continue;
-				}
-
-				// if its the first week of the month, we check if we need to insert a empty
-				// if (d.getDate() === 1) {
-				// 	if (emptyStartDays) {
-				// 		w.week.push({ date: '', empty: true });
-				// 	}
-				// }
-
-				// define the day object
-				let o: DayObject = { date: d.getDate().toString(), empty: false };
-
-				// if we are in the next month, we render a empty day to make the ui look better
-
-				// check if we are in the next month
-				if (d.getDate() - (DayIndex + 1) < 0) {
-					o.empty = true;
-					w.week.push(o);
-					continue;
-				}
-
+			// we loop 7 times to fill a week
+			for (null; DayIndex <= 7; DayIndex++) {
+				// Check if its the first day of the date to set the new month
 				if (d.getDate() === 1) {
-					if (WeekIndex !== 0) {
-						// newMonth = true;
+					// Add the heading to the list
+					tempList.push({ headingText: `${MONTHS[d.getUTCMonth()]} ${d.getFullYear()}` });
+
+					// Check if we have to align the first day of the month with the weekday
+					if (emptyDaysBeAdded !== 0) {
+						// console.log('going to add ' + emptyDaysBeAdded);
+						for (let a = 0; a < emptyDaysBeAdded; a++) {
+							week.push({ empty: true });
+						}
+
+						DayIndex = emptyDaysBeAdded + DayIndex;
+						emptyDaysBeAdded = 0;
 					}
-					w.newMonth = true;
-					w.headingText = MONTHS[d.getUTCMonth()];
 				}
 
-				w.week.push(o);
+				// Check if its the end of the month, than we make empty spaces
+				if (d.getDate() === lastDayofCurrentMonth) {
+					// check ifs 0 than we no if its untouch yet
+					if (emptyDaysBeAdded === 0) {
+						// if in case the last day is also on a sunday (last day of the week)
+						// then we don't have to do anything about adding extra days for the next month
+						if (DayIndex !== 7) {
+							// add the amoun of days we are already into the week so that will added next week to align days
+							emptyDaysBeAdded = DayIndex - 1;
+						}
+					}
 
-				d.setDate(d.getDate() + 1);
+					// add empty days
+					week.push({ empty: true });
+
+					// if its the last day of the week, we cotinue with the next day
+					if (DayIndex === 7) {
+						d.setDate(d.getDate() + 1);
+					}
+				} else {
+					let n: StorieType[] = [];
+
+					// TODO: imrpove this by removing the already added elements
+					const b = list.filter(v => snow2time(v.id).getDate() === d.getDate());
+					n.push(...b);
+
+					week.push({ date: d.getDate().toString(), pictures: n });
+					d.setDate(d.getDate() + 1);
+				}
 			}
 
-			tempList.push(w);
-		}
+			tempList.push({ week: week });
 
+			// tempList.push({ empty: : true })
+		}
 		SetList(tempList);
+		// console.log(tempList);
 	};
 
 	useEffect(() => {
-		renderList();
+		getHistory();
+	}, []);
+
+	const renderItem: ListRenderItem<Week> = React.useCallback(({ item, index }) => {
+		return (
+			<Block key={index.toString()} marginTop={item.headingText ? 30 : 0} paddingHorizontal={38}>
+				{item.headingText && (
+					<Text bold size={18} marginBottom={15}>
+						{item.headingText}
+					</Text>
+				)}
+
+				<Block row color="#191919" style={{ alignItems: 'flex-start' }} vCenter>
+					{!!item?.week?.length &&
+						item?.week.map((item2, index2) => (
+							<Block key={index2} flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
+								{/*{!item2.empty && (*/}
+								{/*	<TouchableOpacity key={index2} activeOpacity={0.6} style={{ backgroundColor: theme.textFadeLight, height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center'}}>*/}
+								{/*		<Text size={18} bold>*/}
+								{/*			{item2.date}*/}
+								{/*		</Text>*/}
+								{/*	</TouchableOpacity>*/}
+								{/*)}*/}
+
+								{!item2.empty ? (
+									<TouchableOpacity
+										key={index2}
+										onPress={() => SetSelectedData(item2)}
+										activeOpacity={0.6}
+										style={{
+											backgroundColor: !!item2.pictures?.length ? theme.primary : theme.darker,
+											height: '100%',
+											width: '100%',
+											justifyContent: 'center',
+											alignItems: 'center',
+										}}>
+										<Text size={18} bold>
+											{item2.date}
+										</Text>
+									</TouchableOpacity>
+								) : (
+									<View
+										style={{ backgroundColor: theme.backgroundDarker, height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}></View>
+								)}
+							</Block>
+						))}
+				</Block>
+			</Block>
+		);
 	}, []);
 
 	return (
-		<Block color="black">
+		<Block color={theme.backgroundDarker}>
 			<Text>Calendar Test</Text>
+			<Text>{JSON.stringify(SelectedData?.pictures?.length)}</Text>
 			<IconButton name="plus" size={25} color="white" backgroundColor="red" onPress={() => nav.goBack()} />
-			<Block row flex={0} vCenter style={{ borderBottomColor: theme.white40, borderBottomWidth: 1 }}>
+
+			<Block row flex={0} vCenter style={{ borderBottomColor: theme.textFade, borderBottomWidth: 1 }}>
 				{WEEK_DAYS.map((item, index) => (
-					<Block flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
+					<Block key={index} flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
 						<Text size={18} bold>
 							{item}
 						</Text>
 					</Block>
 				))}
 			</Block>
-			<FlatList
-				data={List}
-				initialNumToRender={30}
-				renderItem={({ item, index }) => (
-					<Block marginTop={item.newMonth ? 30 : 0} paddingHorizontal={56}>
-						{item.newMonth && (
-							<Text bold size={22} marginBottom={10}>
-								{item.headingText}
-							</Text>
-						)}
 
-						<Block key={index.toString()} row color="#191919" style={{ alignItems: 'flex-start' }} vCenter>
-							{item.week.map((item2, index2) => (
-								<Block flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
-									{!item2.empty && (
-										<Text key={index2} size={18} bold>
-											{item2.date}
-										</Text>
-									)}
-								</Block>
-							))}
-						</Block>
-					</Block>
-				)}
-			/>
+			<FlatList data={List} initialNumToRender={30} renderItem={renderItem} />
 		</Block>
 	);
 };
+
+// let d = new Date(new Date().setDate(1));
+// console.log(d.toUTCString());
+// d.setDate(new Date().setDate(new Date().getDate() - 1));
+// d.setMonth(new Date().setFullYear(new Date().getFullYear() - 1));
+
+// const MONTHS = [
+// 	"January",
+// 	"February",
+// 	"March",
+// 	"April",
+// 	"May",
+// 	"June",
+// 	"July",
+// 	"August",
+// 	"September",
+// 	"October",
+// 	"November",
+// 	"December"
+// ];
+
+// const TOTAL_CAL_TIME_IN_WEEKS = 52;
+
+// const main = () => {
+// 	let tempList = [];
+// 	let emptyDaysBeAdded = 0;
+//
+// 	// before we start to generate the list
+// 	// we need to check what day we start with the current date
+// 	// console.log(d.getUTCDate());
+//
+// 	// we have to create the weeks
+// 	for (let WeekIndex = 0; WeekIndex < TOTAL_CAL_TIME_IN_WEEKS; WeekIndex++) {
+// 		let week = [];
+// 		let DayIndex = 1;
+//
+// 		// for every week we need to get the lats day of the month to keep track
+// 		const lastDayofCurrentMonth = new Date(
+// 			d.getFullYear(),
+// 			d.getMonth() + 1,
+// 			0
+// 		).getDate();
+//
+// 		// we loop 7 times to fill a week
+// 		for (null; DayIndex <= 7; DayIndex++) {
+// 			// Check if its the first day of the date to set the new month
+// 			if (d.getDate() === 1) {
+// 				// Add the heading to the list
+// 				tempList.push([{ headingText: MONTHS[d.getUTCMonth()] }]);
+//
+// 				// Check if we have to align the first day of the month with the weekday
+// 				if (emptyDaysBeAdded !== 0) {
+// 					console.log("going to add " + emptyDaysBeAdded);
+// 					for (let a = 0; a < emptyDaysBeAdded; a++) {
+// 						week.push({ empty: true });
+// 					}
+//
+// 					DayIndex = emptyDaysBeAdded + DayIndex;
+// 					emptyDaysBeAdded = 0;
+// 					// continue;
+// 				}
+// 			}
+//
+// 			// Check if its the end of the month, than we make empty spaces
+// 			if (d.getDate() === lastDayofCurrentMonth) {
+// 				// check ifs 0 than we no if its untouch yet
+// 				if (emptyDaysBeAdded === 0) {
+// 					// if in case the last day is also on a sunday (last day of the week)
+// 					// then we don't have to do anything about adding extra days for the next month
+// 					if (DayIndex !== 7) {
+// 						// add the amoun of days we are already into the week so that will added next week to align days
+// 						emptyDaysBeAdded = DayIndex - 1;
+// 					}
+// 				}
+//
+// 				// add empty days
+// 				week.push({ empty: true });
+//
+// 				// if its the last day of the week, we cotinue with the next day
+// 				if (DayIndex === 7) {
+// 					d.setDate(d.getDate() + 1);
+// 				}
+// 			} else {
+// 				// console.log(d.getDate().toString());
+// 				week.push({ date: d.getDate().toString() });
+// 				d.setDate(d.getDate() + 1);
+// 			}
+// 		}
+//
+// 		tempList.push(week);
+//
+// 		// tempList.push({ empty: : true })
+// 	}
+//
+// 	console.log(tempList);
+// };
+
+// main();
