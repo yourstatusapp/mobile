@@ -4,7 +4,6 @@ import { Avatar, Block, BlockScroll, Fill, IconButton, Spacer, Status, Text, Tex
 import { useNavigation } from '@react-navigation/native';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
-import LinearGradient from 'react-native-linear-gradient';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 import FastImage from 'react-native-fast-image';
@@ -114,21 +113,8 @@ export const Account = () => {
 				<Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade} marginBottom={50}>
 					{profile.display_name || 'No display name'}
 				</Text>
-				{/* <Spacer size={20} />
-				<TextButton
-					text="camera"
-					textColor={'#6b93ff'}
-					style={{ padding: 4 }}
-					onPress={() => {
-						nav.navigate(
-							'camera' as never,
-							{
-								moment: true,
-							} as never,
-						);
-					}}
-				/> */}
-				{/* <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} /> */}
+
+				 <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} />
 				<TextButton
 					text="Logout"
 					textColor={'#ff6b6b'}
@@ -165,7 +151,7 @@ const Banner = styled(FastImage)`
 
 const BannerPlaceholder = styled.View`
 	width: 100%;
-	background-color: ${({ theme }) => theme.theme.white20};
+	background-color: ${({ theme }) => theme.textFadeLight};
 	height: ${BANNER_HEIGHT}px;
 `;
 

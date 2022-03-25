@@ -5,6 +5,35 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, ListRenderItem, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'styled-components';
 
+interface DayComponentProps extends DayObject {}
+
+const DayComponent: ListRenderItem<DayComponentProps> = ({ item, index }) => {
+	const theme = useTheme();
+	return (
+		<Block key={index} flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
+			{!item.empty ? (
+				<TouchableOpacity
+					key={index}
+					// onPress={() => SetSelectedData(item)}
+					activeOpacity={0.6}
+					style={{
+						backgroundColor: !!item.pictures?.length ? theme.primary : theme.darker,
+						height: '100%',
+						width: '100%',
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}>
+					<Text size={18} bold>
+						{item.date}
+					</Text>
+				</TouchableOpacity>
+			) : (
+				<View style={{ backgroundColor: theme.backgroundDarker, height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}></View>
+			)}
+		</Block>
+	);
+};
+
 interface StorieType {
 	id: string;
 	picture: string;
@@ -35,6 +64,8 @@ export const RealtimeMomentHistory = () => {
 	const getHistory = async () => {
 		const res = await request<StorieType[]>('get', '/profile/stories/history');
 		if (res.data) {
+			console.log(res.data.length);
+
 			renderCalendarData(res.data);
 		}
 	};
@@ -43,19 +74,17 @@ export const RealtimeMomentHistory = () => {
 		let d = new Date();
 		d.setDate(1);
 		d.setMonth(0);
-		// d.setMonth(new Date().setFullYear(new Date().getFullYear() - 1));
 
-		// console.log('Date' + JSON.stringify(d));
-		// console.log(new Date());
-
+		// global variables
 		let tempList: Week[] = [];
 		let emptyDaysBeAdded = 0;
+		let nextDayDate: Date = null;
 
 		// before we start to generate the list
 		// we need to check what day we start with the current date
-		// console.log(d.getUTCDate());
+		console.log('---> ', d.getDay());
 
-		emptyDaysBeAdded = d.getUTCDate();
+		emptyDaysBeAdded = d.getDay() - 1;
 
 		// we have to create the weeks
 		for (let WeekIndex = 0; WeekIndex < TOTAL_CAL_TIME_IN_WEEKS; WeekIndex++) {
@@ -83,34 +112,48 @@ export const RealtimeMomentHistory = () => {
 						emptyDaysBeAdded = 0;
 					}
 				}
+				let n: StorieType[] = [];
 
 				// Check if its the end of the month, than we make empty spaces
 				if (d.getDate() === lastDayofCurrentMonth) {
-					// check ifs 0 than we no if its untouch yet
+					// check ifs 0 than we no if its untouched yet
 					if (emptyDaysBeAdded === 0) {
 						// if in case the last day is also on a sunday (last day of the week)
 						// then we don't have to do anything about adding extra days for the next month
+						week.push({ date: d.getDate().toString() });
+
 						if (DayIndex !== 7) {
 							// add the amoun of days we are already into the week so that will added next week to align days
-							emptyDaysBeAdded = DayIndex - 1;
+							emptyDaysBeAdded = DayIndex;
+							// week.push({ date: d.getDate().toString() });
+						} else {
+							emptyDaysBeAdded = 0;
+							d.setDate(d.getDate() + 1);
+						}
+					} else {
+						week.push({ empty: true });
+						if (DayIndex === 7) {
+							d.setDate(d.getDate() + 1);
 						}
 					}
-
-					// add empty days
-					week.push({ empty: true });
-
-					// if its the last day of the week, we cotinue with the next day
-					if (DayIndex === 7) {
-						d.setDate(d.getDate() + 1);
-					}
 				} else {
-					let n: StorieType[] = [];
+					// local variable for pushing data into the day
 
-					// TODO: imrpove this by removing the already added elements
-					const b = list.filter(v => snow2time(v.id).getDate() === d.getDate());
-					n.push(...b);
+					// // if we have data to process and the next s date isn't set yet
+					// // get the next day data to decrease calculation costs
+					// if (nextDayDate === null && list?.length !== 0) {
+					// 	nextDayDate = snow2time(list[0].id);
+					// } else {
+					// 	// if they date is the correct day
+					// 	if (nextDayDate.getMonth() === d.getMonth() && nextDayDate.getDate() === d.getDate()) {
+					// 		// insert the data into the day, check also for multiple entries in the list
+					// 		let nn = list.filter(v => snow2time(v.id))
+					// 		// n.push()
+					// 		// remove the data from the list to reduce list size and handling
+					// 	}
+					// }
 
-					week.push({ date: d.getDate().toString(), pictures: n });
+					week.push({ date: d.getDate().toString() });
 					d.setDate(d.getDate() + 1);
 				}
 			}
@@ -127,7 +170,7 @@ export const RealtimeMomentHistory = () => {
 		getHistory();
 	}, []);
 
-	const renderItem: ListRenderItem<Week> = React.useCallback(({ item, index }) => {
+	const renderItem: ListRenderItem<Week> = ({ item, index }) => {
 		return (
 			<Block key={index.toString()} marginTop={item.headingText ? 30 : 0} paddingHorizontal={38}>
 				{item.headingText && (
@@ -137,17 +180,39 @@ export const RealtimeMomentHistory = () => {
 				)}
 
 				<Block row color="#191919" style={{ alignItems: 'flex-start' }} vCenter>
-					{!!item?.week?.length &&
+					<FlatList
+						data={item.week}
+						horizontal
+						scrollEnabled={false}
+						initialNumToRender={7}
+						renderItem={({ item, index }) => (
+							<Block key={index} flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
+								{!item.empty ? (
+									<TouchableOpacity
+										key={index}
+										onPress={() => SetSelectedData(item)}
+										activeOpacity={0.6}
+										style={{
+											backgroundColor: !!item.pictures?.length ? theme.primary : theme.darker,
+											height: '100%',
+											width: '100%',
+											justifyContent: 'center',
+											alignItems: 'center',
+										}}>
+										<Text size={18} bold>
+											{item.date}
+										</Text>
+									</TouchableOpacity>
+								) : (
+									<View
+										style={{ backgroundColor: theme.backgroundDarker, height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}></View>
+								)}
+							</Block>
+						)}
+					/>
+					{/* {!!item?.week?.length &&
 						item?.week.map((item2, index2) => (
 							<Block key={index2} flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>
-								{/*{!item2.empty && (*/}
-								{/*	<TouchableOpacity key={index2} activeOpacity={0.6} style={{ backgroundColor: theme.textFadeLight, height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center'}}>*/}
-								{/*		<Text size={18} bold>*/}
-								{/*			{item2.date}*/}
-								{/*		</Text>*/}
-								{/*	</TouchableOpacity>*/}
-								{/*)}*/}
-
 								{!item2.empty ? (
 									<TouchableOpacity
 										key={index2}
@@ -169,11 +234,11 @@ export const RealtimeMomentHistory = () => {
 										style={{ backgroundColor: theme.backgroundDarker, height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center' }}></View>
 								)}
 							</Block>
-						))}
+						))} */}
 				</Block>
 			</Block>
 		);
-	}, []);
+	};
 
 	return (
 		<Block color={theme.backgroundDarker}>
@@ -191,7 +256,7 @@ export const RealtimeMomentHistory = () => {
 				))}
 			</Block>
 
-			<FlatList data={List} initialNumToRender={30} renderItem={renderItem} />
+			<FlatList data={List} initialNumToRender={9} maxToRenderPerBatch={6} renderItem={renderItem} />
 		</Block>
 	);
 };

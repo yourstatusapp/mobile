@@ -1,7 +1,16 @@
 import React, { useState, useRef } from 'react';
 import core, { AppAlert, FriendItemType, request, StatusType } from '@core';
 import { Avatar, Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
-import { Animated, ListRenderItemInfo, StyleSheet, TouchableOpacity, ViewStyle, ScrollView, FlatList } from 'react-native';
+import {
+	Animated,
+	ListRenderItemInfo,
+	StyleSheet,
+	TouchableOpacity,
+	ViewStyle,
+	ScrollView,
+	FlatList,
+	RefreshControl,
+} from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
@@ -35,7 +44,9 @@ export const Friends = React.memo(() => {
 	const friends = usePulse(core.lists.friends.groups.friends);
 	const myStories = usePulse(core.lists.stories.groups.mine);
 
-	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', top: 0, height: hasNotch() ? 100 : 70, width: '100%', zIndex: 10, opacity: 1 }]);
+	const sh2 = StyleSheet.flatten<ViewStyle>([
+		{ position: 'absolute', top: 0, height: hasNotch() ? 100 : 70, width: '100%', zIndex: 10, opacity: 1 },
+	]);
 
 	const scrolling = useRef(new Animated.Value(0)).current;
 	const iR = [60, 115];
@@ -81,7 +92,10 @@ export const Friends = React.memo(() => {
 		const res = await request<{ my: any; all: any }>('get', '/profile/stories');
 		if (res.data) {
 			core.lists.stories.collect(res.data?.all, 'all');
-			core.lists.stories.collect({ account_id: profile.account_id, avatar: profile.avatar, username: profile.username, stories: res.data.my }, 'mine');
+			core.lists.stories.collect(
+				{ account_id: profile.account_id, avatar: profile.avatar, username: profile.username, stories: res.data.my },
+				'mine',
+			);
 		}
 	};
 
@@ -96,6 +110,22 @@ export const Friends = React.memo(() => {
 		} else {
 			AppAlert(false, 'Failed', res.message);
 		}
+	};
+
+	const [RefreshLoading, SetRefreshLoading] = useState(false);
+	const onRefresh = async () => {
+		SetRefreshLoading(true);
+
+		getFriends();
+
+		setTimeout(async () => {
+			getMyStatus();
+		}, 200);
+
+		setTimeout(async () => {
+			await getStories();
+			SetRefreshLoading(false);
+		}, 400);
 	};
 
 	React.useEffect(() => {
@@ -117,9 +147,24 @@ export const Friends = React.memo(() => {
 			<Block color={theme.background}>
 				<Animated.ScrollView
 					scrollEnabled={true}
+					showsVerticalScrollIndicator={false}
 					style={{ flex: 1 }}
 					contentContainerStyle={{ paddingTop: 100, paddingBottom: 120 }}
 					scrollEventThrottle={1}
+					refreshControl={
+						<RefreshControl
+							progressViewOffset={90}
+							style={{
+								// position: 'absolute',
+								// bottom: 0,
+								backgroundColor: theme.background,
+							}}
+							colors={[theme.text, theme.textFadeLight]}
+							refreshing={RefreshLoading}
+							onRefresh={onRefresh}
+							size={30}
+						/>
+					}
 					onScroll={Animated.event(
 						[
 							{
@@ -147,17 +192,27 @@ export const Friends = React.memo(() => {
 										)}
 									/>
 									<Block flex={0} style={{ width: null }}>
-										<TextButton text="Manage status" style={{ marginTop: 15, marginRight: 15 }} onPress={() => nav.navigate('manage_status' as never)} />
+										<TextButton
+											text="Manage status"
+											style={{ marginTop: 15, marginRight: 15 }}
+											onPress={() => nav.navigate('manage_status' as never)}
+										/>
 									</Block>
 								</Block>
 							)}
 							{!!myStories[0]?.stories?.length && (
 								<Block row marginLeft={0} marginTop={15}>
-									<ScrollView horizontal={true} scrollEnabled={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 15 }}>
+									<ScrollView
+										horizontal={true}
+										scrollEnabled={true}
+										showsHorizontalScrollIndicator={false}
+										contentContainerStyle={{ paddingLeft: 15 }}>
 										{myStories[0].stories.map((item2, index2) => (
 											<Block style={{ position: 'relative' }}>
 												<TouchableOpacity
-													onPress={() => core.events.storie_viewer.emit({ stories: myStories[0], clicked_at_index: index2 })}
+													onPress={() =>
+														core.events.storie_viewer.emit({ stories: myStories[0], clicked_at_index: index2 })
+													}
 													activeOpacity={0.8}>
 													<FastImage
 														key={index2}
@@ -169,7 +224,13 @@ export const Friends = React.memo(() => {
 															iconSize={14}
 															color={theme.text}
 															backgroundColor={theme.background}
-															style={{ position: 'absolute', top: 5, right: 5, zIndex: 50, transform: [{ rotate: '45deg' }] }}
+															style={{
+																position: 'absolute',
+																top: 5,
+																right: 5,
+																zIndex: 50,
+																transform: [{ rotate: '45deg' }],
+															}}
 															onPress={() => deleteStorie(item2.id)}
 														/>
 													</FastImage>
@@ -211,7 +272,12 @@ export const Friends = React.memo(() => {
 						animate
 						row
 						hCenter
-						style={{ zIndex: 10, backgroundColor: 'transparent', height: 100 - (hasNotch() ? 44 : 0), opacity: FadeOpacity }}
+						style={{
+							zIndex: 10,
+							backgroundColor: 'transparent',
+							height: 100 - (hasNotch() ? 44 : 0),
+							opacity: FadeOpacity,
+						}}
 						paddingHorizontal={20}>
 						<IconButton
 							name="search"
@@ -255,7 +321,10 @@ const FriendComp: React.FC<FriendItemRenderType> = props => {
 	const nav = useNavigation();
 	const bb = usePulse(core.lists.stories.groups.all);
 
-	const userStories = React.useMemo(() => bb.filter(v => v.account_id === props.item.account_id)[0], [props.item.account_id, bb]);
+	const userStories = React.useMemo(
+		() => bb.filter(v => v.account_id === props.item.account_id)[0],
+		[props.item.account_id, bb],
+	);
 
 	const openProfile = () => nav.navigate('profile' as never, { username: props.item.username } as never);
 
@@ -267,7 +336,9 @@ const FriendComp: React.FC<FriendItemRenderType> = props => {
 				</TouchableOpacity>
 				<Block style={{ paddingLeft: 20 }}>
 					<Text weight="700" size={16}>
-						{props.item.username ? props.item.username.charAt(0).toUpperCase() + username.slice(1, username.length + 1) : '-'}
+						{props.item.username
+							? props.item.username.charAt(0).toUpperCase() + username.slice(1, username.length + 1)
+							: '-'}
 					</Text>
 					{/* {item?.status && item?.status.(
 						<Block style={{ flexWrap: 'wrap', paddingTop: 6 }}>
@@ -296,7 +367,9 @@ const FriendComp: React.FC<FriendItemRenderType> = props => {
 				<Block row marginLeft={15} marginTop={15}>
 					<ScrollView horizontal={true} scrollEnabled={true} showsHorizontalScrollIndicator={false}>
 						{userStories.stories.map((item2, index2) => (
-							<TouchableOpacity key={index2} onPress={() => core.events.storie_viewer.emit({ stories: userStories, clicked_at_index: index2 })}>
+							<TouchableOpacity
+								key={index2}
+								onPress={() => core.events.storie_viewer.emit({ stories: userStories, clicked_at_index: index2 })}>
 								<FastImage
 									key={index2}
 									source={{ uri: `https://cdn.yourstatus.app/stories/${item2.account_id}/${item2.picture}` }}

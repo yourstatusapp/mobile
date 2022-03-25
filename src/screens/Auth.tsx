@@ -8,7 +8,6 @@ import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { useClipboard } from '@react-native-clipboard/clipboard';
-import { color } from 'react-native-reanimated';
 
 let timeout: NodeJS.Timeout;
 

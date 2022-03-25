@@ -19,7 +19,7 @@ type ParamList = {
 export const DirectMessage = () => {
 	const theme = useTheme();
 	const { params } = useRoute<RouteProp<ParamList, 'DirectMessage'>>();
-	const { bottom, top } = useSafeAreaInsets();
+	const { bottom } = useSafeAreaInsets();
 	const acc = usePulse(core.account.account);
 	const profile = usePulse(core.profile.profile);
 	const isDarkMode = usePulse(core.ui.isDarkMode);
