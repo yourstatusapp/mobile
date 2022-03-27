@@ -47,13 +47,23 @@ export const Account = () => {
 				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
 			/> */}
 
-			<BlockScroll style={{ zIndex: 6, paddingHorizontal: 40 }} contentContainerStyle={{ flex: 1 }} paddingHorizontal={20}>
+			<BlockScroll
+				style={{ zIndex: 6, paddingHorizontal: 40 }}
+				contentContainerStyle={{ flex: 1 }}
+				paddingHorizontal={20}>
 				<Block row flex={0} marginTop={70} marginBottom={20}>
 					<Text size={28} bold color={theme.text}>
 						Account
 					</Text>
 					<Fill />
-					<IconButton name="cog" size={25} iconSize={15} color={theme.text} backgroundColor={theme.darker} onPress={() => nav.navigate('settings' as never)} />
+					<IconButton
+						name="cog"
+						size={25}
+						iconSize={15}
+						color={theme.text}
+						backgroundColor={theme.darker}
+						onPress={() => nav.navigate('settings' as never)}
+					/>
 				</Block>
 				{/* <Text>{JSON.stringify(uploadProgress) || 'no upload in progress'}</Text> */}
 				<Block row flex={0}>
@@ -69,7 +79,14 @@ export const Account = () => {
 							backgroundColor={theme.darker}
 							onPress={() => nav.navigate('edit_profile' as never)}
 						/>
-						<IconButton name="image" color={theme.text} size={25} iconSize={16} backgroundColor={theme.darker} onPress={() => SetMenuOpen(true)} />
+						<IconButton
+							name="image"
+							color={theme.text}
+							size={25}
+							iconSize={16}
+							backgroundColor={theme.darker}
+							onPress={() => SetMenuOpen(true)}
+						/>
 						<Menu opened={MenuOpen} onBackdropPress={() => SetMenuOpen(false)} style={{ borderRadius: 5 }}>
 							<MenuTrigger text="" />
 							<MenuOptions
@@ -114,7 +131,7 @@ export const Account = () => {
 					{profile.display_name || 'No display name'}
 				</Text>
 
-				 <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} />
+				{/* <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} /> */}
 				<TextButton
 					text="Logout"
 					textColor={'#ff6b6b'}

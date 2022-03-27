@@ -43,6 +43,11 @@ export const Friends = React.memo(() => {
 	const isDarkMode = usePulse(core.ui.isDarkMode);
 	const friends = usePulse(core.lists.friends.groups.friends);
 	const myStories = usePulse(core.lists.stories.groups.mine);
+	const profile = usePulse(core.profile.profile);
+
+	const [FriendsRequests, SetFriendsRequests] = useState<any[]>([]);
+	const [MyStatus, setMyStatus] = useState<StatusType[]>([]);
+	const [Loading, SetLoading] = useState(false);
 
 	const sh2 = StyleSheet.flatten<ViewStyle>([
 		{ position: 'absolute', top: 0, height: hasNotch() ? 100 : 70, width: '100%', zIndex: 10, opacity: 1 },
@@ -56,16 +61,11 @@ export const Friends = React.memo(() => {
 		outputRange: [1, 0],
 		extrapolate: 'clamp',
 	});
-
 	const translation = scrolling.interpolate({
 		inputRange: iR,
 		outputRange: [0, -50],
 		extrapolate: 'clamp',
 	});
-
-	const [FriendsRequests, SetFriendsRequests] = useState<any[]>([]);
-
-	const [Loading, SetLoading] = useState(false);
 
 	const getFriends = async () => {
 		SetLoading(true);
@@ -80,14 +80,12 @@ export const Friends = React.memo(() => {
 		// if (a.da) SetD(a.data.friends);
 	};
 
-	const [MyStatus, setMyStatus] = useState<StatusType[]>([]);
 	const getMyStatus = async () => {
 		const res = await request<any>('get', '/status');
 		setMyStatus(res.data);
 		core.lists.status.collect(res.data, 'mine');
 	};
 
-	const profile = usePulse(core.profile.profile);
 	const getStories = async () => {
 		const res = await request<{ my: any; all: any }>('get', '/profile/stories');
 		if (res.data) {
@@ -340,16 +338,6 @@ const FriendComp: React.FC<FriendItemRenderType> = props => {
 							? props.item.username.charAt(0).toUpperCase() + username.slice(1, username.length + 1)
 							: '-'}
 					</Text>
-					{/* {item?.status && item?.status.(
-						<Block style={{ flexWrap: 'wrap', paddingTop: 6 }}>
-							<Status
-								status={item.status}
-								onPress={() => {
-									tapStatus();
-								}}
-							/>
-						</Block>
-					)} */}
 					{!!props.item?.status?.length && (
 						<FlatList
 							data={props.item?.status}
@@ -365,19 +353,23 @@ const FriendComp: React.FC<FriendItemRenderType> = props => {
 			</Block>
 			{!!userStories?.stories && (
 				<Block row marginLeft={15} marginTop={15}>
-					<ScrollView horizontal={true} scrollEnabled={true} showsHorizontalScrollIndicator={false}>
-						{userStories.stories.map((item2, index2) => (
+					<FlatList
+						data={userStories.stories}
+						initialNumToRender={1}
+						horizontal={true}
+						maxToRenderPerBatch={4}
+						renderItem={({ item, index }) => (
 							<TouchableOpacity
-								key={index2}
-								onPress={() => core.events.storie_viewer.emit({ stories: userStories, clicked_at_index: index2 })}>
+								key={item.id}
+								onPress={() => core.events.storie_viewer.emit({ stories: userStories, clicked_at_index: index })}>
 								<FastImage
-									key={index2}
-									source={{ uri: `https://cdn.yourstatus.app/stories/${item2.account_id}/${item2.picture}` }}
+									key={index}
+									source={{ uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}` }}
 									style={{ height: 120, width: 80, borderRadius: 6, marginRight: 15 }}
 								/>
 							</TouchableOpacity>
-						))}
-					</ScrollView>
+						)}
+					/>
 				</Block>
 			)}
 		</FriendCompBody>

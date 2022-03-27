@@ -33,7 +33,19 @@ export const IconButton: React.FC<IconButtonProps> = ({
 	style,
 }) => {
 	return (
-		<IconButtonBody {...{ name, color, iconSize, size, iconStyle, disabled, onPress, removeFadeWhenDisalbed, backgroundColor, noBackground, style }}>
+		<IconButtonBody
+			{...{
+				name,
+				color,
+				iconSize,
+				size,
+				disabled,
+				onPress,
+				removeFadeWhenDisalbed,
+				backgroundColor,
+				noBackground,
+				style,
+			}}>
 			<Icon name={name || ''} color={color} size={iconSize || 0 + (size - 5)} style={iconStyle} />
 		</IconButtonBody>
 	);

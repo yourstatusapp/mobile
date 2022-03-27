@@ -78,7 +78,7 @@ export const App: React.FC = () => {
 			<NavigationContainer>
 				<AppBody>
 					<MenuProvider>
-						<StatusBar barStyle={theme.name !== 'light' ? 'light-content' : 'dark-content'} />
+						{/* <StatusBar barStyle={theme.name !== 'light' ? 'light-content' : 'dark-content'} /> */}
 						<RootNavigator />
 					</MenuProvider>
 				</AppBody>

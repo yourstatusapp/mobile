@@ -25,7 +25,9 @@ export const BottomTabNavigator: React.FC = () => {
 
 	return (
 		<Block color="black">
-			<TabsStackNavigator.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_left' }} initialRouteName={current_tab_state.path_name}>
+			<TabsStackNavigator.Navigator
+				screenOptions={{ headerShown: false, animation: 'slide_from_left' }}
+				initialRouteName={current_tab_state.path_name}>
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
 				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
 				<TabsStackNavigator.Screen name="conversations" component={Conversations} options={o} />

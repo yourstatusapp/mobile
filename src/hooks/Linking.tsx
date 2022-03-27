@@ -40,7 +40,10 @@ export const useLinking = () => {
 		}
 
 		if (url?.includes('/magic')) {
-			nav.navigate('magic' as never, { code: url.split('magic?code=')[1]?.split('&')[0], new_account: url.split('magic?code=')[1]?.split('&')[1] } as never);
+			nav.navigate(
+				'magic' as never,
+				{ code: url.split('magic?code=')[1]?.split('&')[0], new_account: url.split('magic?code=')[1]?.split('&')[1] } as never,
+			);
 		}
 	}, [url, processing, nav]);
 };

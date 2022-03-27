@@ -40,7 +40,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		}, 10);
 	};
 
-	useEffect(() => {
+	const s = () => {
 		core.account.logged_in.onNext(v => {
 			if (Loading) return;
 			if (v) {
@@ -50,7 +50,9 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		});
 
 		setTimeout(() => !logged_in && loaded(), 200);
-	}, []);
+	};
+
+	useEffect(s, []);
 
 	return (
 		<PreloaderBody>

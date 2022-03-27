@@ -39,7 +39,7 @@ export const SettingsNotifications: React.FC = () => {
 	};
 
 	return (
-		<Block paddingHorizontal={20} color={theme.background}>
+		<Block paddingHorizontal={20} color={theme.backgroundDarker}>
 			<Spacer size={20} />
 			<Text bold size={26}>
 				Notifications

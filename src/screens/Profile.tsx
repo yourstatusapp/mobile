@@ -56,7 +56,10 @@ export const Profile = () => {
 					{!ProfileData?.banner ? (
 						<BannerPlaceholder />
 					) : (
-						<Banner source={{ uri: `https://cdn.yourstatus.app/profile/${ProfileData?.account_id}/${ProfileData?.banner}` }} />
+						<Banner
+							source={{ uri: `https://cdn.yourstatus.app/profile/${ProfileData?.account_id}/${ProfileData?.banner}` }}
+							resizeMode="cover"
+						/>
 					)}
 				</BannerArea>
 				<Animated.ScrollView
@@ -84,7 +87,11 @@ export const Profile = () => {
 							color={theme.textFade}
 							backgroundColor={theme.backgroundDarker}
 						/>
-						<GradiantShadow colors={['transparent', theme.background]} height={248 + 50} style={{ position: 'absolute', top: 0, zIndex: 0 }} />
+						<GradiantShadow
+							colors={['transparent', theme.background]}
+							height={248 + 50}
+							style={{ position: 'absolute', top: 0, zIndex: 0 }}
+						/>
 
 						<Block paddingHorizontal={20}>
 							<Spacer size={120} />

@@ -120,6 +120,8 @@ export interface StorieType {
 		id: string;
 		picture: string;
 		account_id: string;
+		viewed?: boolean;
+		views?: number;
 	}[];
 }
 
