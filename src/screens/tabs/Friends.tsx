@@ -1,16 +1,7 @@
 import React, { useState, useRef } from 'react';
 import core, { AppAlert, FriendItemType, request, StatusType } from '@core';
 import { Avatar, Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
-import {
-	Animated,
-	ListRenderItemInfo,
-	StyleSheet,
-	TouchableOpacity,
-	ViewStyle,
-	ScrollView,
-	FlatList,
-	RefreshControl,
-} from 'react-native';
+import { Animated, ListRenderItemInfo, StyleSheet, TouchableOpacity, ViewStyle, ScrollView, FlatList, RefreshControl } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
@@ -209,7 +200,7 @@ export const Friends = React.memo(() => {
 											<Block style={{ position: 'relative' }}>
 												<TouchableOpacity
 													onPress={() =>
-														core.events.storie_viewer.emit({ stories: myStories[0], clicked_at_index: index2 })
+														core.events.storie_viewer.emit({ stories: myStories[0], clicked_at_index: index2, skipWatchRequest: true })
 													}
 													activeOpacity={0.8}>
 													<FastImage
@@ -319,10 +310,7 @@ const FriendComp: React.FC<FriendItemRenderType> = props => {
 	const nav = useNavigation();
 	const bb = usePulse(core.lists.stories.groups.all);
 
-	const userStories = React.useMemo(
-		() => bb.filter(v => v.account_id === props.item.account_id)[0],
-		[props.item.account_id, bb],
-	);
+	const userStories = React.useMemo(() => bb.filter(v => v.account_id === props.item.account_id)[0], [props.item.account_id, bb]);
 
 	const openProfile = () => nav.navigate('profile' as never, { username: props.item.username } as never);
 
@@ -334,9 +322,7 @@ const FriendComp: React.FC<FriendItemRenderType> = props => {
 				</TouchableOpacity>
 				<Block style={{ paddingLeft: 20 }}>
 					<Text weight="700" size={16}>
-						{props.item.username
-							? props.item.username.charAt(0).toUpperCase() + username.slice(1, username.length + 1)
-							: '-'}
+						{props.item.username ? props.item.username.charAt(0).toUpperCase() + username.slice(1, username.length + 1) : '-'}
 					</Text>
 					{!!props.item?.status?.length && (
 						<FlatList

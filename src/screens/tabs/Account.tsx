@@ -47,10 +47,7 @@ export const Account = () => {
 				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
 			/> */}
 
-			<BlockScroll
-				style={{ zIndex: 6, paddingHorizontal: 40 }}
-				contentContainerStyle={{ flex: 1 }}
-				paddingHorizontal={20}>
+			<BlockScroll style={{ zIndex: 6, paddingHorizontal: 40 }} contentContainerStyle={{ flex: 1 }} paddingHorizontal={20}>
 				<Block row flex={0} marginTop={70} marginBottom={20}>
 					<Text size={28} bold color={theme.text}>
 						Account
@@ -132,20 +129,7 @@ export const Account = () => {
 				</Text>
 
 				{/* <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} /> */}
-				<TextButton
-					text="Logout"
-					textColor={'#ff6b6b'}
-					style={{ padding: 4 }}
-					onPress={() => {
-						removeNotificationPermissions();
-						nav.reset({ index: 1, routes: [{ name: 'auth' as never }] });
-						core.account.account.reset();
-						core.lists.devices.reset();
-						core.profile.profile.reset();
-						core.app.device_push_token.reset();
-						core.app.notification_permission.reset();
-					}}
-				/>
+
 				<Fill />
 				<Block row flex={0}>
 					<Text color={theme.darker1}>V{getVersion()}</Text>

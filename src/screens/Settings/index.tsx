@@ -6,24 +6,44 @@ export { SettingsNotifications } from './SettingsNotifications';
 export { SettingsSessions } from './SettingsSessions';
 export { SettingsTheming } from './SettingsTheming';
 
-export interface SettingItemProps {
+export interface SettingItemMenuProps {
 	text: string;
-	icon: string;
+	icon?: string;
 	onPress: () => void;
+	textColor?: string;
+	iconColor?: string;
 }
 
-export const SettingItem = ({ text, onPress, icon }: SettingItemProps) => {
+export const SettingItemMenu = ({ text, onPress, icon, textColor, iconColor }: SettingItemMenuProps) => {
 	const theme = useTheme();
 
 	return (
 		<Block style={{ paddingVertical: 15 }} paddingHorizontal={20} flex={0} onPress={onPress} color={theme.background} hCenter press row>
-			<Icon name={icon} size={15} color={theme.textFadeLight} />
-			<Text color={theme.text} weight="600" size={14} marginLeft={12}>
+			{icon && <Icon name={icon} size={15} color={iconColor || theme.textFadeLight} />}
+			<Text color={textColor || theme.text} weight="600" size={14} marginLeft={12}>
 				{text}
 			</Text>
 
 			<Fill />
-			<Icon name="chevron" size={15} color={theme.textFadeLight} style={{ transform: [{ rotate: '180deg' }] }} />
+			<Icon name="chevron" size={15} color={iconColor || theme.textFadeLight} style={{ transform: [{ rotate: '180deg' }] }} />
+		</Block>
+	);
+};
+
+interface SettingItemProps {
+	text: string;
+	RightComponent: any;
+}
+
+export const SettingItem: React.FC<SettingItemProps> = ({ text, RightComponent }) => {
+	const theme = useTheme();
+	return (
+		<Block flex={0} row marginTop={40} paddingHorizontal={20} color={theme.background} style={{ paddingVertical: 10 }} hCenter>
+			<Text size={14} weight="600">
+				{text}
+			</Text>
+			<Fill />
+			{RightComponent && <RightComponent />}
 		</Block>
 	);
 };

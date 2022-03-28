@@ -38,6 +38,7 @@ export const App: React.FC = () => {
 
 	const [L, SetL] = useState<StorieType>();
 	const [ShowStorie, SetShowStorie] = useState<boolean>(false);
+	const [SkipWatchRequest, SetSkipWatchRequest] = useState<boolean>(false);
 	const [ClikedAtIndex, SetClikedAtIndex] = useState<number>(0);
 
 	const onStorieViewHandler = React.useCallback(
@@ -46,6 +47,7 @@ export const App: React.FC = () => {
 				SetL(v.stories);
 				SetClikedAtIndex(v.clicked_at_index);
 				SetShowStorie(true);
+				SetSkipWatchRequest(v?.skipWatchRequest || false);
 			} else {
 				SetL(false);
 			}
@@ -64,7 +66,6 @@ export const App: React.FC = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<CustomAlert />
 			<PushNotifications />
 			{ShowStorie && (
 				<StorieViewer
@@ -73,13 +74,15 @@ export const App: React.FC = () => {
 						SetShowStorie(false);
 					}}
 					clickedAtIndex={ClikedAtIndex}
+					skipWatchRequest={SkipWatchRequest}
 				/>
 			)}
 			<NavigationContainer>
 				<AppBody>
 					<MenuProvider>
-						{/* <StatusBar barStyle={theme.name !== 'light' ? 'light-content' : 'dark-content'} /> */}
+						<StatusBar barStyle={theme.name !== 'light' ? 'light-content' : 'dark-content'} />
 						<RootNavigator />
+						<CustomAlert />
 					</MenuProvider>
 				</AppBody>
 			</NavigationContainer>
@@ -89,5 +92,6 @@ export const App: React.FC = () => {
 
 const AppBody = styled.View`
 	flex: 1;
+	z-index: 25;
 	background-color: black;
 `;

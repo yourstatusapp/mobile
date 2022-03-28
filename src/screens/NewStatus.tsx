@@ -99,15 +99,14 @@ export const NewStatus = () => {
 	}, [GuildCode]);
 
 	return (
-		<Block safe paddingHorizontal={20} color={theme.background}>
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={60}>
+		<Block safe paddingHorizontal={20} color={theme.background} flex={1}>
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior="height" keyboardVerticalOffset={140} contentContainerStyle={{ flex: 1 }}>
 				<Spacer size={20} />
 				<Text size={30} weight="700">
 					Create new Status
 				</Text>
 
-				<Spacer size={20} />
-				<Block row flex={0}>
+				<Block row flex={0} marginTop={20}>
 					{STATUS_TYPES_LIST.map((item, index) => (
 						<Block
 							press
@@ -129,18 +128,8 @@ export const NewStatus = () => {
 					))}
 				</Block>
 
-				{/* <Block flex={0} row hCenter marginBottom={30}>
-					<Fill />
-					<Block flex={0} row press style={{ width: 'auto' }} hCenter>
-						<Text size={12} paddingRight={5}>
-							More info
-						</Text>
-						<Icon name="info" color="white" size={12} />
-					</Block>
-				</Block> */}
-
 				{SelectedType === 'DEFAULT' && (
-					<Block marginTop={30} flex={1}>
+					<Block flex={0} marginTop={30}>
 						<Block row flex={1} style={{ minHeight: 50 }}>
 							<Status demo status={{ id: '', data: { message: StatusTxt }, type: 0, taped: true }} />
 						</Block>
@@ -153,8 +142,10 @@ export const NewStatus = () => {
 				)}
 
 				{SelectedType === 'DISCORD_GUILD' && (
-					<Block marginTop={30} flex={0}>
-						{GuildResults?.guild?.id && <Status status={{ id: '543', data: { name: GuildResults?.guild?.name, invite_code: GuildResults?.code }, type: 1 }} />}
+					<Block flex={0} marginTop={30}>
+						{GuildResults?.guild?.id && (
+							<Status status={{ id: '543', data: { name: GuildResults?.guild?.name, invite_code: GuildResults?.code }, type: 1 }} />
+						)}
 						<Spacer size={20} />
 
 						<Input
@@ -193,36 +184,10 @@ export const NewStatus = () => {
 					</Block>
 				)}
 
-				{/*
-				<Spacer size={20} />
-				<Status status={{ id: '', content: StatusTxt, type: 0 }} />
-				<Spacer size={20} />
-				{!!Error && (
-					<Text color="red" size={14}>
-						{Error}
-					</Text>
-				)}
-				<Spacer size={8} />
-				<Input value={StatusTxt} onChange={v => SetStatusTxt(v)} />
-				<Spacer size={10} />
-				<Block flex={0} row hCenter marginTop={10}>
-					<Text>Enable Expire</Text>
+				<Block flex={1} style={{ flexDirection: 'column' }}>
 					<Fill />
-					<Switch
-						onValueChange={v => {
-							SetExpire(v);
-						}}
-						value={Expire}
-					/>
+					<TextButton text="Go back" textColor={theme.textFade} onPress={() => nav.goBack()} />
 				</Block>
-				{Expire && (
-					<Block>
-						<DatePicker date={new Date()} minimumDate={new Date()} textColor={theme.white} />
-					</Block>
-				)} */}
-
-				<Fill />
-				<TextButton text="Go back" textColor={theme.textFade} onPress={() => nav.goBack()} />
 			</KeyboardAvoidingView>
 		</Block>
 	);

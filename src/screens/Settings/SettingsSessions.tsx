@@ -50,7 +50,7 @@ export const SettingsSessions: React.FC = () => {
 	}, []);
 
 	const sessionRenderItem = ({ item, index }: ListRenderItemInfo<DeviceType>) => (
-		<Block key={index} marginBottom={20} color={theme.backgroundDarker} style={{ padding: 13, borderRadius: 8 }}>
+		<Block key={index} marginBottom={20} color={theme.background} style={{ padding: 13, borderRadius: 8 }}>
 			<Text bold color={theme.textFade}>
 				Created <Text color={theme.text}>{TimeFormatter(item.id)}</Text> ago
 			</Text>
@@ -87,23 +87,23 @@ export const SettingsSessions: React.FC = () => {
 	);
 
 	return (
-		<Block color={theme.background}>
+		<Block color={theme.backgroundDarker}>
 			{/* <LinearGradient
 				pointerEvents="none"
 				colors={[theme.background, theme.name === 'light' ? :]}
 				style={{ position: 'absolute', top: 0, zIndex: 9, width: '100%', height: 150 }}
 			/> */}
 			{/* <Block paddingBottom={20} color={theme.background}></Block> */}
-			<GradiantShadow height={150} style={{ position: 'absolute', top: 0, zIndex: 9 }} />
+			{/* <GradiantShadow height={50} style={{ position: 'absolute', top: 0, zIndex: 9 }} /> */}
 
-			<Text bold size={30} marginTop={15} marginLeft={20} style={{ zIndex: 10, position: 'absolute' }}>
+			<Text bold size={30} marginTop={15} marginLeft={20} paddingBottom={5}>
 				Account Sessions
 			</Text>
 			<FlatList
 				data={devices}
 				renderItem={sessionRenderItem}
 				initialNumToRender={30}
-				contentContainerStyle={{ paddingTop: 80, paddingHorizontal: 20 }}
+				contentContainerStyle={{ paddingTop: 20, paddingHorizontal: 20 }}
 				showsVerticalScrollIndicator={false}
 			/>
 		</Block>

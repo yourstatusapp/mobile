@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import Svg, { G, Path } from 'react-native-svg';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import core, { request } from '@core';
-import { Spacer, Text } from '@parts';
+import { Block, Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { connectToSocket } from '../utils/Socket';
 
@@ -12,6 +12,7 @@ interface PreloaderProps {
 }
 
 export const PreloaderView = ({ loaded }: PreloaderProps) => {
+	const theme = useTheme();
 	const [TakingTooLong, setTakingTooLong] = useState(false);
 	const logged_in = usePulse(core.account.logged_in);
 	const [Loading, SetLoading] = useState(false);
@@ -55,7 +56,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 	useEffect(s, []);
 
 	return (
-		<PreloaderBody>
+		<Block color={theme.background} hCenter vCenter>
 			<Logo />
 			<Spacer size={30} />
 			<ActivityIndicator />
@@ -65,15 +66,9 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 					Still loading...
 				</Text>
 			)}
-		</PreloaderBody>
+		</Block>
 	);
 };
-
-const PreloaderBody = styled.View`
-	flex: 1;
-	justify-content: center;
-	align-items: center;
-`;
 
 const Logo: React.FC = () => {
 	return (

@@ -2,9 +2,10 @@ import * as React from 'react';
 import core from '@core';
 import { Spacer, Text } from '@parts';
 import { useEvent } from '@pulsejs/react';
-import { useEffect, useRef, useState } from 'react';
-import { Animated, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
+import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 export interface AlertDataType {
 	title: string;
@@ -13,7 +14,6 @@ export interface AlertDataType {
 }
 
 export const CustomAlert = () => {
-	const alertHeight = useRef(new Animated.Value(-100)).current;
 	const [AlertData, setAlertData] = useState<AlertDataType>();
 
 	useEvent(core.events.notification, v => {
@@ -21,28 +21,30 @@ export const CustomAlert = () => {
 		openAlert(v);
 	});
 
+	const heightOffset = useSharedValue(-100);
+	const animatedStyles = useAnimatedStyle(() => {
+		return {
+			transform: [{ translateY: heightOffset.value }],
+		};
+	});
+
 	const openAlert = (alertData: AlertDataType) => {
 		setAlertData(alertData);
-		Animated.timing(alertHeight, {
-			toValue: 0,
-			duration: 220,
-			useNativeDriver: true,
-		}).start(() => {
-			setTimeout(() => {
-				if (!alertData) return;
-				forceClose();
-			}, 2000);
-		});
+
+		heightOffset.value = withTiming(0, { duration: 220 });
+
+		setTimeout(() => {
+			if (!alertData) return;
+			forceClose();
+		}, 2000);
 	};
 
 	const forceClose = () => {
-		Animated.timing(alertHeight, {
-			toValue: -100,
-			duration: 350,
-			useNativeDriver: true,
-		}).start(() => {
+		heightOffset.value = withTiming(-100, { duration: 350 });
+
+		setTimeout(() => {
 			setAlertData(undefined);
-		});
+		}, 350);
 	};
 
 	useEffect(() => {}, []);
@@ -53,7 +55,8 @@ export const CustomAlert = () => {
 	}
 
 	return (
-		<CustomAlertBody {...AlertData} style={{ transform: [{ translateY: alertHeight }] }}>
+		// <CustomAlertBody {...AlertData} style={{ transform: [{ translateY: alertHeight }] }}>
+		<CustomAlertBody {...AlertData} style={animatedStyles}>
 			<TouchableOpacity activeOpacity={0.8} onPress={forceClose}>
 				<Text weight="700" color="white" size={16}>
 					{AlertData.title}
@@ -77,5 +80,5 @@ const CustomAlertBody = styled(Animated.View)<AlertDataType>`
 	background: ${({ success }) => (success ? '#579c63' : '#f35b5b')};
 	padding: 0px 20px;
 	padding-top: 45px;
-	z-index: 91;
+	z-index: 900000;
 `;

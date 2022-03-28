@@ -52,12 +52,6 @@ const CustomNavBar = () => {
 	const current_tab_state = usePulse(core.app.TAB_STATE);
 	const newMessage = usePulse(core.lists.conversations.groups.new_messages);
 
-	const tabs = [
-		{ name: 'Friends', path: 'friends', icon: 'friends' },
-		{ name: 'Messages', path: 'conversations', icon: 'conversation' },
-		// { name: 'moments', path: 'moments', icon: 'map' },
-	];
-
 	const navigate = (name: string, s: number) => {
 		core.app.TAB_STATE.set({ state: s + 1, path_name: name });
 		nav.navigate(name as never);
@@ -162,7 +156,7 @@ const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 
 const AvatarBody = styled.View<{ active: boolean }>`
 	border-radius: 50px;
-	background-color: ${({ active, theme }) => (active ? theme.text : theme.darker)};
+	background-color: ${({ active, theme }) => (active ? theme.darker2 : theme.backgroundDarker)};
 	height: 35px;
 	width: 35px;
 	align-items: center;

@@ -5,15 +5,14 @@ import { Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-export const StorieViewer = ({
-	list,
-	onClose,
-	clickedAtIndex,
-}: {
+interface NavigationProps {
 	list: StorieType;
 	onClose: () => void;
 	clickedAtIndex: number;
-}) => {
+	skipWatchRequest?: boolean;
+}
+
+export const StorieViewer = ({ list, onClose, clickedAtIndex, skipWatchRequest }: NavigationProps) => {
 	const o = useSharedValue(0);
 
 	const animatedStyles = useAnimatedStyle(() => {
@@ -48,7 +47,7 @@ export const StorieViewer = ({
 
 	useEffect(() => {
 		if (!list?.stories[clickedAtIndex]?.viewed) {
-			viewStorieCount(list.stories[clickedAtIndex].id);
+			if (!skipWatchRequest) viewStorieCount(list.stories[clickedAtIndex].id);
 		}
 	}, [clickedAtIndex]);
 
@@ -78,10 +77,7 @@ export const StorieViewer = ({
 					style={{ height: '100%', width: Dimensions.get('screen').width - 10, borderRadius: 25 }}
 				/>
 				<Block flex={0} style={{ position: 'absolute', bottom: 10 }} row vCenter>
-					<Block
-						flex={0}
-						style={{ width: 'auto', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }}
-						color="black">
+					<Block flex={0} style={{ width: 'auto', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }} color="black">
 						<Text bold color="white">
 							{TimeFormatter(list.stories[clickedAtIndex].id)} ago
 						</Text>
@@ -90,6 +86,7 @@ export const StorieViewer = ({
 						<Block
 							flex={0}
 							style={{ width: 'auto', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }}
+							marginLeft={15}
 							color="black">
 							<Text bold color="white">
 								{list.stories[clickedAtIndex].views} views

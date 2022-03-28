@@ -5,6 +5,7 @@ import { usePulse } from '@pulsejs/react';
 import { Switch } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { requestPermissions } from '../../utils/PushNotification';
+import { SettingItem } from './index';
 
 export const SettingsNotifications: React.FC = () => {
 	const theme = useTheme();
@@ -39,9 +40,9 @@ export const SettingsNotifications: React.FC = () => {
 	};
 
 	return (
-		<Block paddingHorizontal={20} color={theme.backgroundDarker}>
+		<Block color={theme.backgroundDarker}>
 			<Spacer size={20} />
-			<Text bold size={26}>
+			<Text bold size={26} paddingLeft={20}>
 				Notifications
 			</Text>
 			{notificationsEnabled === 0 && (
@@ -61,15 +62,10 @@ export const SettingsNotifications: React.FC = () => {
 			)}
 			{/* {notificationsEnabled === 0 && <TextButton onPress={() => enableNotifications()}>Allow Notifications</TextButton>} */}
 
-			<Block flex={0} row paddingTop={40}>
-				<Block>
-					<Text size={16} bold>
-						Enable Notifications
-					</Text>
-				</Block>
-				<Fill />
-				<Switch value={CURRENT_DEVICE.notifications} onValueChange={v => UpdateDevice(v)} />
-			</Block>
+			<SettingItem
+				text="Global notifications"
+				RightComponent={() => <Switch value={CURRENT_DEVICE.notifications} onValueChange={v => UpdateDevice(v)} />}
+			/>
 		</Block>
 	);
 };

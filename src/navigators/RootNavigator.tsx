@@ -23,6 +23,7 @@ import { NewProject } from '../screens/NewProject';
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
 import { Block } from '@parts';
 import { useTheme } from 'styled-components/native';
+import { CustomAlert } from '../parts/components/Alert';
 
 export const navigationRef = createNavigationContainerRef();
 const RootStack = createNativeStackNavigator();
@@ -39,57 +40,62 @@ export const RootNavigator = () => {
 		return <PreloaderView loaded={() => setPreloaderReady(true)} />;
 	} else {
 		return (
-			<RootStack.Navigator initialRouteName={loggedIn ? 'tabs' : 'auth'} screenOptions={{ headerShown: false }}>
-				<RootStack.Screen name="tabs" component={BottomTabNavigator} />
-				<RootStack.Screen name="auth" component={Auth} />
-				<RootStack.Screen name="magic" component={Magic} />
-				<RootStack.Screen name="new_moment" component={NewMoment} options={{ animation: 'fade' }} />
-				<RootStack.Screen name="camera" component={Camera} options={{ animation: 'fade', gestureEnabled: false }} />
-				<RootStack.Screen name="create_status" component={NewStatus} options={{ gestureEnabled: true }} />
-				<RootStack.Screen
-					name="newproject"
-					component={NewProject}
-					options={{
-						headerShown: false,
-						gestureEnabled: true,
-						animationTypeForReplace: 'push',
-					}}
-				/>
-				<RootStack.Screen
-					name="edit_profile"
-					component={EditProfile}
-					options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
-				/>
-				<RootStack.Screen
-					name="settings"
-					component={Settings}
-					options={{
-						gestureEnabled: true,
-						animation: 'default',
-						presentation: 'modal',
-					}}
-				/>
-				<RootStack.Screen
-					name="manage_status"
-					component={ManageStatus}
-					options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
-				/>
-				<RootStack.Screen
-					name="explanation"
-					component={Explanation}
-					options={{ gestureEnabled: false, animation: 'default', presentation: 'modal' }}
-				/>
-				<RootStack.Screen
-					name="realtime_history"
-					component={RealtimeMomentHistory}
-					options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
-				/>
-				<RootStack.Screen
-					name="verify_account"
-					component={VerifyAccount}
-					options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
-				/>
-			</RootStack.Navigator>
+			<Block flex={1}>
+				<RootStack.Navigator
+					initialRouteName={loggedIn ? 'tabs' : 'auth'}
+					screenOptions={{ headerShown: false, contentStyle: { zIndex: 24 } }}>
+					<RootStack.Screen name="tabs" component={BottomTabNavigator} />
+					<RootStack.Screen name="auth" component={Auth} />
+					<RootStack.Screen name="magic" component={Magic} />
+					<RootStack.Screen name="new_moment" component={NewMoment} options={{ animation: 'fade' }} />
+					<RootStack.Screen name="camera" component={Camera} options={{ animation: 'fade', gestureEnabled: false }} />
+					<RootStack.Screen name="create_status" component={NewStatus} options={{ gestureEnabled: true }} />
+					<RootStack.Screen
+						name="newproject"
+						component={NewProject}
+						options={{
+							headerShown: false,
+							gestureEnabled: true,
+							animationTypeForReplace: 'push',
+						}}
+					/>
+					<RootStack.Screen
+						name="edit_profile"
+						component={EditProfile}
+						options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
+					/>
+					<RootStack.Screen
+						name="settings"
+						component={Settings}
+						options={{
+							gestureEnabled: true,
+							animation: 'default',
+							presentation: 'modal',
+							contentStyle: { zIndex: 25 },
+						}}
+					/>
+					<RootStack.Screen
+						name="manage_status"
+						component={ManageStatus}
+						options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
+					/>
+					<RootStack.Screen
+						name="explanation"
+						component={Explanation}
+						options={{ gestureEnabled: false, animation: 'default', presentation: 'modal' }}
+					/>
+					<RootStack.Screen
+						name="realtime_history"
+						component={RealtimeMomentHistory}
+						options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
+					/>
+					<RootStack.Screen
+						name="verify_account"
+						component={VerifyAccount}
+						options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
+					/>
+				</RootStack.Navigator>
+			</Block>
 		);
 	}
 };

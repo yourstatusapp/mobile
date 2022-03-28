@@ -14,5 +14,5 @@ export const lists = {
 
 export const events = {
 	notification: event<AlertDataType>({}),
-	storie_viewer: event<{ stories: StorieType | false; clicked_at_index?: number }>(),
+	storie_viewer: event<{ stories: StorieType | false; clicked_at_index?: number; skipWatchRequest?: boolean }>(),
 };
