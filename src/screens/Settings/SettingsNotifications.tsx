@@ -46,18 +46,20 @@ export const SettingsNotifications: React.FC = () => {
 				Notifications
 			</Text>
 			{notificationsEnabled === 0 && (
-				<Block flex={0} color="#FF6666" marginTop={15} style={{ padding: 10, borderRadius: 8 }}>
-					<Text color={'#541A1A'} weight="600" size={14}>
-						We need permission to send notifications
-					</Text>
-					<Spacer size={15} />
-					<TextButton
-						onPress={() => allowNotifications()}
-						textSize={12}
-						textColor={'white'}
-						style={{ backgroundColor: '#00000032', padding: 6, borderRadius: 4 }}>
-						Allow Notifications
-					</TextButton>
+				<Block flex={0} paddingHorizontal={20}>
+					<Block flex={0} color="#FF6666" marginTop={15} style={{ padding: 10, borderRadius: 8, marginHorizontal: 0 }}>
+						<Text color={'#541A1A'} weight="600" size={14}>
+							We need permission to send notifications
+						</Text>
+						<Spacer size={15} />
+						<TextButton
+							onPress={() => allowNotifications()}
+							textSize={12}
+							textColor={'white'}
+							style={{ backgroundColor: '#00000032', padding: 6, borderRadius: 4 }}>
+							Allow Notifications
+						</TextButton>
+					</Block>
 				</Block>
 			)}
 			{/* {notificationsEnabled === 0 && <TextButton onPress={() => enableNotifications()}>Allow Notifications</TextButton>} */}

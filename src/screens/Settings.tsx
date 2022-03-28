@@ -21,8 +21,9 @@ export const Settings = () => {
 	const toggleTheme = () => {
 		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
 	};
+
 	useEffect(() => {
-		console.log(NavigationState);
+		console.log(NavigationState?.state);
 	}, [NavigationState]);
 
 	return (
@@ -41,13 +42,21 @@ export const Settings = () => {
 				hCenter
 				vCenter>
 				<IconButton
-					name="arrow-thin"
+					name={NavigationState?.state?.index === 1 ? 'arrow-thin' : 'plus'}
 					size={22}
 					color={theme.textFadeLight}
-					onPress={() => nav.navigate('settingsMain' as never, { initial: false } as never)}
+					onPress={() =>
+						NavigationState?.state?.index === 1 ? nav.navigate('settingsMain' as never, { initial: false } as never) : nav.goBack()
+					}
 					backgroundColor="red"
 					noBackground
-					iconStyle={{ paddingRight: 15 }}
+					style={{
+						paddingRight: NavigationState?.state?.index === 1 ? 0 : 15,
+					}}
+					iconStyle={{
+						paddingRight: NavigationState?.state?.index === 1 ? 15 : 0,
+						transform: [{ rotate: NavigationState?.state?.index === 1 ? '0deg' : '45deg' }],
+					}}
 				/>
 				<Fill />
 				<Text bold size={16} center>

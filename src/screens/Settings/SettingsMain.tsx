@@ -5,13 +5,13 @@ import React from 'react';
 import { Linking } from 'react-native';
 import { removeNotificationPermissions } from '../../utils/PushNotification';
 import { useTheme } from 'styled-components/native';
-import { SettingItem, SettingItemMenu } from './index';
+import { SettingItemMenu } from './index';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
 
 const settingSections = [
 	{ text: 'Notifications', route: 'settingsNotifications', icon: 'bell' },
 	{ text: 'Sessions', route: 'settingsSessions', icon: 'phone' },
-	{ text: 'Theme', route: 'settingsTheming', icon: 'brush' },
+	{ text: 'Appearance', route: 'settingsTheming', icon: 'brush' },
 ];
 
 export const SettingsMain = () => {
