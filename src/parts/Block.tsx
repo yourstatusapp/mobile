@@ -27,6 +27,7 @@ export const Block: React.FC<BlockType> = ({
 	paddingTop,
 	animate,
 	activeOpacity,
+	disabled,
 }) => {
 	const theme = useTheme();
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
@@ -51,7 +52,7 @@ export const Block: React.FC<BlockType> = ({
 
 	if (press) {
 		return (
-			<TouchableOpacity onPress={onPress} activeOpacity={activeOpacity || 0.6} style={blockStyle}>
+			<TouchableOpacity onPress={onPress} activeOpacity={activeOpacity || 0.6} style={blockStyle} disabled={disabled}>
 				{children}
 			</TouchableOpacity>
 		);

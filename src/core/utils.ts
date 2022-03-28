@@ -2,8 +2,8 @@ import core, { UploadProgressEventType } from '@core';
 import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
-export const baseURL = state('https://api.yourstatus.app');
-// export const baseURL = state('http://192.168.1.2:3020');
+// export const baseURL = state('https://api.yourstatus.app');
+export const baseURL = state('http://192.168.1.2:3020');
 // export const baseURL = state('http://localhost:3020');
 
 interface RequestOptions {
@@ -53,15 +53,15 @@ export const TimeFormatter = (snowflake_id: string, shortName?: boolean) => {
 	let s = Math.floor((new Date().getTime() - d.getTime()) / 1000);
 
 	if (s < 60) {
-		return Math.floor(s) + (shortName ? 's' : ' Second' + (s > 1) ? 's' : '');
+		return Math.floor(s) + (shortName ? 's' : ' Second' + (Math.floor(s) >= 1 ? `'s` : ''));
 	} else if (s > 60 && s < 3600) {
-		return Math.floor(s / 60) + (shortName ? 'm' : ' Minutes');
+		return Math.floor(s / 60) + (shortName ? 'm' : ' Minute' + (Math.floor(s / 60) >= 120 ? `'s` : ''));
 	} else if (s > 3600 && s < 86400) {
-		return Math.floor(s / 3600) + (shortName ? 'h' : ' Hours');
+		return Math.floor(s / 3600) + (shortName ? 'h' : ' Hours' + (Math.floor(s / 3600) >= 7200 ? `'s` : ''));
 	} else if (s > 86400 && s < 2592000) {
-		return Math.floor(s / 86400) + (shortName ? 'd' : ' Days');
+		return Math.floor(s / 86400) + (shortName ? 'd' : ' Day' + (Math.floor(s / 86400) >= 172800 ? `'s` : ''));
 	} else if (s > 2592000 && s < 2592000 * 12) {
-		return Math.floor(s / 2592000) + (shortName ? 'mon' : ' Months');
+		return Math.floor(s / 2592000) + (shortName ? 'mon' : ' Months' + (Math.floor(s / 2592000) >= 5184000 ? `'s` : ''));
 	} else {
 		return s + (shortName ? 'y' : ' Year');
 	}

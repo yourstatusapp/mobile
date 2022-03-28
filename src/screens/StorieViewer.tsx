@@ -1,9 +1,11 @@
 import core, { request, StorieType, TimeFormatter } from '@core';
-import { Block, Text } from '@parts';
+import { Block, Icon, Text } from '@parts';
+import { usePulse } from '@pulsejs/react';
 import React, { useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { useTheme } from 'styled-components/native';
 
 interface NavigationProps {
 	list: StorieType;
@@ -13,7 +15,9 @@ interface NavigationProps {
 }
 
 export const StorieViewer = ({ list, onClose, clickedAtIndex, skipWatchRequest }: NavigationProps) => {
+	const theme = useTheme();
 	const o = useSharedValue(0);
+	const acc = usePulse(core.account.account);
 
 	const animatedStyles = useAnimatedStyle(() => {
 		return {
@@ -82,14 +86,17 @@ export const StorieViewer = ({ list, onClose, clickedAtIndex, skipWatchRequest }
 							{TimeFormatter(list.stories[clickedAtIndex].id)} ago
 						</Text>
 					</Block>
-					{list.stories[clickedAtIndex]?.views !== null && (
+					{list.stories[0]?.account_id === acc.id && list.stories[clickedAtIndex]?.views !== null && (
 						<Block
 							flex={0}
 							style={{ width: 'auto', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }}
-							marginLeft={15}
-							color="black">
-							<Text bold color="white">
-								{list.stories[clickedAtIndex].views} views
+							marginLeft={25}
+							color="black"
+							hCenter
+							row>
+							<Icon name="eyes" size={18} color={'#ffffff'} />
+							<Text bold color="white" marginLeft={5}>
+								{list.stories[clickedAtIndex].views} view{(list.stories[clickedAtIndex].views || 0) > 1 ? 's' : ''}
 							</Text>
 						</Block>
 					)}

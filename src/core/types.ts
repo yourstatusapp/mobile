@@ -53,6 +53,7 @@ export interface BlockType extends PaddingType, MarginType {
 	press?: boolean;
 	scroll?: boolean;
 	animate?: boolean;
+	disabled?: boolean;
 	onPress?: () => void;
 	paddingHorizontal?: number;
 	style?: ViewStyle;
