@@ -182,6 +182,7 @@ export type TabStackNavParamList = {
 	account: undefined;
 	events: undefined;
 	StatusDetail: {
+		username: string;
 		status: StatusType;
 	};
 	friends: undefined;

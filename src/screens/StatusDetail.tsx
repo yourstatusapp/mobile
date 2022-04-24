@@ -32,7 +32,7 @@ export const StatusDetail: React.FC = () => {
 		if (res.data) {
 			setComments(oldComments => [...oldComments, res.data]);
 		}
-	}, [comments, newMessage, params.status.id]);
+	}, [newMessage, params.status.id]);
 
 	useEffect(() => {
 		if (params?.status.id) getComments(params.status.id);

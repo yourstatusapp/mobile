@@ -47,6 +47,7 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 						initialNumToRender={1}
 						horizontal={true}
 						maxToRenderPerBatch={4}
+						keyExtractor={item => item.id}
 						renderItem={({ item, index }) => (
 							<TouchableOpacity
 								key={item.id}

@@ -98,14 +98,14 @@ const CustomNavBar = ({ focusState }: CustomNavBarProps) => {
 					name={'Friends'}
 				/>
 				{/* {!!newMessage?.length && <Text color="red">new emssage</Text>} */}
-				<IconTabBtn
+				{/* <IconTabBtn
 					key={1}
 					icon={'conversation'}
 					route={'events'}
 					active={1 + 1 === current_tab_state.state}
 					onPress={() => navigate('events', 1)}
 					name={'Events'}
-				/>
+				/> */}
 				{/* <IconTabBtn
 					key={1}
 					icon={'conversation'}
@@ -114,14 +114,14 @@ const CustomNavBar = ({ focusState }: CustomNavBarProps) => {
 					onPress={() => navigate('conversations', 1)}
 					name={'Messages'}
 				/> */}
-				<IconTabBtn
+				{/* <IconTabBtn
 					key={2}
 					icon={'conversation'}
 					route={'conversations'}
 					active={2 + 1 === current_tab_state.state}
 					onPress={() => navigate('conversations', 2)}
 					name={'Messages'}
-				/>
+				/> */}
 
 				<IconTabBtnBody
 					onPress={() => {

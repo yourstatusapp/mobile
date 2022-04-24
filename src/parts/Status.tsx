@@ -1,5 +1,5 @@
 import core, { AppAlert, request } from '@core';
-import { Icon, Text } from '@parts';
+import { Icon, IconButton, Text } from '@parts';
 import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
 
@@ -10,6 +10,9 @@ import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@hooks';
 
 interface StatusType {
+	self?: boolean;
+	disableTap?: boolean;
+	disableNavigate?: boolean;
 	style?: ViewStyle;
 	demo?: boolean;
 	status: {
@@ -20,6 +23,7 @@ interface StatusType {
 		taps?: number;
 		taped?: boolean;
 	};
+	username?: string;
 }
 
 enum StatusEventTypes {
@@ -62,7 +66,7 @@ const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 	},
 };
 
-export const Status = React.memo(({ status, style, demo }: StatusType) => {
+export const Status = React.memo(({ status, style, demo, disableTap, disableNavigate, self, username }: StatusType) => {
 	const theme_name = usePulse(core.ui.ThemeObject).name;
 	const theme = useTheme();
 	const nav = useNavigation();
@@ -156,12 +160,14 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 						},
 					]}
 					onPress={() => {
-						nav.navigate('StatusDetail', { status: status });
-						// onStatusPress();
-						// animate(true);
-						if (status.taped === false) {
-							onStatusPress();
-							animate(true);
+						if (!disableNavigate) {
+							nav.navigate('StatusDetail', { status: status, username: username || '' });
+						}
+						if (!disableTap) {
+							if (status.taped === false) {
+								onStatusPress();
+								animate(true);
+							}
 						}
 					}}>
 					<Animated.View style={animatedStyles}>
@@ -170,6 +176,7 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 						</Text>
 					</Animated.View>
 					{StatusRender}
+					{!self && <FloatingHeart name="heart" color="red" size={12} iconStyle={{ opacity: 0.8 }} />}
 				</Pressable>
 			</Animated.View>
 		);
@@ -209,4 +216,9 @@ const StatusBody = styled.View<{ backColor: string }>`
 	justify-content: center;
 	flex-direction: row;
 	align-items: center;
+`;
+
+const FloatingHeart = styled(IconButton)`
+	position: absolute;
+	right: -20;
 `;

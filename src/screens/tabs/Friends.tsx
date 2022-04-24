@@ -161,7 +161,7 @@ export const Friends = React.memo(() => {
 										scrollEnabled={false}
 										renderItem={({ item, index }) => (
 											<Block key={index} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
-												<Status status={item} />
+												<Status status={item} self />
 											</Block>
 										)}
 									/>
