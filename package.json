@@ -17,6 +17,7 @@
 	},
 	"dependencies": {
 		"@babel/plugin-proposal-export-namespace-from": "7.16.7",
+		"@gorhom/bottom-sheet": "^4",
 		"@pulsejs/core": "4.5.4",
 		"@pulsejs/react": "4.5.4",
 		"@react-native-async-storage/async-storage": "1.16.1",
@@ -42,11 +43,11 @@
 		"react-native-image-picker": "4.7.3",
 		"react-native-linear-gradient": "2.5.6",
 		"react-native-popup-menu": "0.15.12",
-		"react-native-reanimated": "2.4.1",
+		"react-native-reanimated": "^2.8.0",
 		"react-native-safe-area-context": "3.3.2",
 		"react-native-screens": "3.10.2",
 		"react-native-svg": "12.3.0",
-		"react-native-vision-camera": "^2.12.2",
+		"react-native-vision-camera": "^2.13.2",
 		"socket.io-client": "^4.4.1",
 		"styled-components": "5.3.3"
 	},

@@ -21,3 +21,5 @@ export { ManageStatus } from './ManageStatus';
 export { Conversations } from './Conversations';
 export { DirectMessage } from './DirectMessage';
 export { NewConversation } from './NewConversation';
+export { Events } from './Events';
+export { StatusDetail } from './StatusDetail';

@@ -16,7 +16,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@core": ["./src/core/index.ts"],
-			"@parts": ["./src/parts/index.ts"]
+			"@parts": ["./src/parts/index.ts"],
+			"@hooks": ["./src/hooks/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]

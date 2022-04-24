@@ -1,5 +1,5 @@
 import core, { AppAlert, request } from '@core';
-import { Icon, Press, Text } from '@parts';
+import { Icon, Text } from '@parts';
 import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
 
@@ -7,6 +7,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import { Linking, Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { usePulse } from '@pulsejs/react';
+import { useNavigation } from '@hooks';
 
 interface StatusType {
 	style?: ViewStyle;
@@ -62,8 +63,9 @@ const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 };
 
 export const Status = React.memo(({ status, style, demo }: StatusType) => {
-	const theme_name = usePulse(core.ui.current_theme);
+	const theme_name = usePulse(core.ui.ThemeObject).name;
 	const theme = useTheme();
+	const nav = useNavigation();
 
 	const wrapperStyle = StyleSheet.flatten([style]);
 
@@ -79,39 +81,12 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 			right: offset.value,
 			justifyContent: 'center',
 			alignItems: 'center',
-			borderRadius: 5,
 			flex: 1,
 			width: 30,
 			zIndex: zIndex.value,
 			opacity: opacity.value,
 		};
 	});
-
-	// const tapStatus = async () => {
-	// 	if (demo) {
-	// 		offset.value = withSpring(-20);
-	// 		setTimeout(() => {
-	// 			offset.value = withSpring(0);
-	// 		}, 500);
-	// 		return;
-	// 	}
-
-	// if (status.type === 0) {
-	// 	const res = await request('post', `/status/${status.id}/tap`);
-	// 	if (res.data) {
-	// 		offset.value = withSpring(-20);
-	// 		setTimeout(() => {
-	// 			offset.value = withSpring(0);
-	// 		}, 500);
-	// 	} else {
-	// 		AppAlert(false, res.message);
-	// 	}
-	// }
-
-	// 	// if (status.type === 1) {
-	// 	// 	Linking.canOpenURL(`https://discord.gg/${status?.content?.invite_code}`);
-	// 	// }
-	// };
 
 	const animate = async (countedUp?: boolean) => {
 		opacity.value = 1;
@@ -150,7 +125,9 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 
 	const StatusRender = (
 		<StatusBody style={{ zIndex: zIndex.value }} backColor={StatusColors[theme_name][status.type].backColor}>
-			{status.type === 1 && <Icon name="discord" size={18} color={StatusColors[theme_name][status.type].color} style={{ marginRight: 4 }} />}
+			{status.type === 1 && (
+				<Icon name="discord" size={18} color={StatusColors[theme_name][status.type].color} style={{ marginRight: 4 }} />
+			)}
 			<Text weight="600" size={13} color={StatusColors[theme_name][status.type].color}>
 				{status.data?.name || status.data?.message}
 			</Text>
@@ -173,13 +150,15 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 		return (
 			<Animated.View style={wrapperStyle}>
 				<Pressable
-					disabled={status.taped}
 					style={({ pressed }) => [
 						{
 							opacity: pressed ? 0.6 : 1,
 						},
 					]}
 					onPress={() => {
+						nav.navigate('StatusDetail', { status: status });
+						// onStatusPress();
+						// animate(true);
 						if (status.taped === false) {
 							onStatusPress();
 							animate(true);
@@ -205,6 +184,7 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 						opacity: pressed ? 0.6 : 1,
 					},
 				]}
+				onLongPress={() => nav.navigate('StatusDetail', { status: status })}
 				onPress={() => {
 					animate(!status?.taped);
 					onStatusPress();
@@ -219,39 +199,13 @@ export const Status = React.memo(({ status, style, demo }: StatusType) => {
 			</Pressable>
 		</Animated.View>
 	);
-
-	// if (!!onPress && status.type === 0 && status.taped === false) {
-	// 	return (
-	// 		<Animated.View style={wrapperStyle}>
-	// 			<Pressable
-	// 				style={({ pressed }) => [
-	// 					{
-	// 						opacity: pressed ? 0.6 : 1,
-	// 					},
-	// 				]}
-	// 				onPress={() => {
-	// 					animate();
-	// 					onPress();
-	// 				}}>
-	// 				<Animated.View style={animatedStyles}>
-	// 					<Text center marginLeft={10} size={12} bold color={theme.white}>
-	// 						{status.taps}
-	// 					</Text>
-	// 				</Animated.View>
-	// 				{StatusRender}
-	// 			</Pressable>
-	// 		</Animated.View>
-	// 	);
-	// } else {
-	// 	return <View style={wrapperStyle}>{StatusRender}</View>;
-	// }
 });
 
 const StatusBody = styled.View<{ backColor: string }>`
 	background-color: ${({ backColor }) => backColor};
 	padding: 4px 7px;
 	align-self: flex-start;
-	border-radius: 6px;
+	border-radius: 5px;
 	justify-content: center;
 	flex-direction: row;
 	align-items: center;

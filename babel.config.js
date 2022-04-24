@@ -9,6 +9,7 @@ module.exports = {
 				alias: {
 					'@core': './src/core',
 					'@parts': './src/parts',
+					'@hooks': './src/hooks',
 				},
 				extensions: ['.ios.js', '.android.js', '.js', '.jsx', '.json', '.tsx', '.ts', '.native.js'],
 			},

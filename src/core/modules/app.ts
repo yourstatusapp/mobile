@@ -1,4 +1,4 @@
-import { OnboardingTipsConfig, UploadProgressEventType } from '@core';
+import { OnboardingTipsConfig, TabStackNavParamList, UploadProgressEventType } from '@core';
 import { state } from '@pulsejs/core';
 
 export const AppState = {
@@ -9,7 +9,7 @@ export const AppState = {
 
 	upload_progress: state<UploadProgressEventType | boolean>(false),
 
-	TAB_STATE: state<{ state: number; path_name: string }>({ state: 3, path_name: 'account' }).persist('tab_state'),
+	TAB_STATE: state<{ state: number; path_name: keyof TabStackNavParamList }>({ state: 3, path_name: 'account' }).persist('tab_state'),
 
 	ONBOARDING_TIPS: state<OnboardingTipsConfig>({ GLOBAL: true, REALTIME_STORIES: true }).persist('ONBOARDING_TIPS'),
 

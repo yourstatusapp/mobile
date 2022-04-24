@@ -33,12 +33,22 @@ export const SettingItemMenu = ({ text, onPress, icon, textColor, iconColor }: S
 interface SettingItemProps {
 	text: string;
 	RightComponent: any;
+	spaceBottom?: boolean;
+	disabled?: boolean;
 }
 
-export const SettingItem: React.FC<SettingItemProps> = ({ text, RightComponent }) => {
+export const SettingItem: React.FC<SettingItemProps> = ({ text, RightComponent, disabled, spaceBottom }) => {
 	const theme = useTheme();
+
 	return (
-		<Block flex={0} row marginTop={40} paddingHorizontal={20} color={theme.background} style={{ paddingVertical: 10 }} hCenter>
+		<Block
+			flex={0}
+			row
+			marginTop={spaceBottom ? 40 : 0}
+			paddingHorizontal={20}
+			color={theme.background}
+			style={{ paddingVertical: 10, opacity: disabled ? 0.7 : 1 }}
+			hCenter>
 			<Text size={14} weight="600">
 				{text}
 			</Text>

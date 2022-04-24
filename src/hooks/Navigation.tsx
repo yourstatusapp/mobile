@@ -1,6 +1,4 @@
-interface NavigateProps {
-	name: string;
-	params?: string;
-}
+import { TabStackNavParamList } from '@core';
+import { useNavigation as ReactNavigationUseNavigation, NavigationProp } from '@react-navigation/native';
 
-export const navigate = (p: NavigateProps) => {};
+export const useNavigation = () => ReactNavigationUseNavigation<NavigationProp<TabStackNavParamList>>();

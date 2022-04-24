@@ -1,6 +1,6 @@
 import { AlertDataType, DeviceType, FriendItemType, ProfileType, StorieType } from '@core';
 import { collection, event } from '@pulsejs/core';
-import { ConversationType, DirectMessageType, StatusType } from '../types';
+import { ConversationType, DirectMessageType, EventType, StatusType } from '../types';
 
 export const lists = {
 	devices: collection<DeviceType>().createGroup('mine').createSelector('current'),
@@ -10,6 +10,7 @@ export const lists = {
 	status: collection<StatusType>().createGroup('mine'),
 	messages: collection<DirectMessageType>(),
 	conversations: collection<ConversationType>().createGroup('new_messages'),
+	events: collection<EventType>().createGroup('all'),
 };
 
 export const events = {

@@ -1,4 +1,4 @@
-import { TextStyle, ViewStyle } from 'react-native';
+import { ListRenderItemInfo, TextStyle, ViewStyle } from 'react-native';
 
 export interface AccountType {
 	id: string;
@@ -165,3 +165,46 @@ export interface ConversationType {
 	avatar: string;
 	new_message?: boolean;
 }
+
+export interface EventType {
+	id: string;
+	title: string;
+	description: string;
+	account_id: string;
+	location: string;
+	start_date: string;
+	end_date: string;
+	avatar: string;
+	username: string;
+}
+
+export type TabStackNavParamList = {
+	account: undefined;
+	events: undefined;
+	StatusDetail: {
+		status: StatusType;
+	};
+	friends: undefined;
+	conversations: undefined;
+	profile: undefined;
+	directmessage: undefined;
+	SearchFriend: undefined;
+	FriendRequests: undefined;
+	newconversation: undefined;
+};
+
+export interface FriendItem {
+	username: string;
+	account_id: string;
+	avatar: string;
+	status?: {
+		id: string;
+		type: number;
+		account_id: string;
+		data: any;
+		taps: number;
+		taped?: boolean;
+	}[];
+}
+
+export type FriendItemRenderType = ListRenderItemInfo<FriendItem>;

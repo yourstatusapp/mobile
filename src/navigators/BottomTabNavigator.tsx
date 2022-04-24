@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
-import { Account, Friends, Profile, SearchFriend, FriendRequests, Conversations, DirectMessage, NewConversation } from '../screens';
+import {
+	Account,
+	Friends,
+	Profile,
+	SearchFriend,
+	FriendRequests,
+	Conversations,
+	DirectMessage,
+	NewConversation,
+	Events,
+	StatusDetail,
+} from '../screens';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { BlurView } from 'expo-blur';
 
 import { Avatar, Block, Icon, IconButton } from '@parts';
-import core from '@core';
+import core, { TabStackNavParamList } from '@core';
 
-const TabsStackNavigator = createNativeStackNavigator();
+const TabsStackNavigator = createNativeStackNavigator<TabStackNavParamList>();
 
 export const BottomTabNavigator: React.FC = () => {
 	const current_tab_state = usePulse(core.app.TAB_STATE);
@@ -22,41 +33,57 @@ export const BottomTabNavigator: React.FC = () => {
 	};
 
 	const sh2 = StyleSheet.flatten<ViewStyle>([{ position: 'absolute', bottom: 0, height: 80, width: '100%', zIndex: 2, opacity: 1 }]);
+	const [focusState, setFocusState] = useState<any>();
 
 	return (
 		<Block color="black">
 			<TabsStackNavigator.Navigator
+				screenListeners={{
+					focus: (v: any) => {
+						setFocusState(v);
+					},
+				}}
 				screenOptions={{ headerShown: false, animation: 'slide_from_left' }}
 				initialRouteName={current_tab_state.path_name}>
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
+				<TabsStackNavigator.Screen name="events" component={Events} options={o} />
 				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
 				<TabsStackNavigator.Screen name="conversations" component={Conversations} options={o} />
 				<TabsStackNavigator.Screen name="profile" component={Profile} options={{ gestureEnabled: true }} />
+				<TabsStackNavigator.Screen name="StatusDetail" component={StatusDetail} options={{ gestureEnabled: true }} />
+
 				<TabsStackNavigator.Screen name="directmessage" component={DirectMessage} options={{ gestureEnabled: true }} />
 				<TabsStackNavigator.Screen name="SearchFriend" component={SearchFriend} options={{ gestureEnabled: true }} />
 				<TabsStackNavigator.Screen name="FriendRequests" component={FriendRequests} options={{ gestureEnabled: true }} />
 				<TabsStackNavigator.Screen name="newconversation" component={NewConversation} options={{ gestureEnabled: true }} />
 			</TabsStackNavigator.Navigator>
-
 			<BlurView style={sh2} intensity={30} tint={isDarkMode ? 'dark' : 'light'} />
-
-			<CustomNavBar />
+			<CustomNavBar focusState={focusState} />
 		</Block>
 	);
 };
 
-const CustomNavBar = () => {
+interface CustomNavBarProps {
+	focusState: any;
+}
+
+const CustomNavBar = ({ focusState }: CustomNavBarProps) => {
 	const acc = usePulse(core.account.account);
 	const nav = useNavigation();
 	const theme = useTheme();
 	const current_tab_state = usePulse(core.app.TAB_STATE);
-	const newMessage = usePulse(core.lists.conversations.groups.new_messages);
+	// const newMessage = usePulse(core.lists.conversations.groups.new_messages);
+	const [hideFloatingbtn, setHideFloatingbtn] = useState(false);
 
-	const navigate = (name: string, s: number) => {
+	const navigate = (name: keyof TabStackNavParamList, s: number) => {
 		core.app.TAB_STATE.set({ state: s + 1, path_name: name });
 		nav.navigate(name as never);
 		// nav.reset({ index: 0, routes: [{ name: name as never }] });
 	};
+
+	useEffect(() => {
+		setHideFloatingbtn(focusState?.target?.split('-')[0] === 'StatusDetail');
+	}, [focusState]);
 
 	return (
 		<CustomTabBarBody>
@@ -74,9 +101,25 @@ const CustomNavBar = () => {
 				<IconTabBtn
 					key={1}
 					icon={'conversation'}
+					route={'events'}
+					active={1 + 1 === current_tab_state.state}
+					onPress={() => navigate('events', 1)}
+					name={'Events'}
+				/>
+				{/* <IconTabBtn
+					key={1}
+					icon={'conversation'}
 					route={'conversations'}
 					active={1 + 1 === current_tab_state.state}
 					onPress={() => navigate('conversations', 1)}
+					name={'Messages'}
+				/> */}
+				<IconTabBtn
+					key={2}
+					icon={'conversation'}
+					route={'conversations'}
+					active={2 + 1 === current_tab_state.state}
+					onPress={() => navigate('conversations', 2)}
 					name={'Messages'}
 				/>
 
@@ -89,7 +132,7 @@ const CustomNavBar = () => {
 				</IconTabBtnBody>
 			</TabContainer>
 
-			{current_tab_state.state !== 2 && (
+			{!hideFloatingbtn && [1].includes(current_tab_state.state) && (
 				<FloatingPostBtn
 					name="plus"
 					size={30}

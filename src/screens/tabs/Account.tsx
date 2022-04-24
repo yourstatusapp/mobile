@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Avatar, Block, BlockScroll, Fill, IconButton, Spacer, Status, Text, TextButton } from '@parts';
+import { Avatar, Block, BlockScroll, Fill, IconButton, Text } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 import FastImage from 'react-native-fast-image';
-import { removeNotificationPermissions } from '../../utils/PushNotification';
 import { BlurView } from 'expo-blur';
 import { StyleSheet, ViewStyle } from 'react-native';
 import { getBuildNumber, getVersion, hasNotch } from 'react-native-device-info';
@@ -35,18 +34,6 @@ export const Account = () => {
 
 	return (
 		<Block color={theme.background} style={{ zIndex: 1 }}>
-			{/* <BannerArea>
-				{profile?.banner ? <Banner source={{ uri: `https://cdn.yourstatus.app/profile/${profile.account_id}/${profile.banner}` }} /> : <BannerPlaceholder />}
-			</BannerArea> */}
-			{/* <LinearGradient
-				colors={['transparent', '#0000008a', 'black']}
-				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
-			/> */}
-			{/* <LinearGradient
-				colors={[theme.background, theme.backgroundDarker]}
-				style={{ position: 'absolute', top: 0, zIndex: 4, width: '100%', height: BANNER_HEIGHT }}
-			/> */}
-
 			<BlockScroll style={{ zIndex: 6, paddingHorizontal: 40 }} contentContainerStyle={{ flex: 1 }} paddingHorizontal={20}>
 				<Block row flex={0} marginTop={70} marginBottom={20}>
 					<Text size={28} bold color={theme.text}>
@@ -62,7 +49,6 @@ export const Account = () => {
 						onPress={() => nav.navigate('settings' as never)}
 					/>
 				</Block>
-				{/* <Text>{JSON.stringify(uploadProgress) || 'no upload in progress'}</Text> */}
 				<Block row flex={0}>
 					<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
 
