@@ -107,7 +107,7 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 	const onStatusPress = async () => {
 		if (demo) return;
 
-		let newList = core.lists.friends.getData(status.account_id).value.status.map(item => {
+		let newList = core.lists.friends.getData(status.account_id).value.status?.map(item => {
 			if (item.type === 0) {
 				item.taps = 1 + item.taps;
 				item.taped = true;
@@ -122,6 +122,7 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 		// tap request
 		const res = await request('post', `/status/${status?.id}/tap`);
 		if (res.data) {
+			console.log('-> ', res.data);
 		} else {
 			AppAlert(false, res.message);
 		}
@@ -164,7 +165,9 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 							nav.navigate('StatusDetail', { status: status, username: username || '' });
 						}
 						if (!disableTap) {
-							if (status.taped === false) {
+							console.log(status);
+
+							if (!status?.taped) {
 								onStatusPress();
 								animate(true);
 							}
@@ -176,7 +179,7 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 						</Text>
 					</Animated.View>
 					{StatusRender}
-					{!self && <FloatingHeart name="heart" color="red" size={12} iconStyle={{ opacity: 0.8 }} />}
+					{/* {!self && status.taped && <FloatingHeart name="heart" color="red" size={12} iconStyle={{ opacity: 0.8 }} />} */}
 				</Pressable>
 			</Animated.View>
 		);

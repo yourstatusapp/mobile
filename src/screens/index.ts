@@ -23,3 +23,4 @@ export { DirectMessage } from './DirectMessage';
 export { NewConversation } from './NewConversation';
 export { Events } from './Events';
 export { StatusDetail } from './StatusDetail';
+export { ManageFriends } from './ManageFriends';

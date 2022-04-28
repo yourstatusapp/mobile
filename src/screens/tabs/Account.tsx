@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Avatar, Block, BlockScroll, Fill, IconButton, Text } from '@parts';
-import { useNavigation } from '@react-navigation/native';
+import { Avatar, Block, BlockScroll, Fill, IconButton, Text, TextButton } from '@parts';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
@@ -10,6 +9,7 @@ import FastImage from 'react-native-fast-image';
 import { BlurView } from 'expo-blur';
 import { StyleSheet, ViewStyle } from 'react-native';
 import { getBuildNumber, getVersion, hasNotch } from 'react-native-device-info';
+import { useNavigation } from '@hooks';
 
 const BANNER_HEIGHT = 250;
 
@@ -110,9 +110,11 @@ export const Account = () => {
 				<Text bold size={18} paddingTop={30} paddingBottom={10}>
 					@{profile.username}
 				</Text>
-				<Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade} marginBottom={50}>
+				<TextButton onPress={() => nav.navigate('ManageFriends')} text={profile.friends_amount + ' friends'} />
+
+				{/* <Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade} marginBottom={50}>
 					{profile.display_name || 'No display name'}
-				</Text>
+				</Text> */}
 
 				{/* <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} /> */}
 

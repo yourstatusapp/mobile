@@ -110,11 +110,13 @@ export const Auth: React.FC = () => {
 					<Fill />
 					<Status
 						demo
+						self
 						status={{ data: { message: 'Just about out and chill 😎' }, type: 0, taps: 12, taped: false, id: '', account_id: '' }}
 						style={{ right: 33, top: -100, position: 'absolute', transform: [{ rotate: '8deg' }] }}
 					/>
 					<Status
 						demo
+						self
 						status={{ data: { message: 'Anyone wanna hangout?' }, type: 0, taps: 42, taped: false, id: '', account_id: '' }}
 						style={{ left: 25, top: -60, position: 'absolute', transform: [{ rotate: '-5deg' }] }}
 					/>
@@ -143,7 +145,10 @@ export const Auth: React.FC = () => {
 									usernameCheck(v);
 								}}
 								textContentType={'none'}
-								style={{ borderColor: UsernameValid ? '#62CB4E' : !!UsernameErrMsg ? '#FF6161' : '#292929', opacity: UsernameLoading ? 0.5 : 1 }}
+								style={{
+									borderColor: UsernameValid ? '#62CB4E' : !!UsernameErrMsg ? '#FF6161' : '#292929',
+									opacity: UsernameLoading ? 0.5 : 1,
+								}}
 							/>
 							{UsernameLoading && <ActivityIndicator color={theme.textFade} style={{ position: 'absolute', right: 20, paddingTop: 10 }} />}
 						</Block>

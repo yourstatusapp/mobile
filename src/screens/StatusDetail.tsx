@@ -53,11 +53,11 @@ export const StatusDetail: React.FC = () => {
 						onPress={() => nav.goBack()}
 					/>
 					<Text bold size={18}>
-						Twan Status
+						{params.username} Status
 					</Text>
 				</Block>
 				<Block hCenter flex={0} paddingTop={20} paddingBottom={15} color={theme.backgroundDark}>
-					<Status status={params.status} />
+					<Status status={params.status} disableNavigate={true} />
 				</Block>
 				<Line size={2} color={theme.backgroundDarker} />
 

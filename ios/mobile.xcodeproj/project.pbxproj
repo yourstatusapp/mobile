@@ -311,7 +311,7 @@
 				CODE_SIGN_ENTITLEMENTS = mobile/mobileDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_TEAM = 8F25XX7PVA;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
@@ -346,7 +346,7 @@
 				CODE_SIGN_ENTITLEMENTS = mobile/mobile.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_TEAM = 8F25XX7PVA;
 				INFOPLIST_FILE = mobile/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YourStatus;

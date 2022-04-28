@@ -16,6 +16,7 @@ export interface ProfileType {
 	bio: string;
 	location: string;
 	date_of_birth: string;
+	friends_amount: number;
 	// collections?: Collection[];
 	status?: StatusType[];
 }
@@ -192,6 +193,7 @@ export type TabStackNavParamList = {
 	SearchFriend: undefined;
 	FriendRequests: undefined;
 	newconversation: undefined;
+	ManageFriends: undefined;
 };
 
 export interface FriendItem {

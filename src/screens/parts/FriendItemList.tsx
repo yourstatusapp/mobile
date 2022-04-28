@@ -33,7 +33,7 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 							initialNumToRender={props.item.status.length}
 							renderItem={({ item, index }) => (
 								<Block key={index} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
-									<Status status={item} />
+									<Status status={item} disableTap={true} username={props.item.username} />
 								</Block>
 							)}
 						/>
