@@ -100,14 +100,14 @@ const CustomNavBar = ({ focusState }: CustomNavBarProps) => {
 					name={'Friends'}
 				/>
 				{/* {!!newMessage?.length && <Text color="red">new emssage</Text>} */}
-				{/* <IconTabBtn
+				<IconTabBtn
 					key={1}
 					icon={'conversation'}
 					route={'events'}
 					active={1 + 1 === current_tab_state.state}
 					onPress={() => navigate('events', 1)}
 					name={'Events'}
-				/> */}
+				/>
 				{/* <IconTabBtn
 					key={1}
 					icon={'conversation'}

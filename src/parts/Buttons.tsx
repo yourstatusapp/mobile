@@ -5,13 +5,14 @@ import { StyleSheet, ViewStyle } from 'react-native';
 
 interface ButtonType {
 	text?: string;
+	color?: string;
 	onPress?: () => void;
 	disabled?: boolean;
 	backgroundColor?: string;
 	style?: ViewStyle;
 }
 
-export const Button: React.FC<ButtonType> = ({ text, onPress, disabled, style }) => {
+export const Button: React.FC<ButtonType> = ({ text, onPress, color, disabled, style }) => {
 	const theme = useTheme();
 	const sh = StyleSheet.flatten([style]);
 
@@ -25,7 +26,7 @@ export const Button: React.FC<ButtonType> = ({ text, onPress, disabled, style })
 					opacity: pressed ? 0.7 : disabled ? 0.5 : 1,
 				},
 			]}>
-			<Text center size={16} weight="700" color={theme.background}>
+			<Text center size={16} weight="700" color={color || theme.text}>
 				{text}
 			</Text>
 		</ButtonBody>

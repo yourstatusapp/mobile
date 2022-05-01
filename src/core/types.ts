@@ -194,6 +194,7 @@ export type TabStackNavParamList = {
 	FriendRequests: undefined;
 	newconversation: undefined;
 	ManageFriends: undefined;
+	CreateEvent: undefined;
 };
 
 export interface FriendItem {

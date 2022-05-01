@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
@@ -18,6 +18,7 @@ import {
 	VerifyAccount,
 	Explanation,
 	ManageStatus,
+	CreateEvent,
 } from '../screens';
 import { NewProject } from '../screens/NewProject';
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
@@ -27,7 +28,6 @@ import { CustomAlert } from '../parts/components/Alert';
 
 export const navigationRef = createNavigationContainerRef();
 const RootStack = createNativeStackNavigator();
-
 export const RootNavigator = () => {
 	const theme = useTheme();
 	useLinking();
@@ -50,6 +50,7 @@ export const RootNavigator = () => {
 					<RootStack.Screen name="new_moment" component={NewMoment} options={{ animation: 'fade' }} />
 					<RootStack.Screen name="camera" component={Camera} options={{ animation: 'fade', gestureEnabled: false }} />
 					<RootStack.Screen name="create_status" component={NewStatus} options={{ gestureEnabled: true }} />
+					<RootStack.Screen name="CreateEvent" component={CreateEvent} options={{ gestureEnabled: true }} />
 					<RootStack.Screen
 						name="newproject"
 						component={NewProject}

@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { Avatar, Block, Icon, Text } from '@parts';
+import { Avatar, Block, Icon, IconButton, Text } from '@parts';
 import core, { request } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { FlatList } from 'react-native';
 import { useTheme } from 'styled-components';
+import { useNavigation } from '@hooks';
 
 export const Events = () => {
 	const theme = useTheme();
+	const nav = useNavigation();
 	const a = usePulse(core.lists.events.groups.all);
 	const getEvents = async () => {
 		const res = await request<any[]>('get', '/events');
@@ -26,6 +28,7 @@ export const Events = () => {
 			<Text size={30} bold>
 				Discovery <Text size={17}>(events)</Text>
 			</Text>
+			<IconButton name="plus" size={25} color="red" onPress={() => nav.navigate('CreateEvent')} />
 			<FlatList
 				style={{ marginTop: 15 }}
 				data={a}

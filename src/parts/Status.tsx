@@ -29,6 +29,7 @@ interface StatusType {
 enum StatusEventTypes {
 	DEFAULT,
 	DISCORD_GUILD,
+	EVENT,
 }
 
 interface StatusTypesColors {
@@ -51,6 +52,11 @@ const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 			color: '#363B74',
 			backColor: '#7C86F8',
 		},
+		2: {
+			key_name: 'EVENT',
+			color: '#1E4622',
+			backColor: '#73D77D',
+		},
 	},
 	dark: {
 		0: {
@@ -62,6 +68,11 @@ const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 			key_name: 'DISCORD_GUILD',
 			color: '#738BD7',
 			backColor: '#1E2846',
+		},
+		2: {
+			key_name: 'EVENT',
+			color: '#73D77D',
+			backColor: '#1E4622',
 		},
 	},
 };
@@ -133,6 +144,7 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 			{status.type === 1 && (
 				<Icon name="discord" size={18} color={StatusColors[theme_name][status.type].color} style={{ marginRight: 4 }} />
 			)}
+			{status.type === 2 && <Icon name="flag" size={11} color={StatusColors[theme_name][status.type].color} style={{ marginRight: 5 }} />}
 			<Text weight="600" size={13} color={StatusColors[theme_name][status.type].color}>
 				{status.data?.name || status.data?.message}
 			</Text>
@@ -149,9 +161,7 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 				{StatusRender}
 			</TouchableOpacity>
 		);
-	}
-
-	if (status?.type === 0) {
+	} else if ([0, 2].includes(status.type)) {
 		return (
 			<Animated.View style={wrapperStyle}>
 				<Pressable
@@ -185,30 +195,30 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 		);
 	}
 
-	return (
-		<Animated.View style={wrapperStyle}>
-			<Pressable
-				disabled={true}
-				style={({ pressed }) => [
-					{
-						opacity: pressed ? 0.6 : 1,
-					},
-				]}
-				onLongPress={() => nav.navigate('StatusDetail', { status: status })}
-				onPress={() => {
-					animate(!status?.taped);
-					onStatusPress();
-					// if (status.taped === false) onStatusPress();
-				}}>
-				{/* <Animated.View style={animatedStyles}>
-					<Text center marginLeft={10} size={12} bold color={theme.white}>
-						{status.taps}
-					</Text>
-				</Animated.View> */}
-				{StatusRender}
-			</Pressable>
-		</Animated.View>
-	);
+	// return (
+	// 	<Animated.View style={wrapperStyle}>
+	// 		<Pressable
+	// 			disabled={true}
+	// 			style={({ pressed }) => [
+	// 				{
+	// 					opacity: pressed ? 0.6 : 1,
+	// 				},
+	// 			]}
+	// 			onLongPress={() => nav.navigate('StatusDetail', { status: status })}
+	// 			onPress={() => {
+	// 				animate(!status?.taped);
+	// 				onStatusPress();
+	// 				// if (status.taped === false) onStatusPress();
+	// 			}}>
+	// 			{/* <Animated.View style={animatedStyles}>
+	// 				<Text center marginLeft={10} size={12} bold color={theme.white}>
+	// 					{status.taps}
+	// 				</Text>
+	// 			</Animated.View> */}
+	// 			{StatusRender}
+	// 		</Pressable>
+	// 	</Animated.View>
+	// );
 });
 
 const StatusBody = styled.View<{ backColor: string }>`
