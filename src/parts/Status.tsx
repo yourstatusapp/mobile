@@ -22,14 +22,9 @@ interface StatusType {
 		type: number;
 		taps?: number;
 		taped?: boolean;
+		expires_at?: string;
 	};
 	username?: string;
-}
-
-enum StatusEventTypes {
-	DEFAULT,
-	DISCORD_GUILD,
-	EVENT,
 }
 
 interface StatusTypesColors {
@@ -77,7 +72,7 @@ const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 	},
 };
 
-export const Status = React.memo(({ status, style, demo, disableTap, disableNavigate, self, username }: StatusType) => {
+export const Status = React.memo(({ status, style, demo, disableTap, disableNavigate, username }: StatusType) => {
 	const theme_name = usePulse(core.ui.ThemeObject).name;
 	const theme = useTheme();
 	const nav = useNavigation();
@@ -87,21 +82,6 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 	const offset = useSharedValue(0);
 	const opacity = useSharedValue(0);
 	const zIndex = useSharedValue(wrapperStyle?.zIndex ? 2 - wrapperStyle?.zIndex : -50);
-
-	const animatedStyles = useAnimatedStyle(() => {
-		return {
-			height: '100%',
-			position: 'absolute',
-			backgroundColor: theme.backgroundDarker,
-			right: offset.value,
-			justifyContent: 'center',
-			alignItems: 'center',
-			flex: 1,
-			width: 30,
-			zIndex: zIndex.value,
-			opacity: opacity.value,
-		};
-	});
 
 	const animate = async (countedUp?: boolean) => {
 		opacity.value = 1;
@@ -140,7 +120,10 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 	};
 
 	const StatusRender = (
-		<StatusBody style={{ zIndex: zIndex.value }} backColor={StatusColors[theme_name][status.type].backColor}>
+		<StatusBody
+			style={{ zIndex: zIndex.value }}
+			backColor={StatusColors[theme_name][status.type].backColor}
+			textColor={StatusColors[theme_name][status.type].color}>
 			{status.type === 1 && (
 				<Icon name="discord" size={18} color={StatusColors[theme_name][status.type].color} style={{ marginRight: 4 }} />
 			)}
@@ -183,55 +166,20 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 							}
 						}
 					}}>
-					<Animated.View style={animatedStyles}>
-						<Text center marginLeft={10} size={12} bold color={theme.text}>
-							{status.taps}
-						</Text>
-					</Animated.View>
 					{StatusRender}
-					{/* {!self && status.taped && <FloatingHeart name="heart" color="red" size={12} iconStyle={{ opacity: 0.8 }} />} */}
 				</Pressable>
 			</Animated.View>
 		);
 	}
-
-	// return (
-	// 	<Animated.View style={wrapperStyle}>
-	// 		<Pressable
-	// 			disabled={true}
-	// 			style={({ pressed }) => [
-	// 				{
-	// 					opacity: pressed ? 0.6 : 1,
-	// 				},
-	// 			]}
-	// 			onLongPress={() => nav.navigate('StatusDetail', { status: status })}
-	// 			onPress={() => {
-	// 				animate(!status?.taped);
-	// 				onStatusPress();
-	// 				// if (status.taped === false) onStatusPress();
-	// 			}}>
-	// 			{/* <Animated.View style={animatedStyles}>
-	// 				<Text center marginLeft={10} size={12} bold color={theme.white}>
-	// 					{status.taps}
-	// 				</Text>
-	// 			</Animated.View> */}
-	// 			{StatusRender}
-	// 		</Pressable>
-	// 	</Animated.View>
-	// );
 });
 
-const StatusBody = styled.View<{ backColor: string }>`
+const StatusBody = styled.View<{ backColor: string; textColor: string }>`
 	background-color: ${({ backColor }) => backColor};
-	padding: 4px 7px;
+	border: solid 1.3px ${({ textColor }) => textColor}30;
+	padding: 4px 8px;
 	align-self: flex-start;
-	border-radius: 5px;
+	border-radius: 8px;
 	justify-content: center;
 	flex-direction: row;
 	align-items: center;
-`;
-
-const FloatingHeart = styled(IconButton)`
-	position: absolute;
-	right: -20;
 `;

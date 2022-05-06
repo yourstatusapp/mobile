@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import styled, { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import {
@@ -21,6 +20,7 @@ import { BlurView } from 'expo-blur';
 
 import { Avatar, Block, Icon, IconButton } from '@parts';
 import core, { TabStackNavParamList } from '@core';
+import { useNavigation } from '@hooks';
 
 const TabsStackNavigator = createNativeStackNavigator<TabStackNavParamList>();
 
@@ -102,7 +102,8 @@ const CustomNavBar = ({ focusState }: CustomNavBarProps) => {
 				{/* {!!newMessage?.length && <Text color="red">new emssage</Text>} */}
 				<IconTabBtn
 					key={1}
-					icon={'conversation'}
+					icon={'flag'}
+					iconSize={18}
 					route={'events'}
 					active={1 + 1 === current_tab_state.state}
 					onPress={() => navigate('events', 1)}
@@ -142,6 +143,16 @@ const CustomNavBar = ({ focusState }: CustomNavBarProps) => {
 					backgroundColor={theme.darker}
 					iconSize={20}
 					onPress={() => nav.navigate('create_status' as never)}
+				/>
+			)}
+			{!hideFloatingbtn && [2].includes(current_tab_state.state) && (
+				<FloatingPostBtn
+					name="flag-add"
+					size={30}
+					color={theme.textFadeLight}
+					backgroundColor={theme.darker}
+					iconSize={22}
+					onPress={() => nav.navigate('CreateEvent')}
 				/>
 			)}
 		</CustomTabBarBody>
@@ -208,12 +219,12 @@ const AvatarBody = styled.View<{ active: boolean }>`
 	justify-content: center;
 `;
 
-const IconTabBtn: React.FC<{ route: string; icon: string; active?: boolean; onPress: () => void; name: string }> = c => {
+const IconTabBtn: React.FC<{ route: string; icon: string; iconSize?: number; active?: boolean; onPress: () => void; name: string }> = c => {
 	const theme = useTheme();
 
 	return (
 		<IconTabBtnBody onPress={c.onPress}>
-			<Icon name={c.icon} size={22} color={c.active ? theme.text : theme.darker} />
+			<Icon name={c.icon} size={c?.iconSize || 22} color={c.active ? theme.text : theme.darker} />
 		</IconTabBtnBody>
 	);
 };

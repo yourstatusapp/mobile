@@ -1,9 +1,10 @@
 import { AppAlert, request } from '@core';
 import { useNavigation } from '@hooks';
-import { Block, Button, Icon, IconButton, Line, Spacer, Status, Text } from '@parts';
+import { Block, Button, IconButton, Line, Spacer, Status, Text } from '@parts';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import { TabbarHeader } from '../parts/components/TabbarHeader';
 import styled, { useTheme } from 'styled-components/native';
 
 export const CreateEvent = () => {
@@ -24,6 +25,7 @@ export const CreateEvent = () => {
 	const [statusDisplayname, setStatusDisplayname] = useState('');
 
 	const create = async () => {
+		setLoading(true);
 		const res = await request('post', '/events/create', {
 			data: {
 				title,
@@ -33,6 +35,7 @@ export const CreateEvent = () => {
 				status_display_name: statusDisplayname,
 			},
 		});
+		setLoading(false);
 		if (res.data) {
 			nav.goBack();
 		} else {
@@ -41,10 +44,13 @@ export const CreateEvent = () => {
 	};
 
 	return (
-		<Block color={theme.background} flex={1}>
-			<ScrollView contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }} endFillColor="red">
-				<KeyboardAvoidingView behavior="padding" contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }}>
-					<Text bold size={26} marginBottom={5} marginLeft={20} marginTop={50}>
+		<KeyboardAvoidingView behavior="position" keyboardVerticalOffset={-150} contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }}>
+			<Block color={theme.background} flex={1}>
+				<ScrollView contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }} endFillColor="red">
+					<Block flex={0} row marginTop={50} paddingHorizontal={10} marginBottom={10}>
+						<IconButton name="arrow" size={25} color="white" onPress={() => nav.goBack()} />
+					</Block>
+					<Text bold size={26} marginBottom={5} marginLeft={20}>
 						Create your're next event
 					</Text>
 					{/* <Text color={theme.textFade} marginBottom={30} marginLeft={10} weight="600" style={{ letterSpacing: -0.95 }}>
@@ -53,8 +59,9 @@ export const CreateEvent = () => {
 			</Text> */}
 					<Line size={1} color={theme.darker} />
 					<Spacer size={20} />
-					<TxtInput placeholder="Title" value={title} onChangeText={v => setTitle(v)} />
+					<TxtInput placeholder="Title" value={title} onChangeText={v => setTitle(v)} placeholderTextColor={theme.textFadeLight} />
 					<TxtInput
+						placeholderTextColor={theme.textFadeLight}
 						placeholder="Description"
 						value={description}
 						onChangeText={v => setDescription(v)}
@@ -104,18 +111,18 @@ export const CreateEvent = () => {
 						</Block>
 					)}
 
-					<Block paddingHorizontal={20} paddingTop={20} style={{ justifyContent: 'flex-end' }}>
+					<Block paddingHorizontal={20} paddingTop={20} style={{ justifyContent: 'flex-end' }} flex={0}>
 						<Button
 							text="Create"
-							disabled={!title || !statusDisplayname}
+							disabled={loading || !title || !statusDisplayname}
 							style={{ marginHorizontal: 10, marginBottom: 20 }}
 							onPress={() => create()}
 							color="white"
 						/>
 					</Block>
-				</KeyboardAvoidingView>
-			</ScrollView>
-		</Block>
+				</ScrollView>
+			</Block>
+		</KeyboardAvoidingView>
 	);
 };
 

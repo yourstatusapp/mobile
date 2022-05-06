@@ -26,9 +26,8 @@ export const Events = () => {
 	return (
 		<Block safe paddingHorizontal={15} color={theme.background}>
 			<Text size={30} bold>
-				Discovery <Text size={17}>(events)</Text>
+				Events
 			</Text>
-			<IconButton name="plus" size={25} color="red" onPress={() => nav.navigate('CreateEvent')} />
 			<FlatList
 				style={{ marginTop: 15 }}
 				data={a}
@@ -44,12 +43,14 @@ export const Events = () => {
 							{item.title}
 						</Text>
 						<Text marginBottom={10}>{item.description}</Text>
-						<Block row paddingTop={15} hCenter>
-							<Icon name="location" size={14} color={theme.textFadeLight} />
-							<Text marginLeft={5} color={theme.textFadeLight} weight="700">
-								{item.location}
-							</Text>
-						</Block>
+						{item?.location && (
+							<Block row paddingTop={15} hCenter>
+								<Icon name="location" size={14} color={theme.textFadeLight} />
+								<Text marginLeft={5} color={theme.textFadeLight} weight="700">
+									{item.location}
+								</Text>
+							</Block>
+						)}
 					</Block>
 				)}
 			/>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { AppAlert, GuildInvite, request } from '@core';
-import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text, TextButton } from '@parts';
+import { Block, Fill, Icon, IconButton, Spacer, Status, Text } from '@parts';
 import { useNavigation } from '@react-navigation/native';
-import { ActivityIndicator, KeyboardAvoidingView, TextInput } from 'react-native';
+import { KeyboardAvoidingView, TextInput } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
