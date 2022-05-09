@@ -16,3 +16,4 @@ export { ModalHeader } from './ModalHeader';
 export { Line } from './Line';
 
 export { GradiantShadow } from './components/GradiantShadow';
+export { BottomModalSheet } from './components/BottomModalSheet';

@@ -11,7 +11,15 @@ interface AvatarProps {
 
 export const Avatar = ({ src, style, size }: AvatarProps) => {
 	const theme = useTheme();
-	const s = StyleSheet.flatten([style, { height: size ?? 45, width: size ?? 45, borderRadius: size ?? 45, backgroundColor: theme.backgroundDarker }]);
+	const s = StyleSheet.flatten([
+		style,
+		{
+			height: size ?? 45,
+			width: size ?? 45,
+			borderRadius: size ?? 45,
+			backgroundColor: theme.backgroundDarker,
+		},
+	]);
 	const defaultImg = src[0] === null ?? src[1] === null;
 
 	const image_src = `https://cdn.yourstatus.app/profile/${src[0]}/${src[1]}`;

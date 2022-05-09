@@ -175,7 +175,7 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 
 const StatusBody = styled.View<{ backColor: string; textColor: string }>`
 	background-color: ${({ backColor }) => backColor};
-	border: solid 1.3px ${({ textColor }) => textColor}30;
+	border: solid 1.3px ${({ textColor }) => textColor}25;
 	padding: 4px 8px;
 	align-self: flex-start;
 	border-radius: 8px;

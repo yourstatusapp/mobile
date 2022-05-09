@@ -1,6 +1,6 @@
 import { AppAlert, request } from '@core';
 import { useNavigation } from '@hooks';
-import { Block, Button, IconButton, Line, Spacer, Status, Text } from '@parts';
+import { Block, BottomModalSheet, Button, IconButton, Line, Spacer, Status, Text } from '@parts';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, ScrollView, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker';
@@ -44,85 +44,89 @@ export const CreateEvent = () => {
 	};
 
 	return (
-		<KeyboardAvoidingView behavior="position" keyboardVerticalOffset={-150} contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }}>
-			<Block color={theme.background} flex={1}>
-				<ScrollView contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }} endFillColor="red">
-					<Block flex={0} row marginTop={50} paddingHorizontal={10} marginBottom={10}>
-						<IconButton name="arrow" size={25} color="white" onPress={() => nav.goBack()} />
-					</Block>
-					<Text bold size={26} marginBottom={5} marginLeft={20}>
-						Create your're next event
-					</Text>
-					{/* <Text color={theme.textFade} marginBottom={30} marginLeft={10} weight="600" style={{ letterSpacing: -0.95 }}>
+		<>
+			<KeyboardAvoidingView behavior="position" keyboardVerticalOffset={-150} contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }}>
+				<Block color={theme.background} flex={1}>
+					{/* <BottomModalSheet />	 */}
+
+					<ScrollView contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }} endFillColor="red">
+						<Block flex={0} row marginTop={50} paddingHorizontal={10} marginBottom={10}>
+							<IconButton name="arrow" size={25} color={theme.text} onPress={() => nav.goBack()} />
+						</Block>
+						<Text bold size={26} marginBottom={5} marginLeft={20}>
+							Create your're next event
+						</Text>
+						{/* <Text color={theme.textFade} marginBottom={30} marginLeft={10} weight="600" style={{ letterSpacing: -0.95 }}>
 				Here you're able to create a customizable event to you're preference which you can invite you're friends only or you are able to
 				share with the world
 			</Text> */}
-					<Line size={1} color={theme.darker} />
-					<Spacer size={20} />
-					<TxtInput placeholder="Title" value={title} onChangeText={v => setTitle(v)} placeholderTextColor={theme.textFadeLight} />
-					<TxtInput
-						placeholderTextColor={theme.textFadeLight}
-						placeholder="Description"
-						value={description}
-						onChangeText={v => setDescription(v)}
-						style={{ height: 150, lineHeight: 20, paddingTop: 15, paddingLeft: 15 }}
-						multiline
-						numberOfLines={4}
-					/>
-
-					<Block marginLeft={20} marginBottom={10} marginTop={20} flex={0}>
-						<Status status={{ account_id: 'dsa', type: 2, data: { message: statusDisplayname } }} />
-					</Block>
-
-					<TxtInput placeholder="Status display name" value={statusDisplayname} onChangeText={v => setStatusDisplayname(v)} />
-
-					{/* Start Date */}
-					<Block row flex={0} paddingLeft={20}>
-						<CheckBox onPress={() => setEnableStartDate(!enableStartDate)}>{enableStartDate && <CheckboxChecked />}</CheckBox>
-						<FlatButton onPress={() => setShowDPSD(!showDPSD)} disabled={!enableStartDate} style={{ opacity: enableStartDate ? 1 : 0.5 }}>
-							<Text bold size={16} color="white">
-								Set Start Date
-							</Text>
-							<Text color="white">{endDate.toDateString() + ' ' + endDate.toTimeString().split(' GMT')[0]}</Text>
-						</FlatButton>
-					</Block>
-					<Text marginLeft={20} color={theme.textFadeLight} weight="500" marginTop={2} size={12}>
-						Starts after being created if not selected
-					</Text>
-					{showDPSD && enableStartDate && (
-						<Block flex={0} hCenter>
-							<DatePicker date={startDate} textColor={theme.text} onDateChange={v => setEndDate(v)} />
-						</Block>
-					)}
-
-					{/* END DATE */}
-					<Block row flex={0} paddingLeft={20} marginBottom={10} marginTop={10}>
-						<CheckBox onPress={() => setEnableEndDate(!enableEndDate)}>{enableEndDate && <CheckboxChecked />}</CheckBox>
-						<FlatButton onPress={() => setShowDPED(!showDPED)} disabled={!enableEndDate} style={{ opacity: enableEndDate ? 1 : 0.5 }}>
-							<Text bold size={16} color="white">
-								Set End Date
-							</Text>
-							<Text color="white">{endDate.toDateString() + ' ' + endDate.toTimeString().split(' GMT')[0]}</Text>
-						</FlatButton>
-					</Block>
-					{showDPED && enableEndDate && (
-						<Block flex={0} hCenter>
-							<DatePicker date={endDate} textColor={theme.text} onDateChange={v => setEndDate(v)} />
-						</Block>
-					)}
-
-					<Block paddingHorizontal={20} paddingTop={20} style={{ justifyContent: 'flex-end' }} flex={0}>
-						<Button
-							text="Create"
-							disabled={loading || !title || !statusDisplayname}
-							style={{ marginHorizontal: 10, marginBottom: 20 }}
-							onPress={() => create()}
-							color="white"
+						<Line size={1} color={theme.darker} />
+						<Spacer size={20} />
+						<TxtInput placeholder="Title" value={title} onChangeText={v => setTitle(v)} placeholderTextColor={theme.textFadeLight} />
+						<TxtInput
+							placeholderTextColor={theme.textFadeLight}
+							placeholder="Description"
+							value={description}
+							onChangeText={v => setDescription(v)}
+							style={{ height: 150, lineHeight: 20, paddingTop: 15, paddingLeft: 15 }}
+							multiline
+							numberOfLines={4}
 						/>
-					</Block>
-				</ScrollView>
-			</Block>
-		</KeyboardAvoidingView>
+
+						<Block marginLeft={20} marginBottom={10} marginTop={20} flex={0}>
+							<Status status={{ account_id: 'dsa', type: 2, data: { message: statusDisplayname } }} />
+						</Block>
+
+						<TxtInput placeholder="Status display name" value={statusDisplayname} onChangeText={v => setStatusDisplayname(v)} />
+
+						{/* Start Date */}
+						<Block row flex={0} paddingLeft={20}>
+							<CheckBox onPress={() => setEnableStartDate(!enableStartDate)}>{enableStartDate && <CheckboxChecked />}</CheckBox>
+							<FlatButton onPress={() => setShowDPSD(!showDPSD)} disabled={!enableStartDate} style={{ opacity: enableStartDate ? 1 : 0.5 }}>
+								<Text bold size={16} color="white">
+									Set Start Date
+								</Text>
+								<Text color="white">{endDate.toDateString() + ' ' + endDate.toTimeString().split(' GMT')[0]}</Text>
+							</FlatButton>
+						</Block>
+						<Text marginLeft={20} color={theme.textFadeLight} weight="500" marginTop={2} size={12}>
+							Starts after being created if not selected
+						</Text>
+						{showDPSD && enableStartDate && (
+							<Block flex={0} hCenter>
+								<DatePicker date={startDate} textColor={theme.text} onDateChange={v => setEndDate(v)} />
+							</Block>
+						)}
+
+						{/* END DATE */}
+						<Block row flex={0} paddingLeft={20} marginBottom={10} marginTop={10}>
+							<CheckBox onPress={() => setEnableEndDate(!enableEndDate)}>{enableEndDate && <CheckboxChecked />}</CheckBox>
+							<FlatButton onPress={() => setShowDPED(!showDPED)} disabled={!enableEndDate} style={{ opacity: enableEndDate ? 1 : 0.5 }}>
+								<Text bold size={16} color="white">
+									Set End Date
+								</Text>
+								<Text color="white">{endDate.toDateString() + ' ' + endDate.toTimeString().split(' GMT')[0]}</Text>
+							</FlatButton>
+						</Block>
+						{showDPED && enableEndDate && (
+							<Block flex={0} hCenter>
+								<DatePicker date={endDate} textColor={theme.text} onDateChange={v => setEndDate(v)} />
+							</Block>
+						)}
+
+						<Block paddingHorizontal={20} paddingTop={20} style={{ justifyContent: 'flex-end' }} flex={0}>
+							<Button
+								text="Create"
+								disabled={loading || !title || !statusDisplayname}
+								style={{ marginHorizontal: 10, marginBottom: 20 }}
+								onPress={() => create()}
+								color="white"
+							/>
+						</Block>
+					</ScrollView>
+				</Block>
+			</KeyboardAvoidingView>
+		</>
 	);
 };
 

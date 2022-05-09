@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import core, { AppAlert, FriendItemRenderType, FriendItemType, request, StatusType } from '@core';
-import { Block, Fill, IconButton, Status, TextButton } from '@parts';
+import { Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
 import { Animated, StyleSheet, TouchableOpacity, ViewStyle, FlatList, RefreshControl } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -115,7 +115,6 @@ export const Friends = React.memo(() => {
 	}, []);
 
 	const renderItem = (p: FriendItemRenderType) => <FriendComp {...p} />;
-
 	return (
 		<>
 			<Block color={theme.background}>

@@ -32,22 +32,22 @@ export const Events = () => {
 				style={{ marginTop: 15 }}
 				data={a}
 				renderItem={({ item }) => (
-					<Block key={item.id} color={theme.backgroundDarker} style={{ padding: 10, borderRadius: 8 }}>
+					<Block key={item.id} color={theme.backgroundDarker} style={{ padding: 10, borderRadius: 8 }} marginBottom={20}>
 						<Block row hCenter marginBottom={8}>
 							<Avatar src={[item.account_id, item.avatar]} size={25} />
 							<Text weight="600" marginLeft={5}>
-								{item.username}
+								{item?.username}
 							</Text>
 						</Block>
 						<Text bold size={18} marginBottom={15}>
-							{item.title}
+							{item?.title}
 						</Text>
-						<Text marginBottom={10}>{item.description}</Text>
-						{item?.location && (
+						{item?.description && <Text marginBottom={10}>{item.description}</Text>}
+						{!!item?.location && (
 							<Block row paddingTop={15} hCenter>
 								<Icon name="location" size={14} color={theme.textFadeLight} />
 								<Text marginLeft={5} color={theme.textFadeLight} weight="700">
-									{item.location}
+									{item?.location}
 								</Text>
 							</Block>
 						)}
