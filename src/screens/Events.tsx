@@ -32,7 +32,13 @@ export const Events = () => {
 				style={{ marginTop: 15 }}
 				data={a}
 				renderItem={({ item }) => (
-					<Block key={item.id} color={theme.backgroundDarker} style={{ padding: 10, borderRadius: 8 }} marginBottom={20}>
+					<Block
+						key={item.id}
+						color={theme.backgroundDarker}
+						style={{ padding: 10, borderRadius: 8 }}
+						marginBottom={20}
+						press
+						onPress={() => nav.navigate('event')}>
 						<Block row hCenter marginBottom={8}>
 							<Avatar src={[item.account_id, item.avatar]} size={25} />
 							<Text weight="600" marginLeft={5}>

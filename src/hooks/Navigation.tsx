@@ -1,4 +1,4 @@
-import { TabStackNavParamList } from '@core';
+import { GlobalParamList } from '@core';
 import { useNavigation as ReactNavigationUseNavigation, NavigationProp } from '@react-navigation/native';
 
-export const useNavigation = () => ReactNavigationUseNavigation<NavigationProp<TabStackNavParamList>>();
+export const useNavigation = () => ReactNavigationUseNavigation<NavigationProp<GlobalParamList>>();

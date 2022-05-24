@@ -3,7 +3,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@parts": ["src/parts/index.ts"],
-			"@core": ["src/core/index.ts"]
+			"@core": ["src/core/index.ts"],
+			"@hooks": ["src/core/hooks.ts"]
 		}
 	},
 	"exclude": ["node_modules"]

@@ -197,6 +197,25 @@ export type TabStackNavParamList = {
 	CreateEvent: undefined;
 };
 
+export type RootstackParamList = {
+	Event: undefined;
+	newproject: undefined;
+	tabs: undefined;
+	auth: undefined;
+	magic: undefined;
+	new_moment: undefined;
+	create_status: undefined;
+	edit_profile: undefined;
+	settings: undefined;
+	CreateEvent: undefined;
+	manage_status: undefined;
+	explanation: undefined;
+	realtime_history: undefined;
+	verify_account: undefined;
+};
+
+export type GlobalParamList = RootstackParamList & TabStackNavParamList;
+
 export interface FriendItem {
 	username: string;
 	account_id: string;

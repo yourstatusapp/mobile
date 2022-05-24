@@ -74,7 +74,7 @@ export const Camera = () => {
 			height.value = withTiming(100, { easing: Easing.ease, duration: D });
 			SetPhotosLibraryOpen(true);
 		}
-	}, [PhotosLibraryOpen]);
+	}, [PhotosLibraryOpen, height, offset]);
 
 	const focusCamera = async (e: GestureResponderEvent) => {
 		if (!camera.current) return;
@@ -265,7 +265,12 @@ export const Camera = () => {
 								enableZoomGesture
 							/>
 
-							<Animated.View style={[{ borderRadius: 50, height: 40, width: 40, backgroundColor: 'white', zIndex: 40, position: 'absolute' }, PressFocus]} />
+							<Animated.View
+								style={[
+									{ borderRadius: 50, height: 40, width: 40, backgroundColor: 'white', zIndex: 40, position: 'absolute' },
+									PressFocus,
+								]}
+							/>
 						</TouchableOpacity>
 					)}
 					{/* <AlbumPreviewPictures style={PhotosLibraryPreviewstyle}>

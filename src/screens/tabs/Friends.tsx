@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import core, { AppAlert, FriendItemRenderType, FriendItemType, request, StatusType } from '@core';
 import { Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
 import { Animated, StyleSheet, TouchableOpacity, ViewStyle, FlatList, RefreshControl } from 'react-native';
-import { useTheme } from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import { hasNotch } from 'react-native-device-info';
@@ -127,9 +127,6 @@ export const Friends = React.memo(() => {
 					refreshControl={
 						<RefreshControl
 							progressViewOffset={90}
-							style={{
-								backgroundColor: theme.darker,
-							}}
 							tintColor={theme.textFade}
 							colors={[theme.text]}
 							refreshing={RefreshLoading}
@@ -238,7 +235,7 @@ export const Friends = React.memo(() => {
 						position: 'absolute',
 					}}>
 					<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={340} />
-
+					<DimmingOverlay height={hasNotch() ? 100 : 70} />
 					<Block
 						animate
 						row
@@ -285,3 +282,15 @@ export const Friends = React.memo(() => {
 		</>
 	);
 });
+
+const DimmingOverlay = styled.View<{ height: number }>`
+	position: absolute;
+	z-index: 1;
+	background-color: ${({ theme }) => theme.background};
+	opacity: 0.8;
+
+	height: ${props => props.height}px;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+`;

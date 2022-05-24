@@ -1,11 +1,10 @@
-import core, { AppAlert, request } from '@core';
-import { Icon, IconButton, Text } from '@parts';
-import React from 'react';
+import core, { request } from '@core';
+import { Icon, Text } from '@parts';
+import React, { useCallback } from 'react';
 import styled, { useTheme } from 'styled-components/native';
 
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { Linking, Pressable, StyleSheet, View, ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useSharedValue } from 'react-native-reanimated';
+import { Linking, Pressable, StyleSheet, ViewStyle } from 'react-native';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@hooks';
 
@@ -83,43 +82,7 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 	const opacity = useSharedValue(0);
 	const zIndex = useSharedValue(wrapperStyle?.zIndex ? 2 - wrapperStyle?.zIndex : -50);
 
-	const animate = async (countedUp?: boolean) => {
-		opacity.value = 1;
-		offset.value = withSpring(-20);
-		setTimeout(() => {
-			offset.value = withSpring(0);
-
-			setTimeout(() => {
-				opacity.value = 0;
-			}, 380 + (countedUp ? 450 : 0));
-		}, 380 + (countedUp ? 450 : 0));
-	};
-
-	const onStatusPress = async () => {
-		if (demo) return;
-
-		let newList = core.lists.friends.getData(status.account_id).value.status?.map(item => {
-			if (item.type === 0) {
-				item.taps = 1 + item.taps;
-				item.taped = true;
-			}
-
-			return item;
-		});
-
-		core.lists.friends.update(status.account_id, { status: newList });
-		core.lists.friends.rebuildGroupsThatInclude(status.account_id);
-
-		// tap request
-		const res = await request('post', `/status/${status?.id}/tap`);
-		if (res.data) {
-			console.log('-> ', res.data);
-		} else {
-			AppAlert(false, res.message);
-		}
-	};
-
-	const StatusRender = (
+	const BaseRender = (
 		<StatusBody
 			style={{ zIndex: zIndex.value }}
 			backColor={StatusColors[theme_name][status.type].backColor}
@@ -134,43 +97,52 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 		</StatusBody>
 	);
 
-	if (status?.type === 1) {
-		return (
-			<TouchableOpacity
-				activeOpacity={0.7}
-				onPress={() => {
-					Linking.openURL('https://discord.gg/' + status?.data?.code);
-				}}>
-				{StatusRender}
-			</TouchableOpacity>
-		);
-	} else if ([0, 2].includes(status.type)) {
-		return (
-			<Animated.View style={wrapperStyle}>
-				<Pressable
-					style={({ pressed }) => [
-						{
-							opacity: pressed ? 0.6 : 1,
-						},
-					]}
-					onPress={() => {
-						if (!disableNavigate) {
-							nav.navigate('StatusDetail', { status: status, username: username || '' });
-						}
-						if (!disableTap) {
-							console.log(status);
+	const onPressHandle = useCallback(async () => {
+		if (status.taped === false) {
+			const res = await request('post', `/status/${status?.id}/tap`);
+			if (res.data) {
+				console.log('-> ', res.data);
+				let newList = core.lists.friends.getData(status.account_id).value.status?.map(item => {
+					if (item.type === 0) {
+						item.taps = 1 + item.taps;
+						item.taped = true;
+					}
 
-							if (!status?.taped) {
-								onStatusPress();
-								animate(true);
-							}
-						}
-					}}>
-					{StatusRender}
-				</Pressable>
-			</Animated.View>
-		);
-	}
+					return item;
+				});
+
+				core.lists.friends.update(status.account_id, { status: newList });
+				core.lists.friends.rebuildGroupsThatInclude(status.account_id);
+			} else {
+				// silent errors
+				// AppAlert(false, res.message);
+			}
+		}
+
+		if (status.type === 2) {
+			nav.navigate('Event', status.data);
+		}
+
+		if (status.type === 0) {
+			nav.navigate('StatusDetail', { status: status, username: username || '' });
+		}
+
+		if (status.type === 1) {
+			Linking.openURL('https://discord.gg/' + status?.data?.code);
+		}
+	}, [nav, status, username]);
+
+	const PressStyle = ({ pressed }: { pressed: boolean }) => [
+		{
+			opacity: pressed ? 0.6 : 1,
+		},
+	];
+
+	return (
+		<Pressable style={PressStyle} onPress={onPressHandle}>
+			{BaseRender}
+		</Pressable>
+	);
 });
 
 const StatusBody = styled.View<{ backColor: string; textColor: string }>`
