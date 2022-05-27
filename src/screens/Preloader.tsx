@@ -28,8 +28,12 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 			core.profile.profile.reset();
 			core.lists.devices.reset();
 		} else {
-			if (res.data?.account) core.account.account.set(res.data?.account);
-			if (res.data?.profile) core.profile.profile.set(res.data?.profile);
+			if (res.data?.account) {
+				core.account.account.set(res.data?.account);
+			}
+			if (res.data?.profile) {
+				core.profile.profile.set(res.data?.profile);
+			}
 			if (res.data?.device) {
 				core.lists.devices.collect(res.data.device, 'mine');
 				core.lists.devices.selectors.current.select(res.data.device.id);

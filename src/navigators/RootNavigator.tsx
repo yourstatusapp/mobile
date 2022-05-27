@@ -77,16 +77,8 @@ export const RootNavigator = () => {
 							contentStyle: { zIndex: 25 },
 						}}
 					/>
-					<RootStack.Screen
-						name="Event"
-						component={Event}
-						options={{
-							gestureEnabled: true,
-							animation: 'default',
-							presentation: 'modal',
-							contentStyle: { zIndex: 25 },
-						}}
-					/>
+					<RootStack.Screen name="Camera" component={Camera} />
+
 					<RootStack.Screen
 						name="manage_status"
 						component={ManageStatus}

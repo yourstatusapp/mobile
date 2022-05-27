@@ -139,7 +139,7 @@ export const Status = React.memo(({ status, style, demo, disableTap, disableNavi
 	];
 
 	return (
-		<Pressable style={PressStyle} onPress={onPressHandle}>
+		<Pressable disabled={disableTap === true} style={PressStyle} onPress={onPressHandle}>
 			{BaseRender}
 		</Pressable>
 	);

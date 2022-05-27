@@ -195,10 +195,10 @@ export type TabStackNavParamList = {
 	newconversation: undefined;
 	ManageFriends: undefined;
 	CreateEvent: undefined;
+	Event: EventType;
 };
 
 export type RootstackParamList = {
-	Event: undefined;
 	newproject: undefined;
 	tabs: undefined;
 	auth: undefined;
@@ -212,6 +212,7 @@ export type RootstackParamList = {
 	explanation: undefined;
 	realtime_history: undefined;
 	verify_account: undefined;
+	Camera: undefined;
 };
 
 export type GlobalParamList = RootstackParamList & TabStackNavParamList;

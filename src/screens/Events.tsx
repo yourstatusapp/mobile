@@ -38,7 +38,7 @@ export const Events = () => {
 						style={{ padding: 10, borderRadius: 8 }}
 						marginBottom={20}
 						press
-						onPress={() => nav.navigate('event')}>
+						onPress={() => nav.navigate('Event', { event_id: item.id })}>
 						<Block row hCenter marginBottom={8}>
 							<Avatar src={[item.account_id, item.avatar]} size={25} />
 							<Text weight="600" marginLeft={5}>

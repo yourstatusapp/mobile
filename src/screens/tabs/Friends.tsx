@@ -3,12 +3,12 @@ import core, { AppAlert, FriendItemRenderType, FriendItemType, request, StatusTy
 import { Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
 import { Animated, StyleSheet, TouchableOpacity, ViewStyle, FlatList, RefreshControl } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import { hasNotch } from 'react-native-device-info';
 import { usePulse } from '@pulsejs/react';
 import FastImage from 'react-native-fast-image';
 import { FriendComp } from '../parts/FriendItemList';
+import { useNavigation } from '@hooks';
 
 const FRIEND_ITEM_HEIGHT = 88;
 
@@ -157,7 +157,7 @@ export const Friends = React.memo(() => {
 										scrollEnabled={false}
 										renderItem={({ item, index }) => (
 											<Block key={index} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
-												<Status status={item} self />
+												<Status status={item} self disableTap={false} />
 											</Block>
 										)}
 									/>
@@ -241,7 +241,7 @@ export const Friends = React.memo(() => {
 						row
 						hCenter
 						style={{
-							zIndex: 10,
+							zIndex: 15,
 							backgroundColor: 'transparent',
 							height: 100 - (hasNotch() ? 44 : 0),
 							opacity: FadeOpacity || 1,
@@ -274,7 +274,7 @@ export const Friends = React.memo(() => {
 							backgroundColor={theme.text}
 							size={23}
 							iconSize={14}
-							onPress={() => nav.navigate('camera' as never, { uploadMethod: 'storie' } as never)}
+							onPress={() => nav.navigate('Camera', { uploadMethod: 'storie' } as never)}
 						/>
 					</Block>
 				</Animated.View>
@@ -285,7 +285,7 @@ export const Friends = React.memo(() => {
 
 const DimmingOverlay = styled.View<{ height: number }>`
 	position: absolute;
-	z-index: 1;
+	z-index: 15;
 	background-color: ${({ theme }) => theme.background};
 	opacity: 0.8;
 
