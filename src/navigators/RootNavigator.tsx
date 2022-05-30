@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
-import core, { RootstackParamList, TabStackNavParamList } from '@core';
+import core, { RootstackParamList } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { useLinking } from '../hooks';
 import { createNavigationContainerRef } from '@react-navigation/native';
@@ -19,19 +18,15 @@ import {
 	Explanation,
 	ManageStatus,
 	CreateEvent,
-	Event,
 } from '../screens';
 import { NewProject } from '../screens/NewProject';
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
 import { Block } from '@parts';
-import { useTheme } from 'styled-components/native';
-import { CustomAlert } from '../parts/components/Alert';
 
 export const navigationRef = createNavigationContainerRef();
 const RootStack = createNativeStackNavigator<RootstackParamList>();
 
 export const RootNavigator = () => {
-	const theme = useTheme();
 	useLinking();
 
 	const loggedIn = usePulse(core.account.logged_in);
@@ -49,10 +44,22 @@ export const RootNavigator = () => {
 					<RootStack.Screen name="tabs" component={BottomTabNavigator} />
 					<RootStack.Screen name="auth" component={Auth} />
 					<RootStack.Screen name="magic" component={Magic} />
-					<RootStack.Screen name="new_moment" component={NewMoment} options={{ animation: 'fade' }} />
+					<RootStack.Screen
+						name="new_moment"
+						component={NewMoment}
+						options={{ animation: 'fade' }}
+					/>
 					{/* <RootStack.Screen name="camera" component={Camera} options={{ animation: 'fade', gestureEnabled: false }} /> */}
-					<RootStack.Screen name="create_status" component={NewStatus} options={{ gestureEnabled: true }} />
-					<RootStack.Screen name="CreateEvent" component={CreateEvent} options={{ gestureEnabled: true }} />
+					<RootStack.Screen
+						name="create_status"
+						component={NewStatus}
+						options={{ gestureEnabled: true }}
+					/>
+					<RootStack.Screen
+						name="CreateEvent"
+						component={CreateEvent}
+						options={{ gestureEnabled: true }}
+					/>
 					<RootStack.Screen
 						name="newproject"
 						component={NewProject}

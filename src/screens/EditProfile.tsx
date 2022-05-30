@@ -1,5 +1,5 @@
 import core, { AppAlert, request } from '@core';
-import { Block, Button, Fill, IconButton, ModalHeader, Spacer, Text, TextButton } from '@parts';
+import { Block, Button, Fill, ModalHeader, Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -14,7 +14,11 @@ export const EditProfile = () => {
 	const theme = useTheme();
 	const profile = usePulse(core.profile.profile);
 
-	const [objectmodified, setObjectmodified] = useState({ username: false, location: false, bio: false });
+	const [objectmodified, setObjectmodified] = useState({
+		username: false,
+		location: false,
+		bio: false,
+	});
 
 	// USERNAME LOGIC
 	const [username, setUsername] = useState('');
@@ -46,7 +50,9 @@ export const EditProfile = () => {
 					return;
 				}
 
-				const res = await request<{ valid: boolean }>('post', '/profile/username/check', { data: { username: usernameInput } });
+				const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
+					data: { username: usernameInput },
+				});
 				setUsernameLoading(false);
 				if (res.data) {
 					setUsernameValid(res.data?.valid);
@@ -137,6 +143,7 @@ export const EditProfile = () => {
 						autoCorrect={false}
 						autoCompleteType="off"
 						style={{
+							color: theme.text,
 							borderBottomColor: usernameLoading
 								? theme.darker1
 								: (profile.username || '') === username
@@ -147,7 +154,10 @@ export const EditProfile = () => {
 						}}
 					/>
 					{(profile.username || '') != username && usernameLoading && (
-						<ActivityIndicator color={theme.textFadeLight} style={{ position: 'absolute', right: 20, paddingBottom: 20 }} />
+						<ActivityIndicator
+							color={theme.textFadeLight}
+							style={{ position: 'absolute', right: 20, paddingBottom: 20 }}
+						/>
 					)}
 					{!!usernameErrMsg && (
 						<Text color="#FF6161" size={12} marginTop={5} marginLeft={20}>
@@ -240,7 +250,11 @@ export const EditProfile = () => {
 	);
 };
 
-const CustomEditInput = styled.TextInput.attrs({ autoCapitalize: 'none', autoCorrect: false, autoCompleType: 'off' })`
+const CustomEditInput = styled.TextInput.attrs({
+	autoCapitalize: 'none',
+	autoCorrect: false,
+	autoCompleType: 'off',
+})`
 	color: white;
 	height: 29px;
 	padding-left: 10px;

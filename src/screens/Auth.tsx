@@ -1,8 +1,14 @@
 import { useTheme } from 'styled-components/native';
 import React, { useState } from 'react';
-import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text, TextButton } from '@parts';
+import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text } from '@parts';
 import core, { AppAlert, request } from '@core';
-import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
+import {
+	ActivityIndicator,
+	Dimensions,
+	KeyboardAvoidingView,
+	Platform,
+	TouchableOpacity,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
@@ -28,13 +34,17 @@ export const Auth: React.FC = () => {
 	const login = async (usernameInput: string) => {
 		SetLoading(true);
 		SetError('');
-		const res = await request<boolean & { new_account: boolean; suggested_username: string }>('post', '/auth/magic', {
-			data: {
-				email: Email?.trimStart()?.trimEnd(),
-				verify_new_account: NewAccount,
-				username: usernameInput,
+		const res = await request<boolean & { new_account: boolean; suggested_username: string }>(
+			'post',
+			'/auth/magic',
+			{
+				data: {
+					email: Email?.trimStart()?.trimEnd(),
+					verify_new_account: NewAccount,
+					username: usernameInput,
+				},
 			},
-		});
+		);
 
 		if (res.data?.new_account) {
 			SetNewAccount(true);
@@ -57,7 +67,9 @@ export const Auth: React.FC = () => {
 		if (timeout) clearTimeout(timeout);
 
 		timeout = setTimeout(async () => {
-			const res = await request<{ valid: boolean }>('post', '/profile/username/check', { data: { username: usernameInput } });
+			const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
+				data: { username: usernameInput },
+			});
 			SetUsernameLoading(false);
 			if (res.data) {
 				SetUsernameValid(res.data?.valid);
@@ -70,6 +82,7 @@ export const Auth: React.FC = () => {
 
 	const magicLinkLogin = React.useCallback(async () => {
 		const a = ClipboardData;
+		console.log(a);
 
 		if (!a) {
 			AppAlert(false, 'no link has been detected');
@@ -77,7 +90,13 @@ export const Auth: React.FC = () => {
 		}
 
 		if (a?.includes('magic?code=')) {
-			nav.navigate('magic' as never, { code: a?.split('code=')[1]?.split('&')[0], new_account: !!a?.includes('new_account') } as never);
+			nav.navigate(
+				'magic' as never,
+				{
+					code: a?.split('code=')[1]?.split('&')[0],
+					new_account: !!a?.includes('new_account'),
+				} as never,
+			);
 		}
 	}, [ClipboardData, nav]);
 
@@ -99,7 +118,7 @@ export const Auth: React.FC = () => {
 		<Block color={theme.background}>
 			<LinearGradient
 				pointerEvents="none"
-				colors={[theme.background, isDarkMode ? '#00000000' : '#ffffff00']}
+				colors={[theme.primary + '30', isDarkMode ? '#00000000' : '#ffffff00']}
 				style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 350 }}
 			/>
 			<KeyboardAvoidingView
@@ -109,16 +128,40 @@ export const Auth: React.FC = () => {
 				<Block flex={0} style={{ zIndex: 220, position: 'absolute' }} paddingHorizontal={20}>
 					<Fill />
 					<Status
-						demo
-						self
-						status={{ data: { message: 'Just about out and chill 😎' }, type: 0, taps: 12, taped: false, id: '', account_id: '' }}
-						style={{ right: 33, top: -100, position: 'absolute', transform: [{ rotate: '8deg' }] }}
+						disableTap
+						status={{
+							data: { message: 'Just about out and chill 😎' },
+							type: 0,
+							taps: 12,
+							taped: false,
+							id: '',
+							account_id: '',
+						}}
+						style={{ right: 33, top: -95, position: 'absolute', transform: [{ rotate: '8deg' }] }}
 					/>
 					<Status
-						demo
-						self
-						status={{ data: { message: 'Anyone wanna hangout?' }, type: 0, taps: 42, taped: false, id: '', account_id: '' }}
-						style={{ left: 25, top: -60, position: 'absolute', transform: [{ rotate: '-5deg' }] }}
+						disableTap
+						status={{
+							data: { message: 'Covid Over Party 🎉' },
+							type: 2,
+							taps: 12,
+							taped: false,
+							id: '',
+							account_id: '',
+						}}
+						style={{ left: 33, top: -160, position: 'absolute', transform: [{ rotate: '2deg' }] }}
+					/>
+					<Status
+						disableTap
+						status={{
+							data: { message: 'YourStatus' },
+							type: 1,
+							taps: 42,
+							taped: false,
+							id: '',
+							account_id: '',
+						}}
+						style={{ left: 25, top: -55, position: 'absolute', transform: [{ rotate: '-4deg' }] }}
 					/>
 					<Block flex={0} press onPress={() => SetShowBuildNumber(!ShowBuildNumber)}>
 						<Text center weight="800" size={45} color={theme.text}>
@@ -136,7 +179,12 @@ export const Auth: React.FC = () => {
 					<Input placeholder="Email" value={Email} onChange={SetEmail} textContentType={'email'} />
 
 					{NewAccount && (
-						<Block flex={0} vCenter style={{ position: 'relative' }} marginBottom={5} marginTop={15}>
+						<Block
+							flex={0}
+							vCenter
+							style={{ position: 'relative' }}
+							marginBottom={5}
+							marginTop={15}>
 							<Input
 								placeholder="Username"
 								value={Username}
@@ -150,7 +198,12 @@ export const Auth: React.FC = () => {
 									opacity: UsernameLoading ? 0.5 : 1,
 								}}
 							/>
-							{UsernameLoading && <ActivityIndicator color={theme.textFade} style={{ position: 'absolute', right: 20, paddingTop: 10 }} />}
+							{UsernameLoading && (
+								<ActivityIndicator
+									color={theme.textFade}
+									style={{ position: 'absolute', right: 20, paddingTop: 10 }}
+								/>
+							)}
 						</Block>
 					)}
 					{!!UsernameErrMsg && (
@@ -174,13 +227,20 @@ export const Auth: React.FC = () => {
 						<Button
 							text={NewAccount ? 'Create new account' : 'Login'}
 							onPress={() => login(Username)}
-							disabled={NewAccount ? UsernameValid === false || Email === '' : Email === '' || Loading}
+							disabled={
+								NewAccount ? UsernameValid === false || Email === '' : Email === '' || Loading
+							}
 							style={{ flex: 1 }}
 						/>
 					</Block>
 
 					<Block row vCenter flex={0} marginTop={13} press onPress={toggleTheme}>
-						<Icon name={'sparkle'} size={14} color={'#5e37ca9e'} style={{ paddingRight: 5, paddingBottom: 5 }} />
+						<Icon
+							name={'sparkle'}
+							size={14}
+							color={'#5e37ca9e'}
+							style={{ paddingRight: 5, paddingBottom: 5 }}
+						/>
 						<Text center color={theme.textFade} weight="500" size={12}>
 							We make use of magic links
 						</Text>
@@ -188,7 +248,10 @@ export const Auth: React.FC = () => {
 					{/* <Spacer size={20} /> */}
 
 					{loggedin && (
-						<TouchableOpacity style={{ alignSelf: 'center' }} activeOpacity={0.6} onPress={() => nav.navigate('tabs' as never)}>
+						<TouchableOpacity
+							style={{ alignSelf: 'center' }}
+							activeOpacity={0.6}
+							onPress={() => nav.navigate('tabs' as never)}>
 							<Text center weight="500" size={14} color="white">
 								reload
 							</Text>
@@ -196,7 +259,9 @@ export const Auth: React.FC = () => {
 					)}
 
 					<Spacer size={20} />
-					{ShowBuildNumber && <Button text="Paste clipboard" onPress={magicLinkLogin} style={{ marginBottom: 5 }} />}
+					{ShowBuildNumber && (
+						<Button text="Paste clipboard" onPress={magicLinkLogin} style={{ marginBottom: 5 }} />
+					)}
 					{ShowBuildNumber && (
 						<Text center color={theme.textFadeLight} weight="600">
 							Build: {DeviceInfo?.getBuildNumber()}

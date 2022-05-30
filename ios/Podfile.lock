@@ -307,7 +307,7 @@ PODS:
   - React-jsinspector (0.68.1)
   - React-logger (0.68.1):
     - glog
-  - react-native-date-picker (4.2.1):
+  - react-native-date-picker (4.2.2):
     - React-Core
   - react-native-image-picker (4.8.2):
     - React-Core
@@ -699,7 +699,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 4a4bae5671b064a2248a690cf75957669489d08c
   React-jsinspector: 218a2503198ff28a085f8e16622a8d8f507c8019
   React-logger: f79dd3cc0f9b44f5611c6c7862badd891a862cf8
-  react-native-date-picker: 211dead8aeaecab3904a07b967f580e6ea3dee88
+  react-native-date-picker: 9088350e06918f7d842a34c171acadc66583cb94
   react-native-image-picker: 1ccfc97709f680a7167ccb758c32466b466c96e2
   react-native-safe-area-context: ebf8c413eb8b5f7c392a036a315eb7b46b96845f
   React-perflogger: 30ab8d6db10e175626069e742eead3ebe8f24fd5

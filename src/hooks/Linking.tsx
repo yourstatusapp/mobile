@@ -34,7 +34,7 @@ export const useLinking = () => {
 	const { processing, url } = useInitialURL();
 	const nav = useNavigation();
 
-	React.useEffect(() => {
+	const processLink = React.useCallback(() => {
 		if (url?.includes('/verify')) {
 			nav.navigate('verify_account' as never, { code: url.split('/verify?code=')[1] } as never);
 		}
@@ -42,8 +42,25 @@ export const useLinking = () => {
 		if (url?.includes('/magic')) {
 			nav.navigate(
 				'magic' as never,
-				{ code: url.split('magic?code=')[1]?.split('&')[0], new_account: url.split('magic?code=')[1]?.split('&')[1] } as never,
+				{
+					code: url.split('magic?code=')[1]?.split('&')[0],
+					new_account: url.split('magic?code=')[1]?.split('&')[1],
+				} as never,
 			);
 		}
+	}, [url, nav]);
+
+	React.useEffect(() => {
+		processLink();
+		// if (url?.includes('/verify')) {
+		// 	nav.navigate('verify_account' as never, { code: url.split('/verify?code=')[1] } as never);
+		// }
+
+		// if (url?.includes('/magic')) {
+		// 	nav.navigate(
+		// 		'magic' as never,
+		// 		{ code: url.split('magic?code=')[1]?.split('&')[0], new_account: url.split('magic?code=')[1]?.split('&')[1] } as never,
+		// 	);
+		// }
 	}, [url, processing, nav]);
 };

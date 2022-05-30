@@ -11,9 +11,7 @@ import { useNavigation } from '@hooks';
 interface StatusType {
 	self?: boolean;
 	disableTap?: boolean;
-	disableNavigate?: boolean;
 	style?: ViewStyle;
-	demo?: boolean;
 	status: {
 		id: string;
 		account_id: string;
@@ -71,20 +69,20 @@ const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 	},
 };
 
-export const Status = React.memo(({ status, style, demo, disableTap, disableNavigate, username }: StatusType) => {
+export const Status = React.memo(({ status, style, disableTap, username }: StatusType) => {
 	const theme_name = usePulse(core.ui.ThemeObject).name;
 	const theme = useTheme();
 	const nav = useNavigation();
 
 	const wrapperStyle = StyleSheet.flatten([style]);
 
-	const offset = useSharedValue(0);
-	const opacity = useSharedValue(0);
-	const zIndex = useSharedValue(wrapperStyle?.zIndex ? 2 - wrapperStyle?.zIndex : -50);
+	// const offset = useSharedValue(0);
+	// const opacity = useSharedValue(0);
+	// const zIndex = useSharedValue(wrapperStyle?.zIndex ? 2 - wrapperStyle?.zIndex : -50);
 
 	const BaseRender = (
 		<StatusBody
-			style={{ zIndex: zIndex.value }}
+			style={wrapperStyle}
 			backColor={StatusColors[theme_name][status.type].backColor}
 			textColor={StatusColors[theme_name][status.type].color}>
 			{status.type === 1 && (
