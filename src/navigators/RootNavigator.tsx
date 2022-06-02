@@ -70,11 +70,6 @@ export const RootNavigator = () => {
 						}}
 					/>
 					<RootStack.Screen
-						name="edit_profile"
-						component={EditProfile}
-						options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
-					/>
-					<RootStack.Screen
 						name="settings"
 						component={Settings}
 						options={{

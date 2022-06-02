@@ -43,6 +43,8 @@
 		5709B34CF0A7D63546082F79 /* Pods-mobile2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile2.release.xcconfig"; path = "Target Support Files/Pods-mobile2/Pods-mobile2.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-mobile2-mobile2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile2-mobile2Tests.debug.xcconfig"; path = "Target Support Files/Pods-mobile2-mobile2Tests/Pods-mobile2-mobile2Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-mobile2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-mobile2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EA2B40230F4D213B6FD875C /* Pods-mobile2.testflight.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile2.testflight.xcconfig"; path = "Target Support Files/Pods-mobile2/Pods-mobile2.testflight.xcconfig"; sourceTree = "<group>"; };
+		7B448F49E77E30A0F4192C3E /* Pods-mobile2-mobile2Tests.testflight.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile2-mobile2Tests.testflight.xcconfig"; path = "Target Support Files/Pods-mobile2-mobile2Tests/Pods-mobile2-mobile2Tests.testflight.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = mobile2/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-mobile2-mobile2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile2-mobile2Tests.release.xcconfig"; path = "Target Support Files/Pods-mobile2-mobile2Tests/Pods-mobile2-mobile2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		B0784634CBC556B07A331C58 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-mobile2/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
@@ -159,6 +161,8 @@
 				5709B34CF0A7D63546082F79 /* Pods-mobile2.release.xcconfig */,
 				5B7EB9410499542E8C5724F5 /* Pods-mobile2-mobile2Tests.debug.xcconfig */,
 				89C6BE57DB24E9ADA2F236DE /* Pods-mobile2-mobile2Tests.release.xcconfig */,
+				5EA2B40230F4D213B6FD875C /* Pods-mobile2.testflight.xcconfig */,
+				7B448F49E77E30A0F4192C3E /* Pods-mobile2-mobile2Tests.testflight.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -775,7 +779,7 @@
 		};
 		DAB76D8B28445E8A0029C186 /* Testflight */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-mobile2.release.xcconfig */;
+			baseConfigurationReference = 5EA2B40230F4D213B6FD875C /* Pods-mobile2.testflight.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -793,7 +797,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE -D EXPO_CONFIGURATION_TESTFLIGHT";
 				PRODUCT_BUNDLE_IDENTIFIER = mobile.yourstatus.app;
 				PRODUCT_NAME = mobile2;
 				SWIFT_VERSION = 5.0;
@@ -803,7 +807,7 @@
 		};
 		DAB76D8C28445E8A0029C186 /* Testflight */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-mobile2-mobile2Tests.release.xcconfig */;
+			baseConfigurationReference = 7B448F49E77E30A0F4192C3E /* Pods-mobile2-mobile2Tests.testflight.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -819,7 +823,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE -D EXPO_CONFIGURATION_TESTFLIGHT";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/mobile2.app/mobile2";

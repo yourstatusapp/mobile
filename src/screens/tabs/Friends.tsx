@@ -1,7 +1,14 @@
 import React, { useState, useRef } from 'react';
 import core, { AppAlert, FriendItemRenderType, FriendItemType, request, StatusType } from '@core';
 import { Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
-import { Animated, StyleSheet, TouchableOpacity, ViewStyle, FlatList, RefreshControl } from 'react-native';
+import {
+	Animated,
+	StyleSheet,
+	TouchableOpacity,
+	ViewStyle,
+	FlatList,
+	RefreshControl,
+} from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { BlurView } from 'expo-blur';
 import { hasNotch } from 'react-native-device-info';
@@ -26,7 +33,14 @@ export const Friends = React.memo(() => {
 	const [Loading, SetLoading] = useState(false);
 
 	const sh2 = StyleSheet.flatten<ViewStyle>([
-		{ position: 'absolute', top: 0, height: hasNotch() ? 100 : 70, width: '100%', zIndex: 10, opacity: 1 },
+		{
+			position: 'absolute',
+			top: 0,
+			height: hasNotch() ? 100 : 70,
+			width: '100%',
+			zIndex: 10,
+			opacity: 1,
+		},
 	]);
 
 	const scrolling = useRef(new Animated.Value(0)).current;
@@ -45,7 +59,10 @@ export const Friends = React.memo(() => {
 
 	const getFriends = async () => {
 		SetLoading(true);
-		const a = await request<{ friends: FriendItemType[]; incoming_pending: any[] }>('get', '/friends');
+		const a = await request<{ friends: FriendItemType[]; incoming_pending: any[] }>(
+			'get',
+			'/friends',
+		);
 		if (!a.data) {
 		} else {
 			core.lists.friends.collect(a.data.friends, 'friends');
@@ -67,7 +84,12 @@ export const Friends = React.memo(() => {
 		if (res.data) {
 			core.lists.stories.collect(res.data?.all, 'all');
 			core.lists.stories.collect(
-				{ account_id: profile.account_id, avatar: profile.avatar, username: profile.username, stories: res.data.my },
+				{
+					account_id: profile.account_id,
+					avatar: profile.avatar,
+					username: profile.username,
+					stories: res.data.my,
+				},
 				'mine',
 			);
 		}
@@ -180,11 +202,17 @@ export const Friends = React.memo(() => {
 											<Block key={item.id} style={{ position: 'relative' }}>
 												<TouchableOpacity
 													onPress={() =>
-														core.events.storie_viewer.emit({ stories: myStories[0], clicked_at_index: index, skipWatchRequest: true })
+														core.events.storie_viewer.emit({
+															stories: myStories[0],
+															clicked_at_index: index,
+															skipWatchRequest: true,
+														})
 													}
 													activeOpacity={0.8}>
 													<FastImage
-														source={{ uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}` }}
+														source={{
+															uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}`,
+														}}
 														style={{ height: 120, width: 80, borderRadius: 6, marginRight: 15 }}>
 														<IconButton
 															name="plus"
@@ -218,7 +246,11 @@ export const Friends = React.memo(() => {
 						initialNumToRender={20}
 						showsVerticalScrollIndicator={false}
 						keyExtractor={item => item.account_id}
-						getItemLayout={(data, index) => ({ length: FRIEND_ITEM_HEIGHT, offset: FRIEND_ITEM_HEIGHT * index, index })}
+						getItemLayout={(data, index) => ({
+							length: FRIEND_ITEM_HEIGHT,
+							offset: FRIEND_ITEM_HEIGHT * index,
+							index,
+						})}
 					/>
 				</Animated.ScrollView>
 

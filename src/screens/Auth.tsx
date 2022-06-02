@@ -1,5 +1,5 @@
 import { useTheme } from 'styled-components/native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text } from '@parts';
 import core, { AppAlert, request } from '@core';
 import {
@@ -31,37 +31,40 @@ export const Auth: React.FC = () => {
 	const [UsernameErrMsg, SetUsernameErrMsg] = useState('');
 	const [UsernameLoading, SetUsernameLoading] = useState(false);
 
-	const login = async (usernameInput: string) => {
-		SetLoading(true);
-		SetError('');
-		const res = await request<boolean & { new_account: boolean; suggested_username: string }>(
-			'post',
-			'/auth/magic',
-			{
-				data: {
-					email: Email?.trimStart()?.trimEnd(),
-					verify_new_account: NewAccount,
-					username: usernameInput,
+	const login = useCallback(
+		async (usernameInput: string) => {
+			SetLoading(true);
+			SetError('');
+			const res = await request<boolean & { new_account: boolean; suggested_username: string }>(
+				'post',
+				'/auth/magic',
+				{
+					data: {
+						email: Email?.trimStart()?.trimEnd(),
+						verify_new_account: NewAccount,
+						username: usernameInput,
+					},
 				},
-			},
-		);
+			);
 
-		if (res.data?.new_account) {
-			SetNewAccount(true);
-			SetUsername(res.data.suggested_username);
-			usernameCheck(res.data.suggested_username);
-		} else if (res.data === true) {
-			SetEmail('');
-			AppAlert(true, res.message);
-			SetNewAccount(false);
-		} else {
-			SetEmail('');
-			SetError(res?.message || '');
-			AppAlert(false, 'Failed', res.message);
-		}
+			if (res.data?.new_account) {
+				SetNewAccount(true);
+				SetUsername(res.data.suggested_username);
+				usernameCheck(res.data.suggested_username);
+			} else if (res.data === true) {
+				SetEmail('');
+				AppAlert(true, res.message);
+				SetNewAccount(false);
+			} else {
+				SetEmail('');
+				SetError(res?.message || '');
+				AppAlert(false, 'Failed', res.message);
+			}
 
-		SetLoading(false);
-	};
+			SetLoading(false);
+		},
+		[Email, NewAccount],
+	);
 
 	const usernameChecking = async (usernameInput: string) => {
 		if (timeout) clearTimeout(timeout);
@@ -100,12 +103,12 @@ export const Auth: React.FC = () => {
 		}
 	}, [ClipboardData, nav]);
 
-	const usernameCheck = (v: string) => {
+	const usernameCheck = useCallback((v: string) => {
 		SetUsernameLoading(true);
 		SetUsernameValid(false);
 		SetUsernameErrMsg('');
 		usernameChecking(v);
-	};
+	}, []);
 
 	const theme_name = usePulse(core.ui.current_theme);
 	const isDarkMode = usePulse(core.ui.isDarkMode);
@@ -206,11 +209,13 @@ export const Auth: React.FC = () => {
 							)}
 						</Block>
 					)}
+
 					{!!UsernameErrMsg && (
 						<Text color="#FF6161" size={12} marginTop={5} marginLeft={20}>
 							{UsernameErrMsg}
 						</Text>
 					)}
+
 					<Spacer size={25} />
 					<Block flex={0} row hCenter>
 						{NewAccount && (

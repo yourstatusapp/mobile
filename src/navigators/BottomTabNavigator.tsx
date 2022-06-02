@@ -15,6 +15,7 @@ import {
 	StatusDetail,
 	ManageFriends,
 	Event,
+	EditProfile,
 } from '../screens';
 import {
 	createNativeStackNavigator,
@@ -96,6 +97,11 @@ export const BottomTabNavigator: React.FC = () => {
 				<TabsStackNavigator.Screen
 					name="Event"
 					component={Event}
+					options={{ gestureEnabled: true }}
+				/>
+				<TabsStackNavigator.Screen
+					name="EditProfile"
+					component={EditProfile}
 					options={{ gestureEnabled: true }}
 				/>
 			</TabsStackNavigator.Navigator>
@@ -252,7 +258,7 @@ const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 
 const AvatarBody = styled.View<{ active: boolean }>`
 	border-radius: 50px;
-	background-color: ${({ active, theme }) => (active ? theme.darker2 : theme.backgroundDarker)};
+	background-color: ${({ active, theme }) => (active ? theme.text : theme.backgroundDarker)};
 	height: 35px;
 	width: 35px;
 	align-items: center;

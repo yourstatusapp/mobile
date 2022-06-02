@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Avatar, Block, BlockScroll, Fill, IconButton, Text, TextButton } from '@parts';
+import {
+	Avatar,
+	Block,
+	BlockScroll,
+	Fill,
+	HeadingBlurOverlay,
+	IconButton,
+	Text,
+	TextButton,
+} from '@parts';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
@@ -34,7 +43,10 @@ export const Account = () => {
 
 	return (
 		<Block color={theme.background} style={{ zIndex: 1 }}>
-			<BlockScroll style={{ zIndex: 6, paddingHorizontal: 40 }} contentContainerStyle={{ flex: 1 }} paddingHorizontal={20}>
+			<BlockScroll
+				style={{ zIndex: 6, paddingHorizontal: 40 }}
+				contentContainerStyle={{ flex: 1 }}
+				paddingHorizontal={20}>
 				<Block row flex={0} marginTop={70} marginBottom={20}>
 					<Text size={28} bold color={theme.text}>
 						Account
@@ -46,7 +58,7 @@ export const Account = () => {
 						iconSize={15}
 						color={theme.text}
 						backgroundColor={theme.darker}
-						onPress={() => nav.navigate('settings' as never)}
+						onPress={() => nav.navigate('settings')}
 					/>
 				</Block>
 				<Block row flex={0}>
@@ -60,7 +72,7 @@ export const Account = () => {
 							iconSize={12}
 							style={{ marginBottom: 10 }}
 							backgroundColor={theme.darker}
-							onPress={() => nav.navigate('edit_profile' as never)}
+							onPress={() => nav.navigate('EditProfile')}
 						/>
 						<IconButton
 							name="image"
@@ -70,36 +82,37 @@ export const Account = () => {
 							backgroundColor={theme.darker}
 							onPress={() => SetMenuOpen(true)}
 						/>
-						<Menu opened={MenuOpen} onBackdropPress={() => SetMenuOpen(false)} style={{ borderRadius: 5 }}>
+						<Menu
+							opened={MenuOpen}
+							onBackdropPress={() => SetMenuOpen(false)}
+							style={{ borderRadius: 5 }}>
 							<MenuTrigger text="" />
 							<MenuOptions
 								customStyles={{
 									optionsContainer: { borderRadius: 5 },
 									optionsWrapper: { borderRadius: 5 },
-									optionWrapper: { backgroundColor: theme.darker, height: 35, justifyContent: 'center' },
+									optionWrapper: {
+										backgroundColor: theme.darker,
+										height: 35,
+										justifyContent: 'center',
+									},
 									optionText: { color: 'white', fontWeight: '700' },
 								}}>
 								<MenuOption
 									onSelect={() => {
 										SetMenuOpen(false);
-										nav.navigate(
-											'camera' as never,
-											{
-												uploadMethod: 'avatar',
-											} as never,
-										);
+										nav.navigate('Camera', {
+											uploadMethod: 'avatar',
+										});
 									}}
 									text="Upload avatar"
 								/>
 								<MenuOption
 									onSelect={() => {
 										SetMenuOpen(false);
-										nav.navigate(
-											'camera' as never,
-											{
-												uploadMethod: 'banner',
-											} as never,
-										);
+										nav.navigate('Camera', {
+											uploadMethod: 'banner',
+										});
 									}}
 									text="Upload banner"
 								/>
@@ -110,7 +123,10 @@ export const Account = () => {
 				<Text bold size={18} paddingTop={30} paddingBottom={10}>
 					@{profile.username}
 				</Text>
-				<TextButton onPress={() => nav.navigate('ManageFriends')} text={profile.friends_amount + ' friends'} />
+				<TextButton
+					onPress={() => nav.navigate('ManageFriends')}
+					text={profile.friends_amount + ' friends'}
+				/>
 
 				{/* <Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade} marginBottom={50}>
 					{profile.display_name || 'No display name'}
@@ -127,10 +143,24 @@ export const Account = () => {
 					<Text color={theme.darker1}>Build {getBuildNumber()}</Text>
 				</Block>
 			</BlockScroll>
-			<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={30} />
+			<HeadingBlurOverlay />
+			{/* <DimmingOverlay /> */}
+			{/* <BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={30} /> */}
 		</Block>
 	);
 };
+
+const DimmingOverlay = styled.View<{ height: number }>`
+	position: absolute;
+	z-index: 1;
+	background-color: ${({ theme }) => theme.background};
+	opacity: 0.8;
+
+	height: ${props => props.height}px;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+`;
 
 const Banner = styled(FastImage)`
 	width: 100%;

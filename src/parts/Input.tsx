@@ -8,14 +8,22 @@ interface InputProps {
 	placeholder?: string;
 	onChange?: (v: string) => void;
 	disabled?: boolean;
-	textContentType?: 'email' | 'none';
+	textContentType?: 'email' | 'none' | string;
 	autoFocus?: boolean;
 
 	style?: ViewStyle;
 	className?: string;
 }
 
-export const Input: React.FC<InputProps> = ({ onChange, placeholder, value, style, disabled, textContentType, autoFocus }) => {
+export const Input: React.FC<InputProps> = ({
+	onChange,
+	placeholder,
+	value,
+	style,
+	disabled,
+	textContentType,
+	autoFocus,
+}) => {
 	const theme = useTheme();
 	return (
 		<InputBox>
@@ -35,6 +43,7 @@ export const Input: React.FC<InputProps> = ({ onChange, placeholder, value, styl
 				autoCorrect={false}
 				autoCompleteType="off"
 				autoCapitalize="none"
+				// @ts-ignore
 				textContentType={textContentType}
 			/>
 		</InputBox>

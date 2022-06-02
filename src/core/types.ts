@@ -196,6 +196,7 @@ export type TabStackNavParamList = {
 	ManageFriends: undefined;
 	CreateEvent: undefined;
 	Event: EventType;
+	EditProfile: undefined;
 };
 
 export type RootstackParamList = {
@@ -205,14 +206,15 @@ export type RootstackParamList = {
 	magic: undefined;
 	new_moment: undefined;
 	create_status: undefined;
-	edit_profile: undefined;
 	settings: undefined;
 	CreateEvent: undefined;
 	manage_status: undefined;
 	explanation: undefined;
 	realtime_history: undefined;
 	verify_account: undefined;
-	Camera: undefined;
+	Camera: {
+		uploadMethod: 'avatar' | 'banner';
+	};
 };
 
 export type GlobalParamList = RootstackParamList & TabStackNavParamList;

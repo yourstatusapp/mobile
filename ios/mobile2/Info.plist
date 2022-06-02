@@ -28,7 +28,7 @@
 			<key>CFBundleURLIconFile</key>
 			<string></string>
 			<key>CFBundleURLName</key>
-			<string>mobile.yourstatus.app</string>
+			<string>mobile.yourstatus.com</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>yourstatus</string>
@@ -40,7 +40,7 @@
 			<key>CFBundleURLIconFile</key>
 			<string></string>
 			<key>CFBundleURLName</key>
-			<string>dev.mobile.yourstatus.app</string>
+			<string>dev.mobile.yourstatus.com</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>yourstatusdev</string>
@@ -69,7 +69,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs access to your photo library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>we like to have your permissions :)</string>
+	<string>$(PRODUCT_NAME) needs permission for photo library usage</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

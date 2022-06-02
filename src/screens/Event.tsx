@@ -44,25 +44,7 @@ export const Event = () => {
 
 	return (
 		<Block color={theme.background}>
-			<TabbarHeader color={theme.backgroundDark} />
-			<Block row style={{ height: 40 }} flex={0} vCenter hCenter color={theme.backgroundDark}>
-				<IconButton
-					name="arrow"
-					size={24}
-					iconSize={16}
-					color={theme.text}
-					backgroundColor={theme.darker}
-					style={{ position: 'absolute', left: 15 }}
-					onPress={() => nav.goBack()}
-				/>
-				{/* <Text bold size={18}>
-					{params?.username} Status
-				</Text> */}
-			</Block>
-			<Block hCenter flex={0} paddingBottom={15} color={theme.backgroundDark}>
-				{/* <Status status={params?.status} disableNavigate={true} /> */}
-			</Block>
-			<Line size={2} color={theme.backgroundDarker} />
+			<TabbarHeader color={theme.backgroundDark} backButton />
 			{details ? (
 				<Block paddingHorizontal={10}>
 					<Text size={26} bold marginBottom={20} marginTop={10}>
