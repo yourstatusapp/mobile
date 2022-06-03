@@ -1,94 +1,87 @@
-import core, { AppAlert, request } from '@core';
-import {
-	Block,
-	BottomModalSheet,
-	Button,
-	Fill,
-	IconButton,
-	ModalHeader,
-	Spacer,
-	Text,
-} from '@parts';
+import core, { request } from '@core';
+import { Block, RoundyInput, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
-import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView } from 'react-native';
-import { TabbarHeader } from '../parts/components/TabbarHeader';
-import styled, { useTheme } from 'styled-components/native';
-import { EditUsername } from './parts/EditUsername';
+import React, { useCallback, useState } from 'react';
 
-let timeout: NodeJS.Timeout;
+import { TabbarHeader } from '../parts/components/TabbarHeader';
+import { useTheme } from 'styled-components/native';
 
 export const EditProfile = () => {
-	const nav = useNavigation();
 	const theme = useTheme();
 	const profile = usePulse(core.profile.profile);
 
-	const [objectmodified, setObjectmodified] = useState({
-		username: {
-			changed: false,
-			newValue: '',
-		},
-		location: {
-			changed: false,
-			newValue: '',
-		},
-		bio: {
-			changed: false,
-			newValue: '',
-		},
+	const [usrNameValid, setUsrNameValid] = useState<{ state: boolean; message: string }>({
+		state: false,
+		message: '',
 	});
+	const [username, setUsername] = useState('');
+	const [location, setLocation] = useState('');
+	const [bio, setBio] = useState('');
 
-	// USERNAME LOGIC
-	// const [username, setUsername] = useState('');
-	const [usernameLoading, setUsernameLoading] = useState(false);
-	const [usernameValid, setUsernameValid] = useState(false);
-	const [usernameErrMsg, setUsernameErrMsg] = useState('');
+	const userNameCheck = useCallback(async (v: string) => {
+		console.log('new Username', v);
 
-	// const CheckUsernameAvailibty = React.useCallback(
-	// 	(usernameInput: string) => {
-	// 		// check if the object has been modified
-	// 		if (objectmodified.username.changed === false) return;
+		const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
+			data: { username: v },
+		});
 
-	// 		setUsernameValid(false);
-	// 		setUsernameErrMsg('');
-	// 		setUsernameLoading(true);
+		if (res.data) {
+			setUsrNameValid({ state: res.data.valid, message: res.message });
+		}
+		console.log(res);
+	}, []);
 
-	// 		if (timeout) clearTimeout(timeout);
-
-	// 		timeout = setTimeout(async () => {
-	// 			// check for the same username
-	// 			if (objectmodified.username.newValue.toLowerCase() === profile.username.toLowerCase()) {
-	// 				setUsernameErrMsg('');
-
-	// 				setObjectmodified(prevState => {
-	// 					let a = Object.assign({}, prevState);
-	// 					a.username.changed = false;
-	// 					return a;
-	// 				});
-	// 				return;
-	// 			}
-
-	// 			const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
-	// 				data: { username: usernameInput },
-	// 			});
-	// 			setUsernameLoading(false);
-	// 			if (res.data) {
-	// 				setUsernameValid(res.data?.valid);
-	// 				if (!res.data?.valid) setUsernameErrMsg(res.message);
-	// 			}
-	// 		}, 1000);
-	// 	},
-	// 	[objectmodified.username, profile.username],
-	// );
-
-	useEffect(() => {}, []);
+	const onUsernameFinishedTyping = useCallback(
+		(text: string) => {
+			userNameCheck(text);
+		},
+		[userNameCheck],
+	);
 
 	return (
 		<Block flex={1} color={theme.background}>
 			<TabbarHeader color={theme.backgroundDark} backButton />
+			<Block paddingHorizontal={10} marginTop={15}>
+				<Text marginBottom={8} bold paddingLeft={10}>
+					Username
+				</Text>
+				<RoundyInput
+					initialValue={profile.username}
+					onTextChange={setUsername}
+					autoCorrect={false}
+					placeholder="Username"
+					onFinishTyping={v => {
+						console.log('xxx -> ', v);
+						onUsernameFinishedTyping(v);
+					}}
+				/>
 
-			<Text marginTop={10}>EDIT PROFILE</Text>
+				<Text>valid status: {JSON.stringify(usrNameValid)}</Text>
+				<Text>username: {JSON.stringify(username)}</Text>
+
+				<Text marginBottom={8} bold paddingLeft={10} marginTop={20}>
+					Location
+				</Text>
+
+				<RoundyInput
+					initialValue={profile.location}
+					onTextChange={setLocation}
+					autoCorrect={false}
+					placeholder="Location"
+				/>
+
+				<Text marginBottom={8} bold paddingLeft={10} marginTop={20}>
+					Bio
+				</Text>
+
+				<RoundyInput
+					initialValue={profile.bio}
+					onTextChange={setBio}
+					autoCorrect={false}
+					placeholder="Bio"
+					extend
+				/>
+			</Block>
 		</Block>
 	);
 };

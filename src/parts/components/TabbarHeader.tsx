@@ -1,5 +1,5 @@
 import { useNavigation } from '@hooks';
-import { Block, IconButton, Line } from '@parts';
+import { Block, IconButton, Line, Text } from '@parts';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'styled-components/native';
@@ -7,12 +7,13 @@ import { useTheme } from 'styled-components/native';
 interface TabbarHeaderProps {
 	color?: string;
 	backButton?: boolean;
+	centerText?: string;
 }
 
 /**
  * @description This component should be only used when its inside a fixed view
  */
-export const TabbarHeader: React.FC<TabbarHeaderProps> = ({ color, backButton }) => {
+export const TabbarHeader: React.FC<TabbarHeaderProps> = ({ color, backButton, centerText }) => {
 	const theme = useTheme();
 	const insets = useSafeAreaInsets();
 	const nav = useNavigation();
@@ -41,6 +42,11 @@ export const TabbarHeader: React.FC<TabbarHeaderProps> = ({ color, backButton })
 						style={{ position: 'absolute', left: 15 }}
 						onPress={() => nav.goBack()}
 					/>
+					{centerText && (
+						<Text weight="600" size={16}>
+							{centerText}
+						</Text>
+					)}
 				</Block>
 			)}
 			<Line size={2} color={theme.backgroundDarker} />
