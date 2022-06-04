@@ -49,7 +49,7 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 
 				setTimeoutId(() =>
 					setTimeout(() => {
-						onFinishTyping(v);
+						onFinishTyping(e);
 					}, FinishTypingCooldown || 1000),
 				);
 			}
