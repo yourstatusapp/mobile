@@ -1,3 +1,4 @@
+import { Text } from '@parts';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
@@ -13,6 +14,7 @@ interface RoundyInputProps {
 	// number in seconds
 	FinishTypingCooldown?: number;
 	onFinishTyping?: (v: string) => void;
+	updateValue?: string;
 }
 
 export const RoundyInput: React.FC<RoundyInputProps> = ({
@@ -25,6 +27,7 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 	initialValue,
 	FinishTypingCooldown,
 	onFinishTyping,
+	updateValue,
 }) => {
 	const [v, setV] = useState('');
 	const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
@@ -34,7 +37,7 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 	const onChangeText = useCallback(
 		(e: string) => {
 			setV(e);
-			if (!!onTextChange) {
+			if (onTextChange) {
 				onTextChange(e);
 			}
 
@@ -68,6 +71,10 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 		firstRender();
 	}, []);
 
+	useEffect(() => {
+		console.log(updateValue);
+	}, [updateValue]);
+
 	return (
 		<RoundyInputBody
 			style={sh}
@@ -94,4 +101,30 @@ const RoundyInputBody = styled.TextInput<{ extendBoxStyle?: boolean }>`
 	font-size: 14px;
 	height: ${({ extendBoxStyle }) => (extendBoxStyle ? '80' : '40')}px;
 	${({ extendBoxStyle }) => (extendBoxStyle ? 'line-height: 21;' : '')}
+`;
+
+interface RoundyButtonProps {
+	text: string;
+	disabled?: boolean;
+	onPress?: () => void;
+}
+
+export const RoundyButton: React.FC<RoundyButtonProps> = ({ text, disabled, onPress }) => {
+	return (
+		<RoundyButtonBody
+			onPress={onPress}
+			style={({ pressed }) => [{ opacity: disabled ? 0.5 : pressed ? 0.75 : 1 }]}
+			disabled={disabled}>
+			<Text center weight="700" size={14}>
+				{text}
+			</Text>
+		</RoundyButtonBody>
+	);
+};
+
+const RoundyButtonBody = styled.Pressable`
+	background-color: ${({ theme }) => theme.primary2};
+	border-radius: 6px;
+	height: 40px;
+	justify-content: center;
 `;

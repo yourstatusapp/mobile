@@ -212,6 +212,7 @@ export type RootstackParamList = {
 	explanation: undefined;
 	realtime_history: undefined;
 	verify_account: undefined;
+	MagicAuthScanner: undefined;
 	Camera: {
 		uploadMethod: 'avatar' | 'banner';
 	};
@@ -234,3 +235,22 @@ export interface FriendItem {
 }
 
 export type FriendItemRenderType = ListRenderItemInfo<FriendItem>;
+
+export interface MagicProps {
+	navigation: any;
+	route: {
+		key: string;
+		name: string;
+		params: { code: string; new_account: boolean };
+		state: string;
+	};
+}
+
+export interface IAccountRequestProps {
+	account: any;
+	profile: any;
+	device: {
+		id: string;
+		notifications: boolean;
+	};
+}

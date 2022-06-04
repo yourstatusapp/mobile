@@ -34,6 +34,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
 }) => {
 	return (
 		<IconButtonBody
+			activeOpacity={0.75}
 			{...{
 				name,
 				color,

@@ -15,5 +15,6 @@ declare module 'styled-components' {
 		darker2: string;
 
 		primary: string;
+		primary2: string;
 	}
 }

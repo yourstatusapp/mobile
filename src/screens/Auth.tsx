@@ -9,11 +9,11 @@ import {
 	Platform,
 	TouchableOpacity,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { useClipboard } from '@react-native-clipboard/clipboard';
+import { useNavigation } from '@hooks';
 
 let timeout: NodeJS.Timeout;
 
@@ -67,7 +67,9 @@ export const Auth: React.FC = () => {
 	);
 
 	const usernameChecking = async (usernameInput: string) => {
-		if (timeout) clearTimeout(timeout);
+		if (timeout) {
+			clearTimeout(timeout);
+		}
 
 		timeout = setTimeout(async () => {
 			const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
@@ -76,7 +78,9 @@ export const Auth: React.FC = () => {
 			SetUsernameLoading(false);
 			if (res.data) {
 				SetUsernameValid(res.data?.valid);
-				if (!res.data?.valid) SetUsernameErrMsg(res.message);
+				if (!res.data?.valid) {
+					SetUsernameErrMsg(res.message);
+				}
 			}
 		}, 1000);
 	};
@@ -235,7 +239,16 @@ export const Auth: React.FC = () => {
 							disabled={
 								NewAccount ? UsernameValid === false || Email === '' : Email === '' || Loading
 							}
-							style={{ flex: 1 }}
+							style={{ flex: 1, backgroundColor: theme.primary2 }}
+						/>
+						<IconButton
+							name="camera"
+							backgroundColor={theme.primary2}
+							color={theme.backgroundDark}
+							size={42}
+							iconSize={21}
+							style={{ marginLeft: 10 }}
+							onPress={() => nav.navigate('MagicAuthScanner')}
 						/>
 					</Block>
 

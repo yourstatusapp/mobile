@@ -26,3 +26,4 @@ export { StatusDetail } from './StatusDetail';
 export { ManageFriends } from './ManageFriends';
 export { CreateEvent } from './CreateEvent';
 export { Event } from './Event';
+export { MagicAuthScanner } from './MagicAuthScanner';

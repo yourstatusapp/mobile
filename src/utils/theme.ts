@@ -13,6 +13,7 @@ export const InternalThemes: { [k in 'light' | 'dark']: DefaultTheme } = {
 		darker1: '#BEBEBE',
 		darker2: '#ADADAD',
 		primary: '#2647E7',
+		primary2: '#3f5ce7',
 	},
 	dark: {
 		name: 'dark',
@@ -26,5 +27,6 @@ export const InternalThemes: { [k in 'light' | 'dark']: DefaultTheme } = {
 		darker1: '#414141',
 		darker2: '#525252',
 		primary: '#2647E7',
+		primary2: '#3f5ce7',
 	},
 };

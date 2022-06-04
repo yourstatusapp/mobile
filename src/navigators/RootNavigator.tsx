@@ -18,6 +18,7 @@ import {
 	Explanation,
 	ManageStatus,
 	CreateEvent,
+	MagicAuthScanner,
 } from '../screens';
 import { NewProject } from '../screens/NewProject';
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
@@ -80,6 +81,7 @@ export const RootNavigator = () => {
 						}}
 					/>
 					<RootStack.Screen name="Camera" component={Camera} />
+					<RootStack.Screen name="MagicAuthScanner" component={MagicAuthScanner} />
 
 					<RootStack.Screen
 						name="manage_status"

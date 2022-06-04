@@ -1,13 +1,29 @@
 import { Block, IconButton, Text } from '@parts';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, GestureResponderEvent, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+	Dimensions,
+	FlatList,
+	GestureResponderEvent,
+	StyleSheet,
+	TouchableOpacity,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { Camera as CameraComp, PhotoFile, useCameraDevices, CameraPosition } from 'react-native-vision-camera';
+import {
+	Camera as CameraComp,
+	PhotoFile,
+	useCameraDevices,
+	CameraPosition,
+} from 'react-native-vision-camera';
 import styled, { useTheme } from 'styled-components/native';
 import * as MediaLibrary from 'expo-media-library';
 
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, {
+	Easing,
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+} from 'react-native-reanimated';
 
 import LinearGradient from 'react-native-linear-gradient';
 import core, { AppAlert, TimeFormatter } from '@core';
@@ -31,7 +47,9 @@ export const Camera = () => {
 	const devices = useCameraDevices('wide-angle-camera');
 	const device = devices.back;
 
-	const CameraStyle = StyleSheet.flatten([{ height: '100%', width: '100%', flex: 1, borderRadius: CAMERA_BORDER_RADIUS }]);
+	const CameraStyle = StyleSheet.flatten([
+		{ height: '100%', width: '100%', flex: 1, borderRadius: CAMERA_BORDER_RADIUS },
+	]);
 
 	const [PhotoData, SetPhotoData] = useState<PhotoFile | false>(false);
 	const [CameraZoom, SetCameraZoom] = useState('');
@@ -115,7 +133,10 @@ export const Camera = () => {
 	// );
 
 	const navigateToPreview = (image_url_path: string) => {
-		nav.navigate('new_moment' as never, { path: image_url_path, uploadMethod: params.uploadMethod } as never);
+		nav.navigate(
+			'new_moment' as never,
+			{ path: image_url_path, uploadMethod: params.uploadMethod } as never,
+		);
 	};
 
 	const getCameraRollAssets = async () => {
@@ -218,7 +239,13 @@ export const Camera = () => {
 					iconSize={18}
 					backgroundColor="#252525"
 					color="white"
-					style={{ left: 15, top: 10, position: 'absolute', zIndex: 20, transform: [{ rotate: '45deg' }] }}
+					style={{
+						left: 15,
+						top: 10,
+						position: 'absolute',
+						zIndex: 20,
+						transform: [{ rotate: '45deg' }],
+					}}
 					onPress={() => nav.goBack()}
 				/>
 				<IconButton
@@ -252,7 +279,10 @@ export const Camera = () => {
 
 				<Block style={{ position: 'relative' }}>
 					{device != null && (
-						<TouchableOpacity onPress={e => focusCamera(e)} style={{ flex: 1, position: 'relative' }} activeOpacity={1}>
+						<TouchableOpacity
+							onPress={e => focusCamera(e)}
+							style={{ flex: 1, position: 'relative' }}
+							activeOpacity={1}>
 							<CameraComp
 								ref={camera}
 								style={CameraStyle}
@@ -267,7 +297,14 @@ export const Camera = () => {
 
 							<Animated.View
 								style={[
-									{ borderRadius: 50, height: 40, width: 40, backgroundColor: 'white', zIndex: 40, position: 'absolute' },
+									{
+										borderRadius: 50,
+										height: 40,
+										width: 40,
+										backgroundColor: 'white',
+										zIndex: 40,
+										position: 'absolute',
+									},
 									PressFocus,
 								]}
 							/>
@@ -300,7 +337,12 @@ export const Camera = () => {
 					</AlbumPreviewPictures> */}
 				</Block>
 
-				<Block flex={0} style={{ height: 75, justifyContent: 'space-between' }} hCenter row paddingHorizontal={20}>
+				<Block
+					flex={0}
+					style={{ height: 75, justifyContent: 'space-between' }}
+					hCenter
+					row
+					paddingHorizontal={20}>
 					<IconButton
 						name={CamerDevice === 'back' ? 'camera-flip2' : 'camera-flip'}
 						size={30}
@@ -314,7 +356,12 @@ export const Camera = () => {
 						onPress={() => toggleOpenPhotos()}
 						activeOpacity={0.6}
 						style={{ borderRadius: 7, backgroundColor: theme.white20, height: 50, width: 50 }}>
-						{!!AlbumAssets.length && <FastImage source={{ uri: AlbumAssets[0].path }} style={{ height: 50, width: 50, borderRadius: 7 }} />}
+						{!!AlbumAssets.length && (
+							<FastImage
+								source={{ uri: AlbumAssets[0].path }}
+								style={{ height: 50, width: 50, borderRadius: 7 }}
+							/>
+						)}
 					</TouchableOpacity>
 				</Block>
 			</Block>
