@@ -1,113 +1,182 @@
 import core, { request } from '@core';
-import { Block, RoundyButton, RoundyInput, Spacer, Text } from '@parts';
+import { Block, Fill, RoundyButton, RoundyInput, SheetModal, Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import DatePicker from 'react-native-date-picker';
 import { TabbarHeader } from '../parts/components/TabbarHeader';
 import { useTheme } from 'styled-components/native';
+
 import dayjs from 'dayjs';
+import { Keyboard, KeyboardAvoidingView } from 'react-native';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 export const EditProfile = () => {
 	const theme = useTheme();
 	const profile = usePulse(core.profile.profile);
 	const [validationError, setValidationError] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [username, setUsername] = useState('');
 	const [location, setLocation] = useState('');
 	const [bio, setBio] = useState('');
+	const [birthday, setBirthday] = useState<Date>(
+		profile?.date_of_birth ? dayjs(profile?.date_of_birth).toDate() : new Date(),
+	);
 	const [usrNameValid, setUsrNameValid] = useState<{ state: boolean; message: string }>({
 		state: false,
 		message: '',
 	});
+	const [showBirthDayDate, setShowBirthDayDate] = useState(false);
+	const SheetModalRef = useRef<BottomSheetMethods>(null);
 
 	const userNameCheck = useCallback(async (v: string) => {
-		console.log('incoming parameter => ', v);
+		setLoading(true);
+		setValidationError(false);
 
+		if (v.toLowerCase() === username.toLowerCase()) {
+			setLoading(false);
+			return;
+		}
+
+		// check if its valid
 		const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
 			data: { username: v },
 		});
 
 		if (res.data) {
-			setValidationError(res.data.valid);
+			if (res.data.valid === false) {
+				setValidationError(true);
+			}
 			setUsrNameValid({ state: res.data.valid, message: res.message });
 		}
 
-		console.log(res);
+		setLoading(false);
 	}, []);
 
-	const onUsernameFinishedTyping = useCallback(() => {
-		console.log('onUsernameFinishedTyping,  ' + username);
-		userNameCheck(username);
-	}, [username, userNameCheck]);
+	const onUsernameFinishedTyping = useCallback(
+		(incomingValue: string) => {
+			userNameCheck(incomingValue);
+		},
+		[userNameCheck],
+	);
 
 	useEffect(() => {
-		console.log(`USERNAME STATE: ${username}`);
+		setLoading(true);
 	}, [username]);
 
 	const saveInformation = useCallback(async () => {
-		const res = await request('patch', '/profile/', { data: {} });
+		const res = await request('patch', '/profile/', {
+			data: {
+				username,
+				location,
+				bio,
+				date_of_birth: birthday,
+			},
+		});
 		if (res.data) {
 		}
+	}, [bio, location, username, birthday]);
+
+	useEffect(() => {
+		Keyboard.addListener('keyboardDidShow', () => {
+			SheetModalRef?.current && SheetModalRef.current.close();
+		});
 	}, []);
 
 	return (
 		<Block flex={1} color={theme.background}>
-			<TabbarHeader color={theme.backgroundDark} backButton centerText="Edit Profile" />
-			<Block paddingHorizontal={10} marginTop={15}>
-				<Text marginBottom={8} bold paddingLeft={10}>
-					Username
-				</Text>
-				<RoundyInput
-					initialValue={profile.username}
-					onTextChange={setUsername}
-					autoCorrect={false}
-					placeholder="Username"
-					onFinishTyping={onUsernameFinishedTyping}
-				/>
+			<KeyboardAvoidingView
+				contentContainerStyle={{ flex: 1 }}
+				style={{ flex: 1 }}
+				behavior="padding"
+				keyboardVerticalOffset={91}>
+				<TabbarHeader color={theme.backgroundDark} backButton centerText="Edit Profile" />
+				<Block paddingHorizontal={10} marginTop={15}>
+					<Text marginBottom={8} bold paddingLeft={10}>
+						Username
+					</Text>
+					<RoundyInput
+						initialValue={profile.username}
+						onTextChange={setUsername}
+						autoCorrect={false}
+						placeholder="Username"
+						onFinishTyping={onUsernameFinishedTyping}
+						borderColor={validationError && '#EF4F4F'}
+					/>
+					{validationError && (
+						<Text paddingTop={3} color="#EF4F4F">
+							{usrNameValid.message}
+						</Text>
+					)}
+					<Text marginBottom={8} bold paddingLeft={10} marginTop={20}>
+						Location
+					</Text>
 
-				<Text>valid status: {JSON.stringify(usrNameValid)}</Text>
-				<Text>username: {JSON.stringify(username)}</Text>
+					<RoundyInput
+						initialValue={profile.location}
+						onTextChange={setLocation}
+						autoCorrect={false}
+						placeholder="Location"
+					/>
 
-				<Text marginBottom={8} bold paddingLeft={10} marginTop={20}>
-					Location
-				</Text>
+					<Text marginBottom={8} bold paddingLeft={10} marginTop={20}>
+						Bio
+					</Text>
 
-				<RoundyInput
-					initialValue={profile.location}
-					onTextChange={setLocation}
-					autoCorrect={false}
-					placeholder="Location"
-				/>
+					<RoundyInput
+						initialValue={profile.bio}
+						onTextChange={setBio}
+						autoCorrect={false}
+						placeholder="Bio"
+						extend
+					/>
 
-				<Text marginBottom={8} bold paddingLeft={10} marginTop={20}>
-					Bio
-				</Text>
+					<Text marginBottom={8} bold paddingLeft={10} marginTop={20}>
+						Birthday
+					</Text>
 
-				<RoundyInput
-					initialValue={profile.bio}
-					onTextChange={setBio}
-					autoCorrect={false}
-					placeholder="Bio"
-					extend
-				/>
+					<Block
+						press
+						flex={0}
+						onPress={() => {
+							setShowBirthDayDate(!showBirthDayDate);
+							Keyboard.dismiss();
+						}}>
+						<RoundyInput
+							initialValue={dayjs(birthday).format('YYYY-MM-DD')}
+							placeholder="Birthday"
+							disabled
+							updateValue={dayjs(birthday).format('YYYY-MM-DD')}
+						/>
+					</Block>
 
-				<Spacer size={40} />
+					<Spacer size={40} />
 
-				<RoundyButton text="Save" onPress={saveInformation} disabled={true} />
+					<RoundyButton
+						style={{ marginBottom: 10 }}
+						text="Save"
+						onPress={saveInformation}
+						disabled={loading === true ?? validationError === true}
+					/>
 
-				{/* <Text marginBottom={8} bold paddingLeft={10} marginTop={20}>
-					Birthday
-				</Text>
-
-				<RoundyInput
-					initialValue={
-						profile.date_of_birth ? dayjs(profile.date_of_birth).format('YYYY MM DDTHH') : ''
-					}
-					onTextChange={setBio}
-					autoCorrect={false}
-					placeholder="Bio"
-					// updateValue={}
-				/> */}
-			</Block>
+					{/* {showBirthDayDate && ( */}
+					<SheetModal openModal={showBirthDayDate} ref={SheetModalRef}>
+						<Block hCenter>
+							<DatePicker
+								textColor={theme.text}
+								fadeToColor={theme.background}
+								date={birthday}
+								mode="date"
+								onDateChange={d => setBirthday(d)}
+								onConfirm={date => {
+									setBirthday(date);
+								}}
+								onCancel={() => {}}
+							/>
+						</Block>
+					</SheetModal>
+				</Block>
+			</KeyboardAvoidingView>
 		</Block>
 	);
 };

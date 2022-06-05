@@ -46,8 +46,12 @@ export const SettingsNotifications: React.FC = () => {
 				Notifications
 			</Text>
 			{notificationsEnabled === 0 && (
-				<Block flex={0} paddingHorizontal={20}>
-					<Block flex={0} color="#FF6666" marginTop={15} style={{ padding: 10, borderRadius: 8, marginHorizontal: 0 }}>
+				<Block flex={0} paddingHorizontal={20} marginBottom={20}>
+					<Block
+						flex={0}
+						color="#FF6666"
+						marginTop={15}
+						style={{ padding: 10, borderRadius: 8, marginHorizontal: 0 }}>
 						<Text color={'#541A1A'} weight="600" size={14}>
 							We need permission to send notifications
 						</Text>
@@ -66,7 +70,9 @@ export const SettingsNotifications: React.FC = () => {
 
 			<SettingItem
 				text="Global notifications"
-				RightComponent={() => <Switch value={CURRENT_DEVICE.notifications} onValueChange={v => UpdateDevice(v)} />}
+				RightComponent={() => (
+					<Switch value={CURRENT_DEVICE.notifications} onValueChange={v => UpdateDevice(v)} />
+				)}
 			/>
 		</Block>
 	);

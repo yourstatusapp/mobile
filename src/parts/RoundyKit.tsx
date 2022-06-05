@@ -33,7 +33,7 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 	onFinishTyping,
 	borderColor,
 
-	// TODO: Force fully update the value
+	// Force fully update the value
 	updateValue,
 }) => {
 	const [v, setV] = useState('');
@@ -74,6 +74,24 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 		}
 	}, [initialValue, onTextChange]);
 
+	const handleForceUpdate = useCallback(
+		(value: string) => {
+			if (value) {
+				setV(value);
+				if (onTextChange) {
+					onTextChange(value);
+				}
+				console.log('updateValue', updateValue);
+			}
+		},
+		[onTextChange, updateValue],
+	);
+
+	useEffect(() => {
+		updateValue && handleForceUpdate(updateValue);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [updateValue]);
+
 	useEffect(() => {
 		firstRender();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,6 +110,7 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 			numberOfLines={3}
 			extendBoxStyle={extend}
 			borderColor={borderColor}
+			autoCapitalize="none"
 		/>
 	);
 };
@@ -115,13 +134,14 @@ interface RoundyButtonProps {
 	text: string;
 	disabled?: boolean;
 	onPress?: () => void;
+	style?: ViewStyle;
 }
 
-export const RoundyButton: React.FC<RoundyButtonProps> = ({ text, disabled, onPress }) => {
+export const RoundyButton: React.FC<RoundyButtonProps> = ({ text, disabled, onPress, style }) => {
 	return (
 		<RoundyButtonBody
 			onPress={onPress}
-			style={({ pressed }) => [{ opacity: disabled ? 0.5 : pressed ? 0.75 : 1 }]}
+			style={({ pressed }) => [style, { opacity: disabled ? 0.5 : pressed ? 0.75 : 1 }]}
 			disabled={disabled}>
 			<Text center weight="700" size={14}>
 				{text}

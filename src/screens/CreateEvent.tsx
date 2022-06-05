@@ -61,11 +61,7 @@ export const CreateEvent = () => {
 
 	return (
 		<Block flex={1} color={theme.background}>
-			<TabbarHeader
-				color={theme.backgroundDark}
-				backButton
-				centerText="Create your're next event"
-			/>
+			<TabbarHeader color={theme.backgroundDark} backButton centerText="Create an event" />
 			<KeyboardAvoidingView
 				behavior="position"
 				keyboardVerticalOffset={-150}

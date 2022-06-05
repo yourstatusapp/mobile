@@ -1,3 +1,3 @@
 export { TabbarHeader } from './TabbarHeader';
-export { BottomModalSheet } from './BottomModalSheet';
+export { SheetModal } from './SheetModal';
 export { GradiantShadow } from './GradiantShadow';

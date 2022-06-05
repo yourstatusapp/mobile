@@ -17,7 +17,9 @@ export const GradiantShadow: React.FC<GradiantShadowProps> = ({ height, style, c
 	// 	[colors, theme.background, theme.name],
 	// );
 
-	const c = !!colors?.length ? colors : [theme.background, theme.name === 'dark' ? '#00000000' : '#FFFFFF00'];
+	const c = colors?.length
+		? colors
+		: [theme.background, theme.name === 'dark' ? '#00000000' : '#FFFFFF00'];
 
 	// return <LinearGradient pointerEvents="none" colors={[theme.background, theme.name === 'dark' ? '#00000000' : '#FFFFFF00']} style={sh} />;
 	return <LinearGradient pointerEvents="none" colors={c} style={sh} />;

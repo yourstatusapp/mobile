@@ -14,6 +14,7 @@ import { MenuProvider } from 'react-native-popup-menu';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { StorieViewer } from './screens';
 import { PushNotifications } from './utils/PushNotification';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 instance.setStorage({
 	async: true,
@@ -84,15 +85,17 @@ export const App: React.FC = () => {
 					skipWatchRequest={SkipWatchRequest}
 				/>
 			)}
-			<NavigationContainer>
-				<AppBody>
-					<MenuProvider>
-						<StatusBar barStyle={theme.name !== 'light' ? 'light-content' : 'dark-content'} />
-						<RootNavigator />
-						<CustomAlert />
-					</MenuProvider>
-				</AppBody>
-			</NavigationContainer>
+			<BottomSheetModalProvider>
+				<NavigationContainer>
+					<AppBody>
+						<MenuProvider>
+							<StatusBar barStyle={theme.name !== 'light' ? 'light-content' : 'dark-content'} />
+							<RootNavigator />
+							<CustomAlert />
+						</MenuProvider>
+					</AppBody>
+				</NavigationContainer>
+			</BottomSheetModalProvider>
 		</ThemeProvider>
 	);
 };
