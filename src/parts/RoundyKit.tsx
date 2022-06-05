@@ -11,10 +11,14 @@ interface RoundyInputProps {
 	autoCorrect?: boolean;
 	style?: ViewStyle;
 	extend?: boolean;
+
 	// number in seconds
 	FinishTypingCooldown?: number;
 	onFinishTyping?: (v: string) => void;
 	updateValue?: string;
+
+	// false is for fallback to default color
+	borderColor?: string | false;
 }
 
 export const RoundyInput: React.FC<RoundyInputProps> = ({
@@ -27,6 +31,9 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 	initialValue,
 	FinishTypingCooldown,
 	onFinishTyping,
+	borderColor,
+
+	// TODO: Force fully update the value
 	updateValue,
 }) => {
 	const [v, setV] = useState('');
@@ -54,7 +61,7 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 				);
 			}
 		},
-		[FinishTypingCooldown, onFinishTyping, onTextChange, timeoutId, v],
+		[FinishTypingCooldown, onFinishTyping, onTextChange, timeoutId],
 	);
 
 	const firstRender = useCallback(() => {
@@ -69,11 +76,8 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 
 	useEffect(() => {
 		firstRender();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	useEffect(() => {
-		console.log(updateValue);
-	}, [updateValue]);
 
 	return (
 		<RoundyInputBody
@@ -87,16 +91,20 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 			multiline={extend}
 			numberOfLines={3}
 			extendBoxStyle={extend}
+			borderColor={borderColor}
 		/>
 	);
 };
 
-const RoundyInputBody = styled.TextInput<{ extendBoxStyle?: boolean }>`
+const RoundyInputBody = styled.TextInput<{
+	extendBoxStyle?: boolean;
+	borderColor?: string | false;
+}>`
 	border-radius: 5px;
 	padding: ${({ extendBoxStyle }) => (extendBoxStyle ? '5px 10px' : '10px 10px')};
 	padding: 5px 10px;
 	color: ${({ theme }) => theme.text};
-	border: solid 1.2px ${({ theme }) => theme.textFadeLight}20;
+	border: solid 1.2px ${({ theme, borderColor }) => borderColor || theme.textFadeLight + '20'};
 	background-color: ${({ theme }) => theme.backgroundDarker};
 	font-size: 14px;
 	height: ${({ extendBoxStyle }) => (extendBoxStyle ? '80' : '40')}px;
