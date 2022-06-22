@@ -241,15 +241,6 @@ export const Auth: React.FC = () => {
 							}
 							style={{ flex: 1, backgroundColor: theme.primary2 }}
 						/>
-						<IconButton
-							name="camera"
-							backgroundColor={theme.primary2}
-							color={theme.backgroundDark}
-							size={42}
-							iconSize={21}
-							style={{ marginLeft: 10 }}
-							onPress={() => nav.navigate('MagicAuthScanner')}
-						/>
 					</Block>
 
 					<Block row vCenter flex={0} marginTop={13} press onPress={toggleTheme}>

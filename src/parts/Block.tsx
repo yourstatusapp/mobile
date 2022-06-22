@@ -1,6 +1,14 @@
 import React from 'react';
 import { BlockType, MarginType, PaddingType } from '@core';
-import { Animated, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import {
+	Animated,
+	SafeAreaView,
+	ScrollView,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+	ViewStyle,
+} from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 export const Block: React.FC<BlockType> = ({
@@ -52,7 +60,11 @@ export const Block: React.FC<BlockType> = ({
 
 	if (press) {
 		return (
-			<TouchableOpacity onPress={onPress} activeOpacity={activeOpacity || 0.6} style={blockStyle} disabled={disabled}>
+			<TouchableOpacity
+				onPress={onPress}
+				activeOpacity={activeOpacity || 0.6}
+				style={blockStyle}
+				disabled={disabled}>
 				{children}
 			</TouchableOpacity>
 		);
@@ -64,7 +76,7 @@ export const Block: React.FC<BlockType> = ({
 		);
 	} else if (scroll) {
 		return (
-			<ScrollView scrollEnabled={true} style={blockStyle}>
+			<ScrollView scrollEnabled={true} style={blockStyle} keyboardShouldPersistTaps={true}>
 				{children}
 			</ScrollView>
 		);
@@ -92,7 +104,10 @@ export const BlockScroll: React.FC<BlockScrollType> = ({
 	const BlockScrollStyle = StyleSheet.flatten<ViewStyle>([style, props]);
 
 	return (
-		<ScrollView scrollEnabled={true} style={BlockScrollStyle} contentContainerStyle={contentContainerStyle}>
+		<ScrollView
+			scrollEnabled={true}
+			style={BlockScrollStyle}
+			contentContainerStyle={contentContainerStyle}>
 			{children}
 		</ScrollView>
 	);

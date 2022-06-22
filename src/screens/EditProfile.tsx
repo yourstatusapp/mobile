@@ -1,5 +1,5 @@
 import core, { request } from '@core';
-import { Block, Fill, RoundyButton, RoundyInput, SheetModal, Spacer, Text } from '@parts';
+import { Block, RoundyButton, RoundyInput, SheetModal, Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -89,7 +89,7 @@ export const EditProfile = () => {
 				contentContainerStyle={{ flex: 1 }}
 				style={{ flex: 1 }}
 				behavior="padding"
-				keyboardVerticalOffset={91}>
+				enabled={false}>
 				<TabbarHeader color={theme.backgroundDark} backButton centerText="Edit Profile" />
 				<Block paddingHorizontal={10} marginTop={15}>
 					<Text marginBottom={8} bold paddingLeft={10}>

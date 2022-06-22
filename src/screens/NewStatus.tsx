@@ -156,7 +156,7 @@ export const NewStatus: React.FC = () => {
 						paddingTop={10}
 						paddingBottom={10}>
 						<Status
-							demo
+							disableTap
 							status={{
 								id: '',
 								data: { message: Content },

@@ -5,8 +5,13 @@ import { ConversationType, DirectMessageType, EventType, StatusType } from '../t
 export const lists = {
 	devices: collection<DeviceType>().createGroup('mine').createSelector('current'),
 	friends: collection<FriendItemType>({ primaryKey: 'account_id' }).createGroup('friends'),
-	profiles: collection<ProfileType>({ primaryKey: 'account_id' }).createGroup('friends').createGroup('requests').createGroup('mine'),
-	stories: collection<StorieType>({ primaryKey: 'account_id' }).createGroup('mine').createGroup('all'),
+	profiles: collection<ProfileType>({ primaryKey: 'account_id' })
+		.createGroup('friends')
+		.createGroup('requests')
+		.createGroup('mine'),
+	stories: collection<StorieType>({ primaryKey: 'account_id' })
+		.createGroup('mine')
+		.createGroup('all'),
 	status: collection<StatusType>().createGroup('mine'),
 	messages: collection<DirectMessageType>(),
 	conversations: collection<ConversationType>().createGroup('new_messages'),
@@ -15,5 +20,9 @@ export const lists = {
 
 export const events = {
 	notification: event<AlertDataType>({}),
-	storie_viewer: event<{ stories: StorieType | false; clicked_at_index?: number; skipWatchRequest?: boolean }>(),
+	storie_viewer: event<{
+		stories: StorieType | false;
+		clicked_at_index?: number;
+		skipWatchRequest?: boolean;
+	}>(),
 };

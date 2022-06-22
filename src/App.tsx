@@ -15,6 +15,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { StorieViewer } from './screens';
 import { PushNotifications } from './utils/PushNotification';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { RecoilRoot } from 'recoil';
 
 instance.setStorage({
 	async: true,
@@ -73,30 +74,32 @@ export const App: React.FC = () => {
 	}, []);
 
 	return (
-		<ThemeProvider theme={theme}>
-			<PushNotifications />
-			{ShowStorie && (
-				<StorieViewer
-					list={L}
-					onClose={() => {
-						SetShowStorie(false);
-					}}
-					clickedAtIndex={ClikedAtIndex}
-					skipWatchRequest={SkipWatchRequest}
-				/>
-			)}
-			<BottomSheetModalProvider>
-				<NavigationContainer>
-					<AppBody>
-						<MenuProvider>
-							<StatusBar barStyle={theme.name !== 'light' ? 'light-content' : 'dark-content'} />
-							<RootNavigator />
-							<CustomAlert />
-						</MenuProvider>
-					</AppBody>
-				</NavigationContainer>
-			</BottomSheetModalProvider>
-		</ThemeProvider>
+		<RecoilRoot>
+			<ThemeProvider theme={theme}>
+				<PushNotifications />
+				{ShowStorie && (
+					<StorieViewer
+						list={L}
+						onClose={() => {
+							SetShowStorie(false);
+						}}
+						clickedAtIndex={ClikedAtIndex}
+						skipWatchRequest={SkipWatchRequest}
+					/>
+				)}
+				<BottomSheetModalProvider>
+					<NavigationContainer>
+						<AppBody>
+							<MenuProvider>
+								<StatusBar barStyle={theme.name !== 'light' ? 'light-content' : 'dark-content'} />
+								<RootNavigator />
+								<CustomAlert />
+							</MenuProvider>
+						</AppBody>
+					</NavigationContainer>
+				</BottomSheetModalProvider>
+			</ThemeProvider>
+		</RecoilRoot>
 	);
 };
 
