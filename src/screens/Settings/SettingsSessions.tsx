@@ -1,10 +1,9 @@
 import * as React from 'react';
 import core, { AppAlert, DeviceType, request, TimeFormatter } from '@core';
-import { Block, Fill, GradiantShadow, Icon, IconButton, Spacer, Text } from '@parts';
+import { Block, Fill, Icon, IconButton, Text } from '@parts';
 import { useTheme } from 'styled-components/native';
 import { usePulse } from '@pulsejs/react';
 import { FlatList, ListRenderItemInfo } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { removeNotificationPermissions } from '../../utils/PushNotification';
 import { useNavigation } from '@react-navigation/native';
 
@@ -54,7 +53,7 @@ export const SettingsSessions: React.FC = () => {
 			key={index}
 			marginBottom={10}
 			color={theme.background}
-			style={{ padding: 13, borderRadius: 8 }}>
+			style={{ padding: 12, borderRadius: 8 }}>
 			<Text bold color={theme.textFade}>
 				Created <Text color={theme.text}>{TimeFormatter(item.id)}</Text> ago
 			</Text>
@@ -100,14 +99,14 @@ export const SettingsSessions: React.FC = () => {
 			{/* <Block paddingBottom={20} color={theme.background}></Block> */}
 			{/* <GradiantShadow height={50} style={{ position: 'absolute', top: 0, zIndex: 9 }} /> */}
 
-			<Text bold size={30} marginTop={15} marginLeft={20} paddingBottom={5}>
+			<Text bold size={30} marginTop={15} marginLeft={10} paddingBottom={5}>
 				Account Sessions
 			</Text>
 			<FlatList
 				data={devices}
 				renderItem={sessionRenderItem}
 				initialNumToRender={30}
-				contentContainerStyle={{ paddingTop: 20, paddingHorizontal: 20 }}
+				contentContainerStyle={{ paddingTop: 20, paddingHorizontal: 10, paddingBottom: 20 }}
 				showsVerticalScrollIndicator={false}
 			/>
 		</Block>

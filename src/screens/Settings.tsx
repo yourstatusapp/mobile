@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Block, Fill, IconButton, Text } from '@parts';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'styled-components/native';
-import { SettingsNotifications } from './Settings/index';
 import { useNavigation } from '@react-navigation/native';
 import core from '@core';
 import { usePulse } from '@pulsejs/react';
-import { SettingsSessions } from './Settings/SettingsSessions';
-import { SettingsTheming } from './Settings/SettingsTheming';
-import { SettingsMain } from './Settings/SettingsMain';
 
-const SettingsStack = createNativeStackNavigator();
+import { SettingsNavigator } from '../navigators/SettingsNavigator';
 
 export const Settings = () => {
 	const theme = useTheme();
@@ -46,7 +41,9 @@ export const Settings = () => {
 					size={22}
 					color={theme.textFadeLight}
 					onPress={() =>
-						NavigationState?.state?.index === 1 ? nav.navigate('settingsMain' as never, { initial: false } as never) : nav.goBack()
+						NavigationState?.state?.index === 1
+							? nav.navigate('settingsMain' as never, { initial: false } as never)
+							: nav.goBack()
 					}
 					backgroundColor="red"
 					noBackground
@@ -74,16 +71,7 @@ export const Settings = () => {
 					noPadding
 				/>
 			</Block>
-
-			<SettingsStack.Navigator
-				initialRouteName="settingsMain"
-				screenOptions={{ headerShown: false, animation: 'slide_from_left' }}
-				screenListeners={{ state: e => SetNavigationState(e.data) }}>
-				<SettingsStack.Screen name="settingsMain" component={SettingsMain} />
-				<SettingsStack.Screen name="settingsNotifications" component={SettingsNotifications} />
-				<SettingsStack.Screen name="settingsSessions" component={SettingsSessions} options={{ gestureEnabled: true }} />
-				<SettingsStack.Screen name="settingsTheming" component={SettingsTheming} options={{ gestureEnabled: true }} />
-			</SettingsStack.Navigator>
+			<SettingsNavigator onNavigationStateChange={v => SetNavigationState(v)} />
 		</Block>
 	);
 };

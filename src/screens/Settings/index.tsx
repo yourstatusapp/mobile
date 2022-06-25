@@ -1,10 +1,19 @@
 import { Text, Block, Fill, Icon } from '@parts';
 import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { SettingsMain } from './SettingsMain';
+import { SettingsNotifications } from './SettingsNotifications';
+import { SettingsSessions } from './SettingsSessions';
+import { SettingsTheming } from './SettingsTheming';
+import { SettingsUI } from './SettingsUI';
 
-export { SettingsNotifications } from './SettingsNotifications';
-export { SettingsSessions } from './SettingsSessions';
-export { SettingsTheming } from './SettingsTheming';
+export const SettingsScreens = {
+	SettingsTheming,
+	SettingsSessions,
+	SettingsNotifications,
+	SettingsMain,
+	SettingsUI,
+};
 
 export interface SettingItemMenuProps {
 	text: string;
@@ -14,18 +23,37 @@ export interface SettingItemMenuProps {
 	iconColor?: string;
 }
 
-export const SettingItemMenu = ({ text, onPress, icon, textColor, iconColor }: SettingItemMenuProps) => {
+export const SettingItemMenu = ({
+	text,
+	onPress,
+	icon,
+	textColor,
+	iconColor,
+}: SettingItemMenuProps) => {
 	const theme = useTheme();
 
 	return (
-		<Block style={{ paddingVertical: 15 }} paddingHorizontal={20} flex={0} onPress={onPress} color={theme.background} hCenter press row>
+		<Block
+			style={{ paddingVertical: 15 }}
+			paddingHorizontal={20}
+			flex={0}
+			onPress={onPress}
+			color={theme.background}
+			hCenter
+			press
+			row>
 			{icon && <Icon name={icon} size={15} color={iconColor || theme.textFadeLight} />}
 			<Text color={textColor || theme.text} weight="600" size={14} marginLeft={12}>
 				{text}
 			</Text>
 
 			<Fill />
-			<Icon name="chevron" size={15} color={iconColor || theme.textFadeLight} style={{ transform: [{ rotate: '180deg' }] }} />
+			<Icon
+				name="chevron"
+				size={15}
+				color={iconColor || theme.textFadeLight}
+				style={{ transform: [{ rotate: '180deg' }] }}
+			/>
 		</Block>
 	);
 };
@@ -37,7 +65,12 @@ interface SettingItemProps {
 	disabled?: boolean;
 }
 
-export const SettingItem: React.FC<SettingItemProps> = ({ text, RightComponent, disabled, spaceBottom }) => {
+export const SettingItem: React.FC<SettingItemProps> = ({
+	text,
+	RightComponent,
+	disabled,
+	spaceBottom,
+}) => {
 	const theme = useTheme();
 
 	return (

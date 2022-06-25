@@ -1,5 +1,5 @@
 import core, { AppAlert, request, StatusType } from '@core';
-import { Block, Fill, IconButton, Spacer, Status, Text } from '@parts';
+import { Block, Fill, IconButton, ModalHeader, Spacer, Status, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import React from 'react';
 import { FlatList } from 'react-native';
@@ -21,10 +21,8 @@ export const ManageStatus = () => {
 
 	return (
 		<Block safe color={theme.background}>
-			<Text size={30} bold paddingLeft={20} paddingTop={20}>
-				Manage Status
-			</Text>
-			<Spacer size={20} />
+			<ModalHeader title="Manage Status" />
+
 			<FlatList
 				data={status}
 				initialNumToRender={status.length}

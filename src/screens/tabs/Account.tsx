@@ -144,7 +144,6 @@ export const Account = () => {
 				</Block>
 			</BlockScroll>
 			<HeadingBlurOverlay />
-			{/* <DimmingOverlay /> */}
 			{/* <BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={30} /> */}
 		</Block>
 	);

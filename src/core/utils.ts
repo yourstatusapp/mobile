@@ -3,8 +3,8 @@ import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
 // export const baseURL = state('https://api.yourstatus.app');
-export const baseURL = state('http://192.168.1.8:3020');
-// export const baseURL = state('http://localhost:3020');
+// export const baseURL = state('http://192.168.1.7:3020');
+export const baseURL = state('http://0.0.0.0:3020');
 
 interface RequestOptions {
 	headers?: object;
@@ -38,7 +38,9 @@ export const request = async <T extends any>(
 
 		return a.data;
 	} catch (error: any) {
-		console.log(error);
+		// This will happen when there is an network error so probably a 500
+		// TODO: Setting a state that we don't have network and navigating to a no network screen? (we can close the screen and going back to where we left of since its pushed to the stack)
+		console.log('error => ', error);
 		return { success: false, message: error.response.data.message };
 	}
 };

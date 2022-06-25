@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import core, { AppAlert, FriendItemRenderType, FriendItemType, request, StatusType } from '@core';
-import { Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
+import { Block, Fill, IconButton, Status, TextButton } from '@parts';
 import {
 	Animated,
 	StyleSheet,
@@ -266,7 +266,7 @@ export const Friends = React.memo(() => {
 						zIndex: 10,
 						position: 'absolute',
 					}}>
-					<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={340} />
+					<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={30} />
 					<DimmingOverlay height={hasNotch() ? 100 : 70} />
 					<Block
 						animate

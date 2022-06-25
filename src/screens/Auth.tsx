@@ -235,6 +235,7 @@ export const Auth: React.FC = () => {
 						)}
 						<Button
 							text={NewAccount ? 'Create new account' : 'Login'}
+							color="white"
 							onPress={() => login(Username)}
 							disabled={
 								NewAccount ? UsernameValid === false || Email === '' : Email === '' || Loading

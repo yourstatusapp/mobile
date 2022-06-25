@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Avatar, Block, Icon, IconButton, Text } from '@parts';
+import { Avatar, Block, HeadingBlurOverlay, Icon, IconButton, TabbarHeader, Text } from '@parts';
 import core, { request } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { FlatList } from 'react-native';
@@ -24,12 +24,10 @@ export const Events = () => {
 	}, []);
 
 	return (
-		<Block safe paddingHorizontal={15} color={theme.background}>
-			<Text size={30} bold>
-				Events
-			</Text>
+		<Block color={theme.background}>
+			{/* <TabbarHeader /> */}
 			<FlatList
-				style={{ marginTop: 15 }}
+				style={{ padding: 60, paddingHorizontal: 10 }}
 				data={a}
 				renderItem={({ item }) => (
 					<Block
@@ -60,6 +58,7 @@ export const Events = () => {
 					</Block>
 				)}
 			/>
+			<HeadingBlurOverlay />
 		</Block>
 	);
 };

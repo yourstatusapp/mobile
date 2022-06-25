@@ -214,7 +214,7 @@ const FloatingPostBtn = styled(IconButton)`
 const DimmingOverlay = styled.View<{ height: number }>`
 	position: absolute;
 	z-index: 1;
-	background-color: ${({ theme }) => theme.background};
+	background-color: ${({ theme }) => theme.backgroundDark};
 	opacity: 0.8;
 
 	height: ${props => props.height}px;

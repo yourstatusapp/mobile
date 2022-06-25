@@ -8,7 +8,7 @@ import core from '@core';
 import { hasNotch } from 'react-native-device-info';
 
 interface HeadingBlurOverlayProps {
-	height: number;
+	height?: number;
 }
 
 export const HeadingBlurOverlay: React.FC<HeadingBlurOverlayProps> = ({ height }) => {

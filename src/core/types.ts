@@ -218,7 +218,15 @@ export type RootstackParamList = {
 	};
 };
 
-export type GlobalParamList = RootstackParamList & TabStackNavParamList;
+export type SettingsStackParamList = {
+	settingsMain: undefined;
+	settingsNotifications: undefined;
+	settingsSessions: undefined;
+	settingsTheming: undefined;
+	settingsUI: undefined;
+};
+
+export type GlobalParamList = RootstackParamList & TabStackNavParamList & SettingsStackParamList;
 
 export interface FriendItem {
 	username: string;
