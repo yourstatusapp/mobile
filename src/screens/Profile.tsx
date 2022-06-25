@@ -112,7 +112,7 @@ export const Profile = () => {
 									color={theme.textFadeLight}
 									style={{ paddingRight: 5 }}
 								/>
-								<Text weight="600" size={12} color={theme.textFadeLight}>
+								<Text medium size={12} color={theme.textFadeLight}>
 									{ProfileData.location}
 								</Text>
 							</Block>

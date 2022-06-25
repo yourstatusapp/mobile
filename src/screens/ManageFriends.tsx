@@ -32,7 +32,7 @@ export const ManageFriends = () => {
 		return (
 			<Block flex={0} key={index} row hCenter paddingHorizontal={20} marginBottom={10}>
 				<Avatar src={[item.account_id, item.avatar]} size={50} />
-				<Text marginLeft={10} weight="600" size={16}>
+				<Text marginLeft={10} medium size={16}>
 					@{item.username}
 				</Text>
 				<Text marginLeft={10}>{item.display_name}</Text>

@@ -86,10 +86,22 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 			backColor={StatusColors[theme_name][status.type].backColor}
 			textColor={StatusColors[theme_name][status.type].color}>
 			{status.type === 1 && (
-				<Icon name="discord" size={18} color={StatusColors[theme_name][status.type].color} style={{ marginRight: 4 }} />
+				<Icon
+					name="discord"
+					size={18}
+					color={StatusColors[theme_name][status.type].color}
+					style={{ marginRight: 4 }}
+				/>
 			)}
-			{status.type === 2 && <Icon name="flag" size={11} color={StatusColors[theme_name][status.type].color} style={{ marginRight: 5 }} />}
-			<Text weight="600" size={13} color={StatusColors[theme_name][status.type].color}>
+			{status.type === 2 && (
+				<Icon
+					name="flag"
+					size={11}
+					color={StatusColors[theme_name][status.type].color}
+					style={{ marginRight: 5 }}
+				/>
+			)}
+			<Text medium size={13} color={StatusColors[theme_name][status.type].color}>
 				{status.data?.name || status.data?.message}
 			</Text>
 		</StatusBody>

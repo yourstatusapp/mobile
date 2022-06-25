@@ -62,14 +62,14 @@ export const SettingsMain = () => {
 			<Block paddingHorizontal={20}>
 				<Fill />
 				<Block row flex={0} vCenter marginBottom={10}>
-					<Text color={theme.darker2} marginRight={2} weight="600">
+					<Text color={theme.darker2} marginRight={2} medium>
 						V
 					</Text>
 					<Text color={theme.darker2} marginRight={8}>
 						{getVersion()}
 					</Text>
 
-					<Text color={theme.darker2} bold marginRight={2} weight="600">
+					<Text color={theme.darker2} bold marginRight={2} medium>
 						Build:
 					</Text>
 					<Text color={theme.darker2}>{getBuildNumber()}</Text>

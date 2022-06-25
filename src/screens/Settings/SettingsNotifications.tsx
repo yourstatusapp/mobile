@@ -52,7 +52,7 @@ export const SettingsNotifications: React.FC = () => {
 						color="#FF6666"
 						marginTop={15}
 						style={{ padding: 10, borderRadius: 8, marginHorizontal: 0 }}>
-						<Text color={'#541A1A'} weight="600" size={14}>
+						<Text color={'#541A1A'} medium size={14}>
 							We need permission to send notifications
 						</Text>
 						<Spacer size={15} />

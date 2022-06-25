@@ -273,7 +273,7 @@ export const Auth: React.FC = () => {
 						<Button text="Paste clipboard" onPress={magicLinkLogin} style={{ marginBottom: 5 }} />
 					)}
 					{ShowBuildNumber && (
-						<Text center color={theme.textFadeLight} weight="600">
+						<Text center color={theme.textFadeLight} medium>
 							Build: {DeviceInfo?.getBuildNumber()}
 						</Text>
 					)}

@@ -41,7 +41,7 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 	return (
 		<MagicBody>
 			<Block vCenter>
-				<Text weight="600" size={28} center>
+				<Text medium size={28} center>
 					Verifying your magic link
 				</Text>
 				<Spacer size={20} />

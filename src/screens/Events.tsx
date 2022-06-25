@@ -39,7 +39,7 @@ export const Events = () => {
 						onPress={() => nav.navigate('Event', { event_id: item.id })}>
 						<Block row hCenter marginBottom={8}>
 							<Avatar src={[item.account_id, item.avatar]} size={25} />
-							<Text weight="600" marginLeft={5}>
+							<Text medium marginLeft={5}>
 								{item?.username}
 							</Text>
 						</Block>

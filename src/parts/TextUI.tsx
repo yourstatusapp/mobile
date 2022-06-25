@@ -20,6 +20,8 @@ export const TextCustom: React.FC<TextType> = ({
 	paddingLeft,
 	paddingRight,
 	paddingTop,
+	medium,
+	extraBold,
 	...props
 }) => {
 	const theme = useTheme();
@@ -27,6 +29,8 @@ export const TextCustom: React.FC<TextType> = ({
 		style,
 		{ color: color ?? theme.text },
 		!!bold && { fontWeight: 'bold' },
+		!!medium && { fontWeight: '600' },
+		!!extraBold && { fontWeight: '800' },
 		!!italic && { fontStyle: 'italic' },
 		!!weight && { fontWeight: weight },
 		!!size && { fontSize: size },

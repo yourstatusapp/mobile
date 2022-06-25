@@ -5,7 +5,12 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Pressable, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, {
+	Easing,
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'styled-components';
 import styled from 'styled-components/native';
@@ -50,22 +55,35 @@ export const NewMoment = () => {
 		let res: ReturnRequestType<boolean> | false = false;
 
 		if (uploadMethod === 'banner') {
-			res = await request<boolean>('post', '/profile/banner', { data: fd, headers: { 'Content-Type': 'multipart/form-data;' } });
+			res = await request<boolean>('post', '/profile/banner', {
+				data: fd,
+				headers: { 'Content-Type': 'multipart/form-data;' },
+			});
 		}
 
 		if (uploadMethod === 'avatar') {
-			res = await request<boolean>('post', '/profile/avatar', { data: fd, headers: { 'Content-Type': 'multipart/form-data;' } });
+			res = await request<boolean>('post', '/profile/avatar', {
+				data: fd,
+				headers: { 'Content-Type': 'multipart/form-data;' },
+			});
 		}
 
 		if (uploadMethod === 'storie') {
 			// check if the user wanted high qualit
-			res = await request<boolean>('post', '/profile/stories/new' + (HighQuality === true ? '?high_quality=true' : ''), {
-				data: fd,
-				headers: { 'Content-Type': 'multipart/form-data;' },
-				onUploadProgress: v => {
-					percentage.value = withTiming((100 * v.loaded) / v.total, { duration: 200, easing: Easing.ease });
+			res = await request<boolean>(
+				'post',
+				'/profile/stories/new' + (HighQuality === true ? '?high_quality=true' : ''),
+				{
+					data: fd,
+					headers: { 'Content-Type': 'multipart/form-data;' },
+					onUploadProgress: v => {
+						percentage.value = withTiming((100 * v.loaded) / v.total, {
+							duration: 200,
+							easing: Easing.ease,
+						});
+					},
 				},
-			});
+			);
 		}
 
 		if (!res) return;
@@ -108,10 +126,25 @@ export const NewMoment = () => {
 					/>
 				</Block>
 			)}
-			<View style={{ marginTop: 10, height: 5, borderRadius: 50, backgroundColor: '#000000', width: Dimensions.get('screen').width - 45 }}>
-				<Animated.View style={[animatedStyles, { height: 5, borderRadius: 50, backgroundColor: '#3859FD' }]} />
+			<View
+				style={{
+					marginTop: 10,
+					height: 5,
+					borderRadius: 50,
+					backgroundColor: '#000000',
+					width: Dimensions.get('screen').width - 45,
+				}}>
+				<Animated.View
+					style={[animatedStyles, { height: 5, borderRadius: 50, backgroundColor: '#3859FD' }]}
+				/>
 			</View>
-			<Block flex={0} style={{ height: 60, justifyContent: 'space-between' }} color="transparent" row hCenter paddingHorizontal={10}>
+			<Block
+				flex={0}
+				style={{ height: 60, justifyContent: 'space-between' }}
+				color="transparent"
+				row
+				hCenter
+				paddingHorizontal={10}>
 				<IconButton
 					name="arrow-big"
 					color="white"
@@ -123,8 +156,10 @@ export const NewMoment = () => {
 					disabled={Loading}
 				/>
 				<Block row flex={0} style={{ width: null }} hCenter>
-					<RoundBtn onPress={() => SetHighQuality(!HighQuality)} style={{ opacity: HighQuality ? 1 : 0.5 }}>
-						<Text size={12} weight="600" color="white">
+					<RoundBtn
+						onPress={() => SetHighQuality(!HighQuality)}
+						style={{ opacity: HighQuality ? 1 : 0.5 }}>
+						<Text size={12} medium color="white">
 							High Quality
 						</Text>
 					</RoundBtn>

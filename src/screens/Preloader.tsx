@@ -66,7 +66,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 			<ActivityIndicator />
 			<Spacer size={20} />
 			{TakingTooLong && (
-				<Text weight="600" size={16}>
+				<Text medium size={16}>
 					Still loading...
 				</Text>
 			)}

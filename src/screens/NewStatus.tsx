@@ -170,7 +170,7 @@ export const NewStatus: React.FC = () => {
 								<Text bold marginRight={10}>
 									Found:
 								</Text>
-								<Text marginRight={10} color={theme.textFade} weight="600">
+								<Text marginRight={10} color={theme.textFade} medium>
 									{GuildResults?.guild.name}
 								</Text>
 								<FastImage

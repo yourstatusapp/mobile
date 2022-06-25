@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Block, Spacer, Text } from '@parts';
+import { Block, IconButton, Spacer, Text } from '@parts';
 import { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,14 +8,32 @@ export const SettingsUI: React.FC = () => {
 	const nav = useNavigation();
 
 	return (
-		<Block color={theme.backgroundDarker} paddingHorizontal={10}>
-			<Text bold size={30}>
+		<Block color={theme.backgroundDarker}>
+			<Text bold size={30} marginLeft={10}>
 				UI Library
 			</Text>
 			<Spacer size={30} />
-			<Text>normal</Text>
-			<Text weight="600">medium</Text>
-			<Text bold>bold</Text>
+			<Block paddingHorizontal={10} color={theme.background} paddingTop={10}>
+				<Text size={15}>normal</Text>
+				<Text size={15} medium>
+					medium
+				</Text>
+				<Text size={15} bold>
+					bold
+				</Text>
+				<Text size={15} extraBold>
+					extrabold
+				</Text>
+
+				<Spacer size={50} />
+
+				<IconButton
+					name="brush"
+					size={20}
+					color={theme.text}
+					backgroundColor={theme.backgroundDarker}
+				/>
+			</Block>
 		</Block>
 	);
 };

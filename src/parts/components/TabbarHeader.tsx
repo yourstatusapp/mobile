@@ -43,7 +43,7 @@ export const TabbarHeader: React.FC<TabbarHeaderProps> = ({ color, backButton, c
 						onPress={() => nav.goBack()}
 					/>
 					{centerText && (
-						<Text weight="600" size={16}>
+						<Text medium size={16}>
 							{centerText}
 						</Text>
 					)}

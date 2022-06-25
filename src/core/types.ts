@@ -72,6 +72,8 @@ export interface TextType extends PaddingType, MarginType {
 	center?: boolean;
 	italic?: boolean;
 	bold?: boolean;
+	extraBold?: boolean;
+	medium?: boolean;
 	textAlign?: string;
 }
 

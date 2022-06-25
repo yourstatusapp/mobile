@@ -60,7 +60,7 @@ export const SettingsSessions: React.FC = () => {
 			{current_device?.id === item.id && (
 				<Block row hCenter flex={0} marginTop={5}>
 					<Icon name="info" size={13} color="#379bf9" />
-					<Text weight="600" color="#379bf9" marginLeft={3}>
+					<Text medium color="#379bf9" marginLeft={3}>
 						Current Device
 					</Text>
 				</Block>
