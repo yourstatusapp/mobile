@@ -43,7 +43,7 @@ export const SettingItemMenu = ({
 			press
 			row>
 			{icon && <Icon name={icon} size={15} color={iconColor || theme.textFadeLight} />}
-			<Text color={textColor || theme.text} medium size={14} marginLeft={12}>
+			<Text color={textColor || theme.text} medium marginLeft={12}>
 				{text}
 			</Text>
 
@@ -82,9 +82,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
 			color={theme.background}
 			style={{ paddingVertical: 10, opacity: disabled ? 0.7 : 1 }}
 			hCenter>
-			<Text size={14} medium>
-				{text}
-			</Text>
+			<Text medium>{text}</Text>
 			<Fill />
 			{RightComponent && <RightComponent />}
 		</Block>

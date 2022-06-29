@@ -14,13 +14,9 @@ import core from '@core';
 import { usePulse } from '@pulsejs/react';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
-import FastImage from 'react-native-fast-image';
-import { BlurView } from 'expo-blur';
 import { StyleSheet, ViewStyle } from 'react-native';
-import { getBuildNumber, getVersion, hasNotch } from 'react-native-device-info';
+import { hasNotch } from 'react-native-device-info';
 import { useNavigation } from '@hooks';
-
-const BANNER_HEIGHT = 250;
 
 export const Account = () => {
 	const nav = useNavigation();
@@ -135,47 +131,8 @@ export const Account = () => {
 				{/* <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} /> */}
 
 				<Fill />
-				<Block row flex={0}>
-					<Text color={theme.darker1}>V{getVersion()}</Text>
-					<Text color={theme.darker1}>
-						{` `} - {` `}
-					</Text>
-					<Text color={theme.darker1}>Build {getBuildNumber()}</Text>
-				</Block>
 			</BlockScroll>
 			<HeadingBlurOverlay />
-			{/* <BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={30} /> */}
 		</Block>
 	);
 };
-
-const DimmingOverlay = styled.View<{ height: number }>`
-	position: absolute;
-	z-index: 1;
-	background-color: ${({ theme }) => theme.background};
-	opacity: 0.8;
-
-	height: ${props => props.height}px;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-`;
-
-const Banner = styled(FastImage)`
-	width: 100%;
-	z-index: 3;
-	height: ${BANNER_HEIGHT}px;
-`;
-
-const BannerPlaceholder = styled.View`
-	width: 100%;
-	background-color: ${({ theme }) => theme.textFadeLight};
-	height: ${BANNER_HEIGHT}px;
-`;
-
-const BannerArea = styled.View`
-	height: ${BANNER_HEIGHT}px;
-	position: absolute;
-	width: 100%;
-	z-index: 2;
-`;

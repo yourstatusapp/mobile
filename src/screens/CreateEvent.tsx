@@ -1,23 +1,14 @@
 import { AppAlert, request } from '@core';
 import { useNavigation } from '@hooks';
-import {
-	Block,
-	BottomModalSheet,
-	Button,
-	IconButton,
-	Line,
-	SmallButton,
-	Spacer,
-	Status,
-	Text,
-	TextButton,
-} from '@parts';
+import { Block, SmallButton, Spacer, Status, Text, TextButton } from '@parts';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, ScrollView, TouchableOpacity, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { TabbarHeader } from '../parts/components/TabbarHeader';
 import styled, { useTheme } from 'styled-components/native';
 import Animated, { Transition } from 'react-native-reanimated';
+import { Calendar, CalendarList } from 'react-native-calendars';
+import dayjs from 'dayjs';
 
 export const CreateEvent = () => {
 	const theme = useTheme();
@@ -28,14 +19,9 @@ export const CreateEvent = () => {
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 
-	const [startDate, setStartDate] = useState(new Date());
-	const [enableStartDate, setEnableStartDate] = useState(false);
-	const [showDPSD, setShowDPSD] = useState(false);
-
 	const [endDate, setEndDate] = useState(new Date());
-	const [enableEndDate, setEnableEndDate] = useState(false);
-	const [showDPED, setShowDPED] = useState(false);
-
+	const [startDate, setStartDate] = useState(new Date());
+	const [isOpen, setOpen] = React.useState(false);
 	const [statusDisplayname, setStatusDisplayname] = useState('');
 
 	const create = async () => {
@@ -64,7 +50,6 @@ export const CreateEvent = () => {
 			<TabbarHeader color={theme.backgroundDark} backButton centerText="Create an event" />
 			<KeyboardAvoidingView
 				behavior="position"
-				keyboardVerticalOffset={-150}
 				contentContainerStyle={{ flex: 1 }}
 				style={{ flex: 1 }}>
 				{step === 'REQUIRED_DETAILS' && (
@@ -77,10 +62,13 @@ export const CreateEvent = () => {
 								placeholder="Title"
 								value={title}
 								onChangeText={v => setTitle(v)}
-								placeholderTextColor={theme.darker}
+								placeholderTextColor={theme.darker2}
+								autoCompleteType="off"
+								autoCorrect={false}
+								keyboardAppearance={theme.name}
 							/>
 							<TxtInput
-								placeholderTextColor={theme.darker}
+								placeholderTextColor={theme.darker2}
 								placeholder="Description"
 								value={description}
 								onChangeText={v => setDescription(v)}
@@ -96,7 +84,7 @@ export const CreateEvent = () => {
 							</Block>
 
 							<TxtInput
-								placeholderTextColor={theme.darker}
+								placeholderTextColor={theme.darker2}
 								placeholder="Status display name"
 								value={statusDisplayname}
 								onChangeText={v => setStatusDisplayname(v)}
@@ -104,84 +92,54 @@ export const CreateEvent = () => {
 
 							{/* Start Date */}
 							<SmallButton text="Set start date" onPress={() => {}} />
-							{/* <Block row flex={0} paddingLeft={10}>
-								<CheckBox onPress={() => setEnableStartDate(!enableStartDate)}>
-									{enableStartDate && <CheckboxChecked />}
-								</CheckBox>
-								<FlatButton
-									onPress={() => setShowDPSD(!showDPSD)}
-									disabled={!enableStartDate}
-									style={{ opacity: enableStartDate ? 1 : 0.5 }}>
-									<Text bold size={16} color="white">
-										Set Start Date
-									</Text>
-									<Text color="white">
-										{endDate.toDateString() + ' ' + endDate.toTimeString().split(' GMT')[0]}
-									</Text>
-								</FlatButton>
-							</Block>
-							<Text
-								marginLeft={10}
-								color={theme.textFadeLight}
-								weight="500"
-								marginTop={2}
-								size={12}>
-								Starts after being created if not selected
-							</Text>
-							{showDPSD && enableStartDate && (
-								<Block flex={0} hCenter>
-									<DatePicker
-										date={startDate}
-										textColor={theme.text}
-										onDateChange={v => setEndDate(v)}
-									/>
-								</Block>
-							)} */}
 
-							{/* END DATE */}
-							{/* <Block row flex={0} paddingLeft={10} marginBottom={10} marginTop={10}>
-								<CheckBox onPress={() => setEnableEndDate(!enableEndDate)}>
-									{enableEndDate && <CheckboxChecked />}
-								</CheckBox>
-								<FlatButton
-									onPress={() => setShowDPED(!showDPED)}
-									disabled={!enableEndDate}
-									style={{ opacity: enableEndDate ? 1 : 0.5 }}>
-									<Text bold size={16} color="white">
-										Set End Date
-									</Text>
-									<Text color="white">
-										{endDate.toDateString() + ' ' + endDate.toTimeString().split(' GMT')[0]}
-									</Text>
-								</FlatButton>
-							</Block>
-							{showDPED && enableEndDate && (
-								<Block flex={0} hCenter>
-									<DatePicker
-										date={endDate}
-										textColor={theme.text}
-										onDateChange={v => setEndDate(v)}
-									/>
-								</Block>
-							)} */}
 							<TextButton text="next" onPress={() => setStep('OPTIONAL_OPTIONS')} />
-							{/* <Block paddingHorizontal={20} paddingTop={20} style={{ justifyContent: 'flex-end' }} flex={0}>
-								<Button
-									text="Create"
-									disabled={loading || !title || !statusDisplayname}
-									style={{ marginHorizontal: 10, marginBottom: 20 }}
-									onPress={() => create()}
-									color="white"
-								/>
-							</Block> */}
 						</ScrollView>
 					</Block>
 				)}
 
 				{step === 'OPTIONAL_OPTIONS' && (
 					<>
-						<Text>LOL</Text>
-						<TextButton text="next" onPress={() => setStep('REQUIRED_DETAILS')} />
+						<Block color={theme.background}>
+							<Text>Selected Date: {JSON.stringify(startDate) || ''}</Text>
+							<CalendarList
+								horizontal
+								theme={{
+									calendarBackground: theme.background,
+									contentStyle: { backgroundColor: 'red' },
+								}}
+								style={{ backgroundColor: theme.background }}
+								markingType={'custom'}
+								markedDates={{
+									'2022-06-28': {},
+									'2022-06-29': {},
+								}}
+								initialDate={new Date().toDateString()}
+								date={startDate.toDateString() || new Date().toDateString()}
+								renderHeader={date => {
+									<Block flex={0} color={theme.background}>
+										<Text color={'red'}>- {JSON.stringify(date)}</Text>
+									</Block>;
+								}}
+								dayComponent={({ date, marking }) => (
+									<Block
+										press
+										flex={0}
+										color={marking ? 'red' : theme.background}
+										style={{ paddingVertical: 10 }}
+										hCenter
+										vCenter
+										onPress={() => {
+											setStartDate(dayjs(date?.dateString).toDate());
+											console.log(date?.dateString);
+										}}>
+										{date?.day && <Text medium>{JSON.stringify(date.day)}</Text>}
+										<Text medium>{JSON.stringify(marking)}</Text>
+									</Block>
+								)}
+							/>
+							<TextButton text="next" onPress={() => setStep('REQUIRED_DETAILS')} />
+						</Block>
 					</>
 				)}
 			</KeyboardAvoidingView>
@@ -198,30 +156,4 @@ const TxtInput = styled.TextInput`
 	color: ${({ theme }) => theme.text};
 	margin: 0px 10px;
 	margin-bottom: 10px;
-`;
-
-const FlatButton = styled(TouchableOpacity)`
-	background-color: ${({ theme }) => theme.primary};
-	color: ${({ theme }) => theme.text};
-	border-radius: 10px;
-	flex-direction: column;
-	height: 50px;
-	flex: 1;
-	justify-content: center;
-	align-items: center;
-	margin: 0 10px;
-`;
-
-const CheckBox = styled(TouchableOpacity).attrs({ activeOpacity: 0.8 })`
-	border-radius: 10px;
-	border: solid 2px ${({ theme }) => theme.darker};
-	height: 50px;
-	width: 50px;
-	padding: 5px;/
-`;
-
-const CheckboxChecked = styled.View`
-	border-radius: 6px;
-	background-color: ${({ theme }) => theme.primary};
-	flex: 1;
 `;

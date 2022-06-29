@@ -1,9 +1,10 @@
 import styled from 'styled-components/native';
 import * as React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
-import { BlockType } from '@core';
+import { ViewStyle } from 'react-native';
 
-export const Spacer: React.FC<{ size: number; h?: boolean }> = ({ size, h }) => <SpacerBody s={size} horizontal={h} />;
+export const Spacer: React.FC<{ size: number; h?: boolean }> = ({ size, h }) => (
+	<SpacerBody s={size} horizontal={h} />
+);
 
 const SpacerBody = styled.View<{ s: number; horizontal?: boolean }>`
 	${({ s, horizontal }) =>
@@ -25,7 +26,9 @@ interface RowStyleType {
 }
 
 // Row block from left to right
-export const Row: React.FC<RowStyleType> = ({ className, style, children }) => <RowBody {...{ className, style }}>{children}</RowBody>;
+export const Row: React.FC<RowStyleType> = ({ className, style, children }) => (
+	<RowBody {...{ className, style }}>{children}</RowBody>
+);
 
 const RowBody = styled.View<RowStyleType>`
 	${({ center }) => `

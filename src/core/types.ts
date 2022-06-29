@@ -65,7 +65,8 @@ export interface BlockType extends PaddingType, MarginType {
 }
 
 export interface TextType extends PaddingType, MarginType {
-	color?: string;
+	color?: string | null;
+	// The default size is 14
 	size?: number;
 	weight?: '500' | '600' | '700' | '800' | '900';
 	style?: TextStyle;
@@ -218,6 +219,9 @@ export type RootstackParamList = {
 	Camera: {
 		uploadMethod: 'avatar' | 'banner';
 	};
+
+	// tabs
+	profile: any;
 };
 
 export type SettingsStackParamList = {

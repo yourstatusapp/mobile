@@ -17,10 +17,11 @@ import {
 	Explanation,
 	ManageStatus,
 	CreateEvent,
+	Profile,
 } from '../screens';
-import { NewProject } from '../screens/NewProject';
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
 import { Block } from '@parts';
+import { TabsNavigator } from './TabsNavigator';
 
 export const navigationRef = createNavigationContainerRef();
 const RootStack = createNativeStackNavigator<RootstackParamList>();
@@ -40,7 +41,7 @@ export const RootNavigator = () => {
 				<RootStack.Navigator
 					initialRouteName={loggedIn ? 'tabs' : 'auth'}
 					screenOptions={{ headerShown: false, contentStyle: { zIndex: 24 } }}>
-					<RootStack.Screen name="tabs" component={BottomTabNavigator} />
+					<RootStack.Screen name="tabs" component={TabsNavigator} />
 					<RootStack.Screen name="auth" component={Auth} />
 					<RootStack.Screen name="magic" component={Magic} />
 					<RootStack.Screen
@@ -58,15 +59,6 @@ export const RootNavigator = () => {
 						name="CreateEvent"
 						component={CreateEvent}
 						options={{ gestureEnabled: true }}
-					/>
-					<RootStack.Screen
-						name="newproject"
-						component={NewProject}
-						options={{
-							headerShown: false,
-							gestureEnabled: true,
-							animationTypeForReplace: 'push',
-						}}
 					/>
 					<RootStack.Screen
 						name="settings"
@@ -99,6 +91,15 @@ export const RootNavigator = () => {
 						name="verify_account"
 						component={VerifyAccount}
 						options={{ gestureEnabled: true, animation: 'default', presentation: 'modal' }}
+					/>
+					<RootStack.Screen
+						name="profile"
+						component={Profile}
+						options={{
+							gestureEnabled: true,
+							animation: 'slide_from_left',
+							presentation: 'card',
+						}}
 					/>
 				</RootStack.Navigator>
 			</Block>

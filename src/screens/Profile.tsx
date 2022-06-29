@@ -120,9 +120,7 @@ export const Profile = () => {
 						{ProfileData.bio && (
 							<>
 								<Line size={3} color={theme.backgroundDarker} spacing={12} />
-								<Text size={14} color={theme.textFade}>
-									{ProfileData.bio}
-								</Text>
+								<Text color={theme.textFade}>{ProfileData.bio}</Text>
 							</>
 						)}
 						<Spacer size={300} />

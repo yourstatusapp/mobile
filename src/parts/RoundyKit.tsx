@@ -143,7 +143,7 @@ export const RoundyButton: React.FC<RoundyButtonProps> = ({ text, disabled, onPr
 			onPress={onPress}
 			style={({ pressed }) => [style, { opacity: disabled ? 0.5 : pressed ? 0.75 : 1 }]}
 			disabled={disabled}>
-			<Text center weight="700" size={14}>
+			<Text center weight="700">
 				{text}
 			</Text>
 		</RoundyButtonBody>

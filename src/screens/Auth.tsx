@@ -178,7 +178,7 @@ export const Auth: React.FC = () => {
 
 					<Spacer size={20} />
 					{!!Error && (
-						<Text color="red" size={14} bold>
+						<Text color="red" bold>
 							{Error}
 						</Text>
 					)}

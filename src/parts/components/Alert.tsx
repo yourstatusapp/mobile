@@ -63,7 +63,7 @@ export const CustomAlert = () => {
 				</Text>
 				<Spacer size={2} />
 				{AlertData.desc && (
-					<Text color="white" style={{ opacity: 0.8 }} size={14}>
+					<Text color="white" style={{ opacity: 0.8 }}>
 						{AlertData.desc}
 					</Text>
 				)}
