@@ -17,10 +17,12 @@ import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-m
 import { StyleSheet, ViewStyle } from 'react-native';
 import { hasNotch } from 'react-native-device-info';
 import { useNavigation } from '@hooks';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const Account = () => {
 	const nav = useNavigation();
 	const theme = useTheme();
+	const { top } = useSafeAreaInsets();
 	const profile = usePulse(core.profile.profile);
 	const [MenuOpen, SetMenuOpen] = useState(false);
 	const isDarkMode = usePulse(core.ui.isDarkMode);
@@ -38,12 +40,9 @@ export const Account = () => {
 	]);
 
 	return (
-		<Block color={theme.background} style={{ zIndex: 1 }}>
-			<BlockScroll
-				style={{ zIndex: 6, paddingHorizontal: 40 }}
-				contentContainerStyle={{ flex: 1 }}
-				paddingHorizontal={20}>
-				<Block row flex={0} marginTop={70} marginBottom={20}>
+		<Block color={theme.background}>
+			<Block scroll paddingHorizontal={20} marginTop={top + 20}>
+				<Block row flex={0} marginBottom={20}>
 					<Text size={28} bold color={theme.text}>
 						Account
 					</Text>
@@ -131,7 +130,7 @@ export const Account = () => {
 				{/* <TextButton text="history" onPress={() => nav.navigate('realtime_history' as never)} /> */}
 
 				<Fill />
-			</BlockScroll>
+			</Block>
 			<HeadingBlurOverlay />
 		</Block>
 	);

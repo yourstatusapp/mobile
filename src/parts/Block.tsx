@@ -98,7 +98,6 @@ export const BlockScroll: React.FC<BlockScrollType> = ({
 	children,
 	contentContainerStyle,
 	style,
-
 	...props
 }) => {
 	const BlockScrollStyle = StyleSheet.flatten<ViewStyle>([style, props]);

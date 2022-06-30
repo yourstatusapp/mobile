@@ -3,7 +3,6 @@ import { StyleSheet, ViewStyle } from 'react-native';
 import { usePulse } from '@pulsejs/react';
 import {
 	Account,
-	Friends,
 	Profile,
 	SearchFriend,
 	FriendRequests,
@@ -53,7 +52,6 @@ export const BottomTabNavigator: React.FC = () => {
 				initialRouteName={current_tab_state.path_name}>
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
 				<TabsStackNavigator.Screen name="events" component={Events} options={o} />
-				<TabsStackNavigator.Screen name="friends" component={Friends} options={o} />
 				<TabsStackNavigator.Screen name="conversations" component={Conversations} options={o} />
 				<TabsStackNavigator.Screen
 					name="profile"

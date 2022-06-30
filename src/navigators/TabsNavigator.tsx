@@ -6,6 +6,7 @@ import { Account, Events, Friends } from '../screens';
 
 export const TabsNavigator = () => {
 	const [tab, setTab] = useState<NavbarScreens>('friends');
+
 	return (
 		<>
 			<Block style={{ zIndex: 1 }}>
