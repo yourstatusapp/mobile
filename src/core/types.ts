@@ -210,7 +210,6 @@ export type RootstackParamList = {
 	new_moment: undefined;
 	create_status: undefined;
 	settings: undefined;
-	CreateEvent: undefined;
 	manage_status: undefined;
 	explanation: undefined;
 	realtime_history: undefined;
@@ -222,6 +221,22 @@ export type RootstackParamList = {
 
 	// tabs
 	profile: any;
+	account: undefined;
+	events: undefined;
+	StatusDetail: {
+		username: string;
+		status: StatusType;
+	};
+	friends: undefined;
+	conversations: undefined;
+	directmessage: undefined;
+	SearchFriend: undefined;
+	FriendRequests: undefined;
+	newconversation: undefined;
+	ManageFriends: undefined;
+	CreateEvent: undefined;
+	Event: EventType;
+	EditProfile: undefined;
 };
 
 export type SettingsStackParamList = {

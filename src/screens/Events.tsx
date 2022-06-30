@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Avatar, Block, HeadingBlurOverlay, Icon, IconButton, TabbarHeader, Text } from '@parts';
+import { Avatar, Block, HeadingBlurOverlay, Icon, Text } from '@parts';
 import core, { request } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { FlatList } from 'react-native';
@@ -36,7 +36,7 @@ export const Events = () => {
 						style={{ padding: 10, borderRadius: 8 }}
 						marginBottom={20}
 						press
-						onPress={() => nav.navigate('Event', { event_id: item.id })}>
+						onPress={() => nav.navigate('Event', { event_id: item.ßid })}>
 						<Block row hCenter marginBottom={8}>
 							<Avatar src={[item.account_id, item.avatar]} size={25} />
 							<Text medium marginLeft={5}>

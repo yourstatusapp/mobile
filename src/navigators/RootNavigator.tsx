@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BottomTabNavigator } from './BottomTabNavigator';
 import core, { RootstackParamList } from '@core';
 import { usePulse } from '@pulsejs/react';
 import { useLinking } from '../hooks';
@@ -18,6 +17,12 @@ import {
 	ManageStatus,
 	CreateEvent,
 	Profile,
+	Event,
+	StatusDetail,
+	EditProfile,
+	FriendRequests,
+	SearchFriend,
+	ManageFriends,
 } from '../screens';
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
 import { Block } from '@parts';
@@ -95,6 +100,60 @@ export const RootNavigator = () => {
 					<RootStack.Screen
 						name="profile"
 						component={Profile}
+						options={{
+							gestureEnabled: true,
+							animation: 'slide_from_left',
+							presentation: 'card',
+						}}
+					/>
+					<RootStack.Screen
+						name="Event"
+						component={Event}
+						options={{
+							gestureEnabled: true,
+							animation: 'slide_from_left',
+							presentation: 'card',
+						}}
+					/>
+					<RootStack.Screen
+						name="StatusDetail"
+						component={StatusDetail}
+						options={{
+							gestureEnabled: true,
+							animation: 'slide_from_left',
+							presentation: 'card',
+						}}
+					/>
+					<RootStack.Screen
+						name="EditProfile"
+						component={EditProfile}
+						options={{
+							gestureEnabled: true,
+							animation: 'slide_from_left',
+							presentation: 'card',
+						}}
+					/>
+					<RootStack.Screen
+						name="FriendRequests"
+						component={FriendRequests}
+						options={{
+							gestureEnabled: true,
+							animation: 'slide_from_left',
+							presentation: 'card',
+						}}
+					/>
+					<RootStack.Screen
+						name="SearchFriend"
+						component={SearchFriend}
+						options={{
+							gestureEnabled: true,
+							animation: 'slide_from_left',
+							presentation: 'card',
+						}}
+					/>
+					<RootStack.Screen
+						name="ManageFriends"
+						component={ManageFriends}
 						options={{
 							gestureEnabled: true,
 							animation: 'slide_from_left',

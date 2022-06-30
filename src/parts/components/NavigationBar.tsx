@@ -1,9 +1,9 @@
 import core from '@core';
 import { useNavigation } from '@hooks';
-import { Avatar, Block, Icon, IconButton, Text } from '@parts';
+import { Avatar, Icon, IconButton } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { BlurView } from 'expo-blur';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { TouchableOpacity, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled, { useTheme } from 'styled-components/native';
@@ -25,20 +25,9 @@ export const CustomNavBar = ({ onTabChange, tabState }: CustomNavBarProps) => {
 	const BlurViewStyle: ViewStyle = {
 		height: NAVIGATION_BAR_HEIGHT + bottom,
 		width: '100%',
-		// bottom: 0,
-		// position: 'absolute',
 		zIndex: 4,
 		opacity: 1,
-		// marginBottom: bottom,
-		// borderTopWidth: 1,
-		// borderTopColor: theme.backgroundDarker,
 	};
-
-	// const [hideFloatingbtn, setHideFloatingbtn] = useState(false);
-
-	// useEffect(() => {
-	// 	setHideFloatingbtn(focusState?.target?.split('-')[0] === 'StatusDetail');
-	// }, [focusState]);
 
 	return (
 		<CustomTabBarBody style={{ height: NAVIGATION_BAR_HEIGHT + (bottom - (bottom ? 10 : 0)) + 1 }}>
@@ -98,7 +87,7 @@ export const CustomNavBar = ({ onTabChange, tabState }: CustomNavBarProps) => {
 						onPress={() => nav.navigate('create_status' as never)}
 					/>
 				)}
-				{tabState === 'events' && (
+				{/* {tabState === 'events' && (
 					<FloatingPostBtn
 						name="flag-add"
 						size={30}
@@ -107,7 +96,7 @@ export const CustomNavBar = ({ onTabChange, tabState }: CustomNavBarProps) => {
 						iconSize={22}
 						onPress={() => nav.navigate('CreateEvent')}
 					/>
-				)}
+				)} */}
 			</BlurView>
 		</CustomTabBarBody>
 	);
