@@ -3,6 +3,7 @@ export { Avatar } from './Avatar';
 export { Block, BlockScroll } from './Block';
 export { Button, SmallButton } from './Buttons';
 export { Icon } from './icons/Icon';
+export { Icon2 } from './Icon2';
 export { HeadingBlurOverlay } from './HeadingBlurOverlay';
 export { TextButton } from './TextButton';
 

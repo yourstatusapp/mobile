@@ -9,6 +9,8 @@ import {
 	FlatList,
 	RefreshControl,
 } from 'react-native';
+
+import { FlashList } from '@shopify/flash-list';
 import styled, { useTheme } from 'styled-components/native';
 import { BlurView } from 'expo-blur';
 import { usePulse } from '@pulsejs/react';
@@ -175,7 +177,7 @@ export const Friends = React.memo(() => {
 					<Block flex={0} marginBottom={30}>
 						{!!MyStatus?.length && (
 							<Block row>
-								<FlatList
+								<FlashList
 									data={MyStatus}
 									initialNumToRender={MyStatus.length}
 									style={{ marginTop: 10, marginLeft: 15 }}
@@ -197,7 +199,7 @@ export const Friends = React.memo(() => {
 						)}
 						{!!myStories[0]?.stories?.length && (
 							<Block row marginLeft={0} marginTop={15}>
-								<FlatList
+								<FlashList
 									horizontal={true}
 									data={myStories[0].stories}
 									contentContainerStyle={{ paddingLeft: 15 }}

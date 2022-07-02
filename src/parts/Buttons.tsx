@@ -69,7 +69,7 @@ export const SmallButton: React.FC<SmallButtonProps> = ({
 					opacity: pressed ? 0.7 : disabled ? 0.5 : 1,
 				},
 			]}>
-			<Text color={theme.background} bold>
+			<Text color={color || theme.background} medium>
 				{text}
 			</Text>
 		</SmallButtonBody>
@@ -77,12 +77,9 @@ export const SmallButton: React.FC<SmallButtonProps> = ({
 };
 
 const SmallButtonBody = styled.Pressable`
-	/* padding: 6px 10px; */
 	height: 25px;
 	padding: 0px 12px;
 	border-radius: 100px;
-	/* background-color: #3f5ce7; */
 	align-self: center;
-	/* opacity: 0.3; */
 	justify-content: center;
 `;

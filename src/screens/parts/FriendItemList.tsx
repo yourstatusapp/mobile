@@ -13,9 +13,13 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 	const nav = useNavigation();
 	const bb = usePulse(core.lists.stories.groups.all);
 
-	const userStories = React.useMemo(() => bb.filter(v => v.account_id === props.item.account_id)[0], [props.item.account_id, bb]);
+	const userStories = React.useMemo(
+		() => bb.filter(v => v.account_id === props.item.account_id)[0],
+		[props.item.account_id, bb],
+	);
 
-	const openProfile = () => nav.navigate('profile' as never, { username: props.item.username } as never);
+	const openProfile = () =>
+		nav.navigate('profile' as never, { username: props.item.username } as never);
 
 	return (
 		<FriendCompBody key={props.index}>
@@ -25,7 +29,9 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 				</TouchableOpacity>
 				<Block style={{ paddingLeft: 20 }}>
 					<Text weight="700" size={16}>
-						{props.item.username ? props.item.username.charAt(0).toUpperCase() + username.slice(1, username.length + 1) : '-'}
+						{props.item.username
+							? props.item.username.charAt(0).toUpperCase() + username.slice(1, username.length + 1)
+							: '-'}
 					</Text>
 					{!!props.item?.status?.length && (
 						<FlatList
@@ -51,10 +57,14 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 						renderItem={({ item, index }) => (
 							<TouchableOpacity
 								key={item.id}
-								onPress={() => core.events.storie_viewer.emit({ stories: userStories, clicked_at_index: index })}>
+								onPress={() =>
+									core.events.storie_viewer.emit({ stories: userStories, clicked_at_index: index })
+								}>
 								<FastImage
 									key={index}
-									source={{ uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}` }}
+									source={{
+										uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}`,
+									}}
 									style={{ height: 120, width: 80, borderRadius: 6, marginRight: 15 }}
 								/>
 							</TouchableOpacity>

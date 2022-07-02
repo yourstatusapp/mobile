@@ -7,6 +7,7 @@ import { useSharedValue } from 'react-native-reanimated';
 import { Linking, Pressable, StyleSheet, ViewStyle } from 'react-native';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@hooks';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 interface StatusType {
 	self?: boolean;
@@ -32,7 +33,7 @@ interface StatusTypesColors {
 	};
 }
 
-const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
+export const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 	light: {
 		0: {
 			key_name: 'DEFAULT',
@@ -88,7 +89,7 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 			{status.type === 1 && (
 				<Icon
 					name="discord"
-					size={18}
+					size={14}
 					color={StatusColors[theme_name][status.type].color}
 					style={{ marginRight: 4 }}
 				/>
@@ -108,6 +109,8 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 	);
 
 	const onPressHandle = useCallback(async () => {
+		console.log('tap');
+
 		if (status.taped === false) {
 			const res = await request('post', `/status/${status?.id}/tap`);
 			if (res.data) {
@@ -148,10 +151,18 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 		},
 	];
 
+	const tap = Gesture.Tap()
+		.numberOfTaps(2)
+		.onStart(() => {
+			console.log('Yay, double tap!');
+		});
+
 	return (
-		<Pressable disabled={disableTap === true} style={PressStyle} onPress={onPressHandle}>
-			{BaseRender}
-		</Pressable>
+		<GestureDetector gesture={tap}>
+			<Pressable disabled={disableTap === true} style={PressStyle} onPress={onPressHandle}>
+				{BaseRender}
+			</Pressable>
+		</GestureDetector>
 	);
 });
 
@@ -160,7 +171,7 @@ const StatusBody = styled.View<{ backColor: string; textColor: string }>`
 	border: solid 1.3px ${({ textColor }) => textColor}25;
 	padding: 4px 8px;
 	align-self: flex-start;
-	border-radius: 8px;
+	border-radius: 6px;
 	justify-content: center;
 	flex-direction: row;
 	align-items: center;

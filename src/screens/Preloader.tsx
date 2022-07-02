@@ -6,9 +6,10 @@ import core, { request } from '@core';
 import { Block, Spacer, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { connectToSocket } from '../utils/Socket';
+import { useNavigation } from '@hooks';
 
 interface PreloaderProps {
-	loaded: () => void;
+	loaded?: () => void;
 }
 
 export const PreloaderView = ({ loaded }: PreloaderProps) => {
@@ -16,6 +17,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 	const [TakingTooLong, setTakingTooLong] = useState(false);
 	const logged_in = usePulse(core.account.logged_in);
 	const [Loading, SetLoading] = useState(false);
+	const nav = useNavigation();
 
 	const getAccount = async () => {
 		SetLoading(true);
@@ -40,24 +42,33 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 			}
 		}
 		setTimeout(() => {
-			loaded();
+			// loaded();
+			nav.navigate('create_status');
 			// connectToSocket();
 		}, 10);
 	};
 
-	const s = () => {
-		core.account.logged_in.onNext(v => {
-			if (Loading) return;
-			if (v) {
+	const check = () => {
+		core.account.logged_in.onNext(value => {
+			// get the account data if has logged in value true
+			if (value === true) {
 				getAccount();
-			} else {
+			} else if (value === false) {
 			}
+
+			// if (Loading) return;
+			// if (v) {
+			// 	getAccount();
+			// } else {
+			// }
 		});
 
-		setTimeout(() => !logged_in && loaded(), 200);
+		// setTimeout(() => !logged_in && loaded(), 200);
 	};
 
-	useEffect(s, []);
+	useEffect(() => {
+		check();
+	}, []);
 
 	return (
 		<Block color={theme.background} hCenter vCenter>

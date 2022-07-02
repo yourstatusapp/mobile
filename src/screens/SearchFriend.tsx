@@ -23,9 +23,11 @@ export const SearchFriend = () => {
 	const [Loading, SetLoading] = useState(false);
 
 	const searchUser = async () => {
-		const res = await request<ProfileSearchItem[]>('post', '/profile/search', { data: { search: Username } });
+		const res = await request<ProfileSearchItem[]>('post', '/profile/search', {
+			data: { search: Username },
+		});
 		SetLoading(false);
-		if (!!res.data) {
+		if (res?.data) {
 			SetResults(res.data);
 		}
 	};
@@ -50,18 +52,26 @@ export const SearchFriend = () => {
 
 	useEffect(() => {
 		SetLoading(true);
-		if (timeoutID) clearTimeout(timeoutID);
+		if (timeoutID) {
+			clearTimeout(timeoutID);
+		}
+
 		timeoutID = setTimeout(() => {
 			searchUser();
 		}, 1000);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [Username]);
 
 	const goBack = () => nav.goBack();
 
 	const renderItem: ListRenderItem<ProfileSearchItem> = ({ item, index }) => {
 		return (
-			<Block flex={0} key={index} row style={{ height: 70 }} hCenter>
-				<Block flex={0} style={{ width: 45 }} press onPress={() => nav.navigate('profile' as never, { username: item.username } as never)}>
+			<Block flex={0} key={index} row height={70} hCenter>
+				<Block
+					flex={0}
+					width={45}
+					press
+					onPress={() => nav.navigate('profile' as never, { username: item.username } as never)}>
 					<Avatar src={[item?.account_id, item?.avatar]} size={45} />
 				</Block>
 				<Spacer size={15} h />
@@ -88,7 +98,7 @@ export const SearchFriend = () => {
 		<Block safe color={theme.background}>
 			<Block
 				color="transparent"
-				paddingHorizontal={20}
+				paddingHorizontal={10}
 				flex={0}
 				row
 				marginTop={15}

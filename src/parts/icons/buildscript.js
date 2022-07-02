@@ -36,11 +36,16 @@ export const Icon = ({ name, color, size, style}: {name: string;color?: string;s
 
 		// If there is a dash included, parse the svg title
 		if (svgTitleName.includes('-')) {
-			svgTitleName = svgTitleName.split('-')[0] + svgTitleName.split('-')[1].charAt(0).toUpperCase() + svgTitleName.split('-')[1].slice(1);
+			svgTitleName =
+				svgTitleName.split('-')[0] +
+				svgTitleName.split('-')[1].charAt(0).toUpperCase() +
+				svgTitleName.split('-')[1].slice(1);
 		}
 
 		// Read the contents
-		let svgContent = fs.readFileSync(`${SVG_FOLDER}/${svg}`, { encoding: 'utf8' }).replace('<svg', '<svg style={style}');
+		let svgContent = fs
+			.readFileSync(`${SVG_FOLDER}/${svg}`, { encoding: 'utf8' })
+			.replace('<svg', '<svg style={style}');
 		svgContent = parsePropertiesNames(svgContent);
 		svgContent = parseColorNames(svgContent);
 		svgContent = sizeProperties(svgContent);
@@ -76,7 +81,10 @@ export const Icon = ({ name, color, size, style}: {name: string;color?: string;s
 	fs.rmSync('./Icon.tsx', { recursive: true, force: true });
 
 	// build file content
-	let IconContent = MASTER_BASE.replace('%%_IMPORTS_%%', _imports).replace('%%_IMPORTS2_%%', _render);
+	let IconContent = MASTER_BASE.replace('%%_IMPORTS_%%', _imports).replace(
+		'%%_IMPORTS2_%%',
+		_render,
+	);
 
 	// Create file
 	fs.writeFileSync('./Icon.tsx', IconContent, { encoding: 'utf8' });
@@ -131,14 +139,22 @@ const fixTag = (text, tagName) => {
 	text.split(`<${tagName}`).map(() => {
 		text = text?.replace(
 			`<${tagName}`,
-			`<${tagName?.length > 0 ? tagName.charAt(0).toUpperCase() + tagName?.slice(1, tagName.length) : tagName.toUpperCase()}`,
+			`<${
+				tagName?.length > 0
+					? tagName.charAt(0).toUpperCase() + tagName?.slice(1, tagName.length)
+					: tagName.toUpperCase()
+			}`,
 		);
 	});
 
 	text.split(`/${tagName}>`).map(() => {
 		text = text?.replace(
 			`/${tagName}>`,
-			`/${tagName?.length > 0 ? tagName.charAt(0).toUpperCase() + tagName?.slice(1, tagName.length) : tagName.toUpperCase()}>`,
+			`/${
+				tagName?.length > 0
+					? tagName.charAt(0).toUpperCase() + tagName?.slice(1, tagName.length)
+					: tagName.toUpperCase()
+			}>`,
 		);
 	});
 

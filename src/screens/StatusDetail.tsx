@@ -26,7 +26,9 @@ export const StatusDetail: React.FC = () => {
 
 	const replyOnStatus = React.useCallback(async () => {
 		setCommentLoading(true);
-		const res = await request('post', `/status/${params.status.id}/reply`, { data: { content: newMessage } });
+		const res = await request('post', `/status/${params.status.id}/reply`, {
+			data: { content: newMessage },
+		});
 		setNewMessage('');
 		setCommentLoading(false);
 		if (res.data) {
@@ -57,7 +59,7 @@ export const StatusDetail: React.FC = () => {
 					</Text>
 				</Block>
 				<Block hCenter flex={0} paddingTop={20} paddingBottom={15} color={theme.backgroundDark}>
-					<Status status={params.status} disableNavigate={true} />
+					<Status status={params.status} disableTap />
 				</Block>
 				<Line size={2} color={theme.backgroundDarker} />
 
@@ -88,7 +90,8 @@ export const StatusDetail: React.FC = () => {
 
 				<Block row hCenter flex={1} style={{ alignItems: 'flex-end' }} paddingHorizontal={15}>
 					<RoundedTextInput
-						placeholder="send message"
+						placeholder="Send a rpely"
+						placeholderTextColor={theme.textFadeLight}
 						onChangeText={v => setNewMessage(v)}
 						value={newMessage}
 						autoCapitalize={'none'}
@@ -109,7 +112,7 @@ export const StatusDetail: React.FC = () => {
 				</Block>
 				<Spacer size={20} />
 			</KeyboardAvoidingView>
-			<Spacer size={81} />
+			{/* <Spacer size={81} /> */}
 		</Block>
 	);
 };

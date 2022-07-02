@@ -36,6 +36,8 @@ export const Block: React.FC<BlockType> = ({
 	animate,
 	activeOpacity,
 	disabled,
+	width,
+	height,
 }) => {
 	const theme = useTheme();
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
@@ -55,6 +57,8 @@ export const Block: React.FC<BlockType> = ({
 		{ paddingLeft },
 		{ paddingRight },
 		{ paddingTop },
+		{ width },
+		{ height },
 		style,
 	]);
 

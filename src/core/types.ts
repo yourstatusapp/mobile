@@ -58,6 +58,8 @@ export interface BlockType extends PaddingType, MarginType {
 	onPress?: () => void;
 	paddingHorizontal?: number;
 	style?: ViewStyle;
+	width?: number;
+	height?: number;
 	row?: boolean;
 	opacity?: number;
 	flex?: 1 | 0;
@@ -203,6 +205,7 @@ export type TabStackNavParamList = {
 };
 
 export type RootstackParamList = {
+	Preloader: undefined;
 	newproject: undefined;
 	tabs: undefined;
 	auth: undefined;
