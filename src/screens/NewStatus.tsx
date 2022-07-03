@@ -54,6 +54,13 @@ const StatusTypeEtc: {
 const STATUS_TYPES_LIST = [{ icon: 'message' }, { icon: 'discord', iconExtraSpace: 5 }];
 let timerID2: NodeJS.Timeout;
 
+interface EventDetails {
+	description?: string;
+	startDate?: Date;
+	endDate?: Date;
+	location?: string;
+}
+
 export const NewStatus: React.FC = () => {
 	const nav = useNavigation();
 	const theme = useTheme();
@@ -61,8 +68,10 @@ export const NewStatus: React.FC = () => {
 
 	const [statusType, setStatusType] = useState<StatusTypes>(0);
 	const [statusDisplayText, setStatusDisplayText] = useState('');
-	const [eventDesc, setEventDesc] = useState('');
 	const [messagePlaceHolder, setMessagePlaceholder] = useState('');
+	const [showDatePickerModal, setShowDatePickerModal] = useState(false);
+	const [eventDetails, setEventDetails] = useState<EventDetails>({ description: '' });
+	const [selectedDate, setSelectedDate] = useState(new Date());
 
 	// const [Error, SetError] = useState('');
 	// const [Loading, SetLoading] = useState(false);
@@ -193,6 +202,15 @@ export const NewStatus: React.FC = () => {
 		console.log('handleSheetChanges', index);
 	}, []);
 
+	const setStartDate = () => {
+		setSelectedDate(new date());
+		console.log('Settings start date');
+	};
+
+	const setEndDate = () => {
+		console.log('Settings start date');
+	};
+
 	useEffect(() => {
 		setMessagePlaceholder(StatusTypeEtc[statusType].displayMessagePlaceholder);
 	}, [statusType]);
@@ -237,27 +255,37 @@ export const NewStatus: React.FC = () => {
 								paddingHorizontal={10}
 								marginTop={5}
 								style={{ justifyContent: 'space-between' }}>
+								{/* <Text>{JSON.stringify(eventDetails)}</Text> */}
 								<TextInput
 									autoComplete="off"
 									autoCorrect={false}
 									autoCapitalize="none"
 									placeholder="Describe what you’re doing on your event"
 									placeholderTextColor={theme.textFadeLight}
-									style={{ fontSize: 16, color: theme.text }}
-									value={eventDesc}
-									defaultValue={eventDesc}
-									onChangeText={v => setEventDesc(v)}
-								/>
-								<Block
-									flex={0}
-									style={{
-										alignSelf: 'flex-start',
-										alignItems: 'flex-start',
+									style={{ fontSize: 16, color: theme.text, backgroundColor: 'red' }}
+									value={eventDetails.description}
+									defaultValue={eventDetails.description}
+									onChangeText={v => {
+										setEventDetails(state => {
+											return {
+												...state,
+												description: v,
+											};
+										});
 									}}
-									marginBottom={5}>
-									<SmallButton text="Start Date" color="white" onPress={() => {}} />
-									<Spacer size={10} />
-									<SmallButton text="End Date" color="white" onPress={() => {}} />
+								/>
+								<Block flex={0} row style={{}} marginBottom={10}>
+									<SmallButton
+										text="Start Date"
+										color="white"
+										onPress={() => setShowDatePickerModal(true)}
+									/>
+									<Spacer size={10} h />
+									<SmallButton
+										text="End Date"
+										color="white"
+										onPress={() => setShowDatePickerModal(true)}
+									/>
 								</Block>
 							</Block>
 						</>
@@ -305,24 +333,26 @@ export const NewStatus: React.FC = () => {
 					</Block>
 				</KeyboardAvoidingView>
 			</Block>
-			<BottomSheet
-				ref={bottomSheetRef}
-				index={1}
-				snapPoints={snapPoints}
-				enablePanDownToClose
-				handleIndicatorStyle={{ backgroundColor: theme.textFadeLight }}
-				handleStyle={{ backgroundColor: theme.backgroundDarker }}
-				onChange={handleSheetChanges}>
-				<Block style={{ backgroundColor: theme.backgroundDark }} hCenter vCenter>
-					<DatePicker
-						date={new Date()}
-						mode="datetime"
-						textColor={theme.text}
-						fadeToColor={theme.backgroundDarker}
-						onDateChange={() => {}}
-					/>
-				</Block>
-			</BottomSheet>
+			{showDatePickerModal && (
+				<BottomSheet
+					ref={bottomSheetRef}
+					index={1}
+					snapPoints={snapPoints}
+					enablePanDownToClose
+					handleIndicatorStyle={{ backgroundColor: theme.textFadeLight }}
+					handleStyle={{ backgroundColor: theme.backgroundDarker }}
+					onChange={handleSheetChanges}>
+					<Block style={{ backgroundColor: theme.backgroundDark }} hCenter vCenter>
+						<DatePicker
+							date={new Date()}
+							mode="datetime"
+							textColor={theme.text}
+							fadeToColor={theme.backgroundDarker}
+							onDateChange={() => {}}
+						/>
+					</Block>
+				</BottomSheet>
+			)}
 		</>
 	);
 	// return (
