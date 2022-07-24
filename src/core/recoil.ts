@@ -1,3 +1,4 @@
+import { ThemeTypes } from '@hooks';
 import { atom } from 'recoil';
 import { localStorageEffect } from './recoil.utils';
 import { ProfileType } from './types';
@@ -18,14 +19,7 @@ export const profile = atom<ProfileType | null>({
 	default: null,
 });
 
-interface MiscType {
-	theme: 'light' | 'dark';
-}
-
-export const misc = atom<MiscType>({
-	key: 'misc',
-	default: {
-		theme: 'light',
-	},
-	effects: [localStorageEffect('misc')],
+export const themeState = atom<ThemeTypes>({
+	key: 'theme',
+	default: 'light',
 });

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import styled from 'styled-components/native';
+import styled, { ThemeProvider } from 'styled-components/native';
 import core from '@core';
 import { RootNavigator } from './navigators/RootNavigator';
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { RecoilRoot, useRecoilState } from 'recoil';
 import { InternalThemes } from './utils/theme';
-import { ThemeContext, ThemeWrapper, useTheme } from './hooks/useTheme';
+import { StyledThemeWrapper, ThemeContext, ThemeWrapper, useTheme } from './hooks/useTheme';
 
 // instance.setStorage({
 // 	async: true,
@@ -70,9 +70,10 @@ export const App: React.FC = () => {
 
 	return (
 		<RecoilRoot>
-			<BottomSheetModalProvider>
-				{/* <PushNotifications /> */}
-				{/* {ShowStorie && (
+			<StyledThemeWrapper>
+				<BottomSheetModalProvider>
+					{/* <PushNotifications /> */}
+					{/* {ShowStorie && (
 					<StorieViewer
 						list={L}
 						onClose={() => {
@@ -82,16 +83,17 @@ export const App: React.FC = () => {
 						skipWatchRequest={SkipWatchRequest}
 					/>
 				)} */}
-				<NavigationContainer>
-					<AppBody>
-						<MenuProvider>
-							{/* <StatusBar barStyle={misc.theme !== 'light' ? 'light-content' : 'dark-content'} /> */}
-							<RootNavigator />
-							<CustomAlert />
-						</MenuProvider>
-					</AppBody>
-				</NavigationContainer>
-			</BottomSheetModalProvider>
+					<NavigationContainer>
+						<AppBody>
+							<MenuProvider>
+								{/* <StatusBar barStyle={misc.theme !== 'light' ? 'light-content' : 'dark-content'} /> */}
+								<RootNavigator />
+								<CustomAlert />
+							</MenuProvider>
+						</AppBody>
+					</NavigationContainer>
+				</BottomSheetModalProvider>
+			</StyledThemeWrapper>
 		</RecoilRoot>
 	);
 };

@@ -1,11 +1,12 @@
 import { FriendItemRenderType } from '@core';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 import { Avatar, Block, Status, Text } from '@parts';
 import React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
 export const FriendComp: React.FC<FriendItemRenderType> = props => {
+	const { theme } = useTheme();
 	const username = props.item.username;
 	const nav = useNavigation();
 	// const bb = usePulse(core.lists.stories.groups.all);
@@ -19,7 +20,7 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 		nav.navigate('profile' as never, { username: props.item.username } as never);
 
 	return (
-		<FriendCompBody key={props.index}>
+		<FriendCompBody key={props.index} style={{ borderBottomColor: theme.backgroundDarker }}>
 			<Block row paddingHorizontal={20}>
 				<TouchableOpacity activeOpacity={0.6} onPress={openProfile}>
 					<Avatar src={[props.item.account_id, props.item.avatar]} size={45} />

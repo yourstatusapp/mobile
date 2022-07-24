@@ -1,12 +1,18 @@
 import React, { useState, useRef } from 'react';
-import core, { AppAlert, FriendItemRenderType, FriendItemType, request, StatusType } from '@core';
+import core, {
+	AppAlert,
+	FriendItemRenderType,
+	FriendItemType,
+	request,
+	StatusType,
+	StorieType,
+} from '@core';
 import { Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
 import { Animated, StyleSheet, TouchableOpacity, ViewStyle, RefreshControl } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
 import styled from 'styled-components/native';
 import { BlurView } from 'expo-blur';
-import { usePulse } from '@pulsejs/react';
 import FastImage from 'react-native-fast-image';
 import { FriendComp } from '../parts/FriendItemList';
 import { useNavigation, useTheme } from '@hooks';
@@ -20,7 +26,7 @@ export const Friends = React.memo(() => {
 	const nav = useNavigation();
 	const { top } = useSafeAreaInsets();
 	const [friends, setFriends] = useState<FriendItemType[]>([]);
-	const myStories = [];
+	const myStories: StorieType[] = [];
 	const profile = null;
 	// const friends = usePulse(core.lists.friends.groups.friends);
 	// const myStories = usePulse(core.lists.stories.groups.mine);
@@ -80,22 +86,24 @@ export const Friends = React.memo(() => {
 	const getMyStatus = async () => {
 		const res = await request<any>('get', '/status');
 		setMyStatus(res.data);
-		core.lists.status.collect(res.data, 'mine');
+		// TODO: this
+		// core.lists.status.collect(res.data, 'mine');
 	};
 
 	const getStories = async () => {
 		const res = await request<{ my: any; all: any }>('get', '/profile/stories');
 		if (res.data) {
-			core.lists.stories.collect(res.data?.all, 'all');
-			core.lists.stories.collect(
-				{
-					account_id: profile.account_id,
-					avatar: profile.avatar,
-					username: profile.username,
-					stories: res.data.my,
-				},
-				'mine',
-			);
+			// TODO: this
+			// core.lists.stories.collect(res.data?.all, 'all');
+			// core.lists.stories.collect(
+			// 	{
+			// 		account_id: profile.account_id,
+			// 		avatar: profile.avatar,
+			// 		username: profile.username,
+			// 		stories: res.data.my,
+			// 	},
+			// 	'mine',
+			// );
 		}
 	};
 
@@ -177,7 +185,7 @@ export const Friends = React.memo(() => {
 							<Block row>
 								<FlashList
 									data={MyStatus}
-									initialNumToRender={MyStatus.length}
+									// initialNumToRender={MyStatus?.length}
 									style={{ marginTop: 10, marginLeft: 15 }}
 									scrollEnabled={false}
 									renderItem={({ item, index }) => (
@@ -201,16 +209,17 @@ export const Friends = React.memo(() => {
 									horizontal={true}
 									data={myStories[0].stories}
 									contentContainerStyle={{ paddingLeft: 15 }}
-									renderItem={({ item, index }) => (
+									renderItem={({ item }) => (
 										<Block key={item.id} style={{ position: 'relative' }}>
 											<TouchableOpacity
-												onPress={() =>
-													core.events.storie_viewer.emit({
-														stories: myStories[0],
-														clicked_at_index: index,
-														skipWatchRequest: true,
-													})
-												}
+												onPress={() => {
+													// TODO:
+													// core.events.storie_viewer.emit({
+													// 	stories: myStories[0],
+													// 	clicked_at_index: index,
+													// 	skipWatchRequest: true,
+													// })
+												}}
 												activeOpacity={0.8}>
 												<FastImage
 													source={{

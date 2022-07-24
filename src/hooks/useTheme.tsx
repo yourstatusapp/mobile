@@ -1,14 +1,27 @@
-import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
-import { useContext } from 'react';
-import { atom, useRecoilState, useRecoilValue } from 'recoil';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { themeState } from '../core/recoil';
+import { ThemeProvider } from 'styled-components/native';
 
-import styled, {
-	DefaultTheme,
-	ThemeProvider,
-	useTheme as useStyledTheme,
-} from 'styled-components/native';
+export interface DefaultTheme {
+	name: 'dark' | 'light';
+	text: string;
+	textFade: string;
+	textFadeLight: string;
+	background: string;
+	backgroundDark: string;
+	backgroundDarker: string;
+	darker: string;
+	darker1: string;
+	darker2: string;
 
-export const InternalThemes: { [k in 'light' | 'dark']: DefaultTheme } = {
+	primary: string;
+	primary2: string;
+}
+
+export type ThemeTypes = 'light' | 'dark';
+
+export const InternalThemes: { [k in ThemeTypes]: DefaultTheme } = {
 	light: {
 		name: 'light',
 		text: '#000000',
@@ -39,54 +52,41 @@ export const InternalThemes: { [k in 'light' | 'dark']: DefaultTheme } = {
 	},
 };
 
-type ThemeTypes = 'light' | 'dark';
-
-// export const ThemeContext = createContext({
-// 	theme: InternalThemes.light,
-// });
-
-const themeState = atom<ThemeTypes>({
-	key: 'theme',
-	default: 'light',
-});
-
 export const useTheme = () => {
 	const [currentTheme, setCurrentTheme] = useRecoilState(themeState);
-	// const [currentTheme, setCurrentTheme] = useState<ThemeTypes>('light');
 	const [systemThemeEnabled, setUseSystemTheme] = useState<boolean>(false);
 
-	const isDarkMode = useMemo(() => currentTheme === 'dark', [currentTheme]);
+	const isDarkMode = useCallback(() => {
+		return currentTheme === 'dark';
+	}, [currentTheme]);
 
 	const updateUseSystemTheme = (v: boolean) => {
 		setUseSystemTheme(v);
 	};
 
 	const toggleTheme = useCallback(
-		(type?: ThemeTypes) => {
-			console.log('incoming type => ', type);
-			console.log(type ?? currentTheme === 'light' ? 'dark' : 'light');
-
-			setCurrentTheme(type ?? currentTheme === 'light' ? 'dark' : 'light');
+		(setThemeTypeParam?: ThemeTypes) => {
+			setCurrentTheme(setThemeTypeParam || currentTheme === 'light' ? 'dark' : 'light');
 		},
 		[currentTheme, setCurrentTheme],
 	);
 
-	// const theme = useMemo(() => {
-	// 	console.log(`Theming chaning to ${currentTheme}`);
-
-	// 	return InternalThemes[currentTheme];
-	// }, [currentTheme]);
+	const theme = useMemo(() => {
+		return InternalThemes[currentTheme];
+	}, [currentTheme]);
 
 	return {
-		isDarkMode,
+		isDarkMode: isDarkMode(),
 		toggleTheme,
-		theme: InternalThemes[currentTheme],
+		theme,
 		updateUseSystemTheme,
 		systemThemeEnabled,
 		currentTheme,
 	};
 };
 
-// export const ThemeWrapper: React.FC<{ theme: DefaultTheme }> = ({ children, theme }) => {
-// 	return <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>;
-// };
+// This is specific for styled components so we can use the theme object inside a styled component anotation such like `color: ${p => p.theme.color}`
+export const StyledThemeWrapper: React.FC = ({ children }) => {
+	const { theme } = useTheme();
+	return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+};

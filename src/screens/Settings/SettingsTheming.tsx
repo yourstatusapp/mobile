@@ -12,6 +12,8 @@ export const SettingsTheming: React.FC = () => {
 		updateUseSystemTheme(v);
 	};
 
+	const toggleUiTheme = () => toggleTheme();
+
 	return (
 		<Block color={theme.backgroundDarker}>
 			<Text bold size={26} marginTop={15} marginLeft={15}>
@@ -21,9 +23,7 @@ export const SettingsTheming: React.FC = () => {
 			<SettingItem
 				disabled={systemThemeEnabled}
 				text="Dark Theme"
-				RightComponent={() => (
-					<Switch value={isDarkMode} onValueChange={v => toggleTheme(v ? 'light' : 'dark')} />
-				)}
+				RightComponent={() => <Switch value={isDarkMode} onValueChange={toggleUiTheme} />}
 			/>
 			<SettingItem
 				text="Use system Theme"

@@ -1,6 +1,6 @@
 import core from '@core';
 import { useNavigation, useTheme } from '@hooks';
-import { Avatar, Icon, IconButton } from '@parts';
+import { Avatar, Block, Icon, IconButton } from '@parts';
 import { BlurView } from 'expo-blur';
 import React from 'react';
 import { TouchableOpacity, ViewStyle } from 'react-native';
@@ -30,7 +30,11 @@ export const CustomNavBar = ({ onTabChange, tabState }: CustomNavBarProps) => {
 	};
 
 	return (
-		<CustomTabBarBody style={{ height: NAVIGATION_BAR_HEIGHT + (bottom - (bottom ? 10 : 0)) + 1 }}>
+		<CustomTabBarBody
+			style={{
+				borderTopColor: theme.backgroundDarker,
+				height: NAVIGATION_BAR_HEIGHT + (bottom - (bottom ? 10 : 0)) + 1,
+			}}>
 			<DimmingOverlay />
 			<BlurView style={BlurViewStyle} tint={theme.name} intensity={30}>
 				<TabContainer style={{ height: NAVIGATION_BAR_HEIGHT }}>
@@ -124,7 +128,6 @@ const CustomTabBarBody = styled.View`
 	align-items: center;
 	position: absolute;
 	z-index: 3;
-	border-top-color: ${({ theme }) => theme.backgroundDarker};
 	border-top-width: 1px;
 `;
 
@@ -140,19 +143,19 @@ const TabContainer = styled.View`
 `;
 
 const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
+	const { theme } = useTheme();
 	const acc = useRecoilValue(core.userData);
 	const profile = useRecoilValue(core.profile);
 
 	return (
-		<AvatarBody active={c.active}>
+		<AvatarBody flex={0} color={c.active ? theme.text : theme.backgroundDarker}>
 			<Avatar src={[acc?.id, profile?.avatar]} size={30} />
 		</AvatarBody>
 	);
 };
 
-const AvatarBody = styled.View<{ active: boolean }>`
+const AvatarBody = styled(Block)`
 	border-radius: 50px;
-	background-color: ${({ active, theme }) => (active ? theme.text : theme.backgroundDarker)};
 	height: 35px;
 	width: 35px;
 	align-items: center;

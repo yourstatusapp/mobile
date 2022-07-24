@@ -37,7 +37,9 @@ export const StatusDetail: React.FC = () => {
 	}, [newMessage, params.status.id]);
 
 	useEffect(() => {
-		if (params?.status.id) getComments(params.status.id);
+		if (params?.status.id) {
+			getComments(params.status.id);
+		}
 	}, []);
 
 	return (

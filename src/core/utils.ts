@@ -84,9 +84,9 @@ export const TimeFormatter = (snowflake_id: string, shortName?: boolean) => {
 };
 
 export const AppAlert = (success: boolean, title: string, desc?: string) => {
-	core.events.notification.emit({
-		success,
-		title: !desc ? title : success ? 'Success' : 'Failed',
-		desc,
-	});
+	// core.events.notification.emit({
+	// 	success,
+	// 	title: !desc ? title : success ? 'Success' : 'Failed',
+	// 	desc,
+	// });
 };
