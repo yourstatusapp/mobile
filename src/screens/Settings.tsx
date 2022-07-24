@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Block, Fill, IconButton, Text } from '@parts';
-import { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import core from '@core';
-import { usePulse } from '@pulsejs/react';
 
 import { SettingsNavigator } from '../navigators/SettingsNavigator';
+import { useTheme } from '@hooks';
 
 export const Settings = () => {
-	const theme = useTheme();
-	const theme_name = usePulse(core.ui.current_theme);
 	const nav = useNavigation();
-	const [NavigationState, SetNavigationState] = useState<any>();
+	const { theme, toggleTheme } = useTheme();
 
-	const toggleTheme = () => {
-		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
-	};
+	const [NavigationState, SetNavigationState] = useState<any>();
 
 	useEffect(() => {
 		console.log(NavigationState?.state);
@@ -26,10 +20,10 @@ export const Settings = () => {
 			<Block
 				row
 				flex={0}
+				paddingHorizontal={20}
+				paddingRight={13}
+				height={50}
 				style={{
-					height: 50,
-					paddingHorizontal: 20,
-					paddingRight: 13,
 					borderBottomColor: theme.background,
 					borderBottomWidth: 1,
 				}}

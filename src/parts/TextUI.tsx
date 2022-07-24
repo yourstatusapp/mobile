@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextStyle, Text } from 'react-native';
 import { TextType } from '@core';
-import { useTheme } from 'styled-components/native';
+import { useTheme } from '@hooks';
 
 export const TextCustom: React.FC<TextType> = ({
 	style,
@@ -24,7 +24,7 @@ export const TextCustom: React.FC<TextType> = ({
 	extraBold,
 	...props
 }) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const StyleH = StyleSheet.flatten<TextStyle>([
 		style,
 		{ color: color ?? theme.text },

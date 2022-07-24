@@ -1,25 +1,26 @@
 import * as React from 'react';
 import core, { AppAlert, DeviceType, request, TimeFormatter } from '@core';
 import { Block, Fill, Icon, IconButton, Text } from '@parts';
-import { useTheme } from 'styled-components/native';
-import { usePulse } from '@pulsejs/react';
 import { FlatList, ListRenderItemInfo } from 'react-native';
 import { removeNotificationPermissions } from '../../utils/PushNotification';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '@hooks';
 
 type DeviceItem = ListRenderItemInfo<DeviceType>;
 
 export const SettingsSessions: React.FC = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const nav = useNavigation();
 
-	const devices = usePulse(core.lists.devices.groups.mine);
-	const current_device = usePulse(core.lists.devices.selectors.current);
+	// const devices = usePulse(core.lists.devices.groups.mine);
+	const devices = [];
+	const current_device = null;
+	// const current_device = usePulse(core.lists.devices.selectors.current);
 
 	const getSessions = async () => {
 		const res = await request<DeviceType[]>('get', '/account/devices');
 		if (res.data) {
-			core.lists.devices.collect(res.data, 'mine');
+			// core.lists.devices.collect(res.data, 'mine');
 		}
 	};
 
@@ -30,14 +31,14 @@ export const SettingsSessions: React.FC = () => {
 			if (current_device?.id === deviceId) {
 				removeNotificationPermissions();
 				nav.reset({ index: 1, routes: [{ name: 'auth' as never }] });
-				core.account.account.reset();
-				core.lists.devices.reset();
-				core.profile.profile.reset();
-				core.app.device_push_token.reset();
-				core.app.notification_permission.reset();
+				// core.account.account.reset();
+				// core.lists.devices.reset();
+				// core.profile.profile.reset();
+				// core.app.device_push_token.reset();
+				// core.app.notification_permission.reset();
 			} else {
 				AppAlert(true, res.message);
-				core.lists.devices.remove(deviceId).everywhere();
+				// core.lists.devices.remove(deviceId).everywhere();
 			}
 		} else {
 			AppAlert(false, res.message);

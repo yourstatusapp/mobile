@@ -1,6 +1,6 @@
+import { useTheme } from '@hooks';
 import { Text, Block, Fill, Icon } from '@parts';
 import React from 'react';
-import { useTheme } from 'styled-components/native';
 import { SettingsMain } from './SettingsMain';
 import { SettingsNotifications } from './SettingsNotifications';
 import { SettingsSessions } from './SettingsSessions';
@@ -30,7 +30,7 @@ export const SettingItemMenu = ({
 	textColor,
 	iconColor,
 }: SettingItemMenuProps) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<Block
@@ -71,7 +71,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
 	disabled,
 	spaceBottom,
 }) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<Block

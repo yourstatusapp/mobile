@@ -5,7 +5,6 @@ import React, { useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { useTheme } from 'styled-components/native';
 
 interface NavigationProps {
 	list: StorieType;
@@ -14,8 +13,12 @@ interface NavigationProps {
 	skipWatchRequest?: boolean;
 }
 
-export const StorieViewer = ({ list, onClose, clickedAtIndex, skipWatchRequest }: NavigationProps) => {
-	const theme = useTheme();
+export const StorieViewer = ({
+	list,
+	onClose,
+	clickedAtIndex,
+	skipWatchRequest,
+}: NavigationProps) => {
 	const o = useSharedValue(0);
 	const acc = usePulse(core.account.account);
 
@@ -81,7 +84,10 @@ export const StorieViewer = ({ list, onClose, clickedAtIndex, skipWatchRequest }
 					style={{ height: '100%', width: Dimensions.get('screen').width - 10, borderRadius: 25 }}
 				/>
 				<Block flex={0} style={{ position: 'absolute', bottom: 10 }} row vCenter>
-					<Block flex={0} style={{ width: 'auto', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }} color="black">
+					<Block
+						flex={0}
+						style={{ width: 'auto', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }}
+						color="black">
 						<Text bold color="white">
 							{TimeFormatter(list.stories[clickedAtIndex].id)} ago
 						</Text>
@@ -96,7 +102,8 @@ export const StorieViewer = ({ list, onClose, clickedAtIndex, skipWatchRequest }
 							row>
 							<Icon name="eyes" size={18} color={'#ffffff'} />
 							<Text bold color="white" marginLeft={5}>
-								{list.stories[clickedAtIndex].views} view{(list.stories[clickedAtIndex].views || 0) > 1 ? 's' : ''}
+								{list.stories[clickedAtIndex].views} view
+								{(list.stories[clickedAtIndex].views || 0) > 1 ? 's' : ''}
 							</Text>
 						</Block>
 					)}

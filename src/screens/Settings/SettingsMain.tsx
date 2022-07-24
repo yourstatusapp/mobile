@@ -1,12 +1,11 @@
-import core, { SettingsStackParamList } from '@core';
-import { Block, Spacer, Fill, Icon, Text } from '@parts';
 import React from 'react';
+import { SettingsStackParamList } from '@core';
+import { Block, Spacer, Fill, Icon, Text } from '@parts';
 import { Linking } from 'react-native';
 import { removeNotificationPermissions } from '../../utils/PushNotification';
-import { useTheme } from 'styled-components/native';
 import { SettingItemMenu } from './index';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 
 const settingSections: {
 	text: string;
@@ -19,8 +18,8 @@ const settingSections: {
 ];
 
 export const SettingsMain = () => {
-	const theme = useTheme();
 	const nav = useNavigation();
+	const { theme } = useTheme();
 
 	return (
 		<Block color={theme.backgroundDarker} flex={1}>
@@ -52,11 +51,12 @@ export const SettingsMain = () => {
 				onPress={() => {
 					removeNotificationPermissions();
 					nav.reset({ index: 1, routes: [{ name: 'auth' }] });
-					core.account.account.reset();
-					core.lists.devices.reset();
-					core.profile.profile.reset();
-					core.app.device_push_token.reset();
-					core.app.notification_permission.reset();
+					// TODO: reset some logic
+					// core.account.account.reset();
+					// core.lists.devices.reset();
+					// core.profile.profile.reset();
+					// core.app.device_push_token.reset();
+					// core.app.notification_permission.reset();
 				}}
 			/>
 			<Block paddingHorizontal={20}>

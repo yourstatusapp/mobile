@@ -1,22 +1,19 @@
-import core, { FriendItemRenderType } from '@core';
+import { FriendItemRenderType } from '@core';
 import { useNavigation } from '@hooks';
-import { Block, Avatar, Text, Status } from '@parts';
-
-import { usePulse } from '@pulsejs/react';
+import { Avatar, Block, Status, Text } from '@parts';
 import React from 'react';
-import { TouchableOpacity, FlatList } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import styled, { useTheme } from 'styled-components/native';
+import { FlatList, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
 
 export const FriendComp: React.FC<FriendItemRenderType> = props => {
 	const username = props.item.username;
 	const nav = useNavigation();
-	const bb = usePulse(core.lists.stories.groups.all);
+	// const bb = usePulse(core.lists.stories.groups.all);
 
-	const userStories = React.useMemo(
-		() => bb.filter(v => v.account_id === props.item.account_id)[0],
-		[props.item.account_id, bb],
-	);
+	// const userStories = React.useMemo(
+	// 	() => bb.filter(v => v.account_id === props.item.account_id)[0],
+	// 	[props.item.account_id, bb],
+	// );
 
 	const openProfile = () =>
 		nav.navigate('profile' as never, { username: props.item.username } as never);
@@ -46,7 +43,8 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 					)}
 				</Block>
 			</Block>
-			{!!userStories?.stories && (
+			{/* TODO: FIX user stories */}
+			{/* {!!userStories?.stories && (
 				<Block row marginLeft={15} marginTop={15}>
 					<FlatList
 						data={userStories.stories}
@@ -71,7 +69,7 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 						)}
 					/>
 				</Block>
-			)}
+			)} */}
 		</FriendCompBody>
 	);
 };

@@ -1,21 +1,20 @@
 import * as React from 'react';
 import { Avatar, Block, HeadingBlurOverlay, Icon, Text } from '@parts';
 import core, { request } from '@core';
-import { usePulse } from '@pulsejs/react';
 import { FlatList } from 'react-native';
-import { useTheme } from 'styled-components';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 
 export const Events = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const nav = useNavigation();
-	const a = usePulse(core.lists.events.groups.all);
+	const a = [];
+	// const a = usePulse(core.lists.events.groups.all);
 	const getEvents = async () => {
 		const res = await request<any[]>('get', '/events');
 		if (res?.data) {
 			console.log(res.data);
 
-			core.lists.events.collect(res.data, 'all');
+			// core.lists.events.collect(res.data, 'all');
 		}
 	};
 

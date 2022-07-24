@@ -1,7 +1,7 @@
+import { useTheme } from '@hooks';
 import React, { useMemo } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useTheme } from 'styled-components/native';
 
 interface GradiantShadowProps {
 	height: number;
@@ -9,7 +9,7 @@ interface GradiantShadowProps {
 	colors?: string[];
 }
 export const GradiantShadow: React.FC<GradiantShadowProps> = ({ height, style, colors }) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const sh = StyleSheet.flatten([{ width: '100%', height }, style]);
 
 	// const c = useMemo(

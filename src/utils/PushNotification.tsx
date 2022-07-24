@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
-import PushNotificationIOS, { PushNotification as PushNotificationType } from '@react-native-community/push-notification-ios';
+import PushNotificationIOS, {
+	PushNotification as PushNotificationType,
+} from '@react-native-community/push-notification-ios';
 import core, { AppAlert, request } from '@core';
 import { Platform } from 'react-native';
 import { usePulse } from '@pulsejs/react';
+import { useAccount } from '@hooks';
 
 export const removeNotificationPermissions = () => {
 	if (Platform.OS === 'ios') {
@@ -12,28 +15,33 @@ export const removeNotificationPermissions = () => {
 
 export const requestPermissions = async () => {
 	if (Platform.OS === 'ios') {
-		const res = await PushNotificationIOS.requestPermissions({ alert: true, badge: true, sound: true });
+		const res = await PushNotificationIOS.requestPermissions({
+			alert: true,
+			badge: true,
+			sound: true,
+		});
 
 		if (res.authorizationStatus === 2) {
-			core.app.notification_permission.set(1);
+			// core.app.notification_permission.set(1);
 		}
 	}
 };
 
 export const PushNotifications = () => {
-	const loggedIn = usePulse(core.account.logged_in);
+	const { loggedIn } = useAccount();
 	const pushNotifyPerm = usePulse(core.app.notification_permission);
 
 	const onRegisterDevice = async (deviceToken: string) => {
-		if (!deviceToken) return;
+		if (!deviceToken) {
+			return;
+		}
 		AppAlert(true, deviceToken);
 
-		core.app.device_push_token.set(deviceToken);
+		// core.app.device_push_token.set(deviceToken);
 
 		// check if the user is logged into the device
-		const logged_in = core.account.logged_in.value;
 
-		if (!logged_in) {
+		if (!loggedIn) {
 			return;
 		}
 

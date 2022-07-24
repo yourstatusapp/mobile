@@ -1,25 +1,15 @@
 import * as React from 'react';
-import { Block, Fill, Spacer, Text } from '@parts';
-import { useTheme } from 'styled-components/native';
-import { usePulse } from '@pulsejs/react';
-import core from '@core';
-import { Appearance, Switch } from 'react-native';
+import { Block, Spacer, Text } from '@parts';
+import { Switch } from 'react-native';
 import { SettingItem } from './index';
+import { useTheme } from '@hooks';
 
 export const SettingsTheming: React.FC = () => {
-	const theme = useTheme();
-
-	const isDarkMode = usePulse(core.ui.isDarkMode);
-	const useSystemTheme = usePulse(core.ui.USE_SYSTEM_THEME);
-
-	const toggleTheme = (v: boolean) => {
-		core.ui.current_theme.set(!v ? 'light' : 'dark');
-	};
+	const { theme, isDarkMode, updateUseSystemTheme, systemThemeEnabled, toggleTheme } = useTheme();
 
 	const toggleUseSystemTheme = (v: boolean) => {
 		console.log('toggleUseSystemTheme ', v);
-
-		core.ui.USE_SYSTEM_THEME.patch({ enabled: v });
+		updateUseSystemTheme(v);
 	};
 
 	return (
@@ -29,13 +19,17 @@ export const SettingsTheming: React.FC = () => {
 			</Text>
 			<Spacer size={20} />
 			<SettingItem
-				disabled={useSystemTheme.enabled}
+				disabled={systemThemeEnabled}
 				text="Dark Theme"
-				RightComponent={() => <Switch value={isDarkMode} onValueChange={v => toggleTheme(v)} />}
+				RightComponent={() => (
+					<Switch value={isDarkMode} onValueChange={v => toggleTheme(v ? 'light' : 'dark')} />
+				)}
 			/>
 			<SettingItem
 				text="Use system Theme"
-				RightComponent={() => <Switch value={useSystemTheme.enabled} onValueChange={v => toggleUseSystemTheme(v)} />}
+				RightComponent={() => (
+					<Switch value={systemThemeEnabled} onValueChange={v => toggleUseSystemTheme(v)} />
+				)}
 			/>
 		</Block>
 	);

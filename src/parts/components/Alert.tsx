@@ -2,10 +2,11 @@ import * as React from 'react';
 import core from '@core';
 import { Spacer, Text } from '@parts';
 import { useEvent } from '@pulsejs/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { useAlert } from '@hooks';
 
 export interface AlertDataType {
 	title: string;
@@ -14,12 +15,7 @@ export interface AlertDataType {
 }
 
 export const CustomAlert = () => {
-	const [AlertData, setAlertData] = useState<AlertDataType>();
-
-	useEvent(core.events.notification, v => {
-		console.log(v);
-		openAlert(v);
-	});
+	const { clear, current } = useAlert();
 
 	const heightOffset = useSharedValue(-100);
 	const animatedStyles = useAnimatedStyle(() => {
@@ -28,43 +24,42 @@ export const CustomAlert = () => {
 		};
 	});
 
-	const openAlert = (alertData: AlertDataType) => {
-		setAlertData(alertData);
-
-		heightOffset.value = withTiming(0, { duration: 220 });
-
-		setTimeout(() => {
-			if (!alertData) return;
-			forceClose();
-		}, 2000);
-	};
-
-	const forceClose = () => {
+	const forceClose = useCallback(() => {
 		heightOffset.value = withTiming(-100, { duration: 350 });
 
 		setTimeout(() => {
-			setAlertData(undefined);
+			clear();
 		}, 350);
-	};
+	}, [clear, heightOffset]);
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		heightOffset.value = withTiming(0, { duration: 220 });
+
+		setTimeout(() => {
+			if (!current) {
+				return;
+			}
+			forceClose();
+		}, 2000);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// if no alert is running
-	if (!AlertData) {
+	if (!current) {
 		return <></>;
 	}
 
 	return (
 		// <CustomAlertBody {...AlertData} style={{ transform: [{ translateY: alertHeight }] }}>
-		<CustomAlertBody {...AlertData} style={animatedStyles}>
+		<CustomAlertBody {...current} style={animatedStyles}>
 			<TouchableOpacity activeOpacity={0.8} onPress={forceClose}>
 				<Text weight="700" color="white" size={16}>
-					{AlertData.title}
+					{current.title}
 				</Text>
 				<Spacer size={2} />
-				{AlertData.desc && (
+				{current.desc && (
 					<Text color="white" style={{ opacity: 0.8 }}>
-						{AlertData.desc}
+						{current.desc}
 					</Text>
 				)}
 			</TouchableOpacity>

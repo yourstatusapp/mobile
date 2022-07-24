@@ -1,12 +1,12 @@
 import core from '@core';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 import { Avatar, Icon, IconButton } from '@parts';
-import { usePulse } from '@pulsejs/react';
 import { BlurView } from 'expo-blur';
 import React from 'react';
 import { TouchableOpacity, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import styled, { useTheme } from 'styled-components/native';
+import { useRecoilValue } from 'recoil';
+import styled from 'styled-components/native';
 
 export type NavbarScreens = 'friends' | 'events' | 'account';
 export const NAVIGATION_BAR_HEIGHT = 55;
@@ -17,10 +17,10 @@ interface CustomNavBarProps {
 }
 
 export const CustomNavBar = ({ onTabChange, tabState }: CustomNavBarProps) => {
-	const acc = usePulse(core.account.account);
+	const acc = useRecoilValue(core.userData);
 	const { bottom } = useSafeAreaInsets();
 	const nav = useNavigation();
-	const theme = useTheme();
+	const { theme } = useTheme();
 
 	const BlurViewStyle: ViewStyle = {
 		height: NAVIGATION_BAR_HEIGHT + bottom,
@@ -140,8 +140,9 @@ const TabContainer = styled.View`
 `;
 
 const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
-	const acc = usePulse(core.account.account);
-	const profile = usePulse(core.profile.profile);
+	const acc = useRecoilValue(core.userData);
+	const profile = useRecoilValue(core.profile);
+
 	return (
 		<AvatarBody active={c.active}>
 			<Avatar src={[acc?.id, profile?.avatar]} size={30} />
@@ -166,7 +167,7 @@ const IconTabBtn: React.FC<{
 	onPress: () => void;
 	name: string;
 }> = c => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<IconTabBtnBody onPress={c.onPress}>

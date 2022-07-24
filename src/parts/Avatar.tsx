@@ -1,7 +1,7 @@
+import { useTheme } from '@hooks';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import FastImage, { ImageStyle } from 'react-native-fast-image';
-import { useTheme } from 'styled-components/native';
 
 interface AvatarProps {
 	src: [string?, string?];
@@ -10,7 +10,7 @@ interface AvatarProps {
 }
 
 export const Avatar = ({ src, style, size }: AvatarProps) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const s = StyleSheet.flatten([
 		style,
 		{
@@ -24,5 +24,9 @@ export const Avatar = ({ src, style, size }: AvatarProps) => {
 
 	const image_src = `https://cdn.yourstatus.app/profile/${src[0]}/${src[1]}`;
 
-	return defaultImg ? <View style={s} /> : <FastImage source={{ uri: image_src ?? '' }} style={s} />;
+	return defaultImg ? (
+		<View style={s} />
+	) : (
+		<FastImage source={{ uri: image_src ?? '' }} style={s} />
+	);
 };

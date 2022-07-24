@@ -1,13 +1,14 @@
-import core, { request } from '@core';
-import { Icon, Text } from '@parts';
-import React, { useCallback } from 'react';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 
-import { useSharedValue } from 'react-native-reanimated';
+import React, { useCallback } from 'react';
 import { Linking, Pressable, StyleSheet, ViewStyle } from 'react-native';
-import { usePulse } from '@pulsejs/react';
-import { useNavigation } from '@hooks';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+
+import { request } from '@core';
+
+import { useNavigation, useTheme } from '@hooks';
+
+import { Icon, Text } from '@parts';
 
 interface StatusType {
 	self?: boolean;
@@ -71,8 +72,8 @@ export const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors }
 };
 
 export const Status = React.memo(({ status, style, disableTap, username }: StatusType) => {
-	const theme_name = usePulse(core.ui.ThemeObject).name;
-	const theme = useTheme();
+	// const theme_name = usePulse(core.ui.ThemeObject).name;
+	const { theme } = useTheme();
 	const nav = useNavigation();
 
 	const wrapperStyle = StyleSheet.flatten([style]);
@@ -84,13 +85,13 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 	const BaseRender = (
 		<StatusBody
 			style={wrapperStyle}
-			backColor={StatusColors[theme_name][status.type].backColor}
-			textColor={StatusColors[theme_name][status.type].color}>
+			backColor={StatusColors[theme.name][status.type].backColor}
+			textColor={StatusColors[theme.name][status.type].color}>
 			{status.type === 1 && (
 				<Icon
 					name="discord"
 					size={14}
-					color={StatusColors[theme_name][status.type].color}
+					color={StatusColors[theme.name][status.type].color}
 					style={{ marginRight: 4 }}
 				/>
 			)}
@@ -98,11 +99,11 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 				<Icon
 					name="flag"
 					size={11}
-					color={StatusColors[theme_name][status.type].color}
+					color={StatusColors[theme.name][status.type].color}
 					style={{ marginRight: 5 }}
 				/>
 			)}
-			<Text medium size={13} color={StatusColors[theme_name][status.type].color}>
+			<Text medium size={13} color={StatusColors[theme.name][status.type].color}>
 				{status.data?.name || status.data?.message}
 			</Text>
 		</StatusBody>
@@ -115,17 +116,19 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 			const res = await request('post', `/status/${status?.id}/tap`);
 			if (res.data) {
 				console.log('-> ', res.data);
-				let newList = core.lists.friends.getData(status.account_id).value.status?.map(item => {
-					if (item.type === 0) {
-						item.taps = 1 + item.taps;
-						item.taped = true;
-					}
+				// TODO: fix this tap number update
+				// let newList = core.lists.friends.getData(status.account_id).value.status?.map(item => {
+				// 	if (item.type === 0) {
+				// 		item.taps = 1 + item.taps;
+				// 		item.taped = true;
+				// 	}
 
-					return item;
-				});
+				// 	return item;
+				// });
 
-				core.lists.friends.update(status.account_id, { status: newList });
-				core.lists.friends.rebuildGroupsThatInclude(status.account_id);
+				// TODO: fix these bottom 2
+				// core.lists.friends.update(status.account_id, { status: newList });
+				// core.lists.friends.rebuildGroupsThatInclude(status.account_id);
 			} else {
 				// silent errors
 				// AppAlert(false, res.message);

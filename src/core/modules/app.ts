@@ -9,9 +9,14 @@ export const AppState = {
 
 	upload_progress: state<UploadProgressEventType | boolean>(false),
 
-	TAB_STATE: state<{ state: number; path_name: keyof TabStackNavParamList }>({ state: 3, path_name: 'account' }).persist('tab_state'),
+	TAB_STATE: state<{ state: number; path_name: keyof TabStackNavParamList }>({
+		state: 3,
+		path_name: 'account',
+	}).persist('tab_state'),
 
-	ONBOARDING_TIPS: state<OnboardingTipsConfig>({ GLOBAL: true, REALTIME_STORIES: true }).persist('ONBOARDING_TIPS'),
+	ONBOARDING_TIPS: state<OnboardingTipsConfig>({ GLOBAL: true, REALTIME_STORIES: true }).persist(
+		'ONBOARDING_TIPS',
+	),
 
 	SOCKET_CONNECT: state<boolean>(false),
 	SOCKET_TOKEN: state<string>(''),

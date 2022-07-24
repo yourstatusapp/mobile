@@ -1,7 +1,8 @@
+import { useTheme } from '@hooks';
 import { Text } from '@parts';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 
 interface RoundyInputProps {
 	initialValue?: string;
@@ -38,7 +39,7 @@ export const RoundyInput: React.FC<RoundyInputProps> = ({
 }) => {
 	const [v, setV] = useState('');
 	const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const sh = StyleSheet.flatten(style);
 
 	const onChangeText = useCallback(

@@ -3,7 +3,7 @@ import { Avatar, Block, Button, Fill, ModalHeader, Spacer, Text } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList, ListRenderItem } from 'react-native';
 import { request } from '@core';
-import { useTheme } from 'styled-components/native';
+import { useTheme } from '@hooks';
 
 interface FlatFriendItemType {
 	id: string;
@@ -14,7 +14,7 @@ interface FlatFriendItemType {
 }
 
 export const ManageFriends = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const [list, setList] = useState<any[]>([]);
 
 	const getFriends = async () => {

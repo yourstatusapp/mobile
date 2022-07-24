@@ -18,12 +18,13 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAvoidingView, TextInput, ViewStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { StatusColors } from '../parts/Status';
 import BottomSheet from '@gorhom/bottom-sheet';
 import DatePicker from 'react-native-date-picker';
+import dayjs from 'dayjs';
+import { useTheme } from '@hooks';
 
 export enum StatusTypes {
 	DEFAULT,
@@ -57,28 +58,35 @@ let timerID2: NodeJS.Timeout;
 interface EventDetails {
 	description?: string;
 	startDate?: Date;
-	endDate?: Date;
+	endDate?: Date | null;
 	location?: string;
 }
 
 export const NewStatus: React.FC = () => {
 	const nav = useNavigation();
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const { top, bottom } = useSafeAreaInsets();
 
 	const [statusType, setStatusType] = useState<StatusTypes>(0);
 	const [statusDisplayText, setStatusDisplayText] = useState('');
 	const [messagePlaceHolder, setMessagePlaceholder] = useState('');
 	const [showDatePickerModal, setShowDatePickerModal] = useState(false);
-	const [eventDetails, setEventDetails] = useState<EventDetails>({ description: '' });
-	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [eventDetails, setEventDetails] = useState<EventDetails>({
+		description: '',
+		endDate: null,
+		startDate: new Date(),
+	});
+
+	const [bottomSheetMode, setBottomSheetMode] = useState<'startDate' | 'endDate'>('startDate');
+
+	// valid to create status
+	const [valid, setValid] = useState(false);
+	const [guildResults, setGuildResults] = useState<GuildInvite | null>();
 
 	// const [Error, SetError] = useState('');
 	// const [Loading, SetLoading] = useState(false);
 	// const [Expire, SetExpire] = useState(false);
-	// const [GuildResults, SetGuildResults] = useState<GuildInvite | null>();
 	// const [Content, SetContent] = useState('');
-	// const [Valid, SetValid] = useState(false);
 
 	// const createStatus = React.useCallback(async () => {
 	// 	SetLoading(true);
@@ -128,21 +136,21 @@ export const NewStatus: React.FC = () => {
 	// 	}
 	// }, [GuildResults?.code, nav]);
 
-	// const validateNewStatus = async (type: keyof typeof StatusTypes, data: any): Promise<void> => {
-	// 	SetValid(false);
+	const validateNewStatus = async (type: keyof typeof StatusTypes, data: any): Promise<void> => {
+		setValid(false);
 
-	// 	const res = await request<{ guild: GuildInvite }>('post', '/status/validate', {
-	// 		data: { type, data },
-	// 	});
+		const res = await request<{ guild: GuildInvite }>('post', '/status/validate', {
+			data: { type, data },
+		});
 
-	// 	if (res?.data) {
-	// 		SetValid(true);
-	// 		SetGuildResults(res.data.guild);
-	// 	} else {
-	// 		SetGuildResults(null);
-	// 		return;
-	// 	}
-	// };
+		if (res?.data) {
+			setValid(true);
+			setGuildResults(res.data.guild);
+		} else {
+			setGuildResults(null);
+			return;
+		}
+	};
 
 	// const createPost = React.useCallback(() => {
 	// 	if (SelectedType === 'DEFAULT') {
@@ -164,28 +172,30 @@ export const NewStatus: React.FC = () => {
 	// 	SetContent(c);
 	// };
 
-	// const ContentChecker = React.useCallback(
-	// 	v => {
-	// 		let t = SelectedType;
-	// 		let c = v;
+	const ContentChecker = React.useCallback(
+		v => {
+			let t = statusType;
+			let c = v;
 
-	// 		if (t === 'DISCORD_GUILD') {
-	// 			if (timerID2) clearTimeout(timerID2);
+			if (t === 1) {
+				if (timerID2) {
+					clearTimeout(timerID2);
+				}
 
-	// 			timerID2 = setTimeout(async () => {
-	// 				console.log(`${t} ${c}`);
+				timerID2 = setTimeout(async () => {
+					console.log(`${t} ${c}`);
 
-	// 				validateNewStatus(t, c);
-	// 			}, 1500);
-	// 		}
+					validateNewStatus(t, c);
+				}, 1500);
+			}
 
-	// 		if (t === 'DEFAULT') {
-	// 			if (c === '') SetValid(false);
-	// 			else SetValid(true);
-	// 		}
-	// 	},
-	// 	[SelectedType],
-	// );
+			if (t === 0) {
+				if (c === '') setValid(false);
+				else setValid(true);
+			}
+		},
+		[statusType],
+	);
 
 	// useEffect(() => {
 	// 	ContentChecker(Content);
@@ -200,16 +210,54 @@ export const NewStatus: React.FC = () => {
 	// callbacks
 	const handleSheetChanges = useCallback((index: number) => {
 		console.log('handleSheetChanges', index);
+		if (index === -1) {
+			setShowDatePickerModal(false);
+		}
 	}, []);
 
 	const setStartDate = () => {
-		setSelectedDate(new date());
-		console.log('Settings start date');
+		setBottomSheetMode('startDate');
+		setShowDatePickerModal(true);
 	};
 
 	const setEndDate = () => {
+		setBottomSheetMode('endDate');
+		setShowDatePickerModal(true);
+
 		console.log('Settings start date');
 	};
+
+	const handleOnDateChange = useCallback(
+		(incomingDate: Date) => {
+			if (bottomSheetMode === 'startDate') {
+				setEventDetails(oldState => ({
+					...oldState,
+					startDate: incomingDate,
+				}));
+			} else {
+				setEventDetails(oldState => ({
+					...oldState,
+					endDate: incomingDate,
+				}));
+			}
+		},
+		[bottomSheetMode],
+	);
+
+	const createEvent = useCallback(() => {
+		if (statusType === 0) {
+			setValid(!!statusDisplayText);
+		} else if (statusType === 1) {
+			if (timerID2) {
+				clearTimeout(timerID2);
+			}
+
+			timerID2 = setTimeout(async () => {
+				validateNewStatus(t, c);
+			}, 1500);
+		} else if (statusType === 2) {
+		}
+	}, [statusType, statusDisplayText]);
 
 	useEffect(() => {
 		setMessagePlaceholder(StatusTypeEtc[statusType].displayMessagePlaceholder);
@@ -262,7 +310,7 @@ export const NewStatus: React.FC = () => {
 									autoCapitalize="none"
 									placeholder="Describe what you’re doing on your event"
 									placeholderTextColor={theme.textFadeLight}
-									style={{ fontSize: 16, color: theme.text, backgroundColor: 'red' }}
+									style={{ fontSize: 16, color: theme.text }}
 									value={eventDetails.description}
 									defaultValue={eventDetails.description}
 									onChangeText={v => {
@@ -274,18 +322,42 @@ export const NewStatus: React.FC = () => {
 										});
 									}}
 								/>
-								<Block flex={0} row style={{}} marginBottom={10}>
-									<SmallButton
-										text="Start Date"
-										color="white"
-										onPress={() => setShowDatePickerModal(true)}
-									/>
-									<Spacer size={10} h />
-									<SmallButton
-										text="End Date"
-										color="white"
-										onPress={() => setShowDatePickerModal(true)}
-									/>
+								<Block flex={0} marginBottom={10}>
+									<Block row style={{ justifyContent: 'flex-start' }} flex={0} hCenter>
+										<SmallButton text="Start Date" color="white" onPress={() => setStartDate()} />
+										<Text marginLeft={10} color={theme.text}>
+											{dayjs(eventDetails.startDate).format('DD/MM/YYYY - HH:MM')}
+										</Text>
+									</Block>
+
+									<Spacer size={10} />
+
+									<Block flex={0} row hCenter>
+										<SmallButton text="End Date" color="white" onPress={() => setEndDate()} />
+
+										{eventDetails?.endDate && (
+											<Text marginLeft={10} marginRight={5} color={theme.text}>
+												{dayjs(eventDetails.endDate).format('DD/MM/YYYY - HH:MM')}
+											</Text>
+										)}
+
+										{eventDetails?.endDate && (
+											<IconButton
+												name="plus"
+												size={17}
+												iconSize={16}
+												backgroundColor={theme.darker}
+												color={theme.textFadeLight}
+												style={{ transform: [{ rotate: '45deg' }] }}
+												onPress={() =>
+													setEventDetails(state => ({
+														...state,
+														endDate: null,
+													}))
+												}
+											/>
+										)}
+									</Block>
 								</Block>
 							</Block>
 						</>
@@ -307,7 +379,7 @@ export const NewStatus: React.FC = () => {
 						<SmallButton
 							text="Create"
 							color="white"
-							onPress={() => {}}
+							onPress={createEvent}
 							disabled={!statusDisplayText}
 						/>
 					</Block>
@@ -339,16 +411,24 @@ export const NewStatus: React.FC = () => {
 					index={1}
 					snapPoints={snapPoints}
 					enablePanDownToClose
-					handleIndicatorStyle={{ backgroundColor: theme.textFadeLight }}
+					handleIndicatorStyle={{ backgroundColor: theme.darker1 }}
 					handleStyle={{ backgroundColor: theme.backgroundDarker }}
 					onChange={handleSheetChanges}>
-					<Block style={{ backgroundColor: theme.backgroundDark }} hCenter vCenter>
+					<Block style={{ backgroundColor: theme.backgroundDark }} hCenter>
+						<Text bold size={18} marginTop={30}>
+							Select {bottomSheetMode === 'startDate' ? 'start' : 'end'} Date
+						</Text>
 						<DatePicker
-							date={new Date()}
+							date={
+								bottomSheetMode === 'startDate'
+									? eventDetails?.startDate || new Date()
+									: eventDetails?.endDate || new Date()
+							}
 							mode="datetime"
 							textColor={theme.text}
 							fadeToColor={theme.backgroundDarker}
-							onDateChange={() => {}}
+							minimumDate={bottomSheetMode === 'startDate' ? new Date() : eventDetails.startDate}
+							onDateChange={handleOnDateChange}
 						/>
 					</Block>
 				</BottomSheet>
@@ -499,7 +579,7 @@ const StatusSelectedableBox = ({
 	selectedType: number;
 	pressHandler: (v: number) => void;
 }) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 
 	const StatusSelectTypeStyle: ViewStyle = {
 		height: 57,

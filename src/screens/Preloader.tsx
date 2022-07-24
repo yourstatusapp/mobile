@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import Svg, { G, Path } from 'react-native-svg';
-import styled, { useTheme } from 'styled-components/native';
 import core, { request } from '@core';
+import { useNavigation, useTheme } from '@hooks';
 import { Block, Spacer, Text } from '@parts';
-import { usePulse } from '@pulsejs/react';
-import { connectToSocket } from '../utils/Socket';
-import { useNavigation } from '@hooks';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 interface PreloaderProps {
 	loaded?: () => void;
 }
 
 export const PreloaderView = ({ loaded }: PreloaderProps) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const [TakingTooLong, setTakingTooLong] = useState(false);
-	const logged_in = usePulse(core.account.logged_in);
+	const [account, setAccount] = useRecoilState(core.userData);
+	const [profile, setProfile] = useRecoilState(core.profile);
 	const [Loading, SetLoading] = useState(false);
 	const nav = useNavigation();
 
@@ -25,43 +24,57 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 
 		const res = await request<{ account: any; profile: any; device: any }>('get', '/account');
 
-		if (!res.success) {
-			core.account.account.reset();
-			core.profile.profile.reset();
-			core.lists.devices.reset();
-		} else {
-			if (res.data?.account) {
-				core.account.account.set(res.data?.account);
-			}
-			if (res.data?.profile) {
-				core.profile.profile.set(res.data?.profile);
-			}
-			if (res.data?.device) {
-				core.lists.devices.collect(res.data.device, 'mine');
-				core.lists.devices.selectors.current.select(res.data.device.id);
-			}
+		if (res.success) {
+			// set account and profile
+			setAccount(res.data?.account);
+			setProfile(res.data?.profile);
 		}
+
+		// if (!res.success) {
+		// 	core.account.account.reset();
+		// 	core.profile.profile.reset();
+		// 	core.lists.devices.reset();
+		// } else {
+		// 	if (res.data?.account) {
+		// 		core.account.account.set(res.data?.account);
+		// 	}
+		// 	if (res.data?.profile) {
+		// 		core.profile.profile.set(res.data?.profile);
+		// 	}
+		// 	if (res.data?.device) {
+		// 		core.lists.devices.collect(res.data.device, 'mine');
+		// 		core.lists.devices.selectors.current.select(res.data.device.id);
+		// 	}
+		// }
 		setTimeout(() => {
 			// loaded();
-			nav.navigate('create_status');
+			nav.navigate('tabs');
 			// connectToSocket();
 		}, 10);
 	};
 
 	const check = () => {
-		core.account.logged_in.onNext(value => {
-			// get the account data if has logged in value true
-			if (value === true) {
-				getAccount();
-			} else if (value === false) {
-			}
+		console.log('check');
+		if (account !== null) {
+			getAccount();
+		} else {
+			nav.navigate('auth');
+		}
+		// core.account.logged_in.onNext(value => {
+		// 	console.log('test', value);
 
-			// if (Loading) return;
-			// if (v) {
-			// 	getAccount();
-			// } else {
-			// }
-		});
+		// 	// get the account data if has logged in value true
+		// 	if (value === true) {
+		// 		getAccount();
+		// 	} else if (value === false) {
+		// 	}
+
+		// 	// if (Loading) return;
+		// 	// if (v) {
+		// 	// 	getAccount();
+		// 	// } else {
+		// 	// }
+		// });
 
 		// setTimeout(() => !logged_in && loaded(), 200);
 	};

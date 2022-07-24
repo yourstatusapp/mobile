@@ -1,7 +1,8 @@
 import { Text } from '@parts';
 import React from 'react';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { StyleSheet, ViewStyle } from 'react-native';
+import { useTheme } from '@hooks';
 
 interface ButtonType {
 	text?: string;
@@ -13,7 +14,7 @@ interface ButtonType {
 }
 
 export const Button: React.FC<ButtonType> = ({ text, onPress, color, disabled, style }) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const sh = StyleSheet.flatten([style]);
 
 	return (
@@ -59,7 +60,7 @@ export const SmallButton: React.FC<SmallButtonProps> = ({
 	backgroundColor,
 	disabled,
 }) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	return (
 		<SmallButtonBody
 			onPress={onPress}

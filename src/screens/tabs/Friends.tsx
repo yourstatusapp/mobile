@@ -1,35 +1,30 @@
 import React, { useState, useRef } from 'react';
 import core, { AppAlert, FriendItemRenderType, FriendItemType, request, StatusType } from '@core';
 import { Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
-import {
-	Animated,
-	StyleSheet,
-	TouchableOpacity,
-	ViewStyle,
-	FlatList,
-	RefreshControl,
-} from 'react-native';
+import { Animated, StyleSheet, TouchableOpacity, ViewStyle, RefreshControl } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { BlurView } from 'expo-blur';
 import { usePulse } from '@pulsejs/react';
 import FastImage from 'react-native-fast-image';
 import { FriendComp } from '../parts/FriendItemList';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const FRIEND_ITEM_HEIGHT = 88;
 const FRIEND_TAB_HEADER_HEIGHT = 50;
 
 export const Friends = React.memo(() => {
-	const theme = useTheme();
+	const { theme, isDarkMode } = useTheme();
 	const nav = useNavigation();
 	const { top } = useSafeAreaInsets();
-	const isDarkMode = usePulse(core.ui.isDarkMode);
-	const friends = usePulse(core.lists.friends.groups.friends);
-	const myStories = usePulse(core.lists.stories.groups.mine);
-	const profile = usePulse(core.profile.profile);
+	const [friends, setFriends] = useState<FriendItemType[]>([]);
+	const myStories = [];
+	const profile = null;
+	// const friends = usePulse(core.lists.friends.groups.friends);
+	// const myStories = usePulse(core.lists.stories.groups.mine);
+	// const profile = usePulse(core.profile.profile);
 
 	const [FriendsRequests, SetFriendsRequests] = useState<any[]>([]);
 	const [MyStatus, setMyStatus] = useState<StatusType[]>([]);
@@ -71,7 +66,10 @@ export const Friends = React.memo(() => {
 		);
 		if (!a.data) {
 		} else {
-			core.lists.friends.collect(a.data.friends, 'friends');
+			console.log(a.data);
+			setFriends(a.data.friends);
+
+			// core.lists.friends.collect(a.data.friends, 'friends');
 
 			SetFriendsRequests(a.data.incoming_pending);
 		}
@@ -133,13 +131,13 @@ export const Friends = React.memo(() => {
 	React.useEffect(() => {
 		getFriends();
 
-		setTimeout(() => {
-			getMyStatus();
-		}, 200);
+		// setTimeout(() => {
+		// 	getMyStatus();
+		// }, 200);
 
-		setTimeout(() => {
-			getStories();
-		}, 400);
+		// setTimeout(() => {
+		// 	getStories();
+		// }, 400);
 	}, []);
 
 	const renderItem = (p: FriendItemRenderType) => <FriendComp {...p} />;

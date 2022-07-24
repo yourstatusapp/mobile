@@ -1,19 +1,16 @@
 import React from 'react';
-// import { VibrancyView } from '@react-native-community/blur';
 import { BlurView } from 'expo-blur';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import styled, { useTheme } from 'styled-components/native';
-import { usePulse } from '@pulsejs/react';
-import core from '@core';
+import styled from 'styled-components/native';
 import { hasNotch } from 'react-native-device-info';
+import { useTheme } from '@hooks';
 
 interface HeadingBlurOverlayProps {
 	height?: number;
 }
 
 export const HeadingBlurOverlay: React.FC<HeadingBlurOverlayProps> = ({ height }) => {
-	const isDarkMode = usePulse(core.ui.isDarkMode);
-	const theme = useTheme();
+	const { theme, isDarkMode } = useTheme();
 	const topHeight = hasNotch() ? 44 : 40;
 
 	const sh2 = StyleSheet.flatten<ViewStyle>([

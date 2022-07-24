@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Avatar, Block, IconButton, Spacer, Text } from '@parts';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import core, { DirectMessageType, request } from '@core';
 import { FlatList, KeyboardAvoidingView, StyleSheet, ViewStyle } from 'react-native';
@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { usePulse } from '@pulsejs/react';
 import { hasNotch } from 'react-native-device-info';
 import { BlurView } from 'expo-blur';
+import { useTheme } from '@hooks';
 
 type ParamList = {
 	DirectMessage: {
@@ -17,7 +18,7 @@ type ParamList = {
 };
 
 export const DirectMessage = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const { params } = useRoute<RouteProp<ParamList, 'DirectMessage'>>();
 	const { bottom } = useSafeAreaInsets();
 	const acc = usePulse(core.account.account);
@@ -47,10 +48,15 @@ export const DirectMessage = () => {
 			return;
 		}
 		// @ts-ignore
-		const res = await request<DirectMessageType[]>('get', '/conversations/' + params?.conversation_id);
+		const res = await request<DirectMessageType[]>(
+			'get',
+			'/conversations/' + params?.conversation_id,
+		);
 		if (res.data) {
 			// check also if we already have data than we need to insert it differently
-			core.lists.messages.collect(res.data, params.conversation_id, { method: !!Messages?.length ? 'unshift' : 'push' });
+			core.lists.messages.collect(res.data, params.conversation_id, {
+				method: !!Messages?.length ? 'unshift' : 'push',
+			});
 		}
 	};
 
@@ -70,11 +76,15 @@ export const DirectMessage = () => {
 			{ method: 'unshift' },
 		);
 
-		const res = await request('post', `/conversations/${params.conversation_id}/send`, { data: { message: MessageText, nonce: 'random' } });
+		const res = await request('post', `/conversations/${params.conversation_id}/send`, {
+			data: { message: MessageText, nonce: 'random' },
+		});
 
 		if (res.data) {
 			SetMessageText('');
-			core.lists.messages.update((parseInt(params.conversation_id) + 1).toString(), { id: res.data?.message_id });
+			core.lists.messages.update((parseInt(params.conversation_id) + 1).toString(), {
+				id: res.data?.message_id,
+			});
 		}
 		SetSendMessLoading(false);
 	}, [params.conversation_id, MessageText, acc?.id, profile.avatar, profile.username]);
@@ -86,7 +96,16 @@ export const DirectMessage = () => {
 	const renderItem = ({ item }) => {
 		const isSender = item.account_id === acc.id;
 		return (
-			<Block key={item.id} flex={1} row style={{ minHeight: 34, flexDirection: isSender ? 'row-reverse' : 'row', alignItems: 'flex-start' }} hCenter>
+			<Block
+				key={item.id}
+				flex={1}
+				row
+				style={{
+					minHeight: 34,
+					flexDirection: isSender ? 'row-reverse' : 'row',
+					alignItems: 'flex-start',
+				}}
+				hCenter>
 				<Spacer size={15} h />
 				<Avatar src={[item.account_id, item.avatar]} size={25} />
 				{/* <Text color={theme.text} marginLeft={15} bold>
@@ -94,7 +113,13 @@ export const DirectMessage = () => {
 			</Text> */}
 				<Block flex={1} paddingTop={3}>
 					{/* <Spacer size={25} h /> */}
-					<Text color={theme.textFade} style={{ flexWrap: 'wrap', textAlign: !isSender ? 'left' : 'right', paddingHorizontal: 10 }}>
+					<Text
+						color={theme.textFade}
+						style={{
+							flexWrap: 'wrap',
+							textAlign: !isSender ? 'left' : 'right',
+							paddingHorizontal: 10,
+						}}>
 						{item.content}
 					</Text>
 				</Block>
@@ -106,8 +131,16 @@ export const DirectMessage = () => {
 
 	return (
 		<Block color={theme.background}>
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={-(55 + bottom - 9)}>
-				<FlatList data={Messages} contentContainerStyle={{ paddingTop: 10 }} renderItem={renderItem} inverted />
+			<KeyboardAvoidingView
+				style={{ flex: 1 }}
+				behavior="padding"
+				keyboardVerticalOffset={-(55 + bottom - 9)}>
+				<FlatList
+					data={Messages}
+					contentContainerStyle={{ paddingTop: 10 }}
+					renderItem={renderItem}
+					inverted
+				/>
 				<Block
 					style={{ borderTopColor: theme.darker, borderTopWidth: 1, height: 55 }}
 					marginBottom={55 + bottom - 9}

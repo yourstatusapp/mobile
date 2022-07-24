@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, ListRenderItem, TouchableOpacity, View } from 'react-native';
 import { Block, Text } from '@parts';
-import { useTheme } from 'styled-components/native';
+import { useTheme } from '@hooks';
 
 interface StorieType {
 	id: string;
@@ -48,7 +48,7 @@ export const CalendarWeek: ListRenderItem<Week> = ({ item, index }) => {
 interface DayComponentProps extends DayObject {}
 
 const DayComponent = ({ date, empty, pictures }: DayComponentProps) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<Block flex={0} vCenter hCenter style={{ width: 45, height: 45 }}>

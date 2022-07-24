@@ -1,13 +1,13 @@
 import core, { AppAlert, request, StatusType } from '@core';
+import { useTheme } from '@hooks';
 import { Block, Fill, IconButton, ModalHeader, Spacer, Status, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import React from 'react';
 import { FlatList } from 'react-native';
-import { useTheme } from 'styled-components';
 import styled from 'styled-components/native';
 
 export const ManageStatus = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const status = usePulse(core.lists.status.groups.mine);
 
 	const removeStatus = async (statusId: string) => {

@@ -1,4 +1,3 @@
-import { useTheme } from 'styled-components/native';
 import React, { useCallback, useState } from 'react';
 import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text } from '@parts';
 import core, { AppAlert, request } from '@core';
@@ -13,14 +12,15 @@ import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { useClipboard } from '@react-native-clipboard/clipboard';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
+import { useRecoilValue } from 'recoil';
 
 let timeout: NodeJS.Timeout;
 
 export const Auth: React.FC = () => {
 	const nav = useNavigation();
-	const theme = useTheme();
-	const loggedin = usePulse(core.account.logged_in);
+	const { theme } = useTheme();
+	const userData = useRecoilValue(core.userData);
 	const [Email, SetEmail] = useState('');
 	const [Error, SetError] = useState('');
 	const [Loading, SetLoading] = useState(false);
@@ -30,41 +30,8 @@ export const Auth: React.FC = () => {
 	const [UsernameValid, SetUsernameValid] = useState(false);
 	const [UsernameErrMsg, SetUsernameErrMsg] = useState('');
 	const [UsernameLoading, SetUsernameLoading] = useState(false);
-
-	const login = useCallback(
-		async (usernameInput: string) => {
-			SetLoading(true);
-			SetError('');
-			const res = await request<boolean & { new_account: boolean; suggested_username: string }>(
-				'post',
-				'/auth/magic',
-				{
-					data: {
-						email: Email?.trimStart()?.trimEnd(),
-						verify_new_account: NewAccount,
-						username: usernameInput,
-					},
-				},
-			);
-
-			if (res.data?.new_account) {
-				SetNewAccount(true);
-				SetUsername(res.data.suggested_username);
-				usernameCheck(res.data.suggested_username);
-			} else if (res.data === true) {
-				SetEmail('');
-				AppAlert(true, res.message);
-				SetNewAccount(false);
-			} else {
-				SetEmail('');
-				SetError(res?.message || '');
-				AppAlert(false, 'Failed', res.message);
-			}
-
-			SetLoading(false);
-		},
-		[Email, NewAccount],
-	);
+	const theme_name = usePulse(core.ui.current_theme);
+	const isDarkMode = usePulse(core.ui.isDarkMode);
 
 	const usernameChecking = async (usernameInput: string) => {
 		if (timeout) {
@@ -114,8 +81,39 @@ export const Auth: React.FC = () => {
 		usernameChecking(v);
 	}, []);
 
-	const theme_name = usePulse(core.ui.current_theme);
-	const isDarkMode = usePulse(core.ui.isDarkMode);
+	const login = useCallback(async () => {
+		SetLoading(true);
+		SetError('');
+
+		const res = await request<boolean & { new_account: boolean; suggested_username: string }>(
+			'post',
+			'/auth/magic',
+			{
+				data: {
+					test: 'false',
+					email: Email?.trimStart()?.trimEnd(),
+					verify_new_account: NewAccount,
+					username: Username,
+				},
+			},
+		);
+
+		if (res.data?.new_account) {
+			SetNewAccount(true);
+			SetUsername(res.data.suggested_username);
+			usernameCheck(res.data.suggested_username);
+		} else if (res.data === true) {
+			SetEmail('');
+			AppAlert(true, res.message);
+			SetNewAccount(false);
+		} else {
+			SetEmail('');
+			SetError(res?.message || '');
+			AppAlert(false, 'Failed', res.message);
+		}
+
+		SetLoading(false);
+	}, [Email, NewAccount, Username, usernameCheck]);
 
 	const toggleTheme = () => {
 		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
@@ -132,8 +130,7 @@ export const Auth: React.FC = () => {
 				style={{ flex: 1, justifyContent: 'center' }}
 				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 				keyboardVerticalOffset={-(Dimensions.get('window').height / 4)}>
-				<Block flex={0} style={{ zIndex: 220, position: 'absolute' }} paddingHorizontal={20}>
-					<Fill />
+				<Block vCenter flex={1} paddingHorizontal={20}>
 					<Status
 						disableTap
 						status={{
@@ -175,7 +172,6 @@ export const Auth: React.FC = () => {
 							YourStatus
 						</Text>
 					</Block>
-
 					<Spacer size={20} />
 					{!!Error && (
 						<Text color="red" bold>
@@ -184,7 +180,6 @@ export const Auth: React.FC = () => {
 					)}
 					<Spacer size={10} />
 					<Input placeholder="Email" value={Email} onChange={SetEmail} textContentType={'email'} />
-
 					{NewAccount && (
 						<Block
 							flex={0}
@@ -213,13 +208,11 @@ export const Auth: React.FC = () => {
 							)}
 						</Block>
 					)}
-
 					{!!UsernameErrMsg && (
 						<Text color="#FF6161" size={12} marginTop={5} marginLeft={20}>
 							{UsernameErrMsg}
 						</Text>
 					)}
-
 					<Spacer size={25} />
 					<Block flex={0} row hCenter>
 						{NewAccount && (
@@ -236,14 +229,13 @@ export const Auth: React.FC = () => {
 						<Button
 							text={NewAccount ? 'Create new account' : 'Login'}
 							color="white"
-							onPress={() => login(Username)}
+							onPress={login}
 							disabled={
 								NewAccount ? UsernameValid === false || Email === '' : Email === '' || Loading
 							}
 							style={{ flex: 1, backgroundColor: theme.primary2 }}
 						/>
 					</Block>
-
 					<Block row vCenter flex={0} marginTop={13} press onPress={toggleTheme}>
 						<Icon
 							name={'sparkle'}
@@ -255,9 +247,7 @@ export const Auth: React.FC = () => {
 							We make use of magic links
 						</Text>
 					</Block>
-					{/* <Spacer size={20} /> */}
-
-					{loggedin && (
+					{!!userData && (
 						<TouchableOpacity
 							style={{ alignSelf: 'center' }}
 							activeOpacity={0.6}
@@ -267,7 +257,6 @@ export const Auth: React.FC = () => {
 							</Text>
 						</TouchableOpacity>
 					)}
-
 					<Spacer size={20} />
 					{ShowBuildNumber && (
 						<Button text="Paste clipboard" onPress={magicLinkLogin} style={{ marginBottom: 5 }} />

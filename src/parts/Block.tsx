@@ -39,7 +39,6 @@ export const Block: React.FC<BlockType> = ({
 	width,
 	height,
 }) => {
-	const theme = useTheme();
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
 		!!paddingHorizontal && { paddingHorizontal },
 		// { backgroundColor: color ?? theme.black },
@@ -80,7 +79,7 @@ export const Block: React.FC<BlockType> = ({
 		);
 	} else if (scroll) {
 		return (
-			<ScrollView scrollEnabled={true} style={blockStyle} keyboardShouldPersistTaps={true}>
+			<ScrollView scrollEnabled={true} style={blockStyle} keyboardShouldPersistTaps="always">
 				{children}
 			</ScrollView>
 		);
@@ -158,7 +157,6 @@ export const BlockNew = ({
 	animate,
 	activeOpacity,
 }) => {
-	const theme = useTheme();
 	const blockStyle = StyleSheet.flatten<ViewStyle>([
 		!!paddingHorizontal && { paddingHorizontal },
 		// { backgroundColor: color ?? theme.black },

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Block, IconButton, Line, Spacer, Status, Text } from '@parts';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { request, TabStackNavParamList } from '@core';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { FlatList, KeyboardAvoidingView } from 'react-native';
 import { TabbarHeader } from '../parts/components/TabbarHeader';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 
 export const StatusDetail: React.FC = () => {
 	const nav = useNavigation();
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const { params } = useRoute<RouteProp<TabStackNavParamList, 'StatusDetail'>>();
 
 	const [newMessage, setNewMessage] = useState<string>('');

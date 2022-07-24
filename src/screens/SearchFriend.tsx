@@ -1,10 +1,10 @@
 import { AppAlert, request } from '@core';
 import { Avatar, Block, Fill, IconButton, Spacer, Text } from '@parts';
-import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation, useTheme } from '@hooks';
 
 let timeoutID: NodeJS.Timeout;
 interface ProfileSearchItem {
@@ -17,7 +17,7 @@ interface ProfileSearchItem {
 
 export const SearchFriend = () => {
 	const nav = useNavigation();
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const [Username, SetUsername] = useState('');
 	const [Results, SetResults] = useState<ProfileSearchItem[]>([]);
 	const [Loading, SetLoading] = useState(false);

@@ -1,4 +1,5 @@
 import core, { AppAlert, ProfileType, request, ReturnRequestType } from '@core';
+import { useTheme } from '@hooks';
 import { Block, IconButton, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -12,7 +13,6 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from 'styled-components';
 import styled from 'styled-components/native';
 
 type NewMomentProps = {
@@ -34,7 +34,7 @@ export const NewMoment = () => {
 	});
 
 	const nav = useNavigation();
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const { params } = useRoute<RouteProp<NewMomentProps, 'NewMoment'>>();
 	const { uploadMethod, path } = params;
 	const frame = useSafeAreaFrame();

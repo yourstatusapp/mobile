@@ -3,10 +3,12 @@ import { Spacer, Text, Block } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components/native';
 
 export const Magic: React.FC<MagicProps> = ({ route }) => {
 	const nav = useNavigation();
+	const [_, setUserData] = useRecoilState(core.userData);
 
 	const magicAuth = async (code: string, new_account: boolean) => {
 		const res = await request<IAccountRequestProps>('post', '/auth/magic/verify', {
@@ -19,13 +21,16 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 			return;
 		}
 
-		if (res.data?.account) core.account.account.set(res.data.account); // @ts-ignore
-		if (res.data?.profile) core.profile.profile.set(res.data.profile);
+		// TODO: set account data
+		setUserData(res.data.account);
 
-		if (res.data?.device?.id) {
-			core.lists.devices.collect(res.data.device, 'mine');
-			core.lists.devices.selectors.current.select(res.data.device.id);
-		}
+		// if (res.data?.account) core.account.account.set(res.data.account); // @ts-ignore
+		// if (res.data?.profile) core.profile.profile.set(res.data.profile);
+
+		// if (res.data?.device?.id) {
+		// 	core.lists.devices.collect(res.data.device, 'mine');
+		// 	core.lists.devices.selectors.current.select(res.data.device.id);
+		// }
 
 		if (!new_account) {
 			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });

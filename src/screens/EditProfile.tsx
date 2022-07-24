@@ -5,14 +5,14 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import DatePicker from 'react-native-date-picker';
 import { TabbarHeader } from '../parts/components/TabbarHeader';
-import { useTheme } from 'styled-components/native';
 
 import dayjs from 'dayjs';
 import { Keyboard, KeyboardAvoidingView } from 'react-native';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { useTheme } from '@hooks';
 
 export const EditProfile = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const profile = usePulse(core.profile.profile);
 	const [validationError, setValidationError] = useState(false);
 	const [loading, setLoading] = useState(false);

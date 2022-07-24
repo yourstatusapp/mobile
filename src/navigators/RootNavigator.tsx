@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import core, { RootstackParamList } from '@core';
-import { usePulse } from '@pulsejs/react';
 import { useLinking } from '../hooks';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import {
@@ -27,6 +26,7 @@ import {
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
 import { Block } from '@parts';
 import { TabsNavigator } from './TabsNavigator';
+import { useRecoilValue } from 'recoil';
 
 export const navigationRef = createNavigationContainerRef();
 const RootStack = createNativeStackNavigator<RootstackParamList>();
@@ -34,7 +34,8 @@ const RootStack = createNativeStackNavigator<RootstackParamList>();
 export const RootNavigator = () => {
 	useLinking();
 
-	const loggedIn = usePulse(core.account.logged_in);
+	// const loggedIn = usePulse(core.account.logged_in);
+	const account = useRecoilValue(core.userData);
 	const [PreloaderReady, setPreloaderReady] = useState(false);
 
 	// Wait for the preloader and logged_in compute state

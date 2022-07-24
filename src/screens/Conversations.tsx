@@ -1,4 +1,5 @@
 import core, { request } from '@core';
+import { useTheme } from '@hooks';
 import { Avatar, Block, Icon, Text } from '@parts';
 import { usePulse } from '@pulsejs/react';
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +7,6 @@ import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, ViewStyle } from 'react-native';
 import { hasNotch } from 'react-native-device-info';
-import { useTheme } from 'styled-components/native';
 
 interface ConversationType {
 	id: string;
@@ -16,7 +16,7 @@ interface ConversationType {
 }
 
 export const Conversations = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const [A, SetA] = useState<ConversationType[]>([]);
 	const [NewConversation, SetNewConversation] = useState(false);
 	const isDarkMode = usePulse(core.ui.isDarkMode);
@@ -51,7 +51,14 @@ export const Conversations = () => {
 				data={A}
 				contentContainerStyle={{ paddingTop: 50 }}
 				ListFooterComponent={() => (
-					<Block row vCenter onPress={() => nav.navigate('newconversation' as never)} press paddingTop={5} paddingBottom={5} marginTop={30}>
+					<Block
+						row
+						vCenter
+						onPress={() => nav.navigate('newconversation' as never)}
+						press
+						paddingTop={5}
+						paddingBottom={5}
+						marginTop={30}>
 						<Text bold paddingRight={12} color={theme.text}>
 							Click to create a new conversation
 						</Text>
@@ -66,7 +73,12 @@ export const Conversations = () => {
 						hCenter
 						paddingHorizontal={20}
 						press
-						onPress={() => nav.navigate('directmessage' as never, { account_id: item.account_id, conversation_id: item.id } as never)}>
+						onPress={() =>
+							nav.navigate(
+								'directmessage' as never,
+								{ account_id: item.account_id, conversation_id: item.id } as never,
+							)
+						}>
 						<Avatar src={[item.account_id, item.avatar]} size={40} />
 						<Text marginLeft={15} bold>
 							{item.username}

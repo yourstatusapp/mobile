@@ -2,8 +2,7 @@ import { Block, IconButton, Line, Text } from '@parts';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { TabbarHeader } from '../parts/components/TabbarHeader';
-import { useTheme } from 'styled-components/native';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 import { request } from '@core';
 import dayjs from 'dayjs';
 
@@ -25,7 +24,7 @@ type ParamList = {
 };
 
 export const Event = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const { params } = useRoute<RouteProp<ParamList>>();
 	const nav = useNavigation();
 

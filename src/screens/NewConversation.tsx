@@ -1,9 +1,9 @@
 import { AppAlert, request } from '@core';
+import { useTheme } from '@hooks';
 import { Avatar, Block, Fill, IconButton, Text } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { useTheme } from 'styled-components/native';
 
 interface FriendItemType {
 	id: string;
@@ -14,7 +14,7 @@ interface FriendItemType {
 
 export const NewConversation = () => {
 	const nav = useNavigation();
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const [AvList, SetAvList] = useState<FriendItemType[]>([]);
 	const [Loading, SetLoading] = useState(false);
 

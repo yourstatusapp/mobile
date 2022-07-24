@@ -15,7 +15,7 @@ import {
 	useCameraDevices,
 	CameraPosition,
 } from 'react-native-vision-camera';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import * as MediaLibrary from 'expo-media-library';
 
 import Animated, {
@@ -28,6 +28,7 @@ import Animated, {
 import LinearGradient from 'react-native-linear-gradient';
 import core, { AppAlert, TimeFormatter } from '@core';
 import { usePulse } from '@pulsejs/react';
+import { useTheme } from '@hooks';
 
 const CAMERA_BORDER_RADIUS = 23;
 type CameraProps = {
@@ -40,7 +41,7 @@ interface AlbumAssetType {
 }
 
 export const Camera = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const nav = useNavigation();
 	const { params } = useRoute<RouteProp<CameraProps, 'Camera'>>();
 	const camera = useRef<CameraComp>(null);

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled, { useTheme } from 'styled-components/native';
 import {
 	Avatar,
 	Block,
@@ -11,21 +10,21 @@ import {
 	TextButton,
 } from '@parts';
 import core from '@core';
-import { usePulse } from '@pulsejs/react';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 import { StyleSheet, ViewStyle } from 'react-native';
 import { hasNotch } from 'react-native-device-info';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRecoilValue } from 'recoil';
 
 export const Account = () => {
 	const nav = useNavigation();
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const { top } = useSafeAreaInsets();
-	const profile = usePulse(core.profile.profile);
+	// const profile = usePulse(core.profile.profile);
+	const profile = useRecoilValue(core.profile);
 	const [MenuOpen, SetMenuOpen] = useState(false);
-	const isDarkMode = usePulse(core.ui.isDarkMode);
 	const sh2 = StyleSheet.flatten<ViewStyle>([
 		{
 			position: 'absolute',

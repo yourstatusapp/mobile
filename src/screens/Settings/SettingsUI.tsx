@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Block, IconButton, Spacer, Text } from '@parts';
-import { useTheme } from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '@hooks';
 
 export const SettingsUI: React.FC = () => {
-	const theme = useTheme();
-	const nav = useNavigation();
+	const { theme } = useTheme();
 
 	return (
 		<Block color={theme.backgroundDarker}>

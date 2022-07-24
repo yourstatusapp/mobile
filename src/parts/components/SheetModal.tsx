@@ -5,7 +5,7 @@ import { Block } from '../Block';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { StyleSheet, View } from 'react-native';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { useTheme } from 'styled-components';
+import { useTheme } from '@hooks';
 
 interface SheetModalProps {
 	ref?: React.Ref<BottomSheetMethods>;
@@ -16,7 +16,7 @@ interface SheetModalProps {
 const handlerBorderRadius = 15;
 
 export const SheetModal: React.FC<SheetModalProps> = ({ openModal, children, triggerModal }) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	// ref
 	const bottomSheetRef = useRef<BottomSheet>(null);
 

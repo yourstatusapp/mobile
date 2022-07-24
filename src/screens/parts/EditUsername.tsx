@@ -1,11 +1,11 @@
 import BottomSheet from '@gorhom/bottom-sheet';
+import { useTheme } from '@hooks';
 import { Block, Text, TextButton } from '@parts';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useTheme } from 'styled-components/native';
 
 export const EditUsername = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	// ref
 	const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -26,7 +26,12 @@ export const EditUsername = () => {
 				onChange={handleSheetChanges}
 				handleIndicatorStyle={{ backgroundColor: theme.darker }}
 				backgroundStyle={{ backgroundColor: 'transparent' }}
-				handleStyle={{ backgroundColor: theme.backgroundDarker, height: 50, borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
+				handleStyle={{
+					backgroundColor: theme.backgroundDarker,
+					height: 50,
+					borderTopLeftRadius: 20,
+					borderTopRightRadius: 20,
+				}}>
 				<View style={{ flex: 1, backgroundColor: theme.backgroundDark }}>
 					<TextButton text="close" onPress={() => bottomSheetRef.current?.close()} />
 					<Text>Awesome 🎉</Text>

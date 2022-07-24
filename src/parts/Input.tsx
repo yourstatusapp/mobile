@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Text } from '@parts';
 import { ViewStyle } from 'react-native';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
+import { useTheme } from '@hooks';
 
 interface InputProps {
 	value?: string;
@@ -24,7 +25,7 @@ export const Input: React.FC<InputProps> = ({
 	textContentType,
 	autoFocus,
 }) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	return (
 		<InputBox>
 			{!!placeholder && (

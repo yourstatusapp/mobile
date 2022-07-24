@@ -3,8 +3,8 @@ import { Avatar, Block, Text } from '@parts';
 import { AppAlert, request } from '@core';
 import { FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { useTheme } from 'styled-components/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useTheme } from '@hooks';
 
 interface MomentTypeItem {
 	id: string;
@@ -16,7 +16,7 @@ interface MomentTypeItem {
 
 export const Moments = () => {
 	const nav = useNavigation();
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const [List, SetList] = useState<MomentTypeItem[]>();
 
 	const getMoments = async () => {
@@ -36,9 +36,14 @@ export const Moments = () => {
 	}, []);
 
 	const renderItem: ListRenderItem<MomentTypeItem> = ({ item, index }) => {
-		const openProfile = () => nav.navigate('profile' as never, { username: item.username } as never);
+		const openProfile = () =>
+			nav.navigate('profile' as never, { username: item.username } as never);
 		return (
-			<Block key={index} flex={0} marginBottom={40} style={{ borderTopColor: theme.white20, borderTopWidth: 1 }}>
+			<Block
+				key={index}
+				flex={0}
+				marginBottom={40}
+				style={{ borderTopColor: theme.white20, borderTopWidth: 1 }}>
 				<Block row flex={0} style={{ padding: 10 }} hCenter>
 					<TouchableOpacity activeOpacity={0.6} onPress={openProfile}>
 						<Avatar src={[item.account_id, item.avatar]} size={40} />
@@ -48,7 +53,10 @@ export const Moments = () => {
 					</Text>
 				</Block>
 
-				<FastImage source={{ uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}` }} style={{ width: '100%', height: 500 }} />
+				<FastImage
+					source={{ uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}` }}
+					style={{ width: '100%', height: 500 }}
+				/>
 			</Block>
 		);
 	};

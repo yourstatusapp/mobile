@@ -1,4 +1,10 @@
+import styled from 'styled-components/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Animated } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { ProfileType, request } from '@core';
+import { useTheme } from '@hooks';
 import {
 	Avatar,
 	Block,
@@ -10,11 +16,6 @@ import {
 	Status,
 	Text,
 } from '@parts';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { ProfileType, request } from '@core';
-import styled, { useTheme } from 'styled-components/native';
-import FastImage from 'react-native-fast-image';
-import { ActivityIndicator, Animated } from 'react-native';
 
 const BANNER_HEIGHT = 250;
 
@@ -22,7 +23,7 @@ const edgeSpace = 15;
 
 export const Profile = () => {
 	const { params } = useRoute();
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const nav = useNavigation();
 
 	const [ProfileData, SetProfile] = useState<ProfileType>();

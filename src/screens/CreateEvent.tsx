@@ -1,17 +1,17 @@
 import { AppAlert, request } from '@core';
-import { useNavigation } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 import { Block, SmallButton, Spacer, Status, Text, TextButton } from '@parts';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, ScrollView, TouchableOpacity, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { TabbarHeader } from '../parts/components/TabbarHeader';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import Animated, { Transition } from 'react-native-reanimated';
 import { Calendar, CalendarList } from 'react-native-calendars';
 import dayjs from 'dayjs';
 
 export const CreateEvent = () => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	const nav = useNavigation();
 	const [step, setStep] = useState<'REQUIRED_DETAILS' | 'OPTIONAL_OPTIONS'>('REQUIRED_DETAILS');
 

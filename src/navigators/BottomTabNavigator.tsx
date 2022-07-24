@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
-import { usePulse } from '@pulsejs/react';
 import {
 	Account,
 	Profile,
@@ -23,12 +22,13 @@ import { BlurView } from 'expo-blur';
 
 import { Block } from '@parts';
 import core, { TabStackNavParamList } from '@core';
+import { useTheme } from '@hooks';
 
 const TabsStackNavigator = createNativeStackNavigator<TabStackNavParamList>();
 
 export const BottomTabNavigator: React.FC = () => {
-	const current_tab_state = usePulse(core.app.TAB_STATE);
-	const isDarkMode = usePulse(core.ui.isDarkMode);
+	const { isDarkMode } = useTheme();
+	// const current_tab_state = usePulse(core.app.TAB_STATE);
 	const o: NativeStackNavigationOptions = {
 		gestureEnabled: false,
 		animation: 'none',
@@ -49,7 +49,7 @@ export const BottomTabNavigator: React.FC = () => {
 					},
 				}}
 				screenOptions={{ headerShown: false, animation: 'slide_from_left' }}
-				initialRouteName={current_tab_state.path_name}>
+				initialRouteName={'friends'}>
 				<TabsStackNavigator.Screen name="account" component={Account} options={o} />
 				<TabsStackNavigator.Screen name="events" component={Events} options={o} />
 				<TabsStackNavigator.Screen name="conversations" component={Conversations} options={o} />
