@@ -5,7 +5,7 @@ import { Animated, StyleSheet, TouchableOpacity, ViewStyle, RefreshControl } fro
 
 import { FlashList } from '@shopify/flash-list';
 import styled from 'styled-components/native';
-// import { BlurView } from 'react-native-blur';
+import { BlurView } from 'expo-blur';
 import FastImage from 'react-native-fast-image';
 import { FriendComp } from './components/FriendItemList';
 import { useNavigation, useTheme } from '@hooks';
@@ -285,11 +285,7 @@ export const Friends = React.memo(() => {
 					zIndex: 10,
 					position: 'absolute',
 				}}>
-				{/* <BlurView
-					style={sh2}
-					blurType={isDarkMode ? 'dark' : 'light'}
-					blurAmount={30}
-				/> */}
+				<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={30} />
 				<DimmingOverlay height={FRIEND_TAB_HEADER_HEIGHT + top} />
 				<Block
 					marginTop={top}

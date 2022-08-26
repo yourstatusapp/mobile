@@ -1,44 +1,57 @@
 import * as React from 'react';
-import core, { AppAlert, request } from '@core';
-import { Block, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
-import { Switch } from 'react-native';
-// import { requestPermissions } from '../../utils/PushNotification';
+import { Block, Spacer, Text, TextButton } from '@parts';
+import { AppState, Linking, Switch } from 'react-native';
 import { SettingItem } from './index';
 import { useTheme } from '@hooks';
+import Notifee, { AuthorizationStatus } from '@notifee/react-native';
+import { useState } from 'react';
 
 export const SettingsNotifications: React.FC = () => {
 	const { theme } = useTheme();
-	// const notificationsEnabled = usePulse(core.app.notification_permission);
-	const notificationsEnabled = false;
-	const CURRENT_DEVICE = { id: '', notifications: false };
-	// const CURRENT_DEVICE = usePulse(core.lists.devices.selectors.current);
+	const [notificationsAllowed, setNotificationsAllowed] = useState(false);
+	const [showSettingsForNotifyChange, setShowSettingsForNotifyChange] = useState(false);
+
+	const checkForNotificationPerms = async () => {
+		const settings = await Notifee.getNotificationSettings();
+
+		if (settings.authorizationStatus == AuthorizationStatus.AUTHORIZED) {
+			console.log('Notification permissions has been authorized');
+			setNotificationsAllowed(true);
+		} else if (settings.authorizationStatus == AuthorizationStatus.DENIED) {
+			console.log('Notification permissions has been denied');
+			setNotificationsAllowed(false);
+		}
+	};
 
 	const allowNotifications = async () => {
-		// requestPermissions();
+		// Request for permissions
+		const a = await Notifee.requestPermission();
+		if (a.authorizationStatus === AuthorizationStatus.DENIED) {
+			setShowSettingsForNotifyChange(true);
+		}
 	};
 
 	const UpdateDevice = async (notifications: boolean) => {
-		if (!CURRENT_DEVICE?.id) {
-			AppAlert(false, 'Failed', 'no device id found');
-			return;
-		}
-
-		// if no push token, return
-		// if (!core.app.device_push_token?.value) {
-		// 	console.log(core.app.device_push_token?.value);
-		// 	AppAlert(false, 'Notification permissions failed');
-		// 	return;
-		// }
-
+		// TODO: Update device notification logic
 		// const res = await request('patch', '/account/devices/' + CURRENT_DEVICE.id, {
 		// 	data: { notifications, push_token: notifications ? core.app.device_push_token?.value : '' },
 		// });
-
-		// if (res?.data) {
-		// 	core.lists.devices.update(CURRENT_DEVICE.id, { notifications });
-		// 	core.lists.devices.rebuildGroupsThatInclude(CURRENT_DEVICE.id);
-		// }
 	};
+
+	// listen for notification perms change
+	React.useEffect(() => {
+		const subscription = AppState.addEventListener('change', nextAppState => {
+			console.log('nextAppState', nextAppState);
+
+			if (nextAppState === 'active') {
+				checkForNotificationPerms();
+			}
+		});
+
+		return () => {
+			subscription.remove();
+		};
+	}, []);
 
 	return (
 		<Block color={theme.background}>
@@ -46,33 +59,37 @@ export const SettingsNotifications: React.FC = () => {
 			<Text bold size={26} paddingLeft={20} marginBottom={10}>
 				Notifications
 			</Text>
-			{/* {notificationsEnabled === 0 && (
+			{!notificationsAllowed && (
 				<Block flex={0} paddingHorizontal={20} marginBottom={20}>
-					<Block
-						flex={0}
-						color="#FF6666"
-						marginTop={15}
-						style={{ padding: 10, borderRadius: 8, marginHorizontal: 0 }}>
-						<Text color={'#541A1A'} medium>
-							We need permission to send notifications
+					<Block flex={0} color="#eb4a4a" marginTop={15} style={{ padding: 10, borderRadius: 8, marginHorizontal: 0 }}>
+						<Text color={'#541A1A'} bold size={16}>
+							The app needs device permission to allow notifications
 						</Text>
 						<Spacer size={15} />
-						<TextButton
-							onPress={() => allowNotifications()}
-							textSize={12}
-							textColor={'white'}
-							style={{ backgroundColor: '#00000032', padding: 6, borderRadius: 4 }}>
-							Allow Notifications
-						</TextButton>
+						<Block row flex={0} style={{ justifyContent: 'space-between' }}>
+							<TextButton
+								onPress={() => allowNotifications()}
+								disabled={showSettingsForNotifyChange}
+								textSize={14}
+								textColor={'#541A1A'}
+								style={{ backgroundColor: '#00000032', padding: 5, borderRadius: 4 }}>
+								Allow Notifications
+							</TextButton>
+							<TextButton
+								onPress={() => Linking.openSettings()}
+								textSize={14}
+								textColor={'#541A1A'}
+								style={{ backgroundColor: '#00000032', padding: 5, borderRadius: 4 }}>
+								Open Settings
+							</TextButton>
+						</Block>
 					</Block>
 				</Block>
-			)} */}
-
-			{/* {notificationsEnabled === 0 && <TextButton onPress={() => enableNotifications()}>Allow Notifications</TextButton>} */}
+			)}
 
 			<SettingItem
-				text="Global notifications"
-				RightComponent={() => <Switch value={CURRENT_DEVICE.notifications} onValueChange={v => UpdateDevice(v)} />}
+				text="Enable notifications"
+				RightComponent={() => <Switch value={false} onValueChange={v => UpdateDevice(v)} />}
 			/>
 		</Block>
 	);
