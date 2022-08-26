@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 
 interface LineType {
-	size: number;
+	size?: number;
 	color?: string;
 	spacing?: number;
 }
 
 export const Line = ({ color, size, spacing }: LineType) => {
 	const sh = StyleSheet.flatten<ViewStyle>([
-		{ width: '100%', borderRadius: size, height: size },
+		{ width: '100%', borderRadius: size || 1, height: size || 1 },
 		!!color && { backgroundColor: color },
 		!!spacing && { marginVertical: spacing },
 	]);

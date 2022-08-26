@@ -2,15 +2,16 @@ import React from 'react';
 import { SettingsStackParamList } from '@core';
 import { Block, Spacer, Fill, Icon, Text } from '@parts';
 import { Linking } from 'react-native';
-import { removeNotificationPermissions } from '../../utils/PushNotification';
+// import { removeNotificationPermissions } from '../../utils/PushNotification';
 import { SettingItemMenu } from './index';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
-import { useAccount, useNavigation, useTheme } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
+import { Icons } from '../../parts/Icon';
 
 const settingSections: {
 	text: string;
 	route: keyof SettingsStackParamList;
-	icon: string;
+	icon: Icons;
 }[] = [
 	{ text: 'Notifications', route: 'settingsNotifications', icon: 'bell' },
 	{ text: 'Sessions', route: 'settingsSessions', icon: 'phone' },
@@ -20,27 +21,18 @@ const settingSections: {
 export const SettingsMain = () => {
 	const nav = useNavigation();
 	const { theme } = useTheme();
-	const { logout } = useAccount();
+	const logout = () => {};
 
 	return (
-		<Block color={theme.backgroundDarker} flex={1}>
+		<Block color={theme.background} flex={1}>
 			<Spacer size={20} />
 			{settingSections.map((item, index) => (
-				<SettingItemMenu
-					key={index}
-					icon={item.icon}
-					text={item.text}
-					onPress={() => nav.navigate(item.route)}
-				/>
+				<SettingItemMenu key={index} icon={item.icon} text={item.text} onPress={() => nav.navigate(item.route)} />
 			))}
 			{process.env.NODE_ENV === 'development' && (
 				<>
 					<Spacer size={30} />
-					<SettingItemMenu
-						icon="leave"
-						text="UI Preview"
-						onPress={() => nav.navigate('settingsUI')}
-					/>
+					<SettingItemMenu icon="leave" text="UI Preview" onPress={() => nav.navigate('settingsUI')} />
 				</>
 			)}
 			<Spacer size={30} />
@@ -50,7 +42,8 @@ export const SettingsMain = () => {
 				textColor="#FF4848"
 				iconColor="#FF4848"
 				onPress={() => {
-					removeNotificationPermissions();
+					// TODO: remove notification permissions
+					// removeNotificationPermissions();
 					nav.reset({ index: 1, routes: [{ name: 'auth' }] });
 					logout();
 					// removeNotificationPermissions();

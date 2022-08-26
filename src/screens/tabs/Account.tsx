@@ -1,27 +1,18 @@
 import React, { useState } from 'react';
-import {
-	Avatar,
-	Block,
-	BlockScroll,
-	Fill,
-	HeadingBlurOverlay,
-	IconButton,
-	Text,
-	TextButton,
-} from '@parts';
+import { Avatar, Block, BlockScroll, Fill, IconButton, Text, TextButton } from '@parts';
 import core from '@core';
-import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 import { StyleSheet, ViewStyle } from 'react-native';
 import { hasNotch } from 'react-native-device-info';
-import { useAccount, useNavigation, useTheme } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSimple } from 'simple-core-state';
 
 export const Account = () => {
 	const nav = useNavigation();
 	const { theme } = useTheme();
 	const { top } = useSafeAreaInsets();
-	const { account, profile } = useAccount();
+	const profile = useSimple(core.profile);
 	const [MenuOpen, SetMenuOpen] = useState(false);
 	const sh2 = StyleSheet.flatten<ViewStyle>([
 		{
@@ -50,7 +41,7 @@ export const Account = () => {
 						iconSize={15}
 						color={theme.text}
 						backgroundColor={theme.darker}
-						onPress={() => nav.navigate('settings')}
+						onPress={() => nav.navigate('Settings')}
 					/>
 				</Block>
 				<Block row flex={0}>
@@ -74,7 +65,7 @@ export const Account = () => {
 							backgroundColor={theme.darker}
 							onPress={() => SetMenuOpen(true)}
 						/>
-						<Menu
+						{/* <Menu
 							opened={MenuOpen}
 							onBackdropPress={() => SetMenuOpen(false)}
 							style={{ borderRadius: 5 }}>
@@ -109,16 +100,13 @@ export const Account = () => {
 									text="Upload banner"
 								/>
 							</MenuOptions>
-						</Menu>
+						</Menu> */}
 					</Block>
 				</Block>
 				<Text bold size={18} paddingTop={30} paddingBottom={10}>
 					@{profile?.username}
 				</Text>
-				<TextButton
-					onPress={() => nav.navigate('ManageFriends')}
-					text={profile?.friends_amount + ' friends'}
-				/>
+				<TextButton onPress={() => nav.navigate('FriendsList')} text={profile?.friends_amount + ' friends'} />
 
 				{/* <Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade} marginBottom={50}>
 					{profile.display_name || 'No display name'}
@@ -128,7 +116,7 @@ export const Account = () => {
 
 				<Fill />
 			</Block>
-			<HeadingBlurOverlay />
+			{/* <HeadingBlurOverlay /> */}
 		</Block>
 	);
 };

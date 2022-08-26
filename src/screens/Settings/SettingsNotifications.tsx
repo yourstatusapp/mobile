@@ -2,7 +2,7 @@ import * as React from 'react';
 import core, { AppAlert, request } from '@core';
 import { Block, Fill, IconButton, Spacer, Text, TextButton } from '@parts';
 import { Switch } from 'react-native';
-import { requestPermissions } from '../../utils/PushNotification';
+// import { requestPermissions } from '../../utils/PushNotification';
 import { SettingItem } from './index';
 import { useTheme } from '@hooks';
 
@@ -14,7 +14,7 @@ export const SettingsNotifications: React.FC = () => {
 	// const CURRENT_DEVICE = usePulse(core.lists.devices.selectors.current);
 
 	const allowNotifications = async () => {
-		requestPermissions();
+		// requestPermissions();
 	};
 
 	const UpdateDevice = async (notifications: boolean) => {
@@ -41,9 +41,9 @@ export const SettingsNotifications: React.FC = () => {
 	};
 
 	return (
-		<Block color={theme.backgroundDarker}>
+		<Block color={theme.background}>
 			<Spacer size={20} />
-			<Text bold size={26} paddingLeft={20}>
+			<Text bold size={26} paddingLeft={20} marginBottom={10}>
 				Notifications
 			</Text>
 			{/* {notificationsEnabled === 0 && (
@@ -72,9 +72,7 @@ export const SettingsNotifications: React.FC = () => {
 
 			<SettingItem
 				text="Global notifications"
-				RightComponent={() => (
-					<Switch value={CURRENT_DEVICE.notifications} onValueChange={v => UpdateDevice(v)} />
-				)}
+				RightComponent={() => <Switch value={CURRENT_DEVICE.notifications} onValueChange={v => UpdateDevice(v)} />}
 			/>
 		</Block>
 	);

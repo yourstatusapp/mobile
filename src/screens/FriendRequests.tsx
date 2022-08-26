@@ -1,10 +1,10 @@
 import core, { AppAlert, request } from '@core';
 import { useTheme } from '@hooks';
 import { Avatar, Block, Fill, IconButton, Spacer, Text } from '@parts';
-import { usePulse } from '@pulsejs/react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, ListRenderItemInfo } from 'react-native';
+import { useSimple } from 'simple-core-state';
 
 interface FriendRequestItemType {
 	id: string;
@@ -19,7 +19,7 @@ export const FriendRequests = () => {
 	const { params }: { params?: FriendRequestItemType[] } = useRoute();
 	const { theme } = useTheme();
 	const nav = useNavigation();
-	const acc = usePulse(core.account.account);
+	const acc = useSimple(core.account);
 	const [FList, SetFList] = useState([]);
 
 	const replyRequest = useCallback(
@@ -63,7 +63,7 @@ export const FriendRequests = () => {
 				size={25}
 				iconSize={16}
 				backgroundColor={theme.darker}
-				onPress={() => replyRequest(item.id, acc.id, true, index.toString())}
+				onPress={() => replyRequest(item.id, acc?.id, true, index.toString())}
 			/>
 			<Spacer size={10} h />
 			<IconButton
@@ -72,7 +72,7 @@ export const FriendRequests = () => {
 				size={25}
 				iconSize={17}
 				backgroundColor={theme.darker}
-				onPress={() => replyRequest(item.id, acc.id, false, index.toString())}
+				onPress={() => replyRequest(item.id, acc?.id, false, index.toString())}
 				iconStyle={{ transform: [{ rotate: '45deg' }] }}
 			/>
 		</Block>

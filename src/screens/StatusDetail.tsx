@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Block, IconButton, Line, Spacer, Status, Text } from '@parts';
+import {
+	Avatar,
+	Block,
+	IconButton,
+	Line,
+	Spacer,
+	Status,
+	TabbarHeader,
+	Text,
+} from '@parts';
 import styled from 'styled-components/native';
 import { request, TabStackNavParamList } from '@core';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { FlatList, KeyboardAvoidingView } from 'react-native';
-import { TabbarHeader } from '../parts/components/TabbarHeader';
 import { useNavigation, useTheme } from '@hooks';
 
 export const StatusDetail: React.FC = () => {
 	const nav = useNavigation();
 	const { theme } = useTheme();
-	const { params } = useRoute<RouteProp<TabStackNavParamList, 'StatusDetail'>>();
+	const { params } =
+		useRoute<RouteProp<TabStackNavParamList, 'StatusDetail'>>();
 
 	const [newMessage, setNewMessage] = useState<string>('');
 	const [commentLoading, setCommentLoading] = useState(false);
@@ -46,7 +55,13 @@ export const StatusDetail: React.FC = () => {
 		<Block color={theme.background}>
 			<TabbarHeader color={theme.backgroundDark} />
 			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-				<Block row style={{ height: 40 }} flex={0} vCenter hCenter color={theme.backgroundDark}>
+				<Block
+					row
+					style={{ height: 40 }}
+					flex={0}
+					vCenter
+					hCenter
+					color={theme.backgroundDark}>
 					<IconButton
 						name="arrow"
 						size={24}
@@ -60,7 +75,12 @@ export const StatusDetail: React.FC = () => {
 						{params.username} Status
 					</Text>
 				</Block>
-				<Block hCenter flex={0} paddingTop={20} paddingBottom={15} color={theme.backgroundDark}>
+				<Block
+					hCenter
+					flex={0}
+					paddingTop={20}
+					paddingBottom={15}
+					color={theme.backgroundDark}>
 					<Status status={params.status} disableTap />
 				</Block>
 				<Line size={2} color={theme.backgroundDarker} />
@@ -90,7 +110,12 @@ export const StatusDetail: React.FC = () => {
 					/>
 				</Block>
 
-				<Block row hCenter flex={1} style={{ alignItems: 'flex-end' }} paddingHorizontal={15}>
+				<Block
+					row
+					hCenter
+					flex={1}
+					style={{ alignItems: 'flex-end' }}
+					paddingHorizontal={15}>
 					<RoundedTextInput
 						placeholder="Send a rpely"
 						placeholderTextColor={theme.textFadeLight}

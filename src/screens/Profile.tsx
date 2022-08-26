@@ -5,17 +5,7 @@ import { ActivityIndicator, Animated } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { ProfileType, request } from '@core';
 import { useTheme } from '@hooks';
-import {
-	Avatar,
-	Block,
-	GradiantShadow,
-	Icon,
-	IconButton,
-	Line,
-	Spacer,
-	Status,
-	Text,
-} from '@parts';
+import { Avatar, Block, GradiantShadow, Icon, IconButton, Line, Spacer, Status, Text } from '@parts';
 
 const BANNER_HEIGHT = 250;
 
@@ -107,12 +97,7 @@ export const Profile = () => {
 
 						{ProfileData?.location && (
 							<Block row flex={0} hCenter paddingTop={15}>
-								<Icon
-									name="map-marker"
-									size={15}
-									color={theme.textFadeLight}
-									style={{ paddingRight: 5 }}
-								/>
+								<Icon name="map_marker" size={15} color={theme.textFadeLight} style={{ paddingRight: 5 }} />
 								<Text medium size={12} color={theme.textFadeLight}>
 									{ProfileData.location}
 								</Text>

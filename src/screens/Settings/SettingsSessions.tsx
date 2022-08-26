@@ -2,7 +2,7 @@ import * as React from 'react';
 import core, { AppAlert, DeviceType, request, TimeFormatter } from '@core';
 import { Block, Fill, Icon, IconButton, Text } from '@parts';
 import { FlatList, ListRenderItemInfo } from 'react-native';
-import { removeNotificationPermissions } from '../../utils/PushNotification';
+// import { removeNotificationPermissions } from '../../utils/PushNotification';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@hooks';
 
@@ -29,7 +29,7 @@ export const SettingsSessions: React.FC = () => {
 		if (res.data) {
 			// if we are revoking the current device, log out of the device
 			if (current_device?.id === deviceId) {
-				removeNotificationPermissions();
+				// removeNotificationPermissions();
 				nav.reset({ index: 1, routes: [{ name: 'auth' as never }] });
 				// core.account.account.reset();
 				// core.lists.devices.reset();
@@ -50,11 +50,7 @@ export const SettingsSessions: React.FC = () => {
 	}, []);
 
 	const sessionRenderItem = ({ item, index }: ListRenderItemInfo<DeviceType>) => (
-		<Block
-			key={index}
-			marginBottom={10}
-			color={theme.background}
-			style={{ padding: 12, borderRadius: 8 }}>
+		<Block key={index} marginBottom={10} color={theme.background} style={{ padding: 12, borderRadius: 8 }}>
 			<Text bold color={theme.textFade}>
 				Created <Text color={theme.text}>{TimeFormatter(item.id)}</Text> ago
 			</Text>

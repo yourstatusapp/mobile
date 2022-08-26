@@ -5,7 +5,13 @@ import { SettingItem } from './index';
 import { useTheme } from '@hooks';
 
 export const SettingsTheming: React.FC = () => {
-	const { theme, isDarkMode, updateUseSystemTheme, systemThemeEnabled, toggleTheme } = useTheme();
+	const {
+		theme,
+		isDarkMode,
+		updateUseSystemTheme,
+		systemThemeEnabled,
+		toggleTheme,
+	} = useTheme();
 
 	const toggleUseSystemTheme = (v: boolean) => {
 		console.log('toggleUseSystemTheme ', v);
@@ -23,12 +29,17 @@ export const SettingsTheming: React.FC = () => {
 			<SettingItem
 				disabled={systemThemeEnabled}
 				text="Dark Theme"
-				RightComponent={() => <Switch value={isDarkMode} onValueChange={toggleUiTheme} />}
+				RightComponent={() => (
+					<Switch value={isDarkMode} onValueChange={toggleUiTheme} />
+				)}
 			/>
 			<SettingItem
 				text="Use system Theme"
 				RightComponent={() => (
-					<Switch value={systemThemeEnabled} onValueChange={v => toggleUseSystemTheme(v)} />
+					<Switch
+						value={systemThemeEnabled}
+						onValueChange={v => toggleUseSystemTheme(v)}
+					/>
 				)}
 			/>
 		</Block>

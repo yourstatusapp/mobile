@@ -10,7 +10,6 @@ import {
 	Spacer,
 	Status,
 	Text,
-	TextButton,
 } from '@parts';
 import core, { AppAlert, request } from '@core';
 import {
@@ -49,9 +48,13 @@ export const Auth: React.FC = () => {
 		}
 
 		timeout = setTimeout(async () => {
-			const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
-				data: { username: usernameInput },
-			});
+			const res = await request<{ valid: boolean }>(
+				'post',
+				'/profile/username/check',
+				{
+					data: { username: usernameInput },
+				},
+			);
 			SetUsernameLoading(false);
 			if (res.data) {
 				SetUsernameValid(res.data?.valid);
@@ -75,7 +78,7 @@ export const Auth: React.FC = () => {
 
 		if (a?.includes('magic?code=')) {
 			nav.navigate(
-				'magic' as never,
+				'Magic' as never,
 				{
 					code: a?.split('code=')[1]?.split('&')[0],
 					new_account: !!a?.includes('new_account'),
@@ -184,7 +187,13 @@ export const Auth: React.FC = () => {
 			<LinearGradient
 				pointerEvents="none"
 				colors={[theme.primary + '30', isDarkMode ? '#00000000' : '#ffffff00']}
-				style={{ position: 'absolute', top: 0, zIndex: 52, width: '100%', height: 350 }}
+				style={{
+					position: 'absolute',
+					top: 0,
+					zIndex: 52,
+					width: '100%',
+					height: 350,
+				}}
 			/>
 			<KeyboardAvoidingView
 				style={{ flex: 1, justifyContent: 'center' }}
@@ -201,7 +210,12 @@ export const Auth: React.FC = () => {
 							id: '',
 							account_id: '',
 						}}
-						style={{ right: 33, top: -95, position: 'absolute', transform: [{ rotate: '8deg' }] }}
+						style={{
+							right: 33,
+							top: -95,
+							position: 'absolute',
+							transform: [{ rotate: '8deg' }],
+						}}
 					/>
 					<Status
 						disableTap
@@ -213,7 +227,12 @@ export const Auth: React.FC = () => {
 							id: '',
 							account_id: '',
 						}}
-						style={{ left: 33, top: -160, position: 'absolute', transform: [{ rotate: '2deg' }] }}
+						style={{
+							left: 33,
+							top: -160,
+							position: 'absolute',
+							transform: [{ rotate: '2deg' }],
+						}}
 					/>
 					<Status
 						disableTap
@@ -225,9 +244,17 @@ export const Auth: React.FC = () => {
 							id: '',
 							account_id: '',
 						}}
-						style={{ left: 25, top: -55, position: 'absolute', transform: [{ rotate: '-4deg' }] }}
+						style={{
+							left: 25,
+							top: -55,
+							position: 'absolute',
+							transform: [{ rotate: '-4deg' }],
+						}}
 					/>
-					<Block flex={0} press onPress={() => SetShowBuildNumber(!ShowBuildNumber)}>
+					<Block
+						flex={0}
+						press
+						onPress={() => SetShowBuildNumber(!ShowBuildNumber)}>
 						<Text center weight="800" size={45} color={theme.text}>
 							YourStatus
 						</Text>
@@ -261,7 +288,11 @@ export const Auth: React.FC = () => {
 								}}
 								textContentType={'none'}
 								style={{
-									borderColor: UsernameValid ? '#62CB4E' : !!UsernameErrMsg ? '#FF6161' : '#292929',
+									borderColor: UsernameValid
+										? '#62CB4E'
+										: !!UsernameErrMsg
+										? '#FF6161'
+										: '#292929',
 									opacity: UsernameLoading ? 0.5 : 1,
 								}}
 							/>
@@ -324,7 +355,13 @@ export const Auth: React.FC = () => {
 							style={{ flex: 1, backgroundColor: theme.primary2 }}
 						/>
 					</Block>
-					<Block row vCenter flex={0} marginTop={13} press onPress={toggleTheme}>
+					<Block
+						row
+						vCenter
+						flex={0}
+						marginTop={13}
+						press
+						onPress={toggleTheme}>
 						<Icon
 							name={'sparkle'}
 							size={14}
@@ -347,7 +384,11 @@ export const Auth: React.FC = () => {
 					)}
 					<Spacer size={20} />
 					{ShowBuildNumber && (
-						<Button text="Paste clipboard" onPress={magicLinkLogin} style={{ marginBottom: 5 }} />
+						<Button
+							text="Paste clipboard"
+							onPress={magicLinkLogin}
+							style={{ marginBottom: 5 }}
+						/>
 					)}
 					{ShowBuildNumber && (
 						<Text center color={theme.textFadeLight} medium>

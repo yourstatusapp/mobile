@@ -1,6 +1,6 @@
 import core, { AppAlert, request, StatusType } from '@core';
 import { useTheme } from '@hooks';
-import { Block, Fill, IconButton, ModalHeader, Spacer, Status, Text } from '@parts';
+import { Block, Fill, IconButton, Spacer, Status, TabbarHeader, Text } from '@parts';
 import React from 'react';
 import { FlatList } from 'react-native';
 import { useSimple } from 'simple-core-state';
@@ -21,7 +21,8 @@ export const ManageStatus = () => {
 
 	return (
 		<Block safe color={theme.background}>
-			<ModalHeader title="Manage Status" />
+			<TabbarHeader />
+			{/* <ModalHeader title="Manage Status" /> */}
 
 			<FlatList
 				data={status}

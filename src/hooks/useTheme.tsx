@@ -88,7 +88,9 @@ export const useTheme = () => {
 };
 
 // This is specific for styled components so we can use the theme object inside a styled component anotation such like `color: ${p => p.theme.color}`
-export const StyledThemeWrapper: React.FC = ({ children }) => {
+export const StyledThemeWrapper: React.FC<{ children: React.ReactNode }> = ({
+	children,
+}) => {
 	const { theme } = useTheme();
 	return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };

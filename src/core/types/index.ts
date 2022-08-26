@@ -1,3 +1,4 @@
+import React from 'react';
 import { ListRenderItemInfo, TextStyle, ViewStyle } from 'react-native';
 export * from './status.type';
 
@@ -65,6 +66,7 @@ export interface BlockType extends PaddingType, MarginType {
 	opacity?: number;
 	flex?: 1 | 0;
 	activeOpacity?: number;
+	children?: React.ReactNode;
 }
 
 export interface TextType extends PaddingType, MarginType {
@@ -79,6 +81,7 @@ export interface TextType extends PaddingType, MarginType {
 	extraBold?: boolean;
 	medium?: boolean;
 	textAlign?: string;
+	children: React.ReactNode;
 }
 
 export interface AlertDataType {
@@ -206,41 +209,23 @@ export type TabStackNavParamList = {
 };
 
 export type RootstackParamList = {
+	Auth: undefined;
 	Preloader: undefined;
-	newproject: undefined;
-	tabs: undefined;
-	auth: undefined;
-	magic: undefined;
-	new_moment: undefined;
-	create_status: undefined;
-	settings: undefined;
-	manage_status: undefined;
-	explanation: undefined;
-	realtime_history: undefined;
-	verify_account: undefined;
-	MagicAuthScanner: undefined;
-	Camera: {
-		uploadMethod: 'avatar' | 'banner';
-	};
-
-	// tabs
-	profile: any;
-	account: undefined;
-	events: undefined;
-	StatusDetail: {
-		username: string;
-		status: StatusType;
-	};
-	friends: undefined;
-	conversations: undefined;
-	directmessage: undefined;
-	SearchFriend: undefined;
-	FriendRequests: undefined;
-	newconversation: undefined;
-	ManageFriends: undefined;
-	CreateEvent: undefined;
-	Event: EventType;
+	Magic: undefined;
+	Tabs: undefined;
+	Profile: undefined;
+	CreateStatus: undefined;
+	StatusDetail: undefined;
 	EditProfile: undefined;
+	Settings: undefined;
+	FriendsList: undefined;
+	SearchProfile: undefined;
+	FriendRequests: undefined;
+	ManageStatus: null;
+
+	// Camera: {
+	// 	uploadMethod: 'avatar' | 'banner';
+	// };
 };
 
 export type SettingsStackParamList = {

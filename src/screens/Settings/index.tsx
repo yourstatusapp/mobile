@@ -1,11 +1,13 @@
 import { useTheme } from '@hooks';
 import { Text, Block, Fill, Icon } from '@parts';
 import React from 'react';
+import { Icons } from '../../parts/Icon';
 import { SettingsMain } from './SettingsMain';
 import { SettingsNotifications } from './SettingsNotifications';
 import { SettingsSessions } from './SettingsSessions';
 import { SettingsTheming } from './SettingsTheming';
 import { SettingsUI } from './SettingsUI';
+import { Settings } from './Settings';
 
 export const SettingsScreens = {
 	SettingsTheming,
@@ -13,23 +15,18 @@ export const SettingsScreens = {
 	SettingsNotifications,
 	SettingsMain,
 	SettingsUI,
+	Settings,
 };
 
 export interface SettingItemMenuProps {
 	text: string;
-	icon?: string;
+	icon?: Icons;
 	onPress: () => void;
 	textColor?: string;
 	iconColor?: string;
 }
 
-export const SettingItemMenu = ({
-	text,
-	onPress,
-	icon,
-	textColor,
-	iconColor,
-}: SettingItemMenuProps) => {
+export const SettingItemMenu = ({ text, onPress, icon, textColor, iconColor }: SettingItemMenuProps) => {
 	const { theme } = useTheme();
 
 	return (
@@ -38,7 +35,7 @@ export const SettingItemMenu = ({
 			paddingHorizontal={20}
 			flex={0}
 			onPress={onPress}
-			color={theme.background}
+			color={theme.backgroundDarker}
 			hCenter
 			press
 			row>
@@ -65,12 +62,7 @@ interface SettingItemProps {
 	disabled?: boolean;
 }
 
-export const SettingItem: React.FC<SettingItemProps> = ({
-	text,
-	RightComponent,
-	disabled,
-	spaceBottom,
-}) => {
+export const SettingItem: React.FC<SettingItemProps> = ({ text, RightComponent, disabled, spaceBottom }) => {
 	const { theme } = useTheme();
 
 	return (
@@ -79,7 +71,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
 			row
 			marginTop={spaceBottom ? 40 : 0}
 			paddingHorizontal={20}
-			color={theme.background}
+			color={theme.backgroundDarker}
 			style={{ paddingVertical: 10, opacity: disabled ? 0.7 : 1 }}
 			hCenter>
 			<Text medium>{text}</Text>

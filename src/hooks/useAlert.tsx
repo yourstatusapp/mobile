@@ -24,6 +24,8 @@ export const useAlert = () => {
 	};
 
 	const onUpdate = useMemo(() => {
+		console.log('current data is changing');
+
 		return current;
 	}, [current]);
 

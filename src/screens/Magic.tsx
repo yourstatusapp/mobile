@@ -1,4 +1,9 @@
-import core, { AppAlert, IAccountRequestProps, MagicProps, request } from '@core';
+import core, {
+	AppAlert,
+	IAccountRequestProps,
+	MagicProps,
+	request,
+} from '@core';
 import { Spacer, Text, Block } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
@@ -11,9 +16,13 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 	const account = useSimple(core.account);
 
 	const magicAuth = async (code: string, new_account: boolean) => {
-		const res = await request<IAccountRequestProps>('post', '/auth/magic/verify', {
-			data: { code },
-		});
+		const res = await request<IAccountRequestProps>(
+			'post',
+			'/auth/magic/verify',
+			{
+				data: { code },
+			},
+		);
 
 		if (!res.data) {
 			AppAlert(false, 'Failed', res.message);
@@ -33,9 +42,12 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 		// }
 
 		if (!new_account) {
-			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });
+			nav.reset({ index: 0, routes: [{ name: 'Tabs' as never }] });
 		} else {
-			nav.reset({ index: 0, routes: [{ name: 'tabs' as never, params: { new_account: true } }] });
+			nav.reset({
+				index: 0,
+				routes: [{ name: 'Tabs' as never, params: { new_account: true } }],
+			});
 		}
 	};
 

@@ -88,20 +88,10 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 			backColor={StatusColors[theme.name][status.type].backColor}
 			textColor={StatusColors[theme.name][status.type].color}>
 			{status.type === 1 && (
-				<Icon
-					name="discord"
-					size={14}
-					color={StatusColors[theme.name][status.type].color}
-					style={{ marginRight: 4 }}
-				/>
+				<Icon name="discord" size={14} color={StatusColors[theme.name][status.type].color} style={{ marginRight: 4 }} />
 			)}
 			{status.type === 2 && (
-				<Icon
-					name="flag"
-					size={11}
-					color={StatusColors[theme.name][status.type].color}
-					style={{ marginRight: 5 }}
-				/>
+				<Icon name="flag" size={11} color={StatusColors[theme.name][status.type].color} style={{ marginRight: 5 }} />
 			)}
 			<Text medium size={13} color={StatusColors[theme.name][status.type].color}>
 				{status.data?.name || status.data?.message}
@@ -161,11 +151,11 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 		});
 
 	return (
-		<GestureDetector gesture={tap}>
-			<Pressable disabled={disableTap === true} style={PressStyle} onPress={onPressHandle}>
-				{BaseRender}
-			</Pressable>
-		</GestureDetector>
+		// <GestureDetector gesture={tap} >
+		<Pressable disabled={disableTap === true} style={PressStyle} onPress={onPressHandle}>
+			{BaseRender}
+		</Pressable>
+		// </GestureDetector>
 	);
 });
 

@@ -11,7 +11,16 @@ module.exports = {
 					'@parts': './src/parts',
 					'@hooks': './src/hooks',
 				},
-				extensions: ['.ios.js', '.android.js', '.js', '.jsx', '.json', '.tsx', '.ts', '.native.js'],
+				extensions: [
+					'.ios.js',
+					'.android.js',
+					'.js',
+					'.jsx',
+					'.json',
+					'.tsx',
+					'.ts',
+					'.native.js',
+				],
 			},
 		],
 

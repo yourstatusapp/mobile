@@ -10,7 +10,7 @@ interface PreloaderProps {
 	loaded?: () => void;
 }
 
-export const PreloaderView = ({ loaded }: PreloaderProps) => {
+export const Preloader = ({ loaded }: PreloaderProps) => {
 	const { theme } = useTheme();
 	const [TakingTooLong, setTakingTooLong] = useState(false);
 	const account = useSimple(core.account);
@@ -22,7 +22,10 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		SetLoading(true);
 		setTimeout(() => setTakingTooLong(true), 20 * 1000);
 
-		const res = await request<{ account: any; profile: any; device: any }>('get', '/account');
+		const res = await request<{ account: any; profile: any; device: any }>(
+			'get',
+			'/account',
+		);
 
 		if (res.success) {
 			// set account and profile
@@ -48,7 +51,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		// }
 		setTimeout(() => {
 			// loaded();
-			nav.navigate('tabs');
+			nav.navigate('Tabs');
 			// connectToSocket();
 		}, 10);
 	};
@@ -59,7 +62,7 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 			getAccount();
 		} else {
 			// nav.navigate('auth');
-			nav.reset({ index: 0, routes: [{ name: 'auth' }] });
+			nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
 		}
 		// core.account.logged_in.onNext(value => {
 		// 	console.log('test', value);

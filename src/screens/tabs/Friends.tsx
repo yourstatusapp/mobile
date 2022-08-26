@@ -1,22 +1,16 @@
 import React, { useState, useRef } from 'react';
-import core, {
-	AppAlert,
-	FriendItemRenderType,
-	FriendItemType,
-	request,
-	StatusType,
-	StorieType,
-} from '@core';
+import core, { AppAlert, FriendItemRenderType, FriendItemType, request, StatusType, StorieType } from '@core';
 import { Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
 import { Animated, StyleSheet, TouchableOpacity, ViewStyle, RefreshControl } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
 import styled from 'styled-components/native';
-import { BlurView } from 'expo-blur';
+// import { BlurView } from 'react-native-blur';
 import FastImage from 'react-native-fast-image';
-import { FriendComp } from '../parts/FriendItemList';
+import { FriendComp } from './components/FriendItemList';
 import { useNavigation, useTheme } from '@hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ManageStatusSheet } from './components/ManageStatusBottomSheet';
 
 const FRIEND_ITEM_HEIGHT = 88;
 const FRIEND_TAB_HEADER_HEIGHT = 50;
@@ -32,6 +26,7 @@ export const Friends = React.memo(() => {
 	// const myStories = usePulse(core.lists.stories.groups.mine);
 	// const profile = usePulse(core.profile.profile);
 
+	const [manageFriendsSheetOpen, setManageFriendsSheetOpen] = useState(false);
 	const [FriendsRequests, SetFriendsRequests] = useState<any[]>([]);
 	const [MyStatus, setMyStatus] = useState<StatusType[]>([]);
 	const [Loading, SetLoading] = useState(false);
@@ -66,13 +61,12 @@ export const Friends = React.memo(() => {
 
 	const getFriends = async () => {
 		SetLoading(true);
-		const a = await request<{ friends: FriendItemType[]; incoming_pending: any[] }>(
-			'get',
-			'/friends',
-		);
+		const a = await request<{
+			friends: FriendItemType[];
+			incoming_pending: any[];
+		}>('get', '/friends');
 		if (!a.data) {
 		} else {
-			console.log(a.data);
 			setFriends(a.data.friends);
 
 			// core.lists.friends.collect(a.data.friends, 'friends');
@@ -154,7 +148,10 @@ export const Friends = React.memo(() => {
 			<Animated.ScrollView
 				scrollEnabled={true}
 				showsVerticalScrollIndicator={false}
-				contentContainerStyle={{ paddingTop: FRIEND_TAB_HEADER_HEIGHT + top, paddingBottom: 120 }}
+				contentContainerStyle={{
+					paddingTop: FRIEND_TAB_HEADER_HEIGHT + top,
+					paddingBottom: 120,
+				}}
 				scrollEventThrottle={1}
 				refreshControl={
 					<RefreshControl
@@ -181,7 +178,7 @@ export const Friends = React.memo(() => {
 				{(!!MyStatus.length || !!myStories?.length) && (
 					<Block flex={0} marginBottom={30}>
 						{!!MyStatus?.length && (
-							<Block row>
+							<Block row paddingHorizontal={10} marginTop={20}>
 								<FlashList
 									data={MyStatus}
 									estimatedItemSize={15}
@@ -189,7 +186,11 @@ export const Friends = React.memo(() => {
 									renderItem={({ item, index }) => (
 										<Block
 											key={index}
-											style={{ flexWrap: 'wrap', paddingTop: 15, paddingLeft: 15 }}>
+											flex={0}
+											marginBottom={10}
+											style={{
+												flexWrap: 'wrap',
+											}}>
 											<Status status={item} self disableTap={false} />
 										</Block>
 									)}
@@ -197,8 +198,8 @@ export const Friends = React.memo(() => {
 								{/* <Block flex={0} style={{ width: null }}> */}
 								<TextButton
 									text="Manage status"
-									style={{ marginTop: 15, marginRight: 15 }}
-									onPress={() => nav.navigate('manage_status' as never)}
+									// style={{ marginRight: 15 }}
+									onPress={() => setManageFriendsSheetOpen(true)}
 								/>
 								{/* </Block> */}
 							</Block>
@@ -225,7 +226,12 @@ export const Friends = React.memo(() => {
 													source={{
 														uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}`,
 													}}
-													style={{ height: 120, width: 80, borderRadius: 6, marginRight: 15 }}>
+													style={{
+														height: 120,
+														width: 80,
+														borderRadius: 6,
+														marginRight: 15,
+													}}>
 													<IconButton
 														name="plus"
 														size={18}
@@ -279,7 +285,11 @@ export const Friends = React.memo(() => {
 					zIndex: 10,
 					position: 'absolute',
 				}}>
-				<BlurView style={sh2} tint={isDarkMode ? 'dark' : 'light'} intensity={30} />
+				{/* <BlurView
+					style={sh2}
+					blurType={isDarkMode ? 'dark' : 'light'}
+					blurAmount={30}
+				/> */}
 				<DimmingOverlay height={FRIEND_TAB_HEADER_HEIGHT + top} />
 				<Block
 					marginTop={top}
@@ -299,17 +309,17 @@ export const Friends = React.memo(() => {
 						iconSize={14}
 						color={theme.textFade}
 						backgroundColor={theme.darker}
-						onPress={() => nav.navigate('SearchFriend' as never)}
+						onPress={() => nav.navigate('SearchProfile')}
 						style={{ marginRight: 15 }}
 					/>
 					{!!FriendsRequests.length && (
 						<IconButton
-							name="user-add"
+							name="user_add"
 							size={23}
 							iconSize={15}
 							color={theme.textFade}
 							backgroundColor={theme.darker}
-							onPress={() => nav.navigate('FriendRequests' as never, FriendsRequests as never)}
+							onPress={() => nav.navigate('FriendRequests', FriendsRequests as never)}
 							style={{ marginRight: 15 }}
 						/>
 					)}
@@ -324,6 +334,8 @@ export const Friends = React.memo(() => {
 					/> */}
 				</Block>
 			</Animated.View>
+
+			<ManageStatusSheet open={manageFriendsSheetOpen} onClose={() => setManageFriendsSheetOpen(false)} />
 		</Block>
 	);
 });

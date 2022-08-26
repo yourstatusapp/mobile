@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
-import { Icon } from './icons/Icon';
+import { Icon, Icons } from './Icon';
 
 interface IconButtonProps {
-	name: string;
+	name: Icons;
 	size: number;
 	onPress?: () => void;
 	color?: string;
@@ -47,7 +47,12 @@ export const IconButton: React.FC<IconButtonProps> = ({
 				noBackground,
 				style,
 			}}>
-			<Icon name={name || ''} color={color} size={iconSize || 0 + (size - 5)} style={iconStyle} />
+			<Icon
+				name={name || ''}
+				color={color}
+				size={iconSize || 0 + (size - 5)}
+				style={iconStyle}
+			/>
 		</IconButtonBody>
 	);
 };
@@ -56,7 +61,14 @@ const IconButtonBody = styled(TouchableOpacity)<IconButtonProps>`
 	justify-content: center;
 	align-items: center;
 
-	${({ backgroundColor, size, noBackground, noPadding, removeFadeWhenDisalbed, disabled }) => `
+	${({
+		backgroundColor,
+		size,
+		noBackground,
+		noPadding,
+		removeFadeWhenDisalbed,
+		disabled,
+	}) => `
 		opacity: ${removeFadeWhenDisalbed ? 1 : disabled ? 0.4 : 1};
 		background-color: ${noBackground === true ? 'transparent' : backgroundColor};
 		height: ${size + (noPadding === true ? 0 : 10)}px;

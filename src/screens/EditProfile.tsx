@@ -1,9 +1,8 @@
 import core, { request } from '@core';
-import { Block, RoundyButton, RoundyInput, SheetModal, Spacer, Text } from '@parts';
+import { Block, RoundyButton, RoundyInput, SheetModal, Spacer, TabbarHeader, Text } from '@parts';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import DatePicker from 'react-native-date-picker';
-import { TabbarHeader } from '../parts/components/TabbarHeader';
 
 import dayjs from 'dayjs';
 import { Keyboard, KeyboardAvoidingView } from 'react-native';
@@ -23,7 +22,10 @@ export const EditProfile = () => {
 	const [birthday, setBirthday] = useState<Date>(
 		profile?.date_of_birth ? dayjs(profile?.date_of_birth).toDate() : new Date(),
 	);
-	const [usrNameValid, setUsrNameValid] = useState<{ state: boolean; message: string }>({
+	const [usrNameValid, setUsrNameValid] = useState<{
+		state: boolean;
+		message: string;
+	}>({
 		state: false,
 		message: '',
 	});
@@ -98,11 +100,7 @@ export const EditProfile = () => {
 
 	return (
 		<Block flex={1} color={theme.background}>
-			<KeyboardAvoidingView
-				contentContainerStyle={{ flex: 1 }}
-				style={{ flex: 1 }}
-				behavior="padding"
-				enabled={false}>
+			<KeyboardAvoidingView contentContainerStyle={{ flex: 1 }} style={{ flex: 1 }} behavior="padding" enabled={false}>
 				<TabbarHeader color={theme.backgroundDark} backButton centerText="Edit Profile" />
 				<Block paddingHorizontal={10} marginTop={15}>
 					<Text marginBottom={8} bold paddingLeft={10}>
@@ -137,13 +135,7 @@ export const EditProfile = () => {
 						Bio
 					</Text>
 
-					<RoundyInput
-						initialValue={profile.bio}
-						onTextChange={setBio}
-						autoCorrect={false}
-						placeholder="Bio"
-						extend
-					/>
+					<RoundyInput initialValue={profile.bio} onTextChange={setBio} autoCorrect={false} placeholder="Bio" extend />
 
 					<Text marginBottom={8} bold paddingLeft={10} marginTop={20}>
 						Birthday
