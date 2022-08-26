@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
-import { Avatar, Block, BlockScroll, Fill, IconButton, Text, TextButton } from '@parts';
+import { Avatar, Block, Fill, IconButton, Text, TextButton } from '@parts';
 import core from '@core';
 
-import { StyleSheet, ViewStyle } from 'react-native';
+import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
 import { hasNotch } from 'react-native-device-info';
 import { useNavigation, useTheme } from '@hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSimple } from 'simple-core-state';
+import { UpdateAvatarSheet } from './components/UpdateAvatarSheet';
+import { UpdateBannerSheet } from './components/UpdateBannerSheet';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
 
 export const Account = () => {
 	const nav = useNavigation();
+	const [showUploadAvatarSheet, setShowUploadAvatarSheet] = useState(false);
+	const [showUploadBannerSheet, setShowUploadbannerSheet] = useState(false);
 	const { theme } = useTheme();
 	const { top } = useSafeAreaInsets();
 	const profile = useSimple(core.profile);
 	const [MenuOpen, SetMenuOpen] = useState(false);
+	const { width } = Dimensions.get('screen');
 	const sh2 = StyleSheet.flatten<ViewStyle>([
 		{
 			position: 'absolute',
@@ -45,10 +52,19 @@ export const Account = () => {
 					/>
 				</Block>
 				<Block row flex={0}>
-					<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
+					<TouchableOpacity
+						onPress={() => setShowUploadAvatarSheet(true)}
+						activeOpacity={0.7}
+						disabled={showUploadAvatarSheet}>
+						<Avatar src={[profile?.account_id, profile?.avatar]} size={120} />
+					</TouchableOpacity>
 
-					<Block flex={0} vCenter paddingLeft={15}>
-						<IconButton
+					<Block flex={0} paddingLeft={20}>
+						<Text bold size={18} paddingBottom={10}>
+							@{profile?.username}
+						</Text>
+						<TextButton onPress={() => nav.navigate('FriendsList')} text={profile?.friends_amount + ' friends'} />
+						{/* <IconButton
 							name="pencil"
 							color={theme.text}
 							size={25}
@@ -63,50 +79,25 @@ export const Account = () => {
 							size={25}
 							iconSize={16}
 							backgroundColor={theme.darker}
-							onPress={() => SetMenuOpen(true)}
-						/>
-						{/* <Menu
-							opened={MenuOpen}
-							onBackdropPress={() => SetMenuOpen(false)}
-							style={{ borderRadius: 5 }}>
-							<MenuTrigger text="" />
-							<MenuOptions
-								customStyles={{
-									optionsContainer: { borderRadius: 5 },
-									optionsWrapper: { borderRadius: 5 },
-									optionWrapper: {
-										backgroundColor: theme.darker,
-										height: 35,
-										justifyContent: 'center',
-									},
-									optionText: { color: 'white', fontWeight: '700' },
-								}}>
-								<MenuOption
-									onSelect={() => {
-										SetMenuOpen(false);
-										nav.navigate('Camera', {
-											uploadMethod: 'avatar',
-										});
-									}}
-									text="Upload avatar"
-								/>
-								<MenuOption
-									onSelect={() => {
-										SetMenuOpen(false);
-										nav.navigate('Camera', {
-											uploadMethod: 'banner',
-										});
-									}}
-									text="Upload banner"
-								/>
-							</MenuOptions>
-						</Menu> */}
+							onPress={() => setShowUploadAvatarSheet(true)}
+						/> */}
 					</Block>
 				</Block>
-				<Text bold size={18} paddingTop={30} paddingBottom={10}>
-					@{profile?.username}
-				</Text>
-				<TextButton onPress={() => nav.navigate('FriendsList')} text={profile?.friends_amount + ' friends'} />
+				<Block flex={0} marginTop={20} width="100%" style={{ borderRadius: 12 }} hCenter>
+					<Text bold>Click to edit</Text>
+
+					<TouchableOpacity
+						style={{ width: '100%', flex: 0, marginTop: 8 }}
+						activeOpacity={0.7}
+						onPress={() => setShowUploadbannerSheet(true)}
+						disabled={showUploadBannerSheet}>
+						<FastImage
+							resizeMode="cover"
+							source={{ uri: `https://cdn.yourstatus.app/profile/${profile?.account_id}/${profile?.banner}` }}
+							style={{ height: 140, width: width - 40, borderRadius: 12 }}
+						/>
+					</TouchableOpacity>
+				</Block>
 
 				{/* <Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade} marginBottom={50}>
 					{profile.display_name || 'No display name'}
@@ -117,6 +108,9 @@ export const Account = () => {
 				<Fill />
 			</Block>
 			{/* <HeadingBlurOverlay /> */}
+			<UpdateAvatarSheet open={showUploadAvatarSheet} onClose={() => setShowUploadAvatarSheet(false)} />
+
+			<UpdateBannerSheet open={showUploadBannerSheet} onClose={() => setShowUploadbannerSheet(false)} />
 		</Block>
 	);
 };

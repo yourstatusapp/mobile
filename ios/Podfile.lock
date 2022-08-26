@@ -16,6 +16,9 @@ PODS:
     - ExpoModulesCore
   - EXFont (10.2.0):
     - ExpoModulesCore
+  - EXMediaLibrary (14.2.0):
+    - ExpoModulesCore
+    - React-Core
   - Expo (46.0.9):
     - ExpoModulesCore
   - ExpoKeepAwake (10.2.0):
@@ -454,6 +457,10 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.0)
+  - VisionCamera (2.14.1):
+    - React
+    - React-callinvoker
+    - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -468,6 +475,7 @@ DEPENDENCIES:
   - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
+  - EXMediaLibrary (from `../node_modules/expo-media-library/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
@@ -538,6 +546,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -582,6 +591,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-file-system/ios"
   EXFont:
     :path: "../node_modules/expo-font/ios"
+  EXMediaLibrary:
+    :path: "../node_modules/expo-media-library/ios"
   Expo:
     :path: "../node_modules/expo"
   ExpoKeepAwake:
@@ -674,6 +685,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  VisionCamera:
+    :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -688,6 +701,7 @@ SPEC CHECKSUMS:
   EXErrorRecovery: 74d71ee59f6814315457b09d68e86aa95cc7d05d
   EXFileSystem: 927e0a8885aa9c49e50fc38eaba2c2389f2f1019
   EXFont: a5d80bd9b3452b2d5abbce2487da89b0150e6487
+  EXMediaLibrary: e8c8a365701629b7b21dd29769b86e8320610f18
   Expo: 73412414e62f5cbc6e713def821de70b92cd3ad6
   ExpoKeepAwake: 0e8f18142e71bbf2c7f6aa66ebed249ba1420320
   ExpoModulesCore: e281bb7b78ea47e227dd5af94d04b24d8b2e1255
@@ -752,6 +766,7 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  VisionCamera: cc788935bcfd2f7031d3295adedbc9786835f402
   Yoga: ff994563b2fd98c982ca58e8cd9db2cdaf4dda74
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

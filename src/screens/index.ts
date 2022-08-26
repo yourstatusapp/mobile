@@ -9,6 +9,7 @@ export { FriendsList } from './FriendsList';
 export { SearchProfile } from './SearchProfile';
 export { FriendRequests } from './FriendRequests';
 export { ManageStatus } from './ManageStatus';
+export { CameraFrame } from './CameraFrame';
 
 // Tabs
 export { Account } from './tabs/Account';

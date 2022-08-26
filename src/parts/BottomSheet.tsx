@@ -1,22 +1,25 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetView, useBottomSheetDynamicSnapPoints } from '@gorhom/bottom-sheet';
 import { useTheme } from '@hooks';
 import { Block, Text } from '@parts';
 import * as React from 'react';
 import { useCallback } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 
 export interface IBaseSheetProps {
 	open: boolean;
 	onClose: () => void;
+	close: boolean;
 	children?: React.ReactNode;
 }
 
-export const BottomSheet = ({ open, onClose, children }: IBaseSheetProps) => {
+export const BottomSheet = ({ open, onClose, children, close }: IBaseSheetProps) => {
 	const bottomSheetModalRef = React.useRef<BottomSheetModal>(null);
 	const { theme } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 
-	// variables
-	const snapPoints = React.useMemo(() => ['25%', '50%'], []);
+	const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
+		useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
 
 	// callbacks
 	const handlePresentModalPress = useCallback(() => {
@@ -31,26 +34,39 @@ export const BottomSheet = ({ open, onClose, children }: IBaseSheetProps) => {
 		console.log('handleSheetChanges', index);
 	}, []);
 
+	React.useEffect(() => {
+		console.log('c', close);
+
+		if (close) {
+			bottomSheetModalRef.current?.close();
+		}
+	}, [close]);
+
 	const HANDLE_BORDER_RADIUS = 13;
 	return (
 		<>
 			<BottomSheetModal
 				ref={bottomSheetModalRef}
-				index={1}
-				detached
-				snapPoints={snapPoints}
+				index={0}
+				snapPoints={animatedSnapPoints}
+				handleHeight={animatedHandleHeight}
+				contentHeight={animatedContentHeight}
 				onChange={handleSheetChanges}
 				onDismiss={onClose}
-				handleIndicatorStyle={{ backgroundColor: theme.backgroundDarker }}
-				containerStyle={{}}
-				style={{ borderRadius: 40, backgroundColor: 'green' }}
+				handleIndicatorStyle={{ backgroundColor: theme.darker1 }}
+				style={{ borderRadius: 40, backgroundColor: theme.background }}
+				backgroundComponent={() => <Block color={theme.background} flex={1}></Block>}
 				handleStyle={{
 					backgroundColor: theme.backgroundDark,
 					borderTopLeftRadius: HANDLE_BORDER_RADIUS,
 					borderTopRightRadius: HANDLE_BORDER_RADIUS,
-					height: 50,
+					height: 30,
 				}}>
-				{children}
+				<BottomSheetView
+					onLayout={handleContentLayout}
+					style={{ paddingBottom: bottom, backgroundColor: theme.backgroundDark }}>
+					{children}
+				</BottomSheetView>
 			</BottomSheetModal>
 		</>
 	);
