@@ -1,5 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import core, { RootstackParamList } from '@core';
 import { createNavigationContainerRef } from '@react-navigation/native';
 
@@ -8,6 +9,7 @@ import { StatusBar } from 'react-native';
 import { useSimple } from 'simple-core-state';
 import {
 	Auth,
+	CameraFrame,
 	CreateStatus,
 	EditProfile,
 	FriendRequests,
@@ -25,7 +27,7 @@ import { SettingsScreens } from '../screens/settings';
 import { Settings } from '../screens/settings/Settings';
 
 export const navigationRef = createNavigationContainerRef();
-const RootStack = createNativeStackNavigator<RootstackParamList>();
+const RootStack = createStackNavigator<RootstackParamList>();
 
 export const RootNavigator = () => {
 	useLinking();
@@ -38,7 +40,7 @@ export const RootNavigator = () => {
 				initialRouteName={'Preloader'}
 				screenOptions={{
 					headerShown: false,
-					contentStyle: { zIndex: 24 },
+					// contentStyle: { zIndex: 24 },
 				}}>
 				<RootStack.Screen name="Auth" component={Auth} />
 				<RootStack.Screen name="Magic" component={Magic} />
@@ -53,6 +55,7 @@ export const RootNavigator = () => {
 				<RootStack.Screen name="Settings" component={Settings} />
 				<RootStack.Screen name="FriendRequests" component={FriendRequests} />
 				<RootStack.Screen name="ManageStatus" component={ManageStatus} />
+				<RootStack.Screen name="Camera" component={CameraFrame} />
 				{/* <RootStack.Screen name="Auth" component={Test} /> */}
 			</RootStack.Navigator>
 		</Block>

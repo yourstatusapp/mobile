@@ -1,28 +1,22 @@
-import core, {
-	AppAlert,
-	IAccountRequestProps,
-	MagicProps,
-	request,
-} from '@core';
+import core, { AppAlert, IAccountRequestProps, MagicProps, request, RootstackParamList } from '@core';
 import { Spacer, Text, Block } from '@parts';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { useSimple } from 'simple-core-state';
 import styled from 'styled-components/native';
 
-export const Magic: React.FC<MagicProps> = ({ route }) => {
+type Props = NativeStackScreenProps<RootstackParamList, 'Magic'>;
+
+export const Magic: React.FC<Props> = ({ route }) => {
 	const nav = useNavigation();
 	const account = useSimple(core.account);
 
 	const magicAuth = async (code: string, new_account: boolean) => {
-		const res = await request<IAccountRequestProps>(
-			'post',
-			'/auth/magic/verify',
-			{
-				data: { code },
-			},
-		);
+		const res = await request<IAccountRequestProps>('post', '/auth/magic/verify', {
+			data: { code },
+		});
 
 		if (!res.data) {
 			AppAlert(false, 'Failed', res.message);
@@ -52,7 +46,9 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 	};
 
 	useEffect(() => {
-		magicAuth(route?.params?.code?.split('&')[0], route?.params?.new_account);
+		if (route.params?.code) {
+			magicAuth(route.params.code?.split('&')[0], route?.params?.new_account);
+		}
 	}, []);
 
 	return (

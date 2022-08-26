@@ -211,7 +211,7 @@ export type TabStackNavParamList = {
 export type RootstackParamList = {
 	Auth: undefined;
 	Preloader: undefined;
-	Magic: undefined;
+	Magic: { code: string; new_account: boolean } | undefined;
 	Tabs: undefined;
 	Profile: undefined;
 	CreateStatus: undefined;
@@ -221,11 +221,8 @@ export type RootstackParamList = {
 	FriendsList: undefined;
 	SearchProfile: undefined;
 	FriendRequests: undefined;
-	ManageStatus: null;
-
-	// Camera: {
-	// 	uploadMethod: 'avatar' | 'banner';
-	// };
+	ManageStatus: undefined;
+	Camera: { type: 'upload_banner' | 'upload_avatar' };
 };
 
 export type SettingsStackParamList = {
