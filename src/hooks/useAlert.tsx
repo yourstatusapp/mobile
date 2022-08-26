@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import core from '@core';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSimple } from 'simple-core-state';
 
 export interface AlertDataType {
 	title: string;
@@ -6,16 +8,24 @@ export interface AlertDataType {
 	desc?: string;
 }
 
+interface useAlertProps {
+	onUpdate: (e: AlertDataType) => void;
+}
+
 export const useAlert = () => {
-	const [current, setCurrent] = useState<AlertDataType | null>(null);
+	const current = useSimple(core.alert);
 
 	const create = (config: AlertDataType) => {
-		setCurrent(config);
+		core.alert.setValue(config);
 	};
 
 	const clear = () => {
-		setCurrent(null);
+		core.alert.setValue(null);
 	};
 
-	return { create, clear, current };
+	const onUpdate = useMemo(() => {
+		return current;
+	}, [current]);
+
+	return { createAlert: create, clear, current, onUpdate };
 };

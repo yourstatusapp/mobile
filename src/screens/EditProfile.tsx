@@ -1,6 +1,5 @@
 import core, { request } from '@core';
 import { Block, RoundyButton, RoundyInput, SheetModal, Spacer, Text } from '@parts';
-import { usePulse } from '@pulsejs/react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import DatePicker from 'react-native-date-picker';
@@ -10,10 +9,12 @@ import dayjs from 'dayjs';
 import { Keyboard, KeyboardAvoidingView } from 'react-native';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useTheme } from '@hooks';
+import { useSimple } from 'simple-core-state';
 
 export const EditProfile = () => {
 	const { theme } = useTheme();
-	const profile = usePulse(core.profile.profile);
+
+	const profile = useSimple(core.profile);
 	const [validationError, setValidationError] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [username, setUsername] = useState('');
@@ -29,29 +30,32 @@ export const EditProfile = () => {
 	const [showBirthDayDate, setShowBirthDayDate] = useState(false);
 	const SheetModalRef = useRef<BottomSheetMethods>(null);
 
-	const userNameCheck = useCallback(async (v: string) => {
-		setLoading(true);
-		setValidationError(false);
+	const userNameCheck = useCallback(
+		async (v: string) => {
+			setLoading(true);
+			setValidationError(false);
 
-		if (v.toLowerCase() === username.toLowerCase()) {
-			setLoading(false);
-			return;
-		}
-
-		// check if its valid
-		const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
-			data: { username: v },
-		});
-
-		if (res.data) {
-			if (res.data.valid === false) {
-				setValidationError(true);
+			if (v.toLowerCase() === username.toLowerCase()) {
+				setLoading(false);
+				return;
 			}
-			setUsrNameValid({ state: res.data.valid, message: res.message });
-		}
 
-		setLoading(false);
-	}, []);
+			// check if its valid
+			const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
+				data: { username: v },
+			});
+
+			if (res.data) {
+				if (res.data.valid === false) {
+					setValidationError(true);
+				}
+				setUsrNameValid({ state: res.data.valid, message: res.message });
+			}
+
+			setLoading(false);
+		},
+		[username],
+	);
 
 	const onUsernameFinishedTyping = useCallback(
 		(incomingValue: string) => {
@@ -74,6 +78,7 @@ export const EditProfile = () => {
 			},
 		});
 		if (res.data) {
+			// request profile data and set the data
 		}
 	}, [bio, location, username, birthday]);
 
@@ -82,6 +87,14 @@ export const EditProfile = () => {
 			SheetModalRef?.current && SheetModalRef.current.close();
 		});
 	}, []);
+
+	if (profile === null) {
+		return (
+			<Block flex={1} color={theme.background}>
+				<Text>No profile present</Text>
+			</Block>
+		);
+	}
 
 	return (
 		<Block flex={1} color={theme.background}>
@@ -95,6 +108,7 @@ export const EditProfile = () => {
 					<Text marginBottom={8} bold paddingLeft={10}>
 						Username
 					</Text>
+					<Text>{JSON.stringify(validationError)}</Text>
 					<RoundyInput
 						initialValue={profile.username}
 						onTextChange={setUsername}
@@ -155,6 +169,7 @@ export const EditProfile = () => {
 					<RoundyButton
 						style={{ marginBottom: 10 }}
 						text="Save"
+						textColor="white"
 						onPress={saveInformation}
 						disabled={loading === true ?? validationError === true}
 					/>

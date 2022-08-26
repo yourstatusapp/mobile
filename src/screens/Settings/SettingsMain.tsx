@@ -5,7 +5,7 @@ import { Linking } from 'react-native';
 import { removeNotificationPermissions } from '../../utils/PushNotification';
 import { SettingItemMenu } from './index';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
-import { useNavigation, useTheme } from '@hooks';
+import { useAccount, useNavigation, useTheme } from '@hooks';
 
 const settingSections: {
 	text: string;
@@ -20,6 +20,7 @@ const settingSections: {
 export const SettingsMain = () => {
 	const nav = useNavigation();
 	const { theme } = useTheme();
+	const { logout } = useAccount();
 
 	return (
 		<Block color={theme.backgroundDarker} flex={1}>
@@ -51,6 +52,9 @@ export const SettingsMain = () => {
 				onPress={() => {
 					removeNotificationPermissions();
 					nav.reset({ index: 1, routes: [{ name: 'auth' }] });
+					logout();
+					// removeNotificationPermissions();
+					// nav.reset({ index: 1, routes: [{ name: 'auth' }] });
 					// TODO: reset some logic
 					// core.account.account.reset();
 					// core.lists.devices.reset();

@@ -4,7 +4,7 @@ import Svg, { G, Path } from 'react-native-svg';
 import core, { request } from '@core';
 import { useNavigation, useTheme } from '@hooks';
 import { Block, Spacer, Text } from '@parts';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useSimple } from 'simple-core-state';
 
 interface PreloaderProps {
 	loaded?: () => void;
@@ -13,8 +13,8 @@ interface PreloaderProps {
 export const PreloaderView = ({ loaded }: PreloaderProps) => {
 	const { theme } = useTheme();
 	const [TakingTooLong, setTakingTooLong] = useState(false);
-	const [account, setAccount] = useRecoilState(core.userData);
-	const [profile, setProfile] = useRecoilState(core.profile);
+	const account = useSimple(core.account);
+	const profile = useSimple(core.profile);
 	const [Loading, SetLoading] = useState(false);
 	const nav = useNavigation();
 
@@ -26,8 +26,8 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 
 		if (res.success) {
 			// set account and profile
-			setAccount(res.data?.account);
-			setProfile(res.data?.profile);
+			core.account.setValue(res.data?.account);
+			core.profile.setValue(res.data?.profile);
 		}
 
 		// if (!res.success) {
@@ -58,7 +58,8 @@ export const PreloaderView = ({ loaded }: PreloaderProps) => {
 		if (account !== null) {
 			getAccount();
 		} else {
-			nav.navigate('auth');
+			// nav.navigate('auth');
+			nav.reset({ index: 0, routes: [{ name: 'auth' }] });
 		}
 		// core.account.logged_in.onNext(value => {
 		// 	console.log('test', value);

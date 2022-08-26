@@ -9,7 +9,6 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
-import { useTheme } from 'styled-components/native';
 
 export const Block: React.FC<BlockType> = ({
 	scroll,

@@ -1,12 +1,10 @@
 import core, { UploadProgressEventType } from '@core';
-import { state } from '@pulsejs/core';
 import axios, { AxiosResponse } from 'axios';
 
 const DEV_API = 'http://0.0.0.0:3020';
 // export const baseURL = state('https://api.yourstatus.app');
-export const baseURL = state(
-	process.env.NODE_ENV === 'production' ? 'http://192.168.1.2:3020' : DEV_API,
-);
+export const baseURL = process.env.NODE_ENV === 'production' ? 'http://0.0.0.0:3020' : DEV_API;
+
 // export const baseURL = state(DEV_API);
 
 interface RequestOptions {
@@ -34,7 +32,7 @@ export const request = async <T extends any>(
 				'Content-Type': 'application/json',
 				...x?.headers,
 			},
-			url: baseURL.value + path,
+			url: baseURL + path,
 			withCredentials: true,
 			onUploadProgress: x?.onUploadProgress,
 		});

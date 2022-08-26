@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { themeState } from '../core/recoil';
 import { ThemeProvider } from 'styled-components/native';
+import core from '@core';
+import { useSimple } from 'simple-core-state';
 
 export interface DefaultTheme {
 	name: 'dark' | 'light';
@@ -21,7 +21,7 @@ export interface DefaultTheme {
 
 export type ThemeTypes = 'light' | 'dark';
 
-export const InternalThemes: { [k in ThemeTypes]: DefaultTheme } = {
+export const ThemesObject: { [k in ThemeTypes]: DefaultTheme } = {
 	light: {
 		name: 'light',
 		text: '#000000',
@@ -53,7 +53,7 @@ export const InternalThemes: { [k in ThemeTypes]: DefaultTheme } = {
 };
 
 export const useTheme = () => {
-	const [currentTheme, setCurrentTheme] = useRecoilState(themeState);
+	const currentTheme = useSimple(core.currentTheme);
 	const [systemThemeEnabled, setUseSystemTheme] = useState<boolean>(false);
 
 	const isDarkMode = useCallback(() => {
@@ -66,14 +66,16 @@ export const useTheme = () => {
 
 	const toggleTheme = useCallback(
 		(setThemeTypeParam?: ThemeTypes) => {
-			setCurrentTheme(setThemeTypeParam || currentTheme === 'light' ? 'dark' : 'light');
+			if (setThemeTypeParam) {
+				core.currentTheme.setValue(setThemeTypeParam);
+			} else {
+				core.currentTheme.setValue(currentTheme === 'light' ? 'dark' : 'light');
+			}
 		},
-		[currentTheme, setCurrentTheme],
+		[currentTheme],
 	);
 
-	const theme = useMemo(() => {
-		return InternalThemes[currentTheme];
-	}, [currentTheme]);
+	const theme = useMemo(() => ThemesObject[currentTheme], [currentTheme]);
 
 	return {
 		isDarkMode: isDarkMode(),

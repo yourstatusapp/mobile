@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AppAlert, GuildInvite, request } from '@core';
+import { AppAlert, CreateStatusType, GuildInvite, request } from '@core';
 import {
 	Block,
 	Button,
@@ -82,6 +82,32 @@ export const NewStatus: React.FC = () => {
 	// valid to create status
 	const [valid, setValid] = useState(false);
 	const [guildResults, setGuildResults] = useState<GuildInvite | null>();
+
+	const createStatus = async () => {
+		let statusTypeString = StatusTypes[statusType];
+
+		let extraData = null;
+
+		switch (statusType) {
+			case 0:
+				// extraData = { expireA}
+				break;
+			case 1:
+				break;
+			default:
+				break;
+		}
+
+		const newStatusObject: CreateStatusType = {
+			statusText: statusDisplayText,
+			data: {
+				// @ts-ignore
+				type: statusTypeString,
+			},
+		};
+
+		const res = request('post', '/status/new', { data: newStatusObject });
+	};
 
 	// const [Error, SetError] = useState('');
 	// const [Loading, SetLoading] = useState(false);
@@ -379,7 +405,7 @@ export const NewStatus: React.FC = () => {
 						<SmallButton
 							text="Create"
 							color="white"
-							onPress={createEvent}
+							onPress={createStatus}
 							disabled={!statusDisplayText}
 						/>
 					</Block>

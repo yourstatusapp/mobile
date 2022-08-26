@@ -5,7 +5,7 @@ import { BlurView } from 'expo-blur';
 import React from 'react';
 import { TouchableOpacity, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRecoilValue } from 'recoil';
+import { useSimple } from 'simple-core-state';
 import styled from 'styled-components/native';
 
 export type NavbarScreens = 'friends' | 'events' | 'account';
@@ -17,7 +17,7 @@ interface CustomNavBarProps {
 }
 
 export const CustomNavBar = ({ onTabChange, tabState }: CustomNavBarProps) => {
-	const acc = useRecoilValue(core.userData);
+	const acc = useSimple(core.account);
 	const { bottom } = useSafeAreaInsets();
 	const nav = useNavigation();
 	const { theme } = useTheme();
@@ -144,8 +144,8 @@ const TabContainer = styled.View`
 
 const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 	const { theme } = useTheme();
-	const acc = useRecoilValue(core.userData);
-	const profile = useRecoilValue(core.profile);
+	const acc = useSimple(core.account);
+	const profile = useSimple(core.profile);
 
 	return (
 		<AvatarBody flex={0} color={c.active ? theme.text : theme.backgroundDarker}>

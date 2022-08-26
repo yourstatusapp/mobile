@@ -1,33 +1,21 @@
 import React, { useEffect } from 'react';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import styled, { ThemeProvider } from 'styled-components/native';
+import styled from 'styled-components/native';
 import core from '@core';
 import { RootNavigator } from './navigators/RootNavigator';
 import { NavigationContainer } from '@react-navigation/native';
-import { Appearance, Platform, StatusBar } from 'react-native';
+import { Platform } from 'react-native';
 import { CustomAlert } from './parts/components/Alert';
 import { MenuProvider } from 'react-native-popup-menu';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { RecoilRoot, useRecoilState } from 'recoil';
-import { InternalThemes } from './utils/theme';
-import { StyledThemeWrapper, ThemeContext, ThemeWrapper, useTheme } from './hooks/useTheme';
-
-// instance.setStorage({
-// 	async: true,
-// 	get: AsyncStorage.getItem,
-// 	set: AsyncStorage.setItem,
-// 	remove: AsyncStorage.removeItem,
-// });
+import { StyledThemeWrapper } from './hooks/useTheme';
+import { DebugOverlay } from './screens/DebugOveralay';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 if (__DEV__) {
 	console.log('__DEV__', __DEV__);
 }
-
-// @ts-ignore
-globalThis.AsyncStorage = AsyncStorage; // @ts-ignore
 
 // @ts-ignore
 // console.log(`hermers ${!!global.HermesInternal}`);
@@ -69,7 +57,7 @@ export const App: React.FC = () => {
 	}, []);
 
 	return (
-		<RecoilRoot>
+		<SafeAreaProvider>
 			<StyledThemeWrapper>
 				<BottomSheetModalProvider>
 					{/* <PushNotifications /> */}
@@ -83,18 +71,21 @@ export const App: React.FC = () => {
 						skipWatchRequest={SkipWatchRequest}
 					/>
 				)} */}
+
 					<NavigationContainer>
+						{/* {__DEV__ && <DebugOverlay />} */}
+
 						<AppBody>
 							<MenuProvider>
+								<CustomAlert />
 								{/* <StatusBar barStyle={misc.theme !== 'light' ? 'light-content' : 'dark-content'} /> */}
 								<RootNavigator />
-								<CustomAlert />
 							</MenuProvider>
 						</AppBody>
 					</NavigationContainer>
 				</BottomSheetModalProvider>
 			</StyledThemeWrapper>
-		</RecoilRoot>
+		</SafeAreaProvider>
 	);
 };
 

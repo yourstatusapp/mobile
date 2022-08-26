@@ -133,18 +133,25 @@ const RoundyInputBody = styled.TextInput<{
 
 interface RoundyButtonProps {
 	text: string;
+	textColor?: string;
 	disabled?: boolean;
 	onPress?: () => void;
 	style?: ViewStyle;
 }
 
-export const RoundyButton: React.FC<RoundyButtonProps> = ({ text, disabled, onPress, style }) => {
+export const RoundyButton: React.FC<RoundyButtonProps> = ({
+	text,
+	textColor,
+	disabled,
+	onPress,
+	style,
+}) => {
 	return (
 		<RoundyButtonBody
 			onPress={onPress}
 			style={({ pressed }) => [style, { opacity: disabled ? 0.5 : pressed ? 0.75 : 1 }]}
 			disabled={disabled}>
-			<Text center weight="700">
+			<Text center weight="700" color={textColor}>
 				{text}
 			</Text>
 		</RoundyButtonBody>

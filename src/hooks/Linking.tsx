@@ -48,6 +48,16 @@ export const useLinking = () => {
 				} as never,
 			);
 		}
+
+		if (url?.includes('/verify_new_account')) {
+			nav.navigate(
+				'magic' as never,
+				{
+					code: url.split('magic?code=')[1]?.split('&')[0],
+					new_account: url.split('magic?code=')[1]?.split('&')[1],
+				} as never,
+			);
+		}
 	}, [url, nav]);
 
 	React.useEffect(() => {

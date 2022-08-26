@@ -86,8 +86,7 @@ export const Friends = React.memo(() => {
 	const getMyStatus = async () => {
 		const res = await request<any>('get', '/status');
 		setMyStatus(res.data);
-		// TODO: this
-		// core.lists.status.collect(res.data, 'mine');
+		core.myStatus.setValue(res.data);
 	};
 
 	const getStories = async () => {
@@ -139,9 +138,9 @@ export const Friends = React.memo(() => {
 	React.useEffect(() => {
 		getFriends();
 
-		// setTimeout(() => {
-		// 	getMyStatus();
-		// }, 200);
+		setTimeout(() => {
+			getMyStatus();
+		}, 200);
 
 		// setTimeout(() => {
 		// 	getStories();
@@ -185,11 +184,12 @@ export const Friends = React.memo(() => {
 							<Block row>
 								<FlashList
 									data={MyStatus}
-									// initialNumToRender={MyStatus?.length}
-									style={{ marginTop: 10, marginLeft: 15 }}
+									estimatedItemSize={15}
 									scrollEnabled={false}
 									renderItem={({ item, index }) => (
-										<Block key={index} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
+										<Block
+											key={index}
+											style={{ flexWrap: 'wrap', paddingTop: 15, paddingLeft: 15 }}>
 											<Status status={item} self disableTap={false} />
 										</Block>
 									)}
@@ -314,14 +314,14 @@ export const Friends = React.memo(() => {
 						/>
 					)}
 					<Fill />
-					<IconButton
+					{/* <IconButton
 						name="camera"
 						color={theme.background}
 						backgroundColor={theme.text}
 						size={23}
 						iconSize={14}
 						onPress={() => nav.navigate('Camera', { uploadMethod: 'storie' } as never)}
-					/>
+					/> */}
 				</Block>
 			</Animated.View>
 		</Block>

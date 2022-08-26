@@ -1,5 +1,17 @@
-import React, { useCallback, useState } from 'react';
-import { Block, Button, Fill, Icon, IconButton, Input, Spacer, Status, Text } from '@parts';
+import React, { useCallback, useMemo, useState } from 'react';
+import {
+	Block,
+	Button,
+	Fill,
+	GradiantShadow,
+	Icon,
+	IconButton,
+	Input,
+	Spacer,
+	Status,
+	Text,
+	TextButton,
+} from '@parts';
 import core, { AppAlert, request } from '@core';
 import {
 	ActivityIndicator,
@@ -8,19 +20,19 @@ import {
 	Platform,
 	TouchableOpacity,
 } from 'react-native';
-import { usePulse } from '@pulsejs/react';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { useClipboard } from '@react-native-clipboard/clipboard';
-import { useNavigation, useTheme } from '@hooks';
-import { useRecoilValue } from 'recoil';
+import { useAlert, useNavigation, useTheme } from '@hooks';
+import { useSimple } from 'simple-core-state';
 
 let timeout: NodeJS.Timeout;
 
 export const Auth: React.FC = () => {
 	const nav = useNavigation();
-	const { theme } = useTheme();
-	const userData = useRecoilValue(core.userData);
+	const { theme, toggleTheme, isDarkMode } = useTheme();
+	const { createAlert } = useAlert();
+	const userData = useSimple(core.account);
 	const [Email, SetEmail] = useState('');
 	const [Error, SetError] = useState('');
 	const [Loading, SetLoading] = useState(false);
@@ -30,8 +42,6 @@ export const Auth: React.FC = () => {
 	const [UsernameValid, SetUsernameValid] = useState(false);
 	const [UsernameErrMsg, SetUsernameErrMsg] = useState('');
 	const [UsernameLoading, SetUsernameLoading] = useState(false);
-	const theme_name = usePulse(core.ui.current_theme);
-	const isDarkMode = usePulse(core.ui.isDarkMode);
 
 	const usernameChecking = async (usernameInput: string) => {
 		if (timeout) {
@@ -81,43 +91,93 @@ export const Auth: React.FC = () => {
 		usernameChecking(v);
 	}, []);
 
+	const [confirmationCodeSend, setConfirmationCodeSend] = useState(false);
+	const [confirmationCode, setConfirmationCode] = useState('');
+
 	const login = useCallback(async () => {
 		SetLoading(true);
 		SetError('');
+		setConfirmationCodeSend(false);
 
-		const res = await request<boolean & { new_account: boolean; suggested_username: string }>(
-			'post',
-			'/auth/magic',
-			{
-				data: {
-					test: 'false',
-					email: Email?.trimStart()?.trimEnd(),
-					verify_new_account: NewAccount,
-					username: Username,
-				},
+		const res = await request<
+			boolean & {
+				new_account: boolean;
+				suggested_username: string;
+				confirmation_code_send?: boolean;
+				login_from_new_account?: boolean;
+			}
+		>('post', '/auth/magic', {
+			data: {
+				email: Email?.trimStart()?.trimEnd(),
+				verify_new_account: NewAccount,
+				new_account_confirmation_code: confirmationCode,
+				username: Username,
 			},
-		);
+		});
 
-		if (res.data?.new_account) {
-			SetNewAccount(true);
-			SetUsername(res.data.suggested_username);
-			usernameCheck(res.data.suggested_username);
-		} else if (res.data === true) {
-			SetEmail('');
-			AppAlert(true, res.message);
-			SetNewAccount(false);
+		if (res.data?.login_from_new_account) {
+			console.log('LOGGING INTO ACCOUNT FROM NEW ACCOUNT CREATION');
+			console.log(res.data);
+
+			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });
+			return;
+		}
+
+		if (res.data?.confirmation_code_send) {
+			setConfirmationCodeSend(true);
 		} else {
-			SetEmail('');
-			SetError(res?.message || '');
-			AppAlert(false, 'Failed', res.message);
+			if (res.data?.new_account) {
+				SetNewAccount(true);
+				SetUsername(res.data.suggested_username);
+				usernameCheck(res.data.suggested_username);
+			} else if (res.data === true) {
+				SetEmail('');
+				AppAlert(true, res.message);
+				SetNewAccount(false);
+			} else {
+				SetEmail('');
+				SetError(res?.message || '');
+				AppAlert(false, 'Failed', res.message);
+			}
 		}
 
 		SetLoading(false);
-	}, [Email, NewAccount, Username, usernameCheck]);
+	}, [Email, NewAccount, confirmationCode, Username, nav, usernameCheck]);
 
-	const toggleTheme = () => {
-		core.ui.current_theme.set(theme_name === 'light' ? 'dark' : 'light');
-	};
+	const loginButtonDisabled = useMemo(() => {
+		// Email is always needed
+		if (Email === '') {
+			return true;
+		}
+
+		// Check for Loading state
+		if (Loading === true) {
+			return true;
+		}
+
+		if (UsernameLoading === true) {
+			return true;
+		}
+
+		// check if new account
+		if (NewAccount) {
+			if (UsernameValid === false) {
+				return true;
+			}
+
+			if (confirmationCodeSend && confirmationCode === '') {
+				return true;
+			}
+		}
+	}, [
+		Email,
+		Loading,
+		UsernameValid,
+		confirmationCode,
+		NewAccount,
+		UsernameLoading,
+		confirmationCodeSend,
+	]);
 
 	return (
 		<Block color={theme.background}>
@@ -174,12 +234,17 @@ export const Auth: React.FC = () => {
 					</Block>
 					<Spacer size={20} />
 					{!!Error && (
-						<Text color="red" bold>
+						<Text color="red" medium>
 							{Error}
 						</Text>
 					)}
 					<Spacer size={10} />
-					<Input placeholder="Email" value={Email} onChange={SetEmail} textContentType={'email'} />
+					<Input
+						placeholder="Email"
+						value={Email}
+						onChange={SetEmail}
+						textContentType={'emailAddress'}
+					/>
 					{NewAccount && (
 						<Block
 							flex={0}
@@ -200,6 +265,21 @@ export const Auth: React.FC = () => {
 									opacity: UsernameLoading ? 0.5 : 1,
 								}}
 							/>
+
+							{confirmationCodeSend && (
+								<Input
+									placeholder="Confirmation Code"
+									value={confirmationCode}
+									onChange={v => {
+										setConfirmationCode(v);
+									}}
+									textContentType={'none'}
+									outerStyle={{
+										marginTop: 30,
+									}}
+								/>
+								// TODO: code error handling color border
+							)}
 							{UsernameLoading && (
 								<ActivityIndicator
 									color={theme.textFade}
@@ -223,16 +303,24 @@ export const Auth: React.FC = () => {
 								color={theme.background}
 								backgroundColor="#e66565"
 								style={{ transform: [{ rotate: '45deg' }], marginRight: 10 }}
-								onPress={() => SetNewAccount(false)}
+								onPress={() => {
+									SetNewAccount(false);
+									setConfirmationCodeSend(false);
+									setConfirmationCode('');
+								}}
 							/>
 						)}
 						<Button
-							text={NewAccount ? 'Create new account' : 'Login'}
+							text={
+								NewAccount
+									? confirmationCodeSend
+										? 'Create new account'
+										: 'Get confirmation code'
+									: 'Login'
+							}
 							color="white"
 							onPress={login}
-							disabled={
-								NewAccount ? UsernameValid === false || Email === '' : Email === '' || Loading
-							}
+							disabled={loginButtonDisabled}
 							style={{ flex: 1, backgroundColor: theme.primary2 }}
 						/>
 					</Block>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import core, { RootstackParamList } from '@core';
-import { useLinking } from '../hooks';
+import { useAccount, useLinking } from '../hooks';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import {
 	Auth,
@@ -26,7 +26,8 @@ import {
 import { RealtimeMomentHistory } from '../screens/RealtimeMomentHistory';
 import { Block } from '@parts';
 import { TabsNavigator } from './TabsNavigator';
-import { useRecoilValue } from 'recoil';
+import { StatusBar } from 'react-native';
+import { useSimple } from 'simple-core-state';
 
 export const navigationRef = createNavigationContainerRef();
 const RootStack = createNativeStackNavigator<RootstackParamList>();
@@ -34,8 +35,9 @@ const RootStack = createNativeStackNavigator<RootstackParamList>();
 export const RootNavigator = () => {
 	useLinking();
 
+	const { loggedIn } = useAccount();
+	const themeName = useSimple(core.currentTheme);
 	// const loggedIn = usePulse(core.account.logged_in);
-	const account = useRecoilValue(core.userData);
 	const [PreloaderReady, setPreloaderReady] = useState(false);
 
 	// Wait for the preloader and logged_in compute state
@@ -44,6 +46,7 @@ export const RootNavigator = () => {
 	// } else {
 	return (
 		<Block flex={1}>
+			<StatusBar barStyle={themeName === 'light' ? 'dark-content' : 'light-content'} />
 			<RootStack.Navigator
 				initialRouteName={'Preloader'}
 				screenOptions={{ headerShown: false, contentStyle: { zIndex: 24 } }}>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text } from '@parts';
-import { ViewStyle } from 'react-native';
+import { TextInputIOSProps, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { useTheme } from '@hooks';
 
@@ -9,25 +9,21 @@ interface InputProps {
 	placeholder?: string;
 	onChange?: (v: string) => void;
 	disabled?: boolean;
-	textContentType?: 'email' | 'none' | string;
+	textContentType?: TextInputIOSProps['textContentType'];
 	autoFocus?: boolean;
 
 	style?: ViewStyle;
 	className?: string;
 }
 
-export const Input: React.FC<InputProps> = ({
-	onChange,
-	placeholder,
-	value,
-	style,
-	disabled,
-	textContentType,
-	autoFocus,
-}) => {
+export const Input: React.FC<
+	InputProps & {
+		outerStyle?: ViewStyle;
+	}
+> = ({ onChange, placeholder, value, style, disabled, textContentType, autoFocus, outerStyle }) => {
 	const { theme } = useTheme();
 	return (
-		<InputBox>
+		<InputBox style={outerStyle}>
 			{!!placeholder && (
 				<PlaceholderBox>
 					<Text size={13} medium color={theme.text}>

@@ -27,7 +27,6 @@ import Animated, {
 
 import LinearGradient from 'react-native-linear-gradient';
 import core, { AppAlert, TimeFormatter } from '@core';
-import { usePulse } from '@pulsejs/react';
 import { useTheme } from '@hooks';
 
 const CAMERA_BORDER_RADIUS = 23;
@@ -170,8 +169,6 @@ export const Camera = () => {
 
 	const imageWidth = Dimensions.get('screen').width / 3 - 3.5;
 	const imageHeight = (1920 / 1080) * imageWidth;
-
-	const t = usePulse(core.app.ONBOARDING_TIPS);
 
 	// useEffect(() => {
 	// 	if (t.REALTIME_STORIES) {
@@ -356,7 +353,7 @@ export const Camera = () => {
 					<TouchableOpacity
 						onPress={() => toggleOpenPhotos()}
 						activeOpacity={0.6}
-						style={{ borderRadius: 7, backgroundColor: theme.white20, height: 50, width: 50 }}>
+						style={{ borderRadius: 7, backgroundColor: theme.darker1, height: 50, width: 50 }}>
 						{!!AlbumAssets.length && (
 							<FastImage
 								source={{ uri: AlbumAssets[0].path }}

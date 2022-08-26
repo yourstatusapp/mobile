@@ -15,7 +15,7 @@ export interface AlertDataType {
 }
 
 export const CustomAlert = () => {
-	const { clear, current } = useAlert();
+	const { clear, current, onUpdate } = useAlert();
 
 	const heightOffset = useSharedValue(-100);
 	const animatedStyles = useAnimatedStyle(() => {
@@ -43,6 +43,10 @@ export const CustomAlert = () => {
 		}, 2000);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		console.log(current);
+	}, [current]);
 
 	// if no alert is running
 	if (!current) {

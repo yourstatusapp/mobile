@@ -14,16 +14,14 @@ import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-m
 
 import { StyleSheet, ViewStyle } from 'react-native';
 import { hasNotch } from 'react-native-device-info';
-import { useNavigation, useTheme } from '@hooks';
+import { useAccount, useNavigation, useTheme } from '@hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRecoilValue } from 'recoil';
 
 export const Account = () => {
 	const nav = useNavigation();
 	const { theme } = useTheme();
 	const { top } = useSafeAreaInsets();
-	// const profile = usePulse(core.profile.profile);
-	const profile = useRecoilValue(core.profile);
+	const { account, profile } = useAccount();
 	const [MenuOpen, SetMenuOpen] = useState(false);
 	const sh2 = StyleSheet.flatten<ViewStyle>([
 		{
@@ -115,11 +113,11 @@ export const Account = () => {
 					</Block>
 				</Block>
 				<Text bold size={18} paddingTop={30} paddingBottom={10}>
-					@{profile.username}
+					@{profile?.username}
 				</Text>
 				<TextButton
 					onPress={() => nav.navigate('ManageFriends')}
-					text={profile.friends_amount + ' friends'}
+					text={profile?.friends_amount + ' friends'}
 				/>
 
 				{/* <Text paddingBottom={10} color={profile.display_name ? theme.text : theme.textFade} marginBottom={50}>

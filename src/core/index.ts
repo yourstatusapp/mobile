@@ -1,6 +1,6 @@
-import * as recoil from './recoil';
+import { core } from './core';
 
 export * from './types';
 export * from './utils';
 
-export default recoil;
+export default core;

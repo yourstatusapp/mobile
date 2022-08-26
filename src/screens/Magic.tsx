@@ -3,12 +3,12 @@ import { Spacer, Text, Block } from '@parts';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
-import { useRecoilState } from 'recoil';
+import { useSimple } from 'simple-core-state';
 import styled from 'styled-components/native';
 
 export const Magic: React.FC<MagicProps> = ({ route }) => {
 	const nav = useNavigation();
-	const [_, setUserData] = useRecoilState(core.userData);
+	const account = useSimple(core.account);
 
 	const magicAuth = async (code: string, new_account: boolean) => {
 		const res = await request<IAccountRequestProps>('post', '/auth/magic/verify', {
@@ -21,8 +21,8 @@ export const Magic: React.FC<MagicProps> = ({ route }) => {
 			return;
 		}
 
-		// TODO: set account data
-		setUserData(res.data.account);
+		// Set account data
+		core.account.setValue(res.data.account);
 
 		// if (res.data?.account) core.account.account.set(res.data.account); // @ts-ignore
 		// if (res.data?.profile) core.profile.profile.set(res.data.profile);

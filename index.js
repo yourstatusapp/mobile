@@ -17,4 +17,6 @@ LogBox.ignoreLogs([
 	'VirtualizedLists',
 ]);
 
+require('./src/core/core');
+
 AppRegistry.registerComponent(appName, () => App);
