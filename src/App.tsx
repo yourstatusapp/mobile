@@ -7,6 +7,9 @@ import { RootNavigator } from './navigator/RootNavigator';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { CustomAlert } from './parts/Alert';
 import { Block } from '@parts';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Expected style']);
 
 export const App = () => {
 	useEffect(() => {

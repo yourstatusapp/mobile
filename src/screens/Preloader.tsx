@@ -22,10 +22,7 @@ export const Preloader = ({ loaded }: PreloaderProps) => {
 		SetLoading(true);
 		setTimeout(() => setTakingTooLong(true), 20 * 1000);
 
-		const res = await request<{ account: any; profile: any; device: any }>(
-			'get',
-			'/account',
-		);
+		const res = await request<{ account: any; profile: any; device: any }>('get', '/account');
 
 		if (res.success) {
 			// set account and profile
@@ -50,8 +47,8 @@ export const Preloader = ({ loaded }: PreloaderProps) => {
 		// 	}
 		// }
 		setTimeout(() => {
-			// loaded();
-			nav.navigate('Tabs');
+			// loaded();\
+			nav.reset({ index: 0, routes: [{ name: 'Tabs' }] });
 			// connectToSocket();
 		}, 10);
 	};
