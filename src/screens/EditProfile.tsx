@@ -37,7 +37,7 @@ export const EditProfile = () => {
 			setLoading(true);
 			setValidationError(false);
 
-			if (v.toLowerCase() === username.toLowerCase()) {
+			if (v.toLowerCase() === profile?.username.toLowerCase()) {
 				setLoading(false);
 				return;
 			}
@@ -61,9 +61,11 @@ export const EditProfile = () => {
 
 	const onUsernameFinishedTyping = useCallback(
 		(incomingValue: string) => {
+			console.log('inc', incomingValue);
+
 			userNameCheck(incomingValue);
 		},
-		[userNameCheck],
+		[userNameCheck, username],
 	);
 
 	useEffect(() => {
@@ -106,14 +108,19 @@ export const EditProfile = () => {
 					<Text marginBottom={8} bold paddingLeft={10}>
 						Username
 					</Text>
-					<Text>{JSON.stringify(validationError)}</Text>
 					<RoundyInput
 						initialValue={profile.username}
 						onTextChange={setUsername}
 						autoCorrect={false}
 						placeholder="Username"
 						onFinishTyping={onUsernameFinishedTyping}
-						borderColor={validationError && '#EF4F4F'}
+						borderColor={
+							profile?.username.toLocaleLowerCase() === username.toLocaleLowerCase()
+								? theme.darker
+								: usrNameValid.state
+								? '#4ad361'
+								: '#EF4F4F'
+						}
 					/>
 					{validationError && (
 						<Text paddingTop={3} color="#EF4F4F">

@@ -64,23 +64,15 @@ export const Account = () => {
 							@{profile?.username}
 						</Text>
 						<TextButton onPress={() => nav.navigate('FriendsList')} text={profile?.friends_amount + ' friends'} />
-						{/* <IconButton
+						<IconButton
 							name="pencil"
 							color={theme.text}
 							size={25}
 							iconSize={12}
-							style={{ marginBottom: 10 }}
+							style={{ marginTop: 10 }}
 							backgroundColor={theme.darker}
 							onPress={() => nav.navigate('EditProfile')}
 						/>
-						<IconButton
-							name="image"
-							color={theme.text}
-							size={25}
-							iconSize={16}
-							backgroundColor={theme.darker}
-							onPress={() => setShowUploadAvatarSheet(true)}
-						/> */}
 					</Block>
 				</Block>
 				<Block flex={0} marginTop={20} width="100%" style={{ borderRadius: 12 }} hCenter>

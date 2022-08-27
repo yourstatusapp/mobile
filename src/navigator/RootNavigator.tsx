@@ -23,7 +23,7 @@ import {
 	StatusDetail,
 } from '../screens';
 import { TabsNavigator } from './TabsNavigator';
-import { useLinking } from '@hooks';
+import { useLinking, useTheme } from '@hooks';
 import { SettingsScreens } from '../screens/settings';
 import { Settings } from '../screens/settings/Settings';
 
@@ -32,16 +32,16 @@ const RootStack = createStackNavigator<RootstackParamList>();
 
 export const RootNavigator = () => {
 	useLinking();
+	const { theme } = useTheme();
 	const themeName = useSimple(core.currentTheme);
 
 	return (
-		<Block flex={1}>
+		<Block flex={1} color={theme.background}>
 			<StatusBar barStyle={themeName === 'light' ? 'dark-content' : 'light-content'} />
 			<RootStack.Navigator
 				initialRouteName={'Preloader'}
 				screenOptions={{
 					headerShown: false,
-					// contentStyle: { zIndex: 24 },
 				}}>
 				<RootStack.Screen name="Auth" component={Auth} />
 				<RootStack.Screen name="Magic" component={Magic} />

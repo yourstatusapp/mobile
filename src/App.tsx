@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import { NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StyledThemeWrapper } from './hooks/useTheme';
+import { StyledThemeWrapper, useTheme } from './hooks/useTheme';
 import { RootNavigator } from './navigator/RootNavigator';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { CustomAlert } from './parts/Alert';
@@ -12,6 +12,7 @@ import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Expected style']);
 
 export const App = () => {
+	const { theme } = useTheme();
 	useEffect(() => {
 		SplashScreen.hide();
 	}, []);
@@ -19,7 +20,8 @@ export const App = () => {
 	return (
 		<SafeAreaProvider>
 			<StyledThemeWrapper>
-				<NavigationContainer>
+				<NavigationContainer
+					theme={{ ...DefaultTheme, colors: { ...DefaultTheme.colors, background: theme.background } }}>
 					<Block color="blue">
 						<BottomSheetModalProvider>
 							<CustomAlert />
