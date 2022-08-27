@@ -54,7 +54,7 @@ export const Preloader = ({ loaded }: PreloaderProps) => {
 	};
 
 	const check = () => {
-		console.log('check');
+		console.log('check', account);
 		if (account !== null) {
 			getAccount();
 		} else {

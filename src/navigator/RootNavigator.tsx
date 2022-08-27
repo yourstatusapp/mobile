@@ -17,6 +17,7 @@ import {
 	Magic,
 	ManageStatus,
 	Preloader,
+	PreviewUpload,
 	Profile,
 	SearchProfile,
 	StatusDetail,
@@ -56,6 +57,7 @@ export const RootNavigator = () => {
 				<RootStack.Screen name="FriendRequests" component={FriendRequests} />
 				<RootStack.Screen name="ManageStatus" component={ManageStatus} />
 				<RootStack.Screen name="Camera" component={CameraFrame} />
+				<RootStack.Screen name="PreviewUpload" component={PreviewUpload} />
 				{/* <RootStack.Screen name="Auth" component={Test} /> */}
 			</RootStack.Navigator>
 		</Block>

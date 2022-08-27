@@ -9,7 +9,7 @@ import styled from 'styled-components/native';
 export interface IBaseSheetProps {
 	open: boolean;
 	onClose: () => void;
-	close: boolean;
+	close?: boolean;
 	children?: React.ReactNode;
 }
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import core from '@core';
 import { useSimple } from 'simple-core-state';
@@ -64,16 +64,13 @@ export const useTheme = () => {
 		setUseSystemTheme(v);
 	};
 
-	const toggleTheme = useCallback(
-		(setThemeTypeParam?: ThemeTypes) => {
-			if (setThemeTypeParam) {
-				core.currentTheme.setValue(setThemeTypeParam);
-			} else {
-				core.currentTheme.setValue(currentTheme === 'light' ? 'dark' : 'light');
-			}
-		},
-		[currentTheme],
-	);
+	const toggleTheme = (setThemeTypeParam?: ThemeTypes) => {
+		if (setThemeTypeParam) {
+			core.currentTheme.setValue(setThemeTypeParam);
+		} else {
+			core.currentTheme.setValue(currentTheme === 'light' ? 'dark' : 'light');
+		}
+	};
 
 	const theme = useMemo(() => ThemesObject[currentTheme], [currentTheme]);
 
@@ -88,9 +85,13 @@ export const useTheme = () => {
 };
 
 // This is specific for styled components so we can use the theme object inside a styled component anotation such like `color: ${p => p.theme.color}`
-export const StyledThemeWrapper: React.FC<{ children: React.ReactNode }> = ({
-	children,
-}) => {
-	const { theme } = useTheme();
-	return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+export const StyledThemeWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+	const currentTheme = useSimple(core.currentTheme);
+
+	useEffect(() => {
+		console.log('xx->', currentTheme);
+	}, [currentTheme]);
+	// console.log(ThemesObject[currentTheme]);
+
+	return <ThemeProvider theme={ThemesObject[currentTheme]}>{children}</ThemeProvider>;
 };

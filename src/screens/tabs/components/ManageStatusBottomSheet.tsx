@@ -31,7 +31,11 @@ export const ManageStatusSheet = (props: ManageStatusSheet) => {
 						data={status}
 						scrollEnabled={false}
 						estimatedItemSize={status.length}
-						contentContainerStyle={{ padding: 20 }}
+						estimatedListSize={{
+							height: 61,
+							width: 350,
+						}}
+						contentContainerStyle={{ paddingVertical: 20 }}
 						renderItem={({ item, index }) => (
 							<Block key={index} marginBottom={15}>
 								<Block row marginBottom={15}>

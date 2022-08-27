@@ -1,5 +1,5 @@
 import React from 'react';
-import { SettingsStackParamList } from '@core';
+import core, { SettingsStackParamList } from '@core';
 import { Block, Spacer, Fill, Icon, Text } from '@parts';
 import { Linking } from 'react-native';
 // import { removeNotificationPermissions } from '../../utils/PushNotification';
@@ -44,8 +44,10 @@ export const SettingsMain = () => {
 				onPress={() => {
 					// TODO: remove notification permissions
 					// removeNotificationPermissions();
-					nav.reset({ index: 1, routes: [{ name: 'auth' }] });
-					logout();
+					nav.reset({ index: 1, routes: [{ name: 'Auth' }] });
+					core.account.setValue(null);
+					core.profile.setValue(null);
+					core.myStatus.setValue([]);
 					// removeNotificationPermissions();
 					// nav.reset({ index: 1, routes: [{ name: 'auth' }] });
 					// TODO: reset some logic

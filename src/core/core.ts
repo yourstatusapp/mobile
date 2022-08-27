@@ -29,10 +29,16 @@ const DefaultCore: IDefaultCore = {
 const SimpleInstance = new SimpleCore<IDefaultCore>(DefaultCore, {
 	Storage: {
 		custom: {
+			//@ts-ignore
 			set: async (k, v) => {
-				await MMKV.setItem(k, v);
+				if (__DEV__) console.log(`SimpleCore set => k: ${k} v:${v}`);
+				//@ts-ignore
+				return await MMKV.setItem(k, v);
 			},
-			get: async v => MMKV.getItem(v),
+			get: async k => {
+				if (__DEV__) console.log(`SimpleCore get => k: ${k} `);
+				return await MMKV.getItem(k);
+			},
 		},
 	},
 });

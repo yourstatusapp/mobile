@@ -18,16 +18,16 @@ export const App = () => {
 
 	return (
 		<SafeAreaProvider>
-			<NavigationContainer>
-				<StyledThemeWrapper>
+			<StyledThemeWrapper>
+				<NavigationContainer>
 					<Block color="blue">
 						<BottomSheetModalProvider>
 							<CustomAlert />
 							<RootNavigator />
 						</BottomSheetModalProvider>
 					</Block>
-				</StyledThemeWrapper>
-			</NavigationContainer>
+				</NavigationContainer>
+			</StyledThemeWrapper>
 		</SafeAreaProvider>
 	);
 };

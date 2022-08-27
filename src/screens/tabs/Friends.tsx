@@ -175,7 +175,7 @@ export const Friends = React.memo(() => {
 					],
 					{ useNativeDriver: true },
 				)}>
-				{(!!MyStatus.length || !!myStories?.length) && (
+				{(!!MyStatus?.length || !!myStories?.length) && (
 					<Block flex={0} marginBottom={30}>
 						{!!MyStatus?.length && (
 							<Block row paddingHorizontal={10} marginTop={20}>
@@ -183,6 +183,10 @@ export const Friends = React.memo(() => {
 									data={MyStatus}
 									estimatedItemSize={15}
 									scrollEnabled={false}
+									estimatedListSize={{
+										height: 112.7,
+										width: 390,
+									}}
 									renderItem={({ item, index }) => (
 										<Block
 											key={index}

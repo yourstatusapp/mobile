@@ -7,9 +7,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import { useNavigation, useTheme } from '@hooks';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { GlobalParamList } from '../core/types';
+import { GlobalParamList, ProfileType, RootstackParamList } from '../core/types';
+import core, { request, ReturnRequestType } from '@core';
 
-type CameraRouteProp = RouteProp<GlobalParamList, 'Camera'>;
+type CameraRouteProp = RouteProp<RootstackParamList, 'Camera'>;
 
 export const CameraFrame = () => {
 	const nav = useNavigation();
@@ -22,6 +23,8 @@ export const CameraFrame = () => {
 	const device = devices.back;
 	const [lastTakenPicture, setLastTakenPicture] = useState<string[]>([]);
 	const [showImageFull, setShowImageFull] = useState(false);
+	const [uploadLoading, setUploadLoading] = useState(false);
+
 	const requestPerms = async () => {
 		const cameraPermission = await Camera.getCameraPermissionStatus();
 		console.log(cameraPermission);
@@ -32,7 +35,72 @@ export const CameraFrame = () => {
 		setShowImageFull(false);
 	};
 
-	const continueWithImage = () => {};
+	// This handles any type of camera usage
+	const continueWithImage = useCallback(async () => {
+		setUploadLoading(true);
+		const t = params.params.type;
+		const path = lastTakenPicture[0];
+
+		if (!t) {
+			//TODO: handle error
+			return;
+		}
+
+		const fd = new FormData();
+
+		fd.append('file', {
+			uri: path.replace('file://', ''),
+			type: path.split('.')[1],
+			name: path.split('/').pop(),
+		});
+
+		let res: ReturnRequestType<boolean> | false = false;
+
+		if (t === 'upload_banner') {
+			res = await request<boolean>('post', '/profile/banner', {
+				data: fd,
+				headers: { 'Content-Type': 'multipart/form-data;' },
+			});
+		}
+
+		if (t === 'upload_avatar') {
+			res = await request<boolean>('post', '/profile/avatar', {
+				data: fd,
+				headers: { 'Content-Type': 'multipart/form-data;' },
+			});
+		}
+
+		if (res != false && res.data) {
+			// request account data to refresh
+			const pRes = await request<{ profile: ProfileType }>('get', '/account');
+			if (pRes.data) {
+				core.profile.setValue(pRes.data.profile);
+			}
+			nav.reset({ index: 0, routes: [{ name: 'Tabs' }] });
+			setUploadLoading(false);
+		} else {
+			// TODO: handle failed upload
+			setUploadLoading(false);
+		}
+
+		// if (uploadMethod === 'storie') {
+		// 	// check if the user wanted high qualit
+		// 	res = await request<boolean>(
+		// 		'post',
+		// 		'/profile/stories/new' + (HighQuality === true ? '?high_quality=true' : ''),
+		// 		{
+		// 			data: fd,
+		// 			headers: { 'Content-Type': 'multipart/form-data;' },
+		// 			onUploadProgress: v => {
+		// 				percentage.value = withTiming((100 * v.loaded) / v.total, {
+		// 					duration: 200,
+		// 					easing: Easing.ease,
+		// 				});
+		// 			},
+		// 		},
+		// 	);
+		// }
+	}, [lastTakenPicture]);
 
 	const takePicture = useCallback(async () => {
 		const res = await camera.current?.takePhoto({
@@ -54,7 +122,7 @@ export const CameraFrame = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log('p', params.params);
+		// console.log('p', params.params);
 	}, []);
 
 	const BOTTOM_BAR_HEIGHT = 90;
@@ -85,9 +153,10 @@ export const CameraFrame = () => {
 							name="plus"
 							style={{ transform: [{ rotate: '45deg' }] }}
 							onPress={clearImage}
+							disabled={uploadLoading}
 						/>
 						<Text size={18} bold>
-							Continue with this image
+							{uploadLoading ? 'Uploading...' : 'Continue with this image'}
 						</Text>
 						<IconButton
 							color={'white'}
@@ -96,6 +165,7 @@ export const CameraFrame = () => {
 							size={28}
 							name="checkmark"
 							onPress={continueWithImage}
+							disabled={uploadLoading}
 						/>
 					</Block>
 				</Block>

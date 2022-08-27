@@ -10,6 +10,7 @@ export { SearchProfile } from './SearchProfile';
 export { FriendRequests } from './FriendRequests';
 export { ManageStatus } from './ManageStatus';
 export { CameraFrame } from './CameraFrame';
+export { PreviewUpload } from './PreviewUpload';
 
 // Tabs
 export { Account } from './tabs/Account';

@@ -35,8 +35,9 @@ export const request = async <T extends any>(
 			withCredentials: true,
 			onUploadProgress: x?.onUploadProgress,
 		});
+		console.log('status', a.status);
 
-		return a.data;
+		return a?.data;
 	} catch (error: any) {
 		// This will happen when there is an network error so probably a 500
 		// TODO: Setting a state that we don't have network and navigating to a no network screen? (we can close the screen and going back to where we left of since its pushed to the stack)

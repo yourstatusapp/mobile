@@ -223,6 +223,7 @@ export type RootstackParamList = {
 	FriendRequests: undefined;
 	ManageStatus: undefined;
 	Camera: { type: 'upload_banner' | 'upload_avatar' };
+	PreviewUpload: { image: string; type: 'upload_banner' | 'upload_avatar' };
 };
 
 export type SettingsStackParamList = {
