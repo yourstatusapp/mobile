@@ -1,24 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import {
-	Block,
-	Button,
-	Fill,
-	GradiantShadow,
-	Icon,
-	IconButton,
-	Input,
-	Spacer,
-	Status,
-	Text,
-} from '@parts';
+import { Block, Button, Fill, GradiantShadow, Icon, IconButton, Input, Spacer, Status, Text } from '@parts';
 import core, { AppAlert, request } from '@core';
-import {
-	ActivityIndicator,
-	Dimensions,
-	KeyboardAvoidingView,
-	Platform,
-	TouchableOpacity,
-} from 'react-native';
+import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import LinearGradient from 'react-native-linear-gradient';
 import { useClipboard } from '@react-native-clipboard/clipboard';
@@ -48,13 +31,9 @@ export const Auth: React.FC = () => {
 		}
 
 		timeout = setTimeout(async () => {
-			const res = await request<{ valid: boolean }>(
-				'post',
-				'/profile/username/check',
-				{
-					data: { username: usernameInput },
-				},
-			);
+			const res = await request<{ valid: boolean }>('post', '/profile/username/check', {
+				data: { username: usernameInput },
+			});
 			SetUsernameLoading(false);
 			if (res.data) {
 				SetUsernameValid(res.data?.valid);
@@ -69,7 +48,7 @@ export const Auth: React.FC = () => {
 
 	const magicLinkLogin = React.useCallback(async () => {
 		const a = ClipboardData;
-		console.log(a);
+		console.log('ClipboardData', a);
 
 		if (!a) {
 			AppAlert(false, 'no link has been detected');
@@ -85,7 +64,7 @@ export const Auth: React.FC = () => {
 				} as never,
 			);
 		}
-	}, [ClipboardData, nav]);
+	}, [ClipboardData]);
 
 	const usernameCheck = useCallback((v: string) => {
 		SetUsernameLoading(true);
@@ -172,15 +151,7 @@ export const Auth: React.FC = () => {
 				return true;
 			}
 		}
-	}, [
-		Email,
-		Loading,
-		UsernameValid,
-		confirmationCode,
-		NewAccount,
-		UsernameLoading,
-		confirmationCodeSend,
-	]);
+	}, [Email, Loading, UsernameValid, confirmationCode, NewAccount, UsernameLoading, confirmationCodeSend]);
 
 	return (
 		<Block color={theme.background}>
@@ -251,10 +222,7 @@ export const Auth: React.FC = () => {
 							transform: [{ rotate: '-4deg' }],
 						}}
 					/>
-					<Block
-						flex={0}
-						press
-						onPress={() => SetShowBuildNumber(!ShowBuildNumber)}>
+					<Block flex={0} press onPress={() => SetShowBuildNumber(!ShowBuildNumber)}>
 						<Text center weight="800" size={45} color={theme.text}>
 							YourStatus
 						</Text>
@@ -266,19 +234,9 @@ export const Auth: React.FC = () => {
 						</Text>
 					)}
 					<Spacer size={10} />
-					<Input
-						placeholder="Email"
-						value={Email}
-						onChange={SetEmail}
-						textContentType={'emailAddress'}
-					/>
+					<Input placeholder="Email" value={Email} onChange={SetEmail} textContentType={'emailAddress'} />
 					{NewAccount && (
-						<Block
-							flex={0}
-							vCenter
-							style={{ position: 'relative' }}
-							marginBottom={5}
-							marginTop={15}>
+						<Block flex={0} vCenter style={{ position: 'relative' }} marginBottom={5} marginTop={15}>
 							<Input
 								placeholder="Username"
 								value={Username}
@@ -288,11 +246,7 @@ export const Auth: React.FC = () => {
 								}}
 								textContentType={'none'}
 								style={{
-									borderColor: UsernameValid
-										? '#62CB4E'
-										: !!UsernameErrMsg
-										? '#FF6161'
-										: '#292929',
+									borderColor: UsernameValid ? '#62CB4E' : !!UsernameErrMsg ? '#FF6161' : '#292929',
 									opacity: UsernameLoading ? 0.5 : 1,
 								}}
 							/>
@@ -312,10 +266,7 @@ export const Auth: React.FC = () => {
 								// TODO: code error handling color border
 							)}
 							{UsernameLoading && (
-								<ActivityIndicator
-									color={theme.textFade}
-									style={{ position: 'absolute', right: 20, paddingTop: 10 }}
-								/>
+								<ActivityIndicator color={theme.textFade} style={{ position: 'absolute', right: 20, paddingTop: 10 }} />
 							)}
 						</Block>
 					)}
@@ -342,32 +293,15 @@ export const Auth: React.FC = () => {
 							/>
 						)}
 						<Button
-							text={
-								NewAccount
-									? confirmationCodeSend
-										? 'Create new account'
-										: 'Get confirmation code'
-									: 'Login'
-							}
+							text={NewAccount ? (confirmationCodeSend ? 'Create new account' : 'Get confirmation code') : 'Login'}
 							color="white"
 							onPress={login}
 							disabled={loginButtonDisabled}
 							style={{ flex: 1, backgroundColor: theme.primary2 }}
 						/>
 					</Block>
-					<Block
-						row
-						vCenter
-						flex={0}
-						marginTop={13}
-						press
-						onPress={toggleTheme}>
-						<Icon
-							name={'sparkle'}
-							size={14}
-							color={'#5e37ca9e'}
-							style={{ paddingRight: 5, paddingBottom: 5 }}
-						/>
+					<Block row vCenter flex={0} marginTop={13} press onPress={() => toggleTheme()}>
+						<Icon name={'sparkle'} size={14} color={'#5e37ca9e'} style={{ paddingRight: 5, paddingBottom: 5 }} />
 						<Text center color={theme.textFade} weight="500" size={12}>
 							We make use of magic links
 						</Text>
@@ -384,11 +318,7 @@ export const Auth: React.FC = () => {
 					)}
 					<Spacer size={20} />
 					{ShowBuildNumber && (
-						<Button
-							text="Paste clipboard"
-							onPress={magicLinkLogin}
-							style={{ marginBottom: 5 }}
-						/>
+						<Button text="Paste clipboard" color={'white'} onPress={magicLinkLogin} style={{ marginBottom: 5 }} />
 					)}
 					{ShowBuildNumber && (
 						<Text center color={theme.textFadeLight} medium>
