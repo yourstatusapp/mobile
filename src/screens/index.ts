@@ -2,7 +2,7 @@ export { Auth } from './Auth';
 export { Magic } from './Magic';
 export { Preloader } from './Preloader';
 export { Profile } from './Profile';
-export { CreateStatus } from './CreateStatus';
+export { CreateStatus } from './create_status/CreateStatus';
 export { StatusDetail } from './StatusDetail';
 export { EditProfile } from './EditProfile';
 export { FriendsList } from './FriendsList';

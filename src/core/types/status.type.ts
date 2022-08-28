@@ -1,5 +1,5 @@
 export enum StatusTypes {
-	DEFAULT = 'DEFAULT',
+	MESSAGE = 'MESSAGE',
 	DISCORD_GUILD = 'DISCORD_GUILD',
 	EVENT = 'EVENT',
 }
@@ -23,7 +23,7 @@ export interface EventStatus {
 
 export type StatusDataType =
 	| ({
-			type: 'DEFAULT';
+			type: 'MESSAGE';
 	  } & MessageStatus)
 	| ({ type: 'DISCORD_GUILD' } & DiscordGuildStatus)
 	| ({ type: 'EVENT' } & EventStatus);
@@ -32,3 +32,8 @@ export interface CreateStatusType {
 	statusText: string;
 	data: StatusDataType;
 }
+
+export type ValidateStatusReturn = {
+	valid: boolean;
+	data?: { name: string; iconImage: string };
+};
