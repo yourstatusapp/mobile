@@ -13,11 +13,11 @@ export interface DiscordGuildStatus {
 	expires_at?: Date;
 }
 
-export interface EventStatus {
+export interface IDataEventStatus {
 	title: string;
 	description: string;
 	startDate: Date;
-	endDate?: Date;
+	endDate?: Date | null;
 	location?: string;
 }
 
@@ -26,14 +26,31 @@ export type StatusDataType =
 			type: 'MESSAGE';
 	  } & MessageStatus)
 	| ({ type: 'DISCORD_GUILD' } & DiscordGuildStatus)
-	| ({ type: 'EVENT' } & EventStatus);
+	| ({ type: 'EVENT' } & IDataEventStatus);
 
 export interface CreateStatusType {
 	statusText: string;
 	data: StatusDataType;
 }
 
-export type ValidateStatusReturn = {
+export interface ValidateStatusReturn {
 	valid: boolean;
-	data?: { name: string; iconImage: string };
-};
+	data?: { id: string; name: string; iconImage: string };
+}
+
+export type ICreateStatus =
+	| {
+			statusText: string;
+			type: 'MESSAGE';
+			data: MessageStatus;
+	  }
+	| {
+			statusText: string;
+			type: 'DISCORD_GUILD';
+			data: DiscordGuildStatus;
+	  }
+	| {
+			statusText: string;
+			type: 'EVENT';
+			data: IDataEventStatus;
+	  };

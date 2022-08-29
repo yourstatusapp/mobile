@@ -1,32 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import { Block } from '@parts';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Block, Text } from '@parts';
 import { TextInput } from 'react-native';
 import { useTheme } from '@hooks';
 import { IModuleProps } from '.';
-import { StatusTypes } from '@core';
+import FastImage from 'react-native-fast-image';
+import core from '@core';
 
 let timeoutID: NodeJS.Timeout;
-export const CreateDiscordModule: React.FC<IModuleProps> = ({ onDataChange, validateStatus }) => {
+export const CreateDiscordModule: React.FC<IModuleProps> = ({ validateStatus, validateStatusReturnData }) => {
 	const { theme } = useTheme();
-	const [textInputValue, setTextInputValue] = useState('');
+
 	const [inviteCode, setInviteCode] = useState('');
 
-	useEffect(() => {
-		onDataChange({ statusText: textInputValue, data: { type: 'DISCORD_GUILD', inviteCode: inviteCode } });
-	}, [textInputValue, inviteCode]);
+	const updateDataChange = useCallback(() => {
+		validateStatus({
+			statusText: '',
+			data: { inviteCode: inviteCode },
+			type: 'DISCORD_GUILD',
+		});
+	}, [inviteCode]);
 
 	useEffect(() => {
+		// core.newStatusDraft.set({ type: 'DISCORD_GUILD', statusText: '' });
+
 		if (timeoutID) {
 			clearTimeout(timeoutID);
 		}
 
 		timeoutID = setTimeout(() => {
-			if (validateStatus) validateStatus(StatusTypes.DISCORD_GUILD, { inviteCode });
+			if (!!inviteCode) {
+				console.log('inviteCode', inviteCode);
+
+				updateDataChange();
+			}
 		}, 1000);
 	}, [inviteCode]);
 
+	const GUILD_ICON_SIZE = 40;
+
 	return (
 		<Block paddingHorizontal={10}>
+			{validateStatusReturnData.valid && (
+				<Block flex={0} color={theme.backgroundDarker} padding={10} marginBottom={10} style={{ borderRadius: 10 }}>
+					<Text size={16} medium>
+						Discord guild found:
+					</Text>
+					<Block flex={0} row hCenter marginTop={10}>
+						<FastImage
+							source={{
+								uri: `https://cdn.discordapp.com/icons/${validateStatusReturnData.data?.id}/${validateStatusReturnData?.data?.iconImage}.webp?size=64`,
+							}}
+							style={{
+								height: GUILD_ICON_SIZE,
+								width: GUILD_ICON_SIZE,
+								borderRadius: GUILD_ICON_SIZE,
+							}}
+						/>
+						<Text medium marginLeft={10}>
+							{validateStatusReturnData.data?.name}
+						</Text>
+					</Block>
+				</Block>
+			)}
+
 			<TextInput
 				autoComplete="off"
 				autoCorrect={false}

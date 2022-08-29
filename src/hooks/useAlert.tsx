@@ -16,11 +16,11 @@ export const useAlert = () => {
 	const current = useSimple(core.alert);
 
 	const create = (config: AlertDataType) => {
-		core.alert.setValue(config);
+		core.alert.set(config);
 	};
 
 	const clear = () => {
-		core.alert.setValue(null);
+		core.alert.set(null);
 	};
 
 	const onUpdate = useMemo(() => {

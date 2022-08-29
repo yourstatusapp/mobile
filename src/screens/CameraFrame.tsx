@@ -74,7 +74,7 @@ export const CameraFrame = () => {
 			// request account data to refresh
 			const pRes = await request<{ profile: ProfileType }>('get', '/account');
 			if (pRes.data) {
-				core.profile.setValue(pRes.data.profile);
+				core.profile.set(pRes.data.profile);
 			}
 			nav.reset({ index: 0, routes: [{ name: 'Tabs' }] });
 			setUploadLoading(false);

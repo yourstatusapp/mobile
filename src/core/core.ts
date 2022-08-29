@@ -1,6 +1,6 @@
 import { SimpleCore } from 'simple-core-state';
 import { MMKVLoader } from 'react-native-mmkv-storage';
-import { ProfileType, StatusType } from './types';
+import { ICreateStatus, ProfileType, StatusType } from './types';
 import { AlertDataType } from '@hooks';
 
 interface Account {
@@ -16,6 +16,7 @@ interface IDefaultCore {
 	profile: ProfileType | null;
 	alert: AlertDataType | null;
 	myStatus: StatusType[];
+	newStatusDraft: ICreateStatus;
 }
 
 const DefaultCore: IDefaultCore = {
@@ -24,6 +25,11 @@ const DefaultCore: IDefaultCore = {
 	profile: null,
 	alert: null,
 	myStatus: [],
+	newStatusDraft: {
+		data: {},
+		statusText: '',
+		type: 'MESSAGE',
+	},
 };
 
 const SimpleInstance = new SimpleCore<IDefaultCore>(DefaultCore, {
@@ -43,6 +49,6 @@ const SimpleInstance = new SimpleCore<IDefaultCore>(DefaultCore, {
 	},
 });
 
-SimpleInstance.storage.perist(['currentTheme', 'account']);
+SimpleInstance.storage.perist(['currentTheme', 'account', 'newStatusDraft']);
 
 export const core = SimpleInstance.core();

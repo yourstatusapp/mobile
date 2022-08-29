@@ -45,9 +45,9 @@ export const SettingsMain = () => {
 					// TODO: remove notification permissions
 					// removeNotificationPermissions();
 					nav.reset({ index: 1, routes: [{ name: 'Auth' }] });
-					core.account.setValue(null);
-					core.profile.setValue(null);
-					core.myStatus.setValue([]);
+					core.account.set(null);
+					core.profile.set(null);
+					core.myStatus.set([]);
 					// removeNotificationPermissions();
 					// nav.reset({ index: 1, routes: [{ name: 'auth' }] });
 					// TODO: reset some logic

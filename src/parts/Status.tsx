@@ -93,7 +93,7 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 			{status.type === 2 && (
 				<Icon name="flag" size={11} color={StatusColors[theme.name][status.type].color} style={{ marginRight: 5 }} />
 			)}
-			<Text medium size={13} color={StatusColors[theme.name][status.type].color}>
+			<Text medium size={13} color={StatusColors[theme.name][status.type].color} style={{ lineHeight: 16 }}>
 				{status.data?.name || status.data?.message}
 			</Text>
 		</StatusBody>
@@ -126,11 +126,13 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 		}
 
 		if (status.type === 2) {
-			nav.navigate('Event', status.data);
+			// TODO: !!FIX navigation
+			// nav.navigate('Event', status.data);
 		}
 
 		if (status.type === 0) {
-			nav.navigate('StatusDetail', { status: status, username: username || '' });
+			// TODO: !!FIX navigation
+			// nav.navigate('StatusDetail', { status: status, username: username || '' });
 		}
 
 		if (status.type === 1) {
@@ -168,4 +170,5 @@ const StatusBody = styled.View<{ backColor: string; textColor: string }>`
 	justify-content: center;
 	flex-direction: row;
 	align-items: center;
+	height: 27px;
 `;

@@ -10,10 +10,12 @@ export const StatusSelectedableBox = ({
 	statusType,
 	selectedType,
 	pressHandler,
+	disabled,
 }: {
 	statusType: number;
 	selectedType: number;
 	pressHandler: (v: number) => void;
+	disabled: boolean;
 }) => {
 	const { theme } = useTheme();
 
@@ -37,6 +39,7 @@ export const StatusSelectedableBox = ({
 				width={10}
 				flex={0}
 				marginBottom={5}
+				opacity={disabled ? 0.5 : 1}
 				style={{ borderRadius: 10 }}
 				color={StatusColors[theme.name][statusType][selectedType === statusType ? 'color' : 'backColor']}
 			/>
@@ -44,10 +47,11 @@ export const StatusSelectedableBox = ({
 				color={StatusColors[theme.name][statusType].backColor}
 				hCenter
 				vCenter
-				opacity={selectedType === statusType ? 1 : 0.4}
+				opacity={disabled ? 0.3 : selectedType === statusType ? 1 : 0.4}
 				style={StatusSelectTypeStyle}
 				press
-				onPress={TypePressHandler}>
+				onPress={TypePressHandler}
+				disabled={disabled}>
 				<Icon
 					name={StatusTypeEtc[statusType].icon}
 					color={StatusColors[theme.name][statusType].color}

@@ -19,38 +19,48 @@ export const Preloader = ({ loaded }: PreloaderProps) => {
 	const nav = useNavigation();
 
 	const getAccount = async () => {
-		SetLoading(true);
-		setTimeout(() => setTakingTooLong(true), 20 * 1000);
+		try {
+			SetLoading(true);
+			setTimeout(() => setTakingTooLong(true), 20 * 1000);
 
-		const res = await request<{ account: any; profile: any; device: any }>('get', '/account');
+			const res = await request<{ account: any; profile: any; device: any }>('get', '/account');
 
-		if (res.success) {
-			// set account and profile
-			core.account.setValue(res.data?.account);
-			core.profile.setValue(res.data?.profile);
+			if (res?.success) {
+				// set account and profile
+				core.account.set(res.data?.account);
+				core.profile.set(res.data?.profile);
+			}
+
+			// if (!res.success) {
+			// 	core.account.account.reset();
+			// 	core.profile.profile.reset();
+			// 	core.lists.devices.reset();
+			// } else {
+			// 	if (res.data?.account) {
+			// 		core.account.account.set(res.data?.account);
+			// 	}
+			// 	if (res.data?.profile) {
+			// 		core.profile.profile.set(res.data?.profile);
+			// 	}
+			// 	if (res.data?.device) {
+			// 		core.lists.devices.collect(res.data.device, 'mine');
+			// 		core.lists.devices.selectors.current.select(res.data.device.id);
+			// 	}
+			// }
+			setTimeout(() => {
+				// loaded();\
+				nav.reset({ index: 0, routes: [{ name: 'Tabs' }] });
+				// connectToSocket();
+			}, 10);
+		} catch (error) {
+			// @ts-ignore
+			if (error.data.logout) {
+				nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
+				core.account.reset();
+				core.profile.reset();
+			}
+			console.log('-------');
 		}
-
-		// if (!res.success) {
-		// 	core.account.account.reset();
-		// 	core.profile.profile.reset();
-		// 	core.lists.devices.reset();
-		// } else {
-		// 	if (res.data?.account) {
-		// 		core.account.account.set(res.data?.account);
-		// 	}
-		// 	if (res.data?.profile) {
-		// 		core.profile.profile.set(res.data?.profile);
-		// 	}
-		// 	if (res.data?.device) {
-		// 		core.lists.devices.collect(res.data.device, 'mine');
-		// 		core.lists.devices.selectors.current.select(res.data.device.id);
-		// 	}
-		// }
-		setTimeout(() => {
-			// loaded();\
-			nav.reset({ index: 0, routes: [{ name: 'Tabs' }] });
-			// connectToSocket();
-		}, 10);
 	};
 
 	const check = () => {

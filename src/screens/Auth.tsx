@@ -310,7 +310,7 @@ export const Auth: React.FC = () => {
 						<TouchableOpacity
 							style={{ alignSelf: 'center' }}
 							activeOpacity={0.6}
-							onPress={() => nav.navigate('tabs' as never)}>
+							onPress={() => nav.reset({ index: 0, routes: [{ name: 'Tabs' }] })}>
 							<Text center weight="500" size={14} color="white">
 								reload
 							</Text>

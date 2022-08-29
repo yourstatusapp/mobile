@@ -66,9 +66,9 @@ export const useTheme = () => {
 
 	const toggleTheme = (setThemeTypeParam?: ThemeTypes) => {
 		if (setThemeTypeParam) {
-			core.currentTheme.setValue(setThemeTypeParam);
+			core.currentTheme.set(setThemeTypeParam);
 		} else {
-			core.currentTheme.setValue(currentTheme === 'light' ? 'dark' : 'light');
+			core.currentTheme.set(currentTheme === 'light' ? 'dark' : 'light');
 		}
 	};
 

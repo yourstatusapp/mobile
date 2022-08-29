@@ -34,6 +34,7 @@ export interface StatusType {
 }
 
 export interface PaddingType {
+	padding?: number;
 	paddingTop?: number;
 	paddingBottom?: number;
 	paddingLeft?: number;

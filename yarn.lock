@@ -8440,10 +8440,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
-simple-core-state@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/simple-core-state/-/simple-core-state-0.0.5.tgz#d59d0124614a06ff0bebb8451904f39d0a506103"
-  integrity sha512-CCzNqJj3n/4prBDpDIZsXO3QoESI7yn0MN48euH8NSGqRluI/bhS/43At3R+xgO0G4FTm2OatavB70rtNeSqfg==
+simple-core-state@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/simple-core-state/-/simple-core-state-0.0.6.tgz#a190ebb3613d835c771c50aa6295d10f64e6d9b7"
+  integrity sha512-VvVygsutJpvLGZEXRqOveeab+Zd7NMoutT62+pcSqhTsQy56a3dlx7e6ILiUy7T8sU6EddeWhNtj20exZAu2Lw==
   dependencies:
     tsc "^2.0.4"
     typescript "^4.7.4"

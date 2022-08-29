@@ -1,16 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Block } from '@parts';
 import { TextInput } from 'react-native';
 import { useTheme } from '@hooks';
-import { CreateStatusType, MessageStatus, StatusTypes, ValidateStatusReturn } from '@core';
+import core from '@core';
 import { IModuleProps } from '.';
 
-export const CreateMessageModule: React.FC<IModuleProps> = ({ validateStatus, onDataChange }) => {
+let timeoutID: NodeJS.Timeout;
+export const CreateMessageModule: React.FC<IModuleProps> = ({ validateStatus, forceUpdateStatusText }) => {
 	const { theme } = useTheme();
 	const [textInputValue, setTextInputValue] = useState('');
 
+	const updateDataChange = useCallback(() => {
+		validateStatus({
+			statusText: textInputValue,
+			data: {},
+			type: 'MESSAGE',
+		});
+	}, [textInputValue]);
+
 	useEffect(() => {
-		onDataChange({ statusText: textInputValue, data: { type: 'MESSAGE' } });
+		if (forceUpdateStatusText) forceUpdateStatusText(textInputValue);
+		core.newStatusDraft.set({ statusText: textInputValue, data: {}, type: 'MESSAGE' });
+
+		if (timeoutID) {
+			clearTimeout(timeoutID);
+		}
+
+		timeoutID = setTimeout(() => {
+			if (!!textInputValue) updateDataChange();
+		}, 1000);
 	}, [textInputValue]);
 
 	return (
@@ -21,7 +39,7 @@ export const CreateMessageModule: React.FC<IModuleProps> = ({ validateStatus, on
 				autoCapitalize="none"
 				placeholder={'Put here your message!'}
 				placeholderTextColor={theme.textFadeLight}
-				style={{ fontSize: 16, color: theme.text }}
+				style={{ fontSize: 16, color: theme.text, marginLeft: 10 }}
 				value={textInputValue}
 				defaultValue={textInputValue}
 				onChangeText={setTextInputValue}

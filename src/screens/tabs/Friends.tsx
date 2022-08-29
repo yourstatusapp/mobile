@@ -80,7 +80,7 @@ export const Friends = React.memo(() => {
 	const getMyStatus = async () => {
 		const res = await request<any>('get', '/status');
 		setMyStatus(res.data);
-		core.myStatus.setValue(res.data);
+		core.myStatus.set(res.data);
 	};
 
 	const getStories = async () => {

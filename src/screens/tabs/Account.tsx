@@ -83,11 +83,20 @@ export const Account = () => {
 						activeOpacity={0.7}
 						onPress={() => setShowUploadbannerSheet(true)}
 						disabled={showUploadBannerSheet}>
-						<FastImage
-							resizeMode="cover"
-							source={{ uri: `https://cdn.yourstatus.app/profile/${profile?.account_id}/${profile?.banner}` }}
-							style={{ height: 140, width: width - 40, borderRadius: 12 }}
-						/>
+						{profile?.banner ? (
+							<FastImage
+								resizeMode="cover"
+								source={{ uri: `https://cdn.yourstatus.app/profile/${profile?.account_id}/${profile?.banner}` }}
+								style={{ height: 140, width: width - 40, borderRadius: 12 }}
+							/>
+						) : (
+							<Block
+								flex={0}
+								height={140}
+								width={width - 40}
+								style={{ borderRadius: 12 }}
+								color={theme.backgroundDarker}></Block>
+						)}
 					</TouchableOpacity>
 				</Block>
 

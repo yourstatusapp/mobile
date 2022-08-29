@@ -1,14 +1,6 @@
 import React from 'react';
 import { BlockType, MarginType, PaddingType } from '@core';
-import {
-	Animated,
-	SafeAreaView,
-	ScrollView,
-	StyleSheet,
-	TouchableOpacity,
-	View,
-	ViewStyle,
-} from 'react-native';
+import { Animated, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 export const Block: React.FC<BlockType> = ({
 	scroll,
@@ -28,6 +20,7 @@ export const Block: React.FC<BlockType> = ({
 	marginLeft,
 	marginRight,
 	marginTop,
+	padding,
 	paddingBottom,
 	paddingLeft,
 	paddingRight,
@@ -51,6 +44,7 @@ export const Block: React.FC<BlockType> = ({
 		{ marginLeft },
 		{ marginRight },
 		{ marginTop },
+		{ padding },
 		{ paddingBottom },
 		{ paddingLeft },
 		{ paddingRight },
@@ -62,11 +56,7 @@ export const Block: React.FC<BlockType> = ({
 
 	if (press) {
 		return (
-			<TouchableOpacity
-				onPress={onPress}
-				activeOpacity={activeOpacity || 0.6}
-				style={blockStyle}
-				disabled={disabled}>
+			<TouchableOpacity onPress={onPress} activeOpacity={activeOpacity || 0.6} style={blockStyle} disabled={disabled}>
 				{children}
 			</TouchableOpacity>
 		);
@@ -96,19 +86,11 @@ interface BlockScrollType extends PaddingType, MarginType {
 	contentContainerStyle?: ViewStyle;
 }
 
-export const BlockScroll: React.FC<BlockScrollType> = ({
-	children,
-	contentContainerStyle,
-	style,
-	...props
-}) => {
+export const BlockScroll: React.FC<BlockScrollType> = ({ children, contentContainerStyle, style, ...props }) => {
 	const BlockScrollStyle = StyleSheet.flatten<ViewStyle>([style, props]);
 
 	return (
-		<ScrollView
-			scrollEnabled={true}
-			style={BlockScrollStyle}
-			contentContainerStyle={contentContainerStyle}>
+		<ScrollView scrollEnabled={true} style={BlockScrollStyle} contentContainerStyle={contentContainerStyle}>
 			{children}
 		</ScrollView>
 	);

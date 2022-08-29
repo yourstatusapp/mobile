@@ -1,8 +1,8 @@
 import core, { UploadProgressEventType } from '@core';
 import axios, { AxiosResponse } from 'axios';
 
-const DEV_API = 'http://0.0.0.0:3020';
-// const DEV_API = 'http://192.168.1.4:3020';
+// const DEV_API = 'http://0.0.0.0:3020';
+const DEV_API = 'http://192.168.1.4:3020';
 // export const baseURL = state('https://api.yourstatus.app');
 export const baseURL = process.env.NODE_ENV === 'production' ? 'https://api.yourstatus.app' : DEV_API;
 // export const baseURL = state(DEV_API);
@@ -43,6 +43,7 @@ export const request = async <T extends any>(
 		// This will happen when there is an network error so probably a 500
 		// TODO: Setting a state that we don't have network and navigating to a no network screen? (we can close the screen and going back to where we left of since its pushed to the stack)
 		console.log('error => ', error);
+		throw { success: false, message: error.response.data.message, data: error.response.data.data };
 		return { success: false, message: error.response.data.message };
 	}
 };

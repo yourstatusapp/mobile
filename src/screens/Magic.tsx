@@ -25,8 +25,8 @@ export const Magic: React.FC<Props> = ({ route }) => {
 		}
 
 		// Set account & profile data
-		core.account.setValue(res.data.account);
-		core.profile.setValue(res.data.profile);
+		core.account.set(res.data.account);
+		core.profile.set(res.data.profile);
 
 		if (!new_account) {
 			nav.reset({ index: 0, routes: [{ name: 'Tabs' as never }] });
