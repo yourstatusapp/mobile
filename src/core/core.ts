@@ -33,7 +33,7 @@ const DefaultCore: IDefaultCore = {
 };
 
 const SimpleInstance = new SimpleCore<IDefaultCore>(DefaultCore, {
-	Storage: {
+	storage: {
 		custom: {
 			//@ts-ignore
 			set: async (k, v) => {
@@ -49,6 +49,6 @@ const SimpleInstance = new SimpleCore<IDefaultCore>(DefaultCore, {
 	},
 });
 
-SimpleInstance.storage.perist(['currentTheme', 'account', 'newStatusDraft']);
+SimpleInstance.persist(['currentTheme', 'account', 'newStatusDraft']);
 
 export const core = SimpleInstance.core();
