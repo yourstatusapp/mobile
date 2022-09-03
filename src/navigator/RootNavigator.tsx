@@ -21,6 +21,7 @@ import {
 	Profile,
 	SearchProfile,
 	StatusDetail,
+	ReplyStatus,
 } from '../screens';
 import { TabsNavigator } from './TabsNavigator';
 import { useLinking, useTheme } from '@hooks';
@@ -58,6 +59,7 @@ export const RootNavigator = () => {
 				<RootStack.Screen name="ManageStatus" component={ManageStatus} />
 				<RootStack.Screen name="Camera" component={CameraFrame} />
 				<RootStack.Screen name="PreviewUpload" component={PreviewUpload} />
+				<RootStack.Screen name="ReplyStatus" component={ReplyStatus} />
 				{/* <RootStack.Screen name="Auth" component={Test} /> */}
 			</RootStack.Navigator>
 		</Block>

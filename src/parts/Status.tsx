@@ -2,27 +2,19 @@ import styled from 'styled-components/native';
 
 import React, { useCallback } from 'react';
 import { Linking, Pressable, StyleSheet, ViewStyle } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { Gesture } from 'react-native-gesture-handler';
 
-import { request } from '@core';
+import { request, StatusType, StatusTypes } from '@core';
 
 import { useNavigation, useTheme } from '@hooks';
 
 import { Icon, Text } from '@parts';
 
-interface StatusType {
+interface IStatusProps {
 	self?: boolean;
 	disableTap?: boolean;
 	style?: ViewStyle;
-	status: {
-		id: string;
-		account_id: string;
-		data: any;
-		type: number;
-		taps?: number;
-		taped?: boolean;
-		expires_at?: string;
-	};
+	status: StatusType;
 	username?: string;
 }
 
@@ -36,34 +28,34 @@ interface StatusTypesColors {
 
 export const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors } = {
 	light: {
-		0: {
+		1: {
 			key_name: 'DEFAULT',
 			color: '#1E2B68',
 			backColor: '#A9C6FE',
 		},
-		1: {
+		2: {
 			key_name: 'DISCORD_GUILD',
 			color: '#363B74',
 			backColor: '#7C86F8',
 		},
-		2: {
+		3: {
 			key_name: 'EVENT',
 			color: '#1E4622',
 			backColor: '#73D77D',
 		},
 	},
 	dark: {
-		0: {
+		1: {
 			key_name: 'DEFAULT',
 			color: '#3D60FD',
 			backColor: '#0B1B37',
 		},
-		1: {
+		2: {
 			key_name: 'DISCORD_GUILD',
 			color: '#738BD7',
 			backColor: '#1E2846',
 		},
-		2: {
+		3: {
 			key_name: 'EVENT',
 			color: '#73D77D',
 			backColor: '#1E4622',
@@ -71,7 +63,7 @@ export const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors }
 	},
 };
 
-export const Status = React.memo(({ status, style, disableTap, username }: StatusType) => {
+export const Status = React.memo(({ status, style, disableTap, username }: IStatusProps) => {
 	// const theme_name = usePulse(core.ui.ThemeObject).name;
 	const { theme } = useTheme();
 	const nav = useNavigation();
@@ -87,10 +79,10 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 			style={wrapperStyle}
 			backColor={StatusColors[theme.name][status.type].backColor}
 			textColor={StatusColors[theme.name][status.type].color}>
-			{status.type === 1 && (
+			{status.type === 2 && (
 				<Icon name="discord" size={14} color={StatusColors[theme.name][status.type].color} style={{ marginRight: 4 }} />
 			)}
-			{status.type === 2 && (
+			{status.type === 3 && (
 				<Icon name="flag" size={11} color={StatusColors[theme.name][status.type].color} style={{ marginRight: 5 }} />
 			)}
 			<Text medium size={13} color={StatusColors[theme.name][status.type].color} style={{ lineHeight: 16 }}>
@@ -125,20 +117,14 @@ export const Status = React.memo(({ status, style, disableTap, username }: Statu
 			}
 		}
 
-		if (status.type === 2) {
-			// TODO: !!FIX navigation
-			// nav.navigate('Event', status.data);
-		}
-
-		if (status.type === 0) {
-			// TODO: !!FIX navigation
-			// nav.navigate('StatusDetail', { status: status, username: username || '' });
-		}
-
 		if (status.type === 1) {
+			nav.navigate('ReplyStatus', { username: username || '', status: status });
+		}
+
+		if (status.type === 2) {
 			Linking.openURL('https://discord.gg/' + status?.data?.code);
 		}
-	}, [nav, status, username]);
+	}, [status, username, nav]);
 
 	const PressStyle = ({ pressed }: { pressed: boolean }) => [
 		{

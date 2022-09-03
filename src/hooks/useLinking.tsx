@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@hooks';
 import React, { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
 
@@ -36,30 +36,21 @@ export const useLinking = () => {
 
 	const processLink = React.useCallback(() => {
 		if (url?.includes('/verify')) {
-			nav.navigate(
-				'verify_account' as never,
-				{ code: url.split('/verify?code=')[1] } as never,
-			);
+			nav.navigate('verify_account' as never, { code: url.split('/verify?code=')[1] } as never);
 		}
 
 		if (url?.includes('/magic')) {
-			nav.navigate(
-				'magic' as never,
-				{
-					code: url.split('magic?code=')[1]?.split('&')[0],
-					new_account: url.split('magic?code=')[1]?.split('&')[1],
-				} as never,
-			);
+			nav.navigate('Magic', {
+				code: url.split('magic?code=')[1]?.split('&')[0],
+				new_account: !!url.split('magic?code=')[1]?.split('&')[1],
+			});
 		}
 
 		if (url?.includes('/verify_new_account')) {
-			nav.navigate(
-				'magic' as never,
-				{
-					code: url.split('magic?code=')[1]?.split('&')[0],
-					new_account: url.split('magic?code=')[1]?.split('&')[1],
-				} as never,
-			);
+			nav.navigate('Magic', {
+				code: url.split('magic?code=')[1]?.split('&')[0],
+				new_account: !!url.split('magic?code=')[1]?.split('&')[1],
+			});
 		}
 	}, [url, nav]);
 
@@ -75,5 +66,5 @@ export const useLinking = () => {
 		// 		{ code: url.split('magic?code=')[1]?.split('&')[0], new_account: url.split('magic?code=')[1]?.split('&')[1] } as never,
 		// 	);
 		// }
-	}, [url, processing, nav]);
+	}, [url, processing, nav, processLink]);
 };

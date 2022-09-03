@@ -1,6 +1,6 @@
 import core, { AppAlert, IAccountRequestProps, MagicProps, request, RootstackParamList } from '@core';
+import { useNavigation } from '@hooks';
 import { Spacer, Text, Block } from '@parts';
-import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
@@ -29,11 +29,11 @@ export const Magic: React.FC<Props> = ({ route }) => {
 		core.profile.set(res.data.profile);
 
 		if (!new_account) {
-			nav.reset({ index: 0, routes: [{ name: 'Tabs' as never }] });
+			nav.reset({ index: 0, routes: [{ name: 'Tabs' }] });
 		} else {
 			nav.reset({
 				index: 0,
-				routes: [{ name: 'Tabs' as never, params: { new_account: true } }],
+				routes: [{ name: 'Tabs', params: { new_account: true } }],
 			});
 		}
 	};

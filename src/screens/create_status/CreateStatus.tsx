@@ -12,29 +12,29 @@ import { CreateDiscordModule, CreateEventModule, CreateMessageModule, IModulePro
 import { useSimple } from 'simple-core-state';
 
 export enum StatusTypes {
-	MESSAGE,
-	DISCORD_GUILD,
-	EVENT,
+	MESSAGE = 1,
+	DISCORD_GUILD = 2,
+	EVENT = 3,
 }
 
 export const StatusTypeEtc: {
-	[index: number]: {
+	[K in StatusTypes]: {
 		icon: Icons;
 		iconSize: number;
 		displayMessagePlaceholder: string;
 	};
 } = {
-	0: {
+	1: {
 		icon: 'message',
 		iconSize: 22,
 		displayMessagePlaceholder: 'Put here your message!',
 	},
-	1: {
+	2: {
 		icon: 'discord',
 		iconSize: 27,
 		displayMessagePlaceholder: 'Put here you’re invite link',
 	},
-	2: {
+	3: {
 		icon: 'flag',
 		iconSize: 21,
 		displayMessagePlaceholder: 'Put here your event title!',
@@ -60,10 +60,14 @@ export const CreateStatus: React.FC = () => {
 
 	const newStatusDraft = useSimple(core.newStatusDraft);
 
-	const [statusType, setStatusType] = useState<StatusTypes>(0);
+	const [statusType, setStatusType] = useState<number>(1);
 	const [statusDisplayText, setStatusDisplayText] = useState('');
 	const [validateLoading, setValidateLoading] = useState(false);
-	const [validateData, setValidateData] = useState<ValidateStatusReturn>({ valid: false, data: undefined });
+	const [validateData, setValidateData] = useState<ValidateStatusReturn>({
+		valid: false,
+		data: undefined,
+		message: '',
+	});
 
 	// Validate any type of status
 	const validateNewStatus = useCallback(async (incomingStatusDraft: ICreateStatus) => {
@@ -78,7 +82,8 @@ export const CreateStatus: React.FC = () => {
 			data: incomingStatusDraft,
 		});
 
-		console.log(res);
+		console.log('validate status response', res);
+		console.log('xx', res.message);
 
 		setValidateLoading(false);
 
@@ -88,15 +93,20 @@ export const CreateStatus: React.FC = () => {
 			}
 			if (incomingStatusDraft.type === 'DISCORD_GUILD') {
 				if (res.data.data?.name) setStatusDisplayText(res.data.data?.name);
-				setValidateData(s => ({ ...s, valid: true, data: res.data?.data }));
+				setValidateData(s => ({ ...s, valid: true, data: res.data?.data, message: res.message }));
 			}
 			if (incomingStatusDraft.type === 'EVENT') {
-				setValidateData(s => ({ ...s, valid: res.data?.valid || false }));
+				setValidateData(s => ({ ...s, valid: res.data?.valid || false, message: res.message }));
 			}
 		} else {
+			setValidateData(s => ({ ...s, valid: false, message: res.message }));
 			return;
 		}
 	}, []);
+
+	useEffect(() => {
+		console.log('change', validateData);
+	}, [validateData]);
 
 	const createNewStatus = async () => {
 		console.log(newStatusDraft);
@@ -110,7 +120,7 @@ export const CreateStatus: React.FC = () => {
 
 	useEffect(() => {
 		setStatusDisplayText('');
-		setValidateData({ valid: false, data: undefined });
+		setValidateData({ valid: false, data: undefined, message: '' });
 	}, [statusType]);
 
 	return (
@@ -188,9 +198,14 @@ export const CreateStatus: React.FC = () => {
 					</Block>
 
 					{/* TESTING */}
-					<Block flex={0}>
-						<Text>{JSON.stringify(newStatusDraft)}</Text>
-						<Text marginTop={10}>{JSON.stringify(validateData)}</Text>
+					<Block flex={0} paddingHorizontal={10}>
+						{/* <Text>{JSON.stringify(newStatusDraft)}</Text> */}
+						{/* <Text marginTop={10}>{JSON.stringify(validateData)}</Text> */}
+						{!validateData.valid && (
+							<Text color="#F62E2E" medium>
+								{validateData.message}
+							</Text>
+						)}
 					</Block>
 				</KeyboardAvoidingView>
 
@@ -200,19 +215,19 @@ export const CreateStatus: React.FC = () => {
 					<Block flex={0} row paddingHorizontal={10} marginTop={10}>
 						<StatusSelectedableBox
 							pressHandler={setStatusType}
-							statusType={0}
+							statusType={StatusTypes.MESSAGE}
 							selectedType={statusType}
 							disabled={validateLoading}
 						/>
 						<StatusSelectedableBox
 							pressHandler={setStatusType}
-							statusType={2}
+							statusType={StatusTypes.DISCORD_GUILD}
 							selectedType={statusType}
 							disabled={validateLoading}
 						/>
 						<StatusSelectedableBox
 							pressHandler={setStatusType}
-							statusType={1}
+							statusType={StatusTypes.EVENT}
 							selectedType={statusType}
 							disabled={validateLoading}
 						/>

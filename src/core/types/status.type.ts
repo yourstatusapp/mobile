@@ -36,6 +36,7 @@ export interface CreateStatusType {
 export interface ValidateStatusReturn {
 	valid: boolean;
 	data?: { id: string; name: string; iconImage: string };
+	message: string;
 }
 
 export type ICreateStatus =

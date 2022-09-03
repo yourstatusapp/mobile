@@ -12,7 +12,8 @@
 		"lint": "eslint . --ext .js,.jsx,.ts,.tsx",
 		"xcode": "open -a Xcode ./ios/mobile3.xcworkspace",
 		"pods": "cd ios && arch -x86_64 pod install && cd ../",
-		"icons": "node ./scripts/buildIcons.js"
+		"icons": "node ./scripts/buildIcons.js",
+		"prepare": "husky install"
 	},
 	"dependencies": {
 		"@gorhom/bottom-sheet": "^4",
@@ -45,7 +46,7 @@
 		"react-native-splash-screen": "^3.3.0",
 		"react-native-svg": "^13.0.0",
 		"react-native-vision-camera": "^2.14.1",
-		"simple-core-state": "^0.0.6",
+		"simple-core-state": "^0.0.8",
 		"styled-components": "^5.3.5"
 	},
 	"devDependencies": {
@@ -66,7 +67,9 @@
 		"babel-plugin-module-resolver": "^4.1.0",
 		"babel-plugin-transform-remove-console": "^6.9.4",
 		"eslint": "^7.32.0",
+		"husky": "^8.0.0",
 		"jest": "^26.6.3",
+		"lint-staged": "^13.0.3",
 		"metro-react-native-babel-preset": "^0.70.3",
 		"react-test-renderer": "18.0.0",
 		"typescript": "^4.4.4"
@@ -84,5 +87,10 @@
 	},
 	"resolutions": {
 		"styled-components": "5"
+	},
+	"lint-staged": {
+		"*.{ts,tsx}": [
+			"prettier --write"
+		]
 	}
 }

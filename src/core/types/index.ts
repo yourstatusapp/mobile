@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { ListRenderItemInfo, TextStyle, ViewStyle } from 'react-native';
 export * from './status.type';
@@ -214,7 +215,7 @@ export type RootstackParamList = {
 	Preloader: undefined;
 	Magic: { code: string; new_account: boolean } | undefined;
 	Tabs: undefined;
-	Profile: undefined;
+	Profile: { username: string };
 	CreateStatus: undefined;
 	StatusDetail: undefined;
 	EditProfile: undefined;
@@ -225,6 +226,7 @@ export type RootstackParamList = {
 	ManageStatus: undefined;
 	Camera: { type: 'upload_banner' | 'upload_avatar' };
 	PreviewUpload: { image: string; type: 'upload_banner' | 'upload_avatar' };
+	ReplyStatus: { status: StatusType; username: string };
 };
 
 export type SettingsStackParamList = {
@@ -236,6 +238,8 @@ export type SettingsStackParamList = {
 };
 
 export type GlobalParamList = RootstackParamList & TabStackNavParamList & SettingsStackParamList;
+
+export type ScreenProps<T extends keyof RootstackParamList> = NativeStackScreenProps<RootstackParamList, T>;
 
 export interface FriendItem {
 	username: string;

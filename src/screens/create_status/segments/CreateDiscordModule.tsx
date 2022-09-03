@@ -18,7 +18,7 @@ export const CreateDiscordModule: React.FC<IModuleProps> = ({ validateStatus, va
 			data: { inviteCode: inviteCode },
 			type: 'DISCORD_GUILD',
 		});
-	}, [inviteCode]);
+	}, [inviteCode, validateStatus]);
 
 	useEffect(() => {
 		// core.newStatusDraft.set({ type: 'DISCORD_GUILD', statusText: '' });

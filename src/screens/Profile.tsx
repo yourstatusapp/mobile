@@ -1,29 +1,26 @@
 import styled from 'styled-components/native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Animated } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { ProfileType, request } from '@core';
+import { ProfileType, request, RootstackParamList, ScreenProps } from '@core';
 import { useTheme } from '@hooks';
 import { Avatar, Block, GradiantShadow, Icon, IconButton, Line, Spacer, Status, Text } from '@parts';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const BANNER_HEIGHT = 250;
 
 const edgeSpace = 15;
 
-export const Profile = () => {
-	const { params } = useRoute();
+export const Profile = ({ route }: ScreenProps<'Profile'>) => {
 	const { theme } = useTheme();
 	const nav = useNavigation();
 
 	const [ProfileData, SetProfile] = useState<ProfileType>();
 	const [Loaded, SetLoaded] = useState(false);
 
-	// @ts-ignore
-	const usr_name = params.username;
-
 	const getProfile = async () => {
-		const res = await request<ProfileType>('get', '/profile/' + usr_name);
+		const res = await request<ProfileType>('get', '/profile/' + route.params.username);
 		if (res?.data) {
 			SetProfile(res.data);
 		}

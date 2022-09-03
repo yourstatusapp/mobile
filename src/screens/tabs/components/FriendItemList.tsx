@@ -16,13 +16,10 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 	// 	[props.item.account_id, bb],
 	// );
 
-	const openProfile = () =>
-		nav.navigate('Profile', { username: props.item.username } as never);
+	const openProfile = () => nav.navigate('Profile', { username: props.item.username });
 
 	return (
-		<FriendCompBody
-			key={props.index}
-			style={{ borderBottomColor: theme.backgroundDarker }}>
+		<FriendCompBody key={props.index} style={{ borderBottomColor: theme.backgroundDarker }}>
 			<Block row paddingHorizontal={20}>
 				<TouchableOpacity activeOpacity={0.6} onPress={openProfile}>
 					<Avatar src={[props.item.account_id, props.item.avatar]} size={45} />
@@ -30,8 +27,7 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 				<Block style={{ paddingLeft: 20 }}>
 					<Text weight="700" size={16}>
 						{props.item.username
-							? props.item.username.charAt(0).toUpperCase() +
-							  username.slice(1, username.length + 1)
+							? props.item.username.charAt(0).toUpperCase() + username.slice(1, username.length + 1)
 							: '-'}
 					</Text>
 					{!!props.item?.status?.length && (

@@ -11,6 +11,7 @@ export { FriendRequests } from './FriendRequests';
 export { ManageStatus } from './ManageStatus';
 export { CameraFrame } from './CameraFrame';
 export { PreviewUpload } from './PreviewUpload';
+export { ReplyStatus } from './ReplyStatus';
 
 // Tabs
 export { Account } from './tabs/Account';

@@ -141,7 +141,7 @@ const AvatarTabBtn: React.FC<{ active: boolean; account: any }> = c => {
 
 	return (
 		<AvatarBody flex={0} color={c.active ? theme.text : theme.backgroundDarker}>
-			<Avatar src={[acc?.id, profile?.avatar]} size={30} />
+			<Avatar src={[acc?.id, profile?.avatar]} size={31} />
 		</AvatarBody>
 	);
 };

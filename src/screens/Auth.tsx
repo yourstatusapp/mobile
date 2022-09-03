@@ -56,15 +56,12 @@ export const Auth: React.FC = () => {
 		}
 
 		if (a?.includes('magic?code=')) {
-			nav.navigate(
-				'Magic' as never,
-				{
-					code: a?.split('code=')[1]?.split('&')[0],
-					new_account: !!a?.includes('new_account'),
-				} as never,
-			);
+			nav.navigate('Magic', {
+				code: a?.split('code=')[1]?.split('&')[0],
+				new_account: !!a?.includes('new_account'),
+			});
 		}
-	}, [ClipboardData]);
+	}, [ClipboardData, nav]);
 
 	const usernameCheck = useCallback((v: string) => {
 		SetUsernameLoading(true);
@@ -101,7 +98,7 @@ export const Auth: React.FC = () => {
 			console.log('LOGGING INTO ACCOUNT FROM NEW ACCOUNT CREATION');
 			console.log(res.data);
 
-			nav.reset({ index: 0, routes: [{ name: 'tabs' as never }] });
+			nav.reset({ index: 0, routes: [{ name: 'Tabs' }] });
 			return;
 		}
 

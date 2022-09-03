@@ -4,7 +4,7 @@ import { Block, Icon } from '@parts';
 import { useCallback, useMemo } from 'react';
 import { ViewStyle } from 'react-native';
 import { StatusColors } from '../../../parts/Status';
-import { StatusTypeEtc } from '../CreateStatus';
+import { StatusTypeEtc, StatusTypes } from '../CreateStatus';
 
 export const StatusSelectedableBox = ({
 	statusType,
@@ -12,7 +12,7 @@ export const StatusSelectedableBox = ({
 	pressHandler,
 	disabled,
 }: {
-	statusType: number;
+	statusType: StatusTypes;
 	selectedType: number;
 	pressHandler: (v: number) => void;
 	disabled: boolean;
@@ -39,9 +39,9 @@ export const StatusSelectedableBox = ({
 				width={10}
 				flex={0}
 				marginBottom={5}
-				opacity={disabled ? 0.5 : 1}
-				style={{ borderRadius: 10 }}
-				color={StatusColors[theme.name][statusType][selectedType === statusType ? 'color' : 'backColor']}
+				opacity={disabled ? 0.4 : 1}
+				style={{ borderRadius: 10, opacity: selectedType !== statusType ? 0.4 : 1 }}
+				color={StatusColors[theme.name][statusType].backColor}
 			/>
 			<Block
 				color={StatusColors[theme.name][statusType].backColor}

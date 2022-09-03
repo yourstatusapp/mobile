@@ -1,8 +1,8 @@
 import core, { UploadProgressEventType } from '@core';
 import axios, { AxiosResponse } from 'axios';
 
-// const DEV_API = 'http://0.0.0.0:3020';
-const DEV_API = 'http://192.168.1.4:3020';
+const DEV_API = 'http://0.0.0.0:3020';
+// const DEV_API = 'http://192.168.1.4:3020';
 // export const baseURL = state('https://api.yourstatus.app');
 export const baseURL = process.env.NODE_ENV === 'production' ? 'https://api.yourstatus.app' : DEV_API;
 // export const baseURL = state(DEV_API);

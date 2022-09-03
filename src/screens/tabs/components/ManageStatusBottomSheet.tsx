@@ -30,7 +30,7 @@ export const ManageStatusSheet = (props: ManageStatusSheet) => {
 					<FlashList
 						data={status}
 						scrollEnabled={false}
-						estimatedItemSize={status.length}
+						estimatedItemSize={status?.length}
 						estimatedListSize={{
 							height: 61,
 							width: 350,

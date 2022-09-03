@@ -22,9 +22,6 @@ export const Friends = React.memo(() => {
 	const [friends, setFriends] = useState<FriendItemType[]>([]);
 	const myStories: StorieType[] = [];
 	const profile = null;
-	// const friends = usePulse(core.lists.friends.groups.friends);
-	// const myStories = usePulse(core.lists.stories.groups.mine);
-	// const profile = usePulse(core.profile.profile);
 
 	const [manageFriendsSheetOpen, setManageFriendsSheetOpen] = useState(false);
 	const [FriendsRequests, SetFriendsRequests] = useState<any[]>([]);
@@ -199,13 +196,7 @@ export const Friends = React.memo(() => {
 										</Block>
 									)}
 								/>
-								{/* <Block flex={0} style={{ width: null }}> */}
-								<TextButton
-									text="Manage status"
-									// style={{ marginRight: 15 }}
-									onPress={() => setManageFriendsSheetOpen(true)}
-								/>
-								{/* </Block> */}
+								<TextButton text="Manage status" onPress={() => setManageFriendsSheetOpen(true)} />
 							</Block>
 						)}
 						{!!myStories[0]?.stories?.length && (
@@ -216,16 +207,7 @@ export const Friends = React.memo(() => {
 									contentContainerStyle={{ paddingLeft: 15 }}
 									renderItem={({ item }) => (
 										<Block key={item.id} style={{ position: 'relative' }}>
-											<TouchableOpacity
-												onPress={() => {
-													// TODO:
-													// core.events.storie_viewer.emit({
-													// 	stories: myStories[0],
-													// 	clicked_at_index: index,
-													// 	skipWatchRequest: true,
-													// })
-												}}
-												activeOpacity={0.8}>
+											<TouchableOpacity activeOpacity={0.8}>
 												<FastImage
 													source={{
 														uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}`,
