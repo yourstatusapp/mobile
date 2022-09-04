@@ -1,6 +1,6 @@
 import { SimpleCore } from 'simple-core-state';
 import { MMKVLoader } from 'react-native-mmkv-storage';
-import { ICreateStatus, ProfileType, StatusType } from './types';
+import { FriendItemType, ICreateStatus, ProfileType, StatusType } from './types';
 import { AlertDataType } from '@hooks';
 
 interface Account {
@@ -17,6 +17,7 @@ interface IDefaultCore {
 	alert: AlertDataType | null;
 	myStatus: StatusType[];
 	newStatusDraft: ICreateStatus;
+	friendsList: FriendItemType[];
 }
 
 const DefaultCore: IDefaultCore = {
@@ -30,6 +31,7 @@ const DefaultCore: IDefaultCore = {
 		statusText: '',
 		type: 'MESSAGE',
 	},
+	friendsList: [],
 };
 
 const SimpleInstance = new SimpleCore<IDefaultCore>(DefaultCore, {

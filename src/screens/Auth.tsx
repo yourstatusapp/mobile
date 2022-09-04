@@ -172,7 +172,7 @@ export const Auth: React.FC = () => {
 						disableTap
 						status={{
 							data: { message: 'Just about out and chill 😎' },
-							type: 0,
+							type: 1,
 							taps: 12,
 							taped: false,
 							id: '',
@@ -189,7 +189,7 @@ export const Auth: React.FC = () => {
 						disableTap
 						status={{
 							data: { message: 'Covid Over Party 🎉' },
-							type: 2,
+							type: 3,
 							taps: 12,
 							taped: false,
 							id: '',
@@ -206,7 +206,7 @@ export const Auth: React.FC = () => {
 						disableTap
 						status={{
 							data: { message: 'YourStatus' },
-							type: 1,
+							type: 2,
 							taps: 42,
 							taped: false,
 							id: '',

@@ -46,7 +46,7 @@ export const ReplyStatus = ({ route }: Props) => {
 		if (res.data) {
 			setComments(oldComments => [...oldComments, { ...res.data, username: profile?.username }]);
 		}
-	}, [newMessage, route.params.status.id]);
+	}, [newMessage, profile?.username, route.params.status.id]);
 
 	useEffect(() => {
 		getComments(route.params.status.id);

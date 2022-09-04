@@ -125,17 +125,19 @@ export interface FriendItemType {
 	}[];
 }
 
+export interface IStorie {
+	id: string;
+	picture: string;
+	account_id: string;
+	viewed?: boolean;
+	views?: number;
+}
+
 export interface StorieType {
 	account_id: string;
 	username: string;
 	avatar: string;
-	stories: {
-		id: string;
-		picture: string;
-		account_id: string;
-		viewed?: boolean;
-		views?: number;
-	}[];
+	stories: IStorie[];
 }
 
 export interface OnboardingTipsConfig {

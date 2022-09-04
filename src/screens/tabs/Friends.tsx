@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
-import core, { AppAlert, FriendItemRenderType, FriendItemType, request, StatusType, StorieType } from '@core';
-import { Block, Fill, IconButton, Status, Text, TextButton } from '@parts';
+import core, { AppAlert, FriendItemRenderType, FriendItemType, IStorie, request, StatusType, StorieType } from '@core';
+import { Block, Fill, IconButton, Status, TextButton } from '@parts';
 import { Animated, StyleSheet, TouchableOpacity, ViewStyle, RefreshControl } from 'react-native';
 
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import styled from 'styled-components/native';
 import { BlurView } from 'expo-blur';
 import FastImage from 'react-native-fast-image';
@@ -11,6 +11,7 @@ import { FriendComp } from './components/FriendItemList';
 import { useNavigation, useTheme } from '@hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ManageStatusSheet } from './components/ManageStatusBottomSheet';
+import { useSimple } from 'simple-core-state';
 
 const FRIEND_ITEM_HEIGHT = 88;
 const FRIEND_TAB_HEADER_HEIGHT = 50;
@@ -19,7 +20,7 @@ export const Friends = React.memo(() => {
 	const { theme, isDarkMode } = useTheme();
 	const nav = useNavigation();
 	const { top } = useSafeAreaInsets();
-	const [friends, setFriends] = useState<FriendItemType[]>([]);
+	const friends = useSimple(core.friendsList);
 	const myStories: StorieType[] = [];
 	const profile = null;
 
@@ -64,7 +65,8 @@ export const Friends = React.memo(() => {
 		}>('get', '/friends');
 		if (!a.data) {
 		} else {
-			setFriends(a.data.friends);
+			core.friendsList.set(a.data.friends);
+			// setFriends(a.data.friends);
 
 			// core.lists.friends.collect(a.data.friends, 'friends');
 
@@ -138,18 +140,109 @@ export const Friends = React.memo(() => {
 		// }, 400);
 	}, []);
 
-	const renderItem = (p: FriendItemRenderType) => <FriendComp {...p} />;
+	const FriendRenderItem = (p: FriendItemRenderType) => <FriendComp {...p} />;
+	const MyStatusRenderItem: ListRenderItem<StatusType> = ({ item, index }) => (
+		<Block
+			key={index}
+			flex={0}
+			marginBottom={10}
+			style={{
+				flexWrap: 'wrap',
+			}}>
+			<Status status={item} self disableTap />
+		</Block>
+	);
+	const StoriesRenderItem: ListRenderItem<IStorie> = ({ item, index }) => (
+		<Block key={item.id} style={{ position: 'relative' }}>
+			<TouchableOpacity activeOpacity={0.8}>
+				<FastImage
+					source={{
+						uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}`,
+					}}
+					style={{
+						height: 120,
+						width: 80,
+						borderRadius: 6,
+						marginRight: 15,
+					}}>
+					<IconButton
+						name="plus"
+						size={18}
+						iconSize={14}
+						color={theme.text}
+						backgroundColor={theme.background}
+						style={{
+							position: 'absolute',
+							top: 5,
+							right: 5,
+							zIndex: 50,
+							transform: [{ rotate: '45deg' }],
+						}}
+						onPress={() => deleteStorie(item.id)}
+					/>
+				</FastImage>
+			</TouchableOpacity>
+		</Block>
+	);
 
 	return (
 		<Block color={theme.background} flex={1}>
-			<Animated.ScrollView
-				scrollEnabled={true}
+			{/* {(!!MyStatus?.length || !!myStories?.length) && (
+				<Block flex={0} marginBottom={30}>
+					{!!MyStatus?.length && (
+						<Block row paddingHorizontal={10} marginTop={20}>
+							<FlashList
+								data={MyStatus}
+								estimatedItemSize={15}
+								scrollEnabled={false}
+								estimatedListSize={{
+									height: 112.7,
+									width: 390,
+								}}
+								renderItem={MyStatusRenderItem}
+							/>
+							<TextButton text="Manage status" onPress={() => setManageFriendsSheetOpen(true)} />
+						</Block>
+					)}
+					{!!myStories[0]?.stories?.length && (
+						<Block row marginLeft={0} marginTop={15}>
+							<FlashList
+								horizontal={true}
+								data={myStories[0].stories}
+								contentContainerStyle={{ paddingLeft: 15 }}
+								renderItem={StoriesRenderItem}
+							/>
+						</Block>
+					)}
+				</Block>
+			)} */}
+
+			<Animated.FlatList
+				data={friends}
+				scrollEventThrottle={1}
+				renderItem={FriendRenderItem}
+				initialNumToRender={20}
 				showsVerticalScrollIndicator={false}
+				keyExtractor={item => item.account_id}
+				ListHeaderComponent={() => (
+					<Block height={50} paddingHorizontal={10} marginTop={10} row>
+						<FlashList
+							data={MyStatus}
+							estimatedItemSize={15}
+							scrollEnabled={false}
+							estimatedListSize={{
+								height: 112.7,
+								width: 390,
+							}}
+							renderItem={MyStatusRenderItem}
+						/>
+						<TextButton text="Manage status" onPress={() => setManageFriendsSheetOpen(true)} />
+					</Block>
+				)}
 				contentContainerStyle={{
 					paddingTop: FRIEND_TAB_HEADER_HEIGHT + top,
-					paddingBottom: 120,
+					paddingBottom: FRIEND_TAB_HEADER_HEIGHT + top,
 				}}
-				scrollEventThrottle={1}
 				refreshControl={
 					<RefreshControl
 						progressViewOffset={90}
@@ -171,93 +264,15 @@ export const Friends = React.memo(() => {
 						},
 					],
 					{ useNativeDriver: true },
-				)}>
-				{(!!MyStatus?.length || !!myStories?.length) && (
-					<Block flex={0} marginBottom={30}>
-						{!!MyStatus?.length && (
-							<Block row paddingHorizontal={10} marginTop={20}>
-								<FlashList
-									data={MyStatus}
-									estimatedItemSize={15}
-									scrollEnabled={false}
-									estimatedListSize={{
-										height: 112.7,
-										width: 390,
-									}}
-									renderItem={({ item, index }) => (
-										<Block
-											key={index}
-											flex={0}
-											marginBottom={10}
-											style={{
-												flexWrap: 'wrap',
-											}}>
-											<Status status={item} self disableTap={false} />
-										</Block>
-									)}
-								/>
-								<TextButton text="Manage status" onPress={() => setManageFriendsSheetOpen(true)} />
-							</Block>
-						)}
-						{!!myStories[0]?.stories?.length && (
-							<Block row marginLeft={0} marginTop={15}>
-								<FlashList
-									horizontal={true}
-									data={myStories[0].stories}
-									contentContainerStyle={{ paddingLeft: 15 }}
-									renderItem={({ item }) => (
-										<Block key={item.id} style={{ position: 'relative' }}>
-											<TouchableOpacity activeOpacity={0.8}>
-												<FastImage
-													source={{
-														uri: `https://cdn.yourstatus.app/stories/${item.account_id}/${item.picture}`,
-													}}
-													style={{
-														height: 120,
-														width: 80,
-														borderRadius: 6,
-														marginRight: 15,
-													}}>
-													<IconButton
-														name="plus"
-														size={18}
-														iconSize={14}
-														color={theme.text}
-														backgroundColor={theme.background}
-														style={{
-															position: 'absolute',
-															top: 5,
-															right: 5,
-															zIndex: 50,
-															transform: [{ rotate: '45deg' }],
-														}}
-														onPress={() => deleteStorie(item.id)}
-													/>
-												</FastImage>
-											</TouchableOpacity>
-										</Block>
-									)}
-								/>
-							</Block>
-						)}
-					</Block>
 				)}
-				<Animated.FlatList
-					data={friends}
-					scrollEnabled={false}
-					scrollEventThrottle={20}
-					renderItem={renderItem}
-					initialNumToRender={20}
-					showsVerticalScrollIndicator={false}
-					keyExtractor={item => item.account_id}
-					getItemLayout={(data, index) => ({
-						length: FRIEND_ITEM_HEIGHT,
-						offset: FRIEND_ITEM_HEIGHT * index,
-						index,
-					})}
-				/>
-			</Animated.ScrollView>
+				getItemLayout={(data, index) => ({
+					length: FRIEND_ITEM_HEIGHT,
+					offset: FRIEND_ITEM_HEIGHT * index,
+					index,
+				})}
+			/>
 
+			{/* TOP BAR VIEW */}
 			<Animated.View
 				style={{
 					top: 0,
@@ -306,14 +321,14 @@ export const Friends = React.memo(() => {
 						/>
 					)}
 					<Fill />
-					{/* <IconButton
+					<IconButton
 						name="camera"
 						color={theme.background}
 						backgroundColor={theme.text}
 						size={23}
 						iconSize={14}
 						onPress={() => nav.navigate('Camera', { uploadMethod: 'storie' } as never)}
-					/> */}
+					/>
 				</Block>
 			</Animated.View>
 

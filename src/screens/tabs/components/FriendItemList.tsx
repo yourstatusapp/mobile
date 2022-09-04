@@ -1,4 +1,4 @@
-import { FriendItemRenderType } from '@core';
+import core, { FriendItemRenderType } from '@core';
 import { useNavigation, useTheme } from '@hooks';
 import { Avatar, Block, Status, Text } from '@parts';
 import React from 'react';
@@ -18,6 +18,22 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 
 	const openProfile = () => nav.navigate('Profile', { username: props.item.username });
 
+	const onStatusTapped = (accId: string, statusId: string) => {
+		core.friendsList.set(prev => {
+			// get index of friend
+			let friendIndex = prev.findIndex(value => value.account_id === accId);
+
+			// get index of status from the friend
+			const statusIndex = prev[friendIndex].status.findIndex(v => v.id === statusId);
+
+			// Update the taped value from the status that is getting taped
+			prev[friendIndex].status[statusIndex].taped = true;
+
+			// return the value
+			return prev;
+		});
+	};
+
 	return (
 		<FriendCompBody key={props.index} style={{ borderBottomColor: theme.backgroundDarker }}>
 			<Block row paddingHorizontal={20}>
@@ -36,7 +52,11 @@ export const FriendComp: React.FC<FriendItemRenderType> = props => {
 							initialNumToRender={props.item.status.length}
 							renderItem={({ item, index }) => (
 								<Block key={index} style={{ flexWrap: 'wrap', paddingTop: 6 }}>
-									<Status status={item} username={props.item.username} />
+									<Status
+										status={item}
+										username={props.item.username}
+										onTapped={() => onStatusTapped(item.account_id, item.id)}
+									/>
 								</Block>
 							)}
 						/>

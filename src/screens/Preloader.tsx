@@ -68,7 +68,6 @@ export const Preloader = ({ loaded }: PreloaderProps) => {
 		if (account !== null) {
 			getAccount();
 		} else {
-			// nav.navigate('auth');
 			nav.reset({ index: 0, routes: [{ name: 'Auth' }] });
 		}
 		// core.account.logged_in.onNext(value => {

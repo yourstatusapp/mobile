@@ -1,18 +1,14 @@
-import styled from 'styled-components/native';
-
 import React, { useCallback } from 'react';
+import styled from 'styled-components/native';
 import { Linking, Pressable, StyleSheet, ViewStyle } from 'react-native';
-import { Gesture } from 'react-native-gesture-handler';
-
-import { request, StatusType, StatusTypes } from '@core';
-
+import { request, StatusType } from '@core';
 import { useNavigation, useTheme } from '@hooks';
-
-import { Icon, Text } from '@parts';
+import { Block, Icon, Text } from '@parts';
 
 interface IStatusProps {
 	self?: boolean;
 	disableTap?: boolean;
+	onTapped?: () => void;
 	style?: ViewStyle;
 	status: StatusType;
 	username?: string;
@@ -63,7 +59,7 @@ export const StatusColors: { light: StatusTypesColors; dark: StatusTypesColors }
 	},
 };
 
-export const Status = React.memo(({ status, style, disableTap, username }: IStatusProps) => {
+export const Status = React.memo(({ status, style, disableTap, username, onTapped }: IStatusProps) => {
 	// const theme_name = usePulse(core.ui.ThemeObject).name;
 	const { theme } = useTheme();
 	const nav = useNavigation();
@@ -78,7 +74,8 @@ export const Status = React.memo(({ status, style, disableTap, username }: IStat
 		<StatusBody
 			style={wrapperStyle}
 			backColor={StatusColors[theme.name][status.type].backColor}
-			textColor={StatusColors[theme.name][status.type].color}>
+			textColor={StatusColors[theme.name][status.type].color}
+			taped={disableTap === true || status.taped}>
 			{status.type === 2 && (
 				<Icon name="discord" size={14} color={StatusColors[theme.name][status.type].color} style={{ marginRight: 4 }} />
 			)}
@@ -92,29 +89,10 @@ export const Status = React.memo(({ status, style, disableTap, username }: IStat
 	);
 
 	const onPressHandle = useCallback(async () => {
-		console.log('tap');
-
+		// Check if not taped yet, so we can register the tap
 		if (status.taped === false) {
-			const res = await request('post', `/status/${status?.id}/tap`);
-			if (res.data) {
-				console.log('-> ', res.data);
-				// TODO: fix this tap number update
-				// let newList = core.lists.friends.getData(status.account_id).value.status?.map(item => {
-				// 	if (item.type === 0) {
-				// 		item.taps = 1 + item.taps;
-				// 		item.taped = true;
-				// 	}
-
-				// 	return item;
-				// });
-
-				// TODO: fix these bottom 2
-				// core.lists.friends.update(status.account_id, { status: newList });
-				// core.lists.friends.rebuildGroupsThatInclude(status.account_id);
-			} else {
-				// silent errors
-				// AppAlert(false, res.message);
-			}
+			await request('post', `/status/${status?.id}/tap`);
+			if (onTapped) onTapped();
 		}
 
 		if (status.type === 1) {
@@ -124,7 +102,7 @@ export const Status = React.memo(({ status, style, disableTap, username }: IStat
 		if (status.type === 2) {
 			Linking.openURL('https://discord.gg/' + status?.data?.code);
 		}
-	}, [status, username, nav]);
+	}, [status, onTapped, nav, username]);
 
 	const PressStyle = ({ pressed }: { pressed: boolean }) => [
 		{
@@ -132,24 +110,20 @@ export const Status = React.memo(({ status, style, disableTap, username }: IStat
 		},
 	];
 
-	const tap = Gesture.Tap()
-		.numberOfTaps(2)
-		.onStart(() => {
-			console.log('Yay, double tap!');
-		});
+	const NotYetTappedComp = () => <Block height={30} width={30} style={{ borderRadius: 30 }} color="red"></Block>;
 
 	return (
-		// <GestureDetector gesture={tap} >
 		<Pressable disabled={disableTap === true} style={PressStyle} onPress={onPressHandle}>
 			{BaseRender}
+			{/* {status?.taped === false && !!onTapped && <NotYetTappedComp />} */}
 		</Pressable>
-		// </GestureDetector>
 	);
 });
 
-const StatusBody = styled.View<{ backColor: string; textColor: string }>`
+const StatusBody = styled.View<{ backColor: string; textColor: string; taped?: boolean }>`
 	background-color: ${({ backColor }) => backColor};
-	border: solid 1.3px ${({ textColor }) => textColor}25;
+	/* border: solid 1.3px ${({ textColor }) => textColor}25; */
+	border: solid 1.3px ${({ textColor, backColor, taped }) => (taped ? backColor : textColor + '15')};
 	padding: 4px 8px;
 	align-self: flex-start;
 	border-radius: 6px;

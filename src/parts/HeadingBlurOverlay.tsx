@@ -1,5 +1,5 @@
 import React from 'react';
-import { BlurView } from 'react-native-blur';
+import { BlurView } from 'expo-blur';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { hasNotch } from 'react-native-device-info';
@@ -9,9 +9,7 @@ interface HeadingBlurOverlayProps {
 	height?: number;
 }
 
-export const HeadingBlurOverlay: React.FC<HeadingBlurOverlayProps> = ({
-	height,
-}) => {
+export const HeadingBlurOverlay: React.FC<HeadingBlurOverlayProps> = ({ height }) => {
 	const { theme, isDarkMode } = useTheme();
 	const topHeight = hasNotch() ? 44 : 40;
 
@@ -41,8 +39,8 @@ export const HeadingBlurOverlay: React.FC<HeadingBlurOverlayProps> = ({
 		<View style={baseStyle}>
 			<BlurView
 				style={sh2}
-				blurAmount={30}
-				blurType={isDarkMode ? 'dark' : 'light'}
+				intensity={30}
+				tint={isDarkMode ? 'dark' : 'light'}
 				// tint={isDarkMode ? 'dark' : 'light'}
 				// intensity={30}
 			/>
