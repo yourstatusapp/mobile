@@ -4,10 +4,14 @@ import { AppState, Linking, Switch } from 'react-native';
 import { SettingItem } from './index';
 import { useTheme } from '@hooks';
 import Notifee, { AuthorizationStatus } from '@notifee/react-native';
-import { useState } from 'react';
+import messaging from '@react-native-firebase/messaging';
+import { useEffect, useState } from 'react';
+import core, { request } from '@core';
+import { useSimple } from 'simple-core-state';
 
 export const SettingsNotifications: React.FC = () => {
 	const { theme } = useTheme();
+	const currentDevice = useSimple(core.currentDevice);
 	const [notificationsAllowed, setNotificationsAllowed] = useState(false);
 	const [showSettingsForNotifyChange, setShowSettingsForNotifyChange] = useState(false);
 
@@ -31,15 +35,25 @@ export const SettingsNotifications: React.FC = () => {
 		}
 	};
 
-	const UpdateDevice = async (notifications: boolean) => {
-		// TODO: Update device notification logic
-		// const res = await request('patch', '/account/devices/' + CURRENT_DEVICE.id, {
-		// 	data: { notifications, push_token: notifications ? core.app.device_push_token?.value : '' },
-		// });
+	const UpdateDevice = async (enablePushNotification: boolean) => {
+		// Register the device with FCM
+		await messaging().registerDeviceForRemoteMessages();
+
+		// Get the token
+		const token = await messaging().getToken();
+
+		const res = await request('patch', '/account/devices/' + currentDevice?.id, {
+			data: { notifications: enablePushNotification, push_token: token },
+		});
+
+		if (res.data) {
+			core.currentDevice.patchObject({ notifications: enablePushNotification });
+		} else {
+		}
 	};
 
 	// listen for notification perms change
-	React.useEffect(() => {
+	useEffect(() => {
 		const subscription = AppState.addEventListener('change', nextAppState => {
 			console.log('nextAppState', nextAppState);
 
@@ -71,14 +85,14 @@ export const SettingsNotifications: React.FC = () => {
 								onPress={() => allowNotifications()}
 								disabled={showSettingsForNotifyChange}
 								textSize={14}
-								textColor={'#541A1A'}
+								textColor="white"
 								style={{ backgroundColor: '#00000032', padding: 5, borderRadius: 4 }}>
 								Allow Notifications
 							</TextButton>
 							<TextButton
 								onPress={() => Linking.openSettings()}
 								textSize={14}
-								textColor={'#541A1A'}
+								textColor="white"
 								style={{ backgroundColor: '#00000032', padding: 5, borderRadius: 4 }}>
 								Open Settings
 							</TextButton>
@@ -89,7 +103,7 @@ export const SettingsNotifications: React.FC = () => {
 
 			<SettingItem
 				text="Enable notifications"
-				RightComponent={() => <Switch value={false} onValueChange={v => UpdateDevice(v)} />}
+				RightComponent={() => <Switch value={currentDevice?.notifications} onValueChange={v => UpdateDevice(v)} />}
 			/>
 		</Block>
 	);

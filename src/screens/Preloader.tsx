@@ -29,6 +29,7 @@ export const Preloader = ({ loaded }: PreloaderProps) => {
 				// set account and profile
 				core.account.set(res.data?.account);
 				core.profile.set(res.data?.profile);
+				core.currentDevice.set(res.data?.device);
 			}
 
 			// if (!res.success) {

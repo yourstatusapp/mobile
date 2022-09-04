@@ -225,7 +225,7 @@ export const Friends = React.memo(() => {
 				showsVerticalScrollIndicator={false}
 				keyExtractor={item => item.account_id}
 				ListHeaderComponent={() => (
-					<Block height={50} paddingHorizontal={10} marginTop={10} row>
+					<Block paddingHorizontal={10} marginTop={10} row>
 						<FlashList
 							data={MyStatus}
 							estimatedItemSize={15}
@@ -321,14 +321,14 @@ export const Friends = React.memo(() => {
 						/>
 					)}
 					<Fill />
-					<IconButton
+					{/* <IconButton
 						name="camera"
 						color={theme.background}
 						backgroundColor={theme.text}
 						size={23}
 						iconSize={14}
 						onPress={() => nav.navigate('Camera', { uploadMethod: 'storie' } as never)}
-					/>
+					/> */}
 				</Block>
 			</Animated.View>
 

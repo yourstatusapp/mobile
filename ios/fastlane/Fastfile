@@ -22,4 +22,27 @@ platform :ios do
     build_app(workspace: "mobile3.xcworkspace", scheme: "mobile3")
     upload_to_testflight
   end
+
+  desc "Discord notify"
+  lane :test do
+    discord_notifier(
+    webhook_url:"https://discord.com/api/webhooks/1015841619548831774/ZTdFvT4KoU5Em58yTXnIuXe28nmwiA3SpTb5jd2pX_USUUUq6f9f3Ipi38TTB-kK53_d",
+    title: "Fastlane",
+    description: "The app has been build and submitted to testflight",
+    fields: [
+      {
+        name:"Field1", 
+        value:"Value1"
+      },
+      {
+        name:"Field2", 
+        value:"Value2",
+        inline: true
+      },
+      {
+        name:"Field3", 
+        value:"Value3",
+        inline: true
+      }])
+  end
 end

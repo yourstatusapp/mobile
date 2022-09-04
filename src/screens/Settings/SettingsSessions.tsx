@@ -1,26 +1,27 @@
 import * as React from 'react';
 import core, { AppAlert, DeviceType, request, TimeFormatter } from '@core';
 import { Block, Fill, Icon, IconButton, Text } from '@parts';
-import { FlatList, ListRenderItemInfo } from 'react-native';
 // import { removeNotificationPermissions } from '../../utils/PushNotification';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '@hooks';
+import { useNavigation, useTheme } from '@hooks';
+import { useEffect, useState } from 'react';
+import { useSimple } from 'simple-core-state';
+import { FlashList, ListRenderItemInfo } from '@shopify/flash-list';
 
 type DeviceItem = ListRenderItemInfo<DeviceType>;
 
 export const SettingsSessions: React.FC = () => {
 	const { theme } = useTheme();
 	const nav = useNavigation();
+	const currentDevice = useSimple(core.currentDevice);
 
 	// const devices = usePulse(core.lists.devices.groups.mine);
-	const devices = [];
-	const current_device = null;
+	const [devices, setDevices] = useState<DeviceType[]>([]);
 	// const current_device = usePulse(core.lists.devices.selectors.current);
 
 	const getSessions = async () => {
 		const res = await request<DeviceType[]>('get', '/account/devices');
 		if (res.data) {
-			// core.lists.devices.collect(res.data, 'mine');
+			setDevices(res.data);
 		}
 	};
 
@@ -28,9 +29,9 @@ export const SettingsSessions: React.FC = () => {
 		const res = await request<boolean>('delete', `/account/devices/${deviceId}/revoke`);
 		if (res.data) {
 			// if we are revoking the current device, log out of the device
-			if (current_device?.id === deviceId) {
+			if (currentDevice?.id === deviceId) {
 				// removeNotificationPermissions();
-				nav.reset({ index: 1, routes: [{ name: 'auth' as never }] });
+				nav.reset({ index: 1, routes: [{ name: 'Auth' }] });
 				// core.account.account.reset();
 				// core.lists.devices.reset();
 				// core.profile.profile.reset();
@@ -45,16 +46,20 @@ export const SettingsSessions: React.FC = () => {
 		}
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		getSessions();
 	}, []);
 
-	const sessionRenderItem = ({ item, index }: ListRenderItemInfo<DeviceType>) => (
-		<Block key={index} marginBottom={10} color={theme.background} style={{ padding: 12, borderRadius: 8 }}>
+	const SessionRenderItem = ({ item, index }: ListRenderItemInfo<DeviceType>) => (
+		<Block
+			key={index}
+			marginBottom={10}
+			color={theme.darker}
+			style={{ padding: 12, borderRadius: 8, marginHorizontal: 15 }}>
 			<Text bold color={theme.textFade}>
 				Created <Text color={theme.text}>{TimeFormatter(item.id)}</Text> ago
 			</Text>
-			{current_device?.id === item.id && (
+			{currentDevice?.id === item.id && (
 				<Block row hCenter flex={0} marginTop={5}>
 					<Icon name="info" size={13} color="#379bf9" />
 					<Text medium color="#379bf9" marginLeft={3}>
@@ -62,16 +67,7 @@ export const SettingsSessions: React.FC = () => {
 					</Text>
 				</Block>
 			)}
-			<Block row color="transparent" marginTop={10}>
-				{/* <IconButton
-					name="plus"
-					color="white"
-					backgroundColor={theme.white40}
-					size={20}
-					iconSize={17}
-					style={{ transform: [{ rotate: '45deg' }] }}
-					onPress={() => revokeDevice(item.id)}
-				/> */}
+			<Block row marginTop={10}>
 				<Fill />
 				<IconButton
 					name="plus"
@@ -87,7 +83,7 @@ export const SettingsSessions: React.FC = () => {
 	);
 
 	return (
-		<Block color={theme.backgroundDarker}>
+		<Block color={theme.background}>
 			{/* <LinearGradient
 				pointerEvents="none"
 				colors={[theme.background, theme.name === 'light' ? :]}
@@ -96,14 +92,14 @@ export const SettingsSessions: React.FC = () => {
 			{/* <Block paddingBottom={20} color={theme.background}></Block> */}
 			{/* <GradiantShadow height={50} style={{ position: 'absolute', top: 0, zIndex: 9 }} /> */}
 
-			<Text bold size={30} marginTop={15} marginLeft={10} paddingBottom={5}>
+			<Text bold size={30} marginTop={15} marginLeft={15} paddingBottom={5}>
 				Account Sessions
 			</Text>
-			<FlatList
+			<FlashList
 				data={devices}
-				renderItem={sessionRenderItem}
-				initialNumToRender={30}
-				contentContainerStyle={{ paddingTop: 20, paddingHorizontal: 10, paddingBottom: 20 }}
+				renderItem={SessionRenderItem}
+				estimatedItemSize={5}
+				contentContainerStyle={{ paddingTop: 20, paddingBottom: 20 }}
 				showsVerticalScrollIndicator={false}
 			/>
 		</Block>

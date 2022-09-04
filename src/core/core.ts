@@ -18,6 +18,10 @@ interface IDefaultCore {
 	myStatus: StatusType[];
 	newStatusDraft: ICreateStatus;
 	friendsList: FriendItemType[];
+	currentDevice: {
+		id: string;
+		notifications: boolean;
+	} | null;
 }
 
 const DefaultCore: IDefaultCore = {
@@ -32,6 +36,7 @@ const DefaultCore: IDefaultCore = {
 		type: 'MESSAGE',
 	},
 	friendsList: [],
+	currentDevice: null,
 };
 
 const SimpleInstance = new SimpleCore<IDefaultCore>(DefaultCore, {
